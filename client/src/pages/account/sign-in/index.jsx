@@ -13,8 +13,8 @@ import { Validation } from "./index.validation";
 import { authentication } from "core/api";
 
 const Index = () => {
-    const { register, handleSubmit, formState: { errors }, setError } = useForm({ resolver: yupResolver(Validation()) });
-    const { mutate: signin, isLoading } = usePost({ fetch: authentication, onSuccess: (data) => {
+    const { register, handleSubmit } = useForm({ resolver: yupResolver(Validation()) });
+    const { mutate: signin } = usePost({ fetch: authentication, onSuccess: (data) => {
         console.log(data);
     }});
     
