@@ -1,6 +1,6 @@
 const Index = () => {
     return (
-        ''
+        'MAIN'
     );
 }
 

@@ -13,9 +13,10 @@ import { Validation } from "./index.validation";
 import { authentication } from "core/api";
 
 const Index = () => {
-    const { register, handleSubmit } = useForm({ resolver: yupResolver(Validation()) });
+    const { register, handleSubmit, formState: { errors }, setError } = useForm({ resolver: yupResolver(Validation()) });
     const { mutate: signin } = usePost({ fetch: authentication, onSuccess: (data) => {
-        console.log(data);
+        if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0}); }); }
+        else { localStorage.setItem('token', data.message.id); window.location.href = '/'; }
     }});
     
     return (
@@ -35,18 +36,18 @@ const Index = () => {
                                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                                     <Typography variant= "body1" sx= {{ fontSize: { xs: '.90rem', md: '.95rem' }, transition: 'all 0.2s ease-in-out' }}>Email</Typography>
                                     <TextField { ...register('email') } name= "email" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } />
-                                    <Typography variant= "caption" color= "error.main" sx= {{ fontWeight: 'bold', textAlign: 'right', marginTop: '2px' }}></Typography>
+                                    <Typography variant= "caption" color= "error.main" sx= {{ fontWeight: 'bold', textAlign: 'right', marginTop: '2px' }}>{ errors?.email?.message }</Typography>
                                 </Stack>
                                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                                     <Typography variant= "body1" sx= {{ fontSize: { xs: '.90rem', md: '.95rem' }, transition: 'all 0.2s ease-in-out' }}>Password</Typography>
                                     <TextField { ...register('password') } name= "password" type= "password" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } />
-                                    <Typography variant= "caption" color= "error.main" sx= {{ fontWeight: 'bold', textAlign: 'right', marginTop: '2px' }}></Typography>
+                                    <Typography variant= "caption" color= "error.main" sx= {{ fontWeight: 'bold', textAlign: 'right', marginTop: '2px' }}>{ errors?.password?.message }</Typography>
                                 </Stack>
                             </Stack>
                         </form>
                         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center"><Typography variant= "body1" color= "text.primary" component= { Link } to= "/forgot-password" sx= { link }>Forgot Password?</Typography></Stack>
                     </Stack>
-                    <Typography variant= "body1" sx= { btn } onClick= { handleSubmit(data => signin({ data: data, type: 'login' }) ) }>Sign in</Typography>
+                    <Typography variant= "body1" sx= { btn } onClick= { handleSubmit(data => { data['password'] = btoa(data.password); signin(data); } ) }>Sign in</Typography>
                 </Stack>
             </Stack>
         </Container>

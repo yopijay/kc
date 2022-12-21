@@ -12,7 +12,7 @@ const App = () => {
     return ( 
         <Router>
             <QueryClientProvider client= { client }>
-                <Routes><Route path= "/*" element= { localStorage.getItem('token') ? <Main /> : <Account /> } /></Routes>
+                <Routes><Route path= "*" element= { localStorage.getItem('token') ? <Main /> : <Account /> } /></Routes>
             </QueryClientProvider>
         </Router> 
     ); 
