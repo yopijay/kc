@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 export const api = ({ url, method, data= null }) => {
     const config = {
@@ -18,3 +18,4 @@ export const api = ({ url, method, data= null }) => {
 }
 
 export const usePost = ({ fetch, onSuccess, onError }) => { return useMutation(fetch, { onSuccess, onError}); }
+export const useGet = ({ key, fetch, options, onSuccess, onError }) => { return useQuery(key, () => fetch, { onSuccess, onError, ...options }); }
