@@ -6,11 +6,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 // Core
 import { usePost } from "core/function/global"; // Functions
+import { authentication } from "core/api"; // APIs
 
 // Constants
 import { btn, input, link, title } from "./index.style"; // Styles
-import { Validation } from "./index.validation";
-import { authentication } from "core/api";
+import { Validation } from "./index.validation"; // Validations
 
 const Index = () => {
     const { register, handleSubmit, formState: { errors }, setError } = useForm({ resolver: yupResolver(Validation()) });
