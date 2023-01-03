@@ -1,8 +1,8 @@
 // Libraries
 import React from 'react';
 
-// Components
-const Dashboard = React.lazy(() => import('pages/main'));
+// Maintenance
+const Company = React.lazy(() => import('pages/main/maintenance/company'));
 
 export const Navs = () => ([
     {
@@ -18,7 +18,7 @@ export const Navs = () => ([
     },
     {
         title: 'Maintenance', nav: [
-            { path: '/maintenance/company', label: 'Company', name: 'company', component: 'COMPANY', access: [ 'superadmin', 'admin' ] },
+            { path: '/maintenance/company', label: 'Company', name: 'company', component: <Company />, access: [ 'superadmin', 'admin' ] },
             { path: '/maintenance/department', label: 'Department', name: 'department', component: 'DEPARTMENT', access: [ 'superadmin', 'admin' ] },
             { path: '/maintenance/position', label: 'Position', name: 'position', component: 'POSITION', access: [ 'superadmin', 'admin' ] },
             { path: '/maintenance/user', label: 'User', name: 'user', component: 'USER', access: [ 'superadmin', 'admin' ] },

@@ -1,5 +1,5 @@
 // Libraries
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { Suspense, useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -15,9 +15,7 @@ import Sidebar from 'pages/global/sidebar';
 
 const Index = () => {
     const { setData } = useContext(ProfileCntx);
-    const { isLoading } = useGet({ key: ['profile'], fetch: profile(atob(localStorage.getItem('token'))), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setData(data[0]) });
-
-    // if(isLoading) { return <LoaderScreen /> }
+    useGet({ key: ['profile'], fetch: profile(atob(localStorage.getItem('token'))), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setData(data[0]) });
     
     return (
         <Box display= "flex">

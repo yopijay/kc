@@ -1,4 +1,4 @@
-const Builder = require("../../function/global");
+const Builder = require("../../function/global"); // Function
 
 class Users {
     login = async (data) => {
@@ -30,6 +30,11 @@ class Users {
                                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: 'LEFT' })
                                         .condition(`WHERE usr.id= ${id}`)
                                         .build()).rows;
+    }
+
+    logout = async (data) => {
+        await new Builder(`tbl_users`).update(`is_logged= 0`).condition(`WHERE id= ${atob(data.id)}`).build();
+        return { result: 'success', message: 'Successfully logged out!' }
     }
 }
 

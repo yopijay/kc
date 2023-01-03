@@ -39,12 +39,8 @@ export const Light = createTheme({
             dark: '#557153',
             contrastText: '#E6E5A3'
         },
-        excel: {
-            main: '#61764B'
-        },
-        pdf: {
-            main: '#DD5353'
-        },
+        excel: { main: '#61764B' },
+        pdf: { main: '#DD5353' },
         text: {
             primary: '#434242',
             secondary: '#222222',
