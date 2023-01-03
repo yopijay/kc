@@ -7,7 +7,7 @@ const Dashboard = React.lazy(() => import('pages/main'));
 export const Navs = () => ([
     {
         title: 'Main', nav: [
-            { path: '/', label: 'Dashboard', name: 'home', component: <Dashboard />, access: [ 'superadmin', 'admin', 'user' ] }
+            { path: '/', label: 'Dashboard', name: 'home', component: 'DASHBOARD', access: [ 'superadmin', 'admin', 'user' ] }
         ]
     },
     {
