@@ -44,7 +44,7 @@ export const Light = createTheme({
         text: {
             primary: '#434242',
             secondary: '#222222',
-            disabled: '#F3EFE0'
+            disabled: '#bdc3c7'
         }
     },
     typography: {

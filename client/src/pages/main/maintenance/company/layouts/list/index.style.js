@@ -6,7 +6,7 @@ export const search = {
     alignItems: 'center',
     border: 'solid 1px #F3F3F3',
     borderRadius: '50px',
-    padding: '6px 10px',
+    padding: '4px 10px',
     width: {
         xs: '100%',
         sm: '350px',
@@ -24,7 +24,7 @@ export const btntxt = {
     backgroundColor: '#204c6f',
     color: '#ffffff',
     borderRadius: '7px',
-    padding: '5px 15px',
+    padding: '7px 15px',
     transition: 'all 0.2s ease-in-out',
     '&:hover': { backgroundColor: '#1b405d' }
 }

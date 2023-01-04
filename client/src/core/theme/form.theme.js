@@ -44,7 +44,7 @@ export const input = createTheme({
         text: {
             primary: '#212b36',
             secondary: '#637381',
-            disabled: '#919eab'
+            disabled: '#bdc3c7'
         }
     },
     typography: {

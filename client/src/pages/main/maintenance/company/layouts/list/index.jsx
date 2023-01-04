@@ -34,9 +34,9 @@ const Index = () => {
                         </Box>
                     </form>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
-                        <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btnimport }><FontAwesomeIcon icon= { faFileArrowUp } style= {{ color: '#FFFFFF' }} /></Typography>
-                        <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btnexport }><FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} /></Typography>
-                        <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btnicon }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} /></Typography>
+                        <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btnimport }><FontAwesomeIcon icon= { faFileArrowUp } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
+                        <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btnexport }><FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
+                        <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btnicon }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
                         <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btntxt }>New Company</Typography>
                     </Stack>
                 </Stack>

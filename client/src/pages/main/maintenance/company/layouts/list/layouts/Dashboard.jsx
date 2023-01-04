@@ -21,19 +21,19 @@ const Dashboard = () => {
             <Grid item xs= { 4 } sm= { 6 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.total < 10 ? '0' : ''}${count.total}` }</Typography> : <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Total Users</Typography>
+                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Total</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 4 } sm= { 3 } sx= {{ padding: '0 5px' }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.active < 10 ? '0' : ''}${count.active}` }</Typography> : <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Active Users</Typography>
+                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Active</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 4 } sm= { 3 } sx= {{ padding: '0 5px' }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count?.inactive < 10 ? '0' : ''}${count?.inactive}` }</Typography> : <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Inactive Users</Typography>
+                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Inactive</Typography>
                 </Stack>
             </Grid>
         </Grid>

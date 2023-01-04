@@ -25,10 +25,56 @@ const list = (table, data) => {
     });
 }
 
+const specific = (table, id) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_company': resolve(await new Company().specific(id)); break;
+        }
+    });
+}
+
+ const save = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_company': resolve(await new Company().save(data)); break;
+        }
+    });
+}
+
+const update = (table, data) => {
+   return new Promise(async resolve => {
+       switch(table) {
+           case 'tbl_company': resolve(await new Company().update(data)); break;
+       }
+   });
+}
+
+const series = (table) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_company': resolve(await new Company().series()); break;
+        }
+    });
+}
+
+const dropdown = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_users': resolve(await new Users().dropdown(data)); break;
+            case 'tbl_company': resolve(await new Company().dropdown(data)); break;
+        }
+    });
+}
+
 module.exports = {
     login,
     logout,
     profile,
     dashboard,
-    list
+    list,
+    specific,
+    save,
+    update,
+    dropdown,
+    series
 }
