@@ -1,7 +1,7 @@
 // Libraries
 import { faFileArrowDown, faFileArrowUp, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Stack, TextField, Typography } from "@mui/material";
+import { Box, Skeleton, Stack, TextField, Typography } from "@mui/material";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
@@ -41,7 +41,21 @@ const Index = () => {
                     </Stack>
                 </Stack>
             </Stack>
-            <Item fetching= { isFetching } />
+            { !isFetching ? <Item /> :  
+                <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= {{ backgroundColor: '#FFFFFF', padding: '10px 20px', border: 'solid 1px #F3F3F3', borderRadius: '10px' }} spacing= { 2 }>
+                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ flexGrow: 1 }}>
+                        <Skeleton variant= "rounded" sx= {{ width: '50%', height: '10px' }} />
+                        <Skeleton variant= "rounded" sx= {{ width: '25%', height: '10px' }} />
+                        <Skeleton variant= "rounded" sx= {{ width: '27%', height: '10px' }} />
+                    </Stack>
+                    <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
+                        <Skeleton variant= "circular" sx= {{ width: '10px', height: '10px' }} />
+                        <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
+                            <Skeleton variant= "rounded" sx= {{ padding: '15px' }} />
+                            <Skeleton variant= "rounded" sx= {{ padding: '15px' }} />
+                        </Stack>
+                    </Stack>
+                </Stack> }
         </Stack>
     );
 }

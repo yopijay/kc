@@ -8,7 +8,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
 import { successToast, useGet, usePost } from "core/function/global"; // Function
-import { save, specific } from "core/api"; // API
+import { save, specific, update } from "core/api"; // API
 import { input } from "core/theme/form.theme"; // Theme
 
 // Constants
@@ -18,13 +18,28 @@ import { validation as Validation } from './index.validation'; // Validation
 
 const Index = () => {
     const { type, id } = useParams();
-    const { navigate } = useNavigate();
+    const navigate = useNavigate();
     const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
-    const { isFetching, refetch } = useGet({ key: ['cmp_specific'], fetch: specific({ table: 'tbl_company', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false},
-        onSuccess: (data) => { if(Array.isArray(data)) for(let count = 0; count < Object.keys(data[0]).length; count++) { let _name = Object.keys(data[0])[count]; setValue(_name, data[0][_name]); } } });
+    const { isFetching, refetch } =  useGet({ key: ['cmp_specific'], fetch: specific({ table: 'tbl_company', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
+                                                        onSuccess: (data) => { 
+                                                            if(Array.isArray(data)) 
+                                                                for(let count = 0; count < Object.keys(data[0]).length; count++) { 
+                                                                    let _name = Object.keys(data[0])[count]; setValue(_name, data[0][_name]); 
+                                                                } 
+                                                        } });
 
-    const { mutate: saving } = usePost({ fetch: save,
-        onSuccess: (data) => { if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } else { successToast(data.message, 3000, navigate('/maintenance/company', { replace: true })); } }});
+    const { mutate: saving } = usePost({ fetch: save, 
+                                                onSuccess: (data) => { 
+                                                    if(data.result === 'error') { 
+                                                        (data.error).forEach((err, index) => { 
+                                                            setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); 
+                                                        }); 
+                                                    } 
+                                                    else { successToast(data.message, 3000, navigate('/maintenance/company', { replace: true })); } 
+                                                } });
+
+    const { mutate: updating } = usePost({ fetch: update, 
+                                                    onSuccess: (data) => { if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } else { successToast(data.message, 3000, navigate('/maintenance/company', { replace: true })); } } });
 
     useEffect(() => { setValidation(Validation()); if(id !== undefined) { refetch(); } }, [ setValidation, id, refetch ]);
 
@@ -43,7 +58,7 @@ const Index = () => {
 
                             if(data.owner_id !== undefined && data.owner_id !== 0) {
                                 if(type === 'new') { saving({ table: 'tbl_company', data: data }); }
-                                // else { updating({ table: 'tbl_users', type: 'update', query: id, data: data }); }
+                                else { updating({ table: 'tbl_company', data: data }); }
                             }
                             else { setError('owner_id', { message: 'This field is required!' }); }
                         }) }>Save</Box>

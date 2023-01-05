@@ -50,7 +50,74 @@ class Company {
     }
 
     update = async (data) => {
-        return data;
+        let cmp = (await new Builder(`tbl_company`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
+        let date = Global.date(new Date());
+
+        audit.item_id = cmp.id;
+        audit.action = "update";
+        audit.user_id = data.updated_by;
+        audit.date = date;
+
+        if(Global.compare(cmp.name, data.name)) {
+            if(!(await new Builder(`tbl_company`).select().condition(`WHERE name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+                audit.series_no = Global.randomizer(7);
+                audit.field = "name";
+                audit.previous = (cmp.name).toUpperCase();
+                audit.current = (data.name).toUpperCase();
+
+                await new Builder(`tbl_company`).update(`name= '${(data.name).toUpperCase()}'`).condition(`WHERE id= ${cmp.id}`).build();
+                Global.audit(audit);
+            }
+            else { return { result: 'error', error: [{ name: 'name', message: 'Company name already used!' }] } }
+        }
+
+        if(Global.compare(cmp.owner_id, data.owner_id)) {
+            audit.series_no = Global.randomizer(7);
+            audit.field = "owner_id",
+            audit.previous = cmp.owner_id;
+            audit.current = data.owner_id;
+
+            await new Builder(`tbl_company`).update(`owner_id= ${data.owner_id}`).condition(`WHERE id= ${cmp.id}`).build();
+            Global.audit(audit);
+        }
+
+        if(Global.compare(cmp.address, data.address)) {
+            let _address = data.address !== '' ? `'${(data.address).toUpperCase()}'` : null;
+            
+            audit.series_no = Global.randomizer(7);
+            audit.field = "address";
+            audit.previous = cmp.address !== null ? (cmp.address).toUpperCase() : null;
+            audit.current = _address;
+
+            await new Builder(`tbl_company`).update(`address= ${_address}`).condition(`WHERE id= ${cmp.id}`).build();
+            Global.audit(audit);
+        }
+
+        if(Global.compare(cmp.description, data.description)) {
+            let _description = data.description !== '' ? `'${(data.description).toUpperCase()}'` : null;
+
+            audit.series_no = Global.randomizer(7);
+            audit.field = "description";
+            audit.previous = cmp.description !== null ? (cmp.description).toUpperCase() : null;
+            audit.current = _description;
+
+            await new Builder(`tbl_company`).update(`description= ${_description}`).condition(`WHERE id= ${cmp.id}`).build();
+            Global.audit(audit);
+        }
+
+        if(Global.compare(cmp.status, data.status ? 1 : 0)) {
+            let _status = data.status === true || data.status === 'true' ? 1 : 0;
+            audit.series_no = Global.randomizer(7);
+            audit.field = "status";
+            audit.previous = cmp.status;
+            audit.current = _status;
+
+            await new Builder(`tbl_company`).update(`status= ${_status}`).condition(`WHERE id= ${cmp.id}`).build();
+            Global.audit(audit);
+        }
+
+        await new Builder(`tbl_company`).update(`updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${cmp.id}`).build();
+        return { result: 'success', message: 'Successfully updated!' }
     }
 
     dropdown = async (data) => {

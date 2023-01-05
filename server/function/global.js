@@ -32,8 +32,16 @@ const randomizer = (length) => {
     return result;
 }
 
+const compare = (_old, _new) => {
+    let __old = _old !== null && _old !== undefined && _old !== '' ? Number.isInteger(_old) ? _old : _old.toUpperCase() : null;
+    let __new = _new !== null && _new !== undefined && _new !== '' ? Number.isInteger(_new) ? _new : _new.toUpperCase() : null;
+    
+    return __old !== __new;
+}
+
 module.exports = { 
     randomizer,
     audit,
-    date
+    date,
+    compare
 }
