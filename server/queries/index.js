@@ -25,6 +25,14 @@ const list = (table, data) => {
     });
 }
 
+const search = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_company': resolve(await new Company().search(data)); break;
+        }
+    });
+}
+
 const specific = (table, id) => {
     return new Promise(async resolve => {
         switch(table) {
@@ -76,5 +84,6 @@ module.exports = {
     save,
     update,
     dropdown,
-    series
+    series,
+    search
 }

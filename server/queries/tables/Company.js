@@ -20,6 +20,15 @@ class Company {
                                         .build()).rows;
     }
 
+    search = async (data) => {
+        return (await new Builder(`tbl_company AS cmp`)
+                                        .select(`cmp.id, cmp.series_no, cmp.name, cmp.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, cmp.date_created, CONCAT(owner.lname, ', ', owner.fname, ' ', owner.mname) AS owner_name`)
+                                        .join({ table: `tbl_employee AS owner`, condition: `owner.user_id = cmp.owner_id`, type: 'LEFT' })
+                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = cmp.created_by`})
+                                        .condition(`WHERE cmp.series_no LIKE '%${data.condition}%' OR cmp.name LIKE '%${data.condition}%' ORDER BY cmp.date_created DESC`) 
+                                        .build()).rows;
+    }
+
     specific = async (id) => { return (await new Builder(`tbl_company`).select().condition(`WHERE id= ${id}`).build()).rows; }
     series = async () => { return (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows; }
 

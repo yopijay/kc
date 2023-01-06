@@ -15,3 +15,4 @@ export const save = async ({ table, data }) => { return await api({ url: `${Env[
 export const update = async ({ table, data }) => { return await api({ url: `${Env[env].url}/update/${table}`, method: 'post', data: data }).then(res => res.data); }
 export const dropdown = async ({ table, data }) => { return await api({ url: `${Env[env].url}/dropdown/${table}`, method: 'post', data: data }).then(res => [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }].concat(res.data)); }
 export const series = async (table) => { return await api({ url: `${Env[env].url}/series/${table}`, method: 'get' }).then(res => res.data[0].count); }
+export const look = async ({ table, data }) => { return await api({ url: `${Env[env].url}/search/${table}`, method: 'post', data: data }).then(res => res.data); }
