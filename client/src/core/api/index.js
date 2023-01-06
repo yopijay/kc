@@ -16,3 +16,5 @@ export const update = async ({ table, data }) => { return await api({ url: `${En
 export const dropdown = async ({ table, data }) => { return await api({ url: `${Env[env].url}/dropdown/${table}`, method: 'post', data: data }).then(res => [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }].concat(res.data)); }
 export const series = async (table) => { return await api({ url: `${Env[env].url}/series/${table}`, method: 'get' }).then(res => res.data[0].count); }
 export const look = async ({ table, data }) => { return await api({ url: `${Env[env].url}/search/${table}`, method: 'post', data: data }).then(res => res.data); }
+export const excel = async ({ table, type }) => { return await api({ url: `${Env[env].url}/excel/${table}/${type}`, method: 'get' }).then(res => res.data); }
+export const upload = async ({ table, data }) => { return await api({ url: `${Env[env].url}/upload/${table}`, method: 'post', data: data }).then(res => res.data); }

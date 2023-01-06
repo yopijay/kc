@@ -37,7 +37,7 @@ class Users {
         return { result: 'success', message: 'Successfully logged out!' }
     }
 
-    dropdown = async (data) => { return (await new Builder(`tbl_users AS usr`).select(`usr.id, CONCAT(info.lname, ', ', info.fname, ' ', info.mname) AS name`).join({ table: `tbl_employee AS info`, condition: `info.user_id = usr.id`, type: 'LEFT' }).condition(data.condition !== undefined ? `` : '').build()).rows; }
+    dropdown = async (data) => { return (await new Builder(`tbl_users AS usr`).select(`usr.id, CONCAT(info.lname, ', ', info.fname, ' ', info.mname) AS name`).join({ table: `tbl_employee AS info`, condition: `info.user_id = usr.id`, type: 'LEFT' }).condition(`WHERE usr.status = 1 ORDER BY info.lname ASC`).build()).rows; }
 }
 
 module.exports = Users;

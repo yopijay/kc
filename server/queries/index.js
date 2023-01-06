@@ -17,6 +17,14 @@ const dashboard = (table) => {
     });
 }
 
+const excel = (table, type) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_company': resolve(await new Company().excel(type)); break;
+        }
+    });
+}
+
 const list = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
@@ -74,6 +82,14 @@ const dropdown = (table, data) => {
     });
 }
 
+const upload = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_company': resolve(new Company().upload(data)); break;
+        }
+    });
+}
+
 module.exports = {
     login,
     logout,
@@ -85,5 +101,7 @@ module.exports = {
     update,
     dropdown,
     series,
-    search
+    search,
+    excel,
+    upload
 }
