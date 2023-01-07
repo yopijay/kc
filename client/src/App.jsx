@@ -11,7 +11,7 @@ import Main from 'pages/main';
 import { ProfilePrvdr } from "core/context/Profile";
 import { GlobalPrvdr } from "core/context/Global";
 
-const App = () => { 
+const App = () => {
     const client = new QueryClient();
     localStorage.setItem('nav', window.location.pathname === '/' ? 'home' : localStorage.getItem('nav'));
     

@@ -21,7 +21,7 @@ const container = {
 
 const Index = () => {
     return (
-        <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { container}>
+        <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { container }>
             <Routes>
                 <Route exact path= "/" element= { <ThemeProvider theme= { input }><ListPrvdr><List /></ListPrvdr></ThemeProvider> } />
                 <Route exact path= "/form/:type" element= { <FormPrvdr><Form /></FormPrvdr> } />

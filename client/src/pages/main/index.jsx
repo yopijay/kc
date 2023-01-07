@@ -8,7 +8,7 @@ import { ProfileCntx } from "core/context/Profile"; // Context
 import { useGet } from "core/function/global"; // Function
 import { profile } from "core/api"; // API
 import { Navs as components } from "core/constants/Navs"; // Navs
-import { LoaderScreen } from "core/loader/Screen";
+import { LoaderScreen } from "core/loader/Screen"; // Loader
 
 // Layout
 import Navbar from 'pages/global/navbar';
