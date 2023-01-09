@@ -3,6 +3,10 @@ const Global = require('../../function/global'); // Function
 
 const audit = { series_no: '', table_name: 'tbl_company',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class Company {
+    dropdown = async () => { return (await new Builder(`tbl_company`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows; }
+    specific = async (id) => { return (await new Builder(`tbl_company`).select().condition(`WHERE id= ${id}`).build()).rows; }
+    series = async () => { return (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows; }
+
     dashboard = async () => {
         return {
             total: (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows[0].count,
@@ -46,9 +50,6 @@ class Company {
                                         .condition(`WHERE cmp.series_no LIKE '%${data.condition}%' OR cmp.name LIKE '%${data.condition}%' ORDER BY cmp.date_created DESC`) 
                                         .build()).rows;
     }
-
-    specific = async (id) => { return (await new Builder(`tbl_company`).select().condition(`WHERE id= ${id}`).build()).rows; }
-    series = async () => { return (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows; }
 
     save = async (data) => {
         let date = Global.date(new Date()); // Date
@@ -109,26 +110,22 @@ class Company {
         }
 
         if(Global.compare(cmp.address, data.address)) {
-            let _address = data.address !== '' ? `'${(data.address).toUpperCase()}'` : null;
-            
             audit.series_no = Global.randomizer(7);
             audit.field = "address";
             audit.previous = cmp.address !== null ? (cmp.address).toUpperCase() : null;
-            audit.current = _address;
+            audit.current = data.address !== '' ? (data.address).toUpperCase() : null;
 
-            await new Builder(`tbl_company`).update(`address= ${_address}`).condition(`WHERE id= ${cmp.id}`).build();
+            await new Builder(`tbl_company`).update(`address= ${data.address !== '' ? `'${(data.address).toUpperCase()}'` : null}`).condition(`WHERE id= ${cmp.id}`).build();
             Global.audit(audit);
         }
 
         if(Global.compare(cmp.description, data.description)) {
-            let _description = data.description !== '' ? `'${(data.description).toUpperCase()}'` : null;
-
             audit.series_no = Global.randomizer(7);
             audit.field = "description";
             audit.previous = cmp.description !== null ? (cmp.description).toUpperCase() : null;
-            audit.current = _description;
+            audit.current = data.description !== '' ? (data.description).toUpperCase() : null;
 
-            await new Builder(`tbl_company`).update(`description= ${_description}`).condition(`WHERE id= ${cmp.id}`).build();
+            await new Builder(`tbl_company`).update(`description= ${data.description !== '' ? `'${(data.description).toUpperCase()}'` : null}`).condition(`WHERE id= ${cmp.id}`).build();
             Global.audit(audit);
         }
 
@@ -145,10 +142,6 @@ class Company {
 
         await new Builder(`tbl_company`).update(`updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${cmp.id}`).build();
         return { result: 'success', message: 'Successfully updated!' }
-    }
-
-    dropdown = async (data) => {
-        return data;
     }
 
     upload = async (data) => {
@@ -301,7 +294,6 @@ class Company {
                 }
             }
         }
-
         return { result: 'success', message: 'Successfully imported!' }
     }
 
