@@ -62,7 +62,7 @@ const Index = () => {
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
 
-                            if(data.owner_id !== undefined && data.owner_id !== 0) {
+                            if(data.owner_id !== undefined && data.owner_id !== 0 && data.owner_id !== null) {
                                 if(type === 'new') { saving({ table: 'tbl_company', data: data }); }
                                 else { updating({ table: 'tbl_company', data: data }); }
                             }
