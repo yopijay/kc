@@ -1,5 +1,5 @@
 // Libraries
-import { Box, Skeleton, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
