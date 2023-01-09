@@ -15,14 +15,16 @@ class Builder {
     update = (data) => { this._query = `UPDATE ${this._table} SET ${data}`; return this; }
     join = ({ table, condition, type }) => { this._join += ` ${type !== undefined ? type.toUpperCase() : 'LEFT'} JOIN ${table} ON ${condition}`; return this; }
     condition = (condition) => { this._condition = ` ${condition}`; return this; }
+    except = (condition) => { this._except = ` EXCEPT ${this._query}${this._join} ${condition}`; return this; }
 
-    build = async () => {
-        let qry = `${this._query}${this._join}${this._condition}`;
+    // Output
+    build = async () => { 
+        let qry = `${this._query}${this._join}${this._condition}${this._except}`;
         let res = await db.query(qry);
         return res;
     }
 
-    test = () => { return `${this._query}${this._join}${this._condition}`; }
+    test = () => { return `${this._query}${this._join}${this._condition}${this._except}`; }
 }
 
 module.exports = Builder;

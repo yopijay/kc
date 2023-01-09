@@ -182,7 +182,7 @@ class Company {
                 if(Global.compare(cmp.rows[0].owner_id, file[count].owner_id)) {
                     audit.series_no = Global.randomizer(7);
                     audit.field = "owner_id";
-                    audit.previous = cmp.rows[0].series_no !== null ? cmp.rows[0].owner_id : null;
+                    audit.previous = cmp.rows[0].owner_id !== null ? cmp.rows[0].owner_id : null;
 
                     if(file[count].owner_id !== undefined) {
                         if(!(await new Builder(`tbl_users`).select().condition(`WHERE id= ${cmp.rows[0].owner_id}`).build()).rowCount > 0) {

@@ -22,8 +22,8 @@ const audit = async (data) => {
         cols += `${ count === 0 ? '' : ', ' }${ _keys }`;
         vals += `${ count === 0 ? '' : ', ' }${ _keys === 'item_id' || _keys === 'user_id' ? _vals : _vals !== null ? `'${_vals}'` : null}`;
     }
-    
-    await new Builder(`tbl_audit_trail`).insert({ columns: cols, values: vals}).build();
+
+    await new Builder(`tbl_audit_trail`).insert({ columns: cols, values: vals }).build();
 }
 
 const randomizer = (length) => {

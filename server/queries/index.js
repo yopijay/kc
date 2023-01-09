@@ -4,6 +4,7 @@ const db = require('../connection');
 // Tables
 const Users = require('./tables/Users');
 const Company = require('./tables/Company');
+const Department = require('./tables/Department');
 
 const login = (data) => { return new Users().login(data); }
 const logout = () => { return new Users().logout(data); }
@@ -13,6 +14,7 @@ const dashboard = (table) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().dashboard()); break;
+            case 'tbl_department': resolve(await new Department().dashboard()); break;
         }
     });
 }
@@ -21,6 +23,7 @@ const excel = (table, type) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().excel(type)); break;
+            case 'tbl_department': resolve(await new Department().excel(type)); break;
         }
     });
 }
@@ -29,6 +32,7 @@ const list = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().list()); break;
+            case 'tbl_department': resolve(await new Department().list()); break;
         }
     });
 }
@@ -37,6 +41,7 @@ const search = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().search(data)); break;
+            case 'tbl_department': resolve(await new Department().search(data)); break;
         }
     });
 }
@@ -45,6 +50,7 @@ const specific = (table, id) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().specific(id)); break;
+            case 'tbl_department': resolve(await new Department().specific(id)); break;
         }
     });
 }
@@ -53,6 +59,7 @@ const specific = (table, id) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().save(data)); break;
+            case 'tbl_department': resolve(await new Department().save(data)); break;
         }
     });
 }
@@ -61,6 +68,7 @@ const update = (table, data) => {
    return new Promise(async resolve => {
        switch(table) {
            case 'tbl_company': resolve(await new Company().update(data)); break;
+           case 'tbl_department': resolve(await new Department().update(data)); break;
        }
    });
 }
@@ -69,6 +77,7 @@ const series = (table) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().series()); break;
+            case 'tbl_department': resolve(await new Department().series()); break;
         }
     });
 }
@@ -86,6 +95,7 @@ const upload = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(new Company().upload(data)); break;
+            case 'tbl_department': resolve(new Department().upload(data)); break;
         }
     });
 }
