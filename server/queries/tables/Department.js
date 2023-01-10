@@ -13,9 +13,9 @@ class Department {
         
         return {
             total: (await new Builder(`tbl_department`).select(`COUNT(*)`).build()).rows[0].count,
-            kc: (await new Builder(`tbl_department`).select(`COUNT(*)`).condition(`WHERE company_id= ${kc.id}`).build()).rows[0].count,
-            spower: (await new Builder(`tbl_department`).select(`COUNT(*)`).condition(`WHERE company_id= ${spower.id}`).build()).rows[0].count,
-            spc: (await new Builder(`tbl_department`).select(`COUNT(*)`).condition(`WHERE company_id= ${spc.id}`).build()).rows[0].count
+            kc: (await new Builder(`tbl_department`).select(`COUNT(*)`).condition(`WHERE company_id= ${kc.id} AND status= 1`).build()).rows[0].count,
+            spower: (await new Builder(`tbl_department`).select(`COUNT(*)`).condition(`WHERE company_id= ${spower.id} AND status= 1`).build()).rows[0].count,
+            spc: (await new Builder(`tbl_department`).select(`COUNT(*)`).condition(`WHERE company_id= ${spc.id} AND status= 1`).build()).rows[0].count
         }
     }
 
@@ -173,16 +173,16 @@ class Department {
                     audit.previous = dpt.rows[0].series_no !== null ? (dpt.rows[0].series_no).toUpperCase() : null;
 
                     if(file[count].series_no !== undefined) {
-                        if(!(await new Builder(`tbl_department`).select().condition(`WHERE series_no= '${(file[count].series_no).toUppercase()}'`).build()).rowCount > 0) {
+                        if(!(await new Builder(`tbl_department`).select().condition(`WHERE series_no= '${(file[count].series_no).toUpperCase()}'`).build()).rowCount > 0) {
                             audit.current = (file[count].series_no).toUpperCase();
                             await new Builder(`tbl_department`).update(`series_no= '${(file[count].series_no).toUpperCase()}'`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
                             Global.audit(audit);
                         }
-                        else {
-                            audit.current = null;
-                            await new Builder(`tbl_department`).update(`series_no= null`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
-                            Global.audit(audit);
-                        }
+                    }
+                    else {
+                        audit.current = null;
+                        await new Builder(`tbl_department`).update(`series_no= null`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                        Global.audit(audit);
                     }
                 }
 
@@ -191,11 +191,154 @@ class Department {
                     audit.field = "company_id";
                     audit.previous = dpt.rows[0].company_id !== null ? dpt.rows[0].company_id : null;
 
-                    
+                    if(file[count].company_id !== undefined) {
+                        if((await new Builder(`tbl_company`).select().condition(`WHERE id= ${file[count].company_id}`).build()).rowCount > 0) {
+                            audit.current = file[count].company_id;
+                            await new Builder(`tbl_department`).update(`company_id= ${file[count].company_id}`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                            Global.audit(audit);
+                        }
+                        else {
+                            audit.current = null;
+                            await new Builder(`tbl_department`).update(`company_id= null`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                            Global.audit(audit);
+                        }
+                    }
+                    else {
+                        audit.current = null;
+                        await new Builder(`tbl_department`).update(`company_id= null`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                        Global.audit(audit);
+                    }
                 }
+
+                if(Global.compare(dpt.rows[0].department_head_id, file[count].department_head_id)) {
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = "department_head_id";
+                    audit.previous = dpt.rows[0].department_head_id !== null ? dpt.rows[0].department_head_id : null;
+
+                    if(file[count].department_head_id !== undefined) {
+                        if((await new Builder(`tbl_users`).select().condition(`WHERE id= ${file[count].department_head_id}`).build()).rowCount > 0) {
+                            audit.current = file[count].department_head_id;
+                            await new Builder(`tbl_department`).update(`department_head_id= ${file[count].department_head_id}`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                            Global.audit(audit);
+                        }
+                        else {
+                            audit.current = null;
+                            await new Builder(`tbl_department`).update(`department_head_id= null`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                            Global.audit(audit);
+                        }
+                    }
+                    else {
+                        audit.current = null;
+                        await new Builder(`tbl_department`).update(`department_head_id= null`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                        Global.audit(audit);
+                    }
+                }
+
+                if(Global.compare(dpt.rows[0].name, file[count].name)) {
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = "name";
+                    audit.previous = dpt.rows[0].name !== null ? (dpt.rows[0].name).toUpperCase() : null;
+
+                    if(file[count].name !== undefined) {
+                        if(file[count].company_id !== undefined) {
+                            if(!(await new Builder(`tbl_department`).select().condition(`WHERE company_id= ${file[count].company_id} AND name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) {
+                                audit.current = (file[count].name).toUpperCase();
+                                await new Builder(`tbl_department`).update(`name= '${(file[count].name).toUpperCase()}'`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                                Global.audit(audit);
+                            }
+                        }
+                        else {
+                            audit.current = (file[count].name).toUpperCase();
+                            await new Builder(`tbl_department`).update(`name= '${(file[count].name).toUpperCase()}'`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                            Global.audit(audit);
+                        }
+                    }
+                    else {
+                        audit.current = null;
+                        await new Builder(`tbl_department`).update(`name= null`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                        Global.audit(audit);
+                    }
+                }
+
+                if(Global.compare(dpt.rows[0].description, file[count].description)) {
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = "description";
+                    audit.previous = dpt.rows[0].description !== null ? (dpt.rows[0].description).toUpperCase() : null;
+
+                    if(file[count].description !== undefined) {
+                        audit.current = (file[count].description).toUpperCase();
+                        await new Builder(`tbl_department`).update(`description= '${(file[count].description).toUpperCase()}'`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                        Global.audit(audit);
+                    }
+                    else {
+                        audit.current = null;
+                        await new Builder(`tbl_department`).update(`description= null`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                        Global.audit(audit);
+                    }
+                }
+
+                if(Global.compare(dpt.rows[0].status, file[count].status !== undefined ? !isNaN(file[count].status) ? file[count].status : 0 : 0)) {
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = "status";
+                    audit.previous = dpt.rows[0].status;
+
+                    if(file[count].status !== undefined && !isNaN(file[count].status)) {
+                        audit.current = file[count].status;
+                        await new Builder(`tbl_department`).update(`status= ${file[count].status}`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                        Global.audit(audit);
+                    }
+                    else {
+                        audit.current = 0;
+                        await new Builder(`tbl_department`).update(`status= 0`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
+                        Global.audit(audit);
+                    }
+                }
+
+                await new Builder(`tbl_department`).update(`updated_by= ${data.id}, date_updated= '${date}', imported_by= ${data.id}, date_imported= '${date}'`).condition(`WHERE id= ${dpt.rows[0].id}`).build();
             }
             else {
+                if(file[count].name !== undefined) {
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = "all";
+                    audit.action = "create-import";
+                    
+                    if(file[count].company_id !== undefined) {
+                        if((await new Builder(`tbl_company`).select().condition(`WHERE id= ${file[count].company_id}`).build()).rowCount > 0) {
+                            if(!(await new Builder(`tbl_department`).select().condition(`WHERE company_id= ${file[count].company_id} AND name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) {
+                                let series = await new Builder(`tbl_department`).select().condition(`WHERE series_no= ${file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : `'${(series_no).toUpperCase()}'` }`).build();
+                                let imprt = await new Builder(`tbl_department`)
+                                                                        .insert({ columns: `series_no, company_id, department_head_id, name, description, status`,
+                                                                                        values: `${!series.rowCount > 0 ? file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : `'${(series_no).toUpperCase()}'` : null},
+                                                                                        ${file[count].company_id ?? null}, ${file[count].department_head_id ?? null},'${(file[count].name).toUpperCase()}', ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null},
+                                                                                        ${!isNaN(file[count].status) && file[count].status > 1 ? file[count].status : 0}` })
+                                                                        .condition(`RETURNING id`)
+                                                                        .build();
 
+                                if(file[count].created_by === undefined) { await new Builder(`tbl_department`).update(`created_by= ${data.id}, date_created= '${date}'`).condition(`WHERE id= ${imprt.rows[0].id}`).build(); }
+                                await new Builder(`tbl_department`).update(`imported_by= ${data.id}, date_imported= '${date}'`).condition(`WHERE id= ${imprt.rows[0].id}`).build();
+
+                                audit.item_id = imprt.rows[0].id;
+                                Global.audit(audit);
+                            }
+                        }
+                    }
+                    else {
+                        let series = await new Builder(`tbl_department`).select().condition(`WHERE series_no= ${file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : `'${(series_no).toUpperCase()}'` }`).build();
+                        let imprt = await new Builder(`tbl_department`)
+                                                                .insert({ columns: `series_no, company_id, department_head_id, name, description, status`,
+                                                                                values: `${!series.rowCount > 0 ? file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : `'${(series_no).toUpperCase()}'` : null},
+                                                                                            ${file[count].company_id ?? null}, ${file[count].department_head_id ?? null},'${(file[count].name).toUpperCase()}', ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null},
+                                                                                            ${!isNaN(file[count].status) && file[count].status > 1 ? file[count].status : 0}` })
+                                                                .condition(`RETURNING id`)
+                                                                .build();
+
+                        if(file[count].created_by === undefined) { await new Builder(`tbl_department`).update(`created_by= ${data.id}, date_created= '${date}'`).condition(`WHERE id= ${imprt.rows[0].id}`).build(); }
+                        await new Builder(`tbl_department`).update(`imported_by= ${data.id}, date_imported= '${date}'`).condition(`WHERE id= ${imprt.rows[0].id}`).build();
+
+                        audit.item_id = imprt.rows[0].id;
+                        Global.audit(audit);
+                    }
+                }
             }
         }
         return { result: 'success', message: 'Successfully imported!' }
