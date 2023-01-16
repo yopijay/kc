@@ -5,6 +5,7 @@ const audit = { series_no: '', table_name: 'tbl_department',  item_id: 0, field:
 class Department {
     specific = async (id) => { return (await new Builder(`tbl_department`).select().condition(`WHERE id= ${id}`).build()).rows; }
     series = async () => { return (await new Builder(`tbl_department`).select(`COUNT(*)`).build()).rows; }
+    dropdown = async (data) => { return (await new Builder(`tbl_department`).select(`id , name`).condition(`WHERE company_id= ${data.id} ORDER BY name ASC`).build()).rows; }
 
     dashboard = async () => {
         let kc = (await new Builder(`tbl_company`).select(`id`).condition(`WHERE name= 'KC INDUSTRIAL CORPORATION'`).build()).rows[0];
@@ -70,7 +71,7 @@ class Department {
                                                     .build()).rows[0];
 
                 audit.series_no = Global.randomizer(7);
-                audit.field = 'all',
+                audit.field = 'all';
                 audit.item_id = dpt.id;
                 audit.action = 'create';
                 audit.user_id = data.created_by;

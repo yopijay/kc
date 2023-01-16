@@ -4,6 +4,7 @@ import React from 'react';
 // Maintenance
 const Company = React.lazy(() => import('pages/main/maintenance/company'));
 const Department = React.lazy(() => import('pages/main/maintenance/department'));
+const Position = React.lazy(() => import('pages/main/maintenance/position'));
 
 export const Navs = () => ([
     {
@@ -21,7 +22,7 @@ export const Navs = () => ([
         title: 'Maintenance', nav: [
             { path: '/maintenance/company', label: 'Company', name: 'company', component: <Company />, access: [ 'superadmin', 'admin' ] },
             { path: '/maintenance/department', label: 'Department', name: 'department', component: <Department />, access: [ 'superadmin', 'admin' ] },
-            { path: '/maintenance/position', label: 'Position', name: 'position', component: 'POSITION', access: [ 'superadmin', 'admin' ] },
+            { path: '/maintenance/position', label: 'Position', name: 'position', component: <Position />, access: [ 'superadmin', 'admin' ] },
             { path: '/maintenance/user', label: 'User', name: 'user', component: 'USER', access: [ 'superadmin', 'admin' ] },
         ]
     },

@@ -12,7 +12,7 @@ const linkNormal = {
     textDecoration: 'none', 
     padding: '11px 15px', 
     borderRadius: '7px', 
-    '&:hover': { backgroundColor: '#F5F5F5' }, 
+    '&:hover': { backgroundColor: '#F47C7C2E' }, 
     transition: 'all 0.2s ease-in-out'
 }
 
@@ -20,7 +20,7 @@ const linkActive = {
     textDecoration: 'none', 
     padding: '11px 15px', 
     borderRadius: '7px', 
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#F47C7C61'
 }
 
 const Navs = () => {
