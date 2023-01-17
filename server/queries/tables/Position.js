@@ -97,7 +97,7 @@ class Position {
                 audit.series_no = Global.randomizer(7);
                 audit.field = "name";
                 audit.previous = (pst.name).toUpperCase();
-                audit.current = (data.name).toUpperCasee();
+                audit.current = (data.name).toUpperCase();
 
                 await new Builder(`tbl_position`).update(`name= '${(data.name).toUpperCase()}'`).condition(`WHERE id= ${pst.id}`).build();
                 Global.audit(audit);
@@ -106,23 +106,29 @@ class Position {
         }
 
         if(Global.compare(pst.company_id, data.company_id)) {
-            audit.series_no = Global.randomizer(7);
-            audit.field = "company_id";
-            audit.previous = pst.company_id;
-            audit.current = data.company_id;
-
-            await new Builder(`tbl_position`).update(`company_id= ${data.company_id}`).condition(`WHERE id= ${pst.id}`).build();
-            Global.audit(audit);
+            if(!(await new Builder(`tbl_position`).select().condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+                audit.series_no = Global.randomizer(7);
+                audit.field = "company_id";
+                audit.previous = pst.company_id;
+                audit.current = data.company_id;
+    
+                await new Builder(`tbl_position`).update(`company_id= ${data.company_id}`).condition(`WHERE id= ${pst.id}`).build();
+                Global.audit(audit);
+            }
+            else { return { result: 'error', error: [{ name: 'name', message: 'Posiiton already used in this department!' }] } }
         }
 
         if(Global.compare(pst.department_id, data.department_id)) {
-            audit.series_no = Global.randomizer(7);
-            audit.field = "department_id";
-            audit.previous = pst.department_id;
-            audit.current = data.department_id;
-
-            await new Builder(`tbl_position`).update(`department_id= ${data.department_id}`).condition(`WHERE id= ${pst.id}`).build();
-            Global.audit(audit);
+            if(!(await new Builder(`tbl_position`).select().condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+                audit.series_no = Global.randomizer(7);
+                audit.field = "department_id";
+                audit.previous = pst.department_id;
+                audit.current = data.department_id;
+    
+                await new Builder(`tbl_position`).update(`department_id= ${data.department_id}`).condition(`WHERE id= ${pst.id}`).build();
+                Global.audit(audit);
+            }
+            else { return { result: 'error', error: [{ name: 'name', message: 'Posiiton already used in this department!' }] } }
         }
 
         if(Global.compare(pst.description, data.description)) {
@@ -151,7 +157,70 @@ class Position {
     }
 
     upload = async (data) => {
-        return data;
+        let file = data.json;
+        let date = Global.date(new Date());
+        let _successcount = 0;
+        let _failcount = 0;
+        let _errors = [];
+
+        for(let count = 0; count < file.length; count++) {
+            let _count = (await new Builder(`tbl_position`).select(`COUNT(*)`).build()).rows[0].count;
+            let series_no = `PST-${('0000000' + (parseInt(_count) + 1)).substr(('0000000' + (parseInt(_count) + 1)).length - 7)}`;
+            let pst = await new Builder(`tbl_position`).select().condition(`WHERE id= ${file[count].id ?? parseInt(count) + 1}`).build();
+
+            audit.user_id = data.id;
+            audit.date = date;
+
+            if(pst.rowCount > 0) {
+                audit.item_id = pst.rows[0].id;
+                audit.action = "update-import";
+                let _itemerror = [];
+                let _itemsuccess = [];
+                
+                if(Global.compare(pst.rows[0].series_no, file[count].series_no)) {
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = "series_no";
+                    audit.previous = pst.rows[0].series_no !== null ? (pst.rows[0].series_no).toUpperCase() : null;
+                    
+                    if(file[count].series_no !== undefined) {
+                        if(!(await new Builder(`tbl_position`).select().condition(`WHERE series_no = '${(file[count].series_no).toUpperCase()}'`).build()).rowCount > 0) {
+                            audit.current
+                        }
+                        else { _itemerror.push({ name: 'series_no', message: 'already exist!' }) }
+                    }
+                    else { _itemsuccess.push(true); }
+                }
+            }
+            else {
+                console.log('create');
+            }
+        }
+
+        
+        // return {
+        //     success: { count: 0, message: '' },
+        //     fail: { count: 0, message: 'asd' }
+        // }
+        // for(let count = 0; count < file.length; count++) {
+        //     let _count = (await new Builder(`tbl_position`).select(`COUNT(*)`).build()).rows[0].count;
+        //     let _faileditem = [];
+
+        //     audit.user_id = data.id;
+        //     audit.date = date;
+
+        //     if(pst.rowCount > 0) {
+        //         audit.item_id = pst.rows[0].id;
+        //         audit.action = "update-import";
+
+
+        //     }
+        //     else {
+        //         audit.series_no = Global.randomizer(7);
+        //         audit.field = "all";
+        //         audit.action = "create-import";
+        //     }
+        // }
+        // return { result: 'success', message: 'Successfully imported!' }
     }
 }
 

@@ -1,8 +1,9 @@
 // Libraries
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH, faFileArrowDown, faFileArrowUp, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Box, FormLabel, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { redirect } from "react-router-dom";
 
 // Core
 import { ListCntxt } from "core/context/List"; // Context
@@ -24,7 +25,12 @@ const Index = () => {
     const { isFetching: fetching } = useGet({ key: ['pst_list'], fetch: records({ table: 'tbl_position', data: {} }), options: { refetchOnWindowFocuse: false }, onSuccess: (data) => setList(data) });
     const { refetch: original} = useGet({ key: ['pst_original'], fetch: excel({ table: 'tbl_position', type: 'original' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Position', `${name} (Admin's copy)`) });
     const { refetch: formatted } = useGet({ key: ['pst_formatted'], fetch: excel({ table: 'tbl_position', type: 'formatted' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Position', `${name}`) });
-    const { mutate: uploadfile, isLoading: uploading } = usePost({ fetch: upload, onSuccess: (data) => { if(data.result === 'success') { successToast(data.message, 3000, setTimeout(() => { window.location.href = '/maintenance/position'; }, 3000)); } } });
+    const { mutate: uploadfile, isLoading: uploading } = usePost({ fetch: upload, 
+        onSuccess: (data) => {
+            console.log(data);
+            // successToast('Successfully imported!', 3000, redirect('/maintenance/position'));
+            // if(data.result === 'success') { successToast(data.message, 3000, redirect('/maintenance/position')); } 
+        } });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%' }} spacing= { 3 }>
@@ -40,7 +46,8 @@ const Index = () => {
                         </Box>
                     </form>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
-                        <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }} onChange= { async e => { uploadfile({ table: 'tbl_position', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); } } />
+                        <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }} 
+                            onChange= { async e => { uploadfile({ table: 'tbl_position', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } />
                         <FormLabel htmlFor= "upload-file" sx= { btnimport }><FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF' }} size= "lg" /></FormLabel>
                         <Typography onClick= { () => { if(data.user_level === 'superadmin') { original(); } formatted(); }} sx= { btnexport }><FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
                         <Typography component= { Link } to= "/maintenance/position/form/new" sx= { btnicon }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>

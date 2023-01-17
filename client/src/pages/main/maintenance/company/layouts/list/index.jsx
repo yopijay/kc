@@ -2,13 +2,13 @@
 import { faEllipsisH, faFileArrowDown, faFileArrowUp, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, FormLabel, Skeleton, Stack, TextField, Typography } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 // Core
 import { ListCntxt } from "core/context/List"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
-import { exporttoexcel, importfromexcel, successToast, useGet, usePost } from "core/function/global"; // Function
+import { exporttoexcel, importfromexcel, useGet, usePost } from "core/function/global"; // Function
 import { excel, look, records, upload } from "core/api"; // API
 
 // Constants
@@ -22,18 +22,30 @@ const Index = () => {
     let name = `KC-EXPORT-COMPANY-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
     const { data } = useContext(ProfileCntx);
+    const [ message, setMessage ] = useState('');
+    const [ errors, setErrors ] = useState([]);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { isFetching: fetching } = useGet({ key: ['cmp_list'], fetch: records({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setList(data) });
     const { refetch: original} = useGet({ key: ['cmp_original'], fetch: excel({ table: 'tbl_company', type: 'original' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Company', `${name} (Admin's copy)`) });
     const { refetch: formatted } = useGet({ key: ['cmp_formatted'], fetch: excel({ table: 'tbl_company', type: 'formatted' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Company', `${name}`) });
-    const { mutate: uploadfile, isLoading: uploading } = usePost({ fetch: upload, onSuccess: (data) => { if(data.result === 'success') { successToast(data.message, 3000, setTimeout(() => { window.location.href = '/maintenance/company'; }, 3000)); } } });
+    const { mutate: uploadfile, isLoading: uploading } = usePost({ fetch: upload, 
+        onSuccess: (data) => {
+            setMessage('');
+            setErrors([]);
+
+            console.log(data);
+
+            // setErrors(data.errors);
+            // setMessage(`${data.success} row/s successfully imported! ${data.fail} row/s failed!`);
+            // setTimeout(() => { setMessage(''); setErrors([]); }, 5000);
+        } });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%' }} spacing= { 3 }>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Company</Typography>
                 <Dashboard />
-                <Stack direction= "row" justifyContent= "space-between" alignItems= "center" spacing= { 1 }>
+                <Stack direction= "row" justifyContent= "space-between" alignItems= "flex-start" spacing= { 1 }>
                     <form autoComplete= "off">
                         <Box sx= { search }>
                             <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
@@ -41,12 +53,19 @@ const Index = () => {
                                 onChange= { e => { find({ table: 'tbl_company', data: { condition: e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value } }); } } />
                         </Box>
                     </form>
-                    <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
-                        <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }} onChange= { async e => { uploadfile({ table: 'tbl_company', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); } } />
-                        <FormLabel htmlFor= "upload-file" sx= { btnimport }><FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF' }} size= "lg" /></FormLabel>
-                        <Typography onClick= { () => { if(data.user_level === 'superadmin') { original(); } formatted(); }} sx= { btnexport }><FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
-                        <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btnicon }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
-                        <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btntxt }>New Company</Typography>
+                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+                        <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
+                            <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }} 
+                                onChange= { async e => { uploadfile({ table: 'tbl_company', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } />
+                            <FormLabel htmlFor= "upload-file" sx= { btnimport }><FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF' }} size= "lg" /></FormLabel>
+                            <Typography onClick= { () => { if(data.user_level === 'superadmin') { original(); } formatted(); }} sx= { btnexport }><FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
+                            <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btnicon }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
+                            <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btntxt }>New Company</Typography>
+                        </Stack>
+                        <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
+                            <Typography variant= "body2" sx= {{ color: '#7D8F69' }}>{ message }</Typography>
+                            {/* { errors.map((err, index) => err.length > 0 ? <Typography sx= {{ lineHeight: '12px', color: '#F47C7C' }} variant= "body2" key= { index }>{ `In row(${err[0].row}), ${err[0].message}` }</Typography> : '' ) } */}
+                        </Stack>
                     </Stack>
                 </Stack>
             </Stack>
