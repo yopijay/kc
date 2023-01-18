@@ -34,9 +34,8 @@ const Index = () => {
             setErrors([]);
 
             console.log(data);
-
             // setErrors(data.errors);
-            // setMessage(`${data.success} row/s successfully imported! ${data.fail} row/s failed!`);
+            // setMessage(`${data.success} out of ${data.total} row/s successfully imported! ${data.fail} row/s failed!`);
             // setTimeout(() => { setMessage(''); setErrors([]); }, 5000);
         } });
 
@@ -64,7 +63,9 @@ const Index = () => {
                         </Stack>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                             <Typography variant= "body2" sx= {{ color: '#7D8F69' }}>{ message }</Typography>
-                            {/* { errors.map((err, index) => err.length > 0 ? <Typography sx= {{ lineHeight: '12px', color: '#F47C7C' }} variant= "body2" key= { index }>{ `In row(${err[0].row}), ${err[0].message}` }</Typography> : '' ) } */}
+                            {/* { errors.map((err, index) => 
+                                err.length > 0 ? 
+                                    <Typography sx= {{ lineHeight: '12px', color: '#F47C7C' }} variant= "body2" key= { index }>{ `In row(${err[0].row})` } { `[${(err.errors).map(err => `${err},`)}]` }</Typography> : '' ) } */}
                         </Stack>
                     </Stack>
                 </Stack>

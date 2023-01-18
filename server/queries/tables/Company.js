@@ -148,60 +148,131 @@ class Company {
         let file = data.json;
         let date = Global.date(new Date());
         let _errors = [];
+        let _totalcount = 0;
+        let _successcount = 0;
+        let _errorcount = 0;
         
         for(let count = 0; count < file.length; count++) {
             let _count = (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows[0].count;
             let series_no = `CMP-${('0000000' + (parseInt(_count) + 1)).substr(('0000000' + (parseInt(_count) + 1)).length - 7)}`;
             let cmp = await new Builder(`tbl_company`).select().condition(`WHERE id= ${file[count].id ?? parseInt(count) + 1}`).build();
             let _itemerror = [];
-            
-            audit.user_id = data.id;
-            audit.date = date;
+            let _itemchange = [];
+            let _audit = [];
+            let type = '';
 
             if(cmp.rowCount > 0) {
-                audit.item_id = cmp.rows[0].id;
-                audit.action = 'update-import';
-
+                type = 'update';
                 if(file[count].name !== undefined) {
                     if(Global.compare(cmp.rows[0].name, file[count].name)) {
-                        if(!(await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) {
-                            
-                        }
-                        else {
-                            _itemerror.push('name already exist!');
-                        }
+                        _itemchange.push(true);
+                        if((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) { _itemerror.push('name already exist!'); }
+                        else { _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'name', previous: cmp.rows[0].name !== null ? (cmp.rows[0].name).toUpperCase() : null, current: (file[count].name).toUpperCase() }); }
                     }
 
                     if(Global.compare(cmp.rows[0].series_no, file[count].series_no)) {
+                        _itemchange.push(true);
                         if(file[count].series_no !== undefined) {
-                            if(!(await new Builder(`tbl_company`).select().condition(`WHERE series_no= '${(file[count].series_no).toUpperCase()}'`).build()).rowCount > 0) {
-
+                            if((await new Builder(`tbl_company`).select().condition(`WHERE series_no= '${(file[count].series_no).toUpperCase()}'`).build()).rowCount > 0) { _itemerror.push('series number already exist!'); }
+                            else { 
+                                _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'series_no', previous: cmp.rows[0].series_no !== null ? (cmp.rows[0].series_no).toUpperCase() : null, current: (file[count].series_no).toUpperCase() }); 
                             }
-                            else {
-                                _itemerror.push('series number already exist!');
-                            }
-                        }
-                        else {
-
                         }
                     }
+
+                    if(Global.compare(cmp.rows[0].owner_id, file[count].owner_id)) {
+                        _itemchange.push(true);
+                        if(file[count].owner_id !== undefined) {
+                            if((await new Builder(`tbl_users`).select().condition(`WHERE id= ${file[count].owner_id}`).build()).rowCount > 0) {
+                                _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'owner_id', preious: cmp.rows[0].owner_id, current: file[count].owner_id });
+                            }
+                            else { _itemerror.push('owner_id doesn`t exist!'); }
+                        }
+                        else { _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'owner_id', preious: cmp.rows[0].owner_id, current: null }); }
+                    }
+
+                    if(Global.compare(cmp.rows[0].address, file[count].address)) {
+                        _itemchange.push(true);
+                        // _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company',  item_id: cmp.rows[0].id, field: 'address', previous: cmp.rows[0].address !== undefined ? cmp.rows[0].address : null, current: null, action: 'update-import', user_id: data.id, date: date });
+                        // _audit.push({ table_name: 'tbl_company', user_id: data.id, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'address' });
+                        // _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'address', 
+                        //                         preious: cmp.rows[0].address !== undefined ? (cmp.rows[0].address).toUpperCase() : null, current: file[count].address !== undefined ? (file[count].address).toUpperCase() : null });
+                    }
+
+                    // if(Global.compare(cmp.rows[0].description, file[count].description)) {
+                    //     _itemchange.push(true);
+                    //     _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'description', 
+                    //                             preious: cmp.rows[0].description !== undefined ? (cmp.rows[0].description).toUpperCase() : null, current: file[count].description !== undefined ? (file[count].description).toUpperCase() : null });
+                    // }
                 }
                 else {
+                    _itemchange.push(true);
                     _itemerror.push('name must not be empty!');
                 }
             }
             else {
+                type = 'create';
+                _itemchange.push(true);
+                
+                if(file[count].name !== undefined) { 
+                    if(file[count].owner_id !== undefined) { if(!(await new Builder(`tbl_users`).select().condition(`WHERE id = ${file[count].owner_id}`).build()).rowCount > 0) { _itemerror.push('owner_id doesn`t exist!'); } }
+                    if(file[count].created_by !== undefined) { if(!(await new Builder(`tbl_users`).select().condition(`WHERE id = ${file[count].created_by}`).build()).rowCount > 0) { _itemerror.push('created_by doesn`t exist!'); } }
+                    if((await new Builder(`tbl_company`).select().condition(`WHERE series_no= ${file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : `'${(series_no).toUpperCase()}'` }`).build()).rowCount > 0) { _itemerror.push('series_no is already used!'); }
+                }
+                else {
+                    _itemchange.push(true);
+                    _itemerror.push('name must not be empty!');
+                }
+            }
+            
+            if(_itemchange.length > 0) {
+                _totalcount++;
+                console.log(_audit);
+                if(_itemerror.length > 0) {
+                    _errorcount++
+                    _errors.push({ row: count + 1, errors: _itemerror });
+                }
+                else {
+                    if(type === 'create') {
+                        console.log('create');
+                    }
+                    else {
+                        console.log('update');
+                    }
+                    // if(type === 'create') {
+                    //     let imprt = new Builder(`tbl_company`)
+                    //                                             .insert({ columns: `series_no, owner_id, name, address, description, status, created_by, date_created, imported_by, date_imported`,
+                    //                                                             values: `'${file[count].series_no !== undefined ?? series_no.toUpperCase()}', ${owner_id ?? null}, '${(file[count].name).toUpperCase()}',
+                    //                                                                             ${file[count].address !== undefined ? `'${(file[count].address).toUpperCase()}'` : null}, ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null},
+                    //                                                                             ${!isNaN(file[count].status) && file[count].status > 1 ? file[count].status : 0}, ${file[count].created_by !== undefined ? !isNaN(file[count].created_by) ? file[count].created_by : null : null}, '${date}',
+                    //                                                                             ${data.id}, '${date}'` })
+                    //                                             .condition(`RETURNING id`)
+                    //                                             .test();
+                    //     console.log(imprt);
+                    //     // _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: imprt.rows[0].id, action: 'create-import', series_no: Global.randomizer(7), field: 'all', preious: null, current: 'all' });
+                    // }
+                    // else {
+                    //     // await new Builder(`tbl_company`)
+                    //     //                     .update(`${file[count].series_no !== undefined ? `` : ``}`)
+                    // }
 
+                    // // _audit.forEach((data) => Global.audit(data));
+                    // _successcount++
+                }
             }
 
-            _errors.push({ row: count, errors: _itemerror });
+            // if(_itemerror.length > 0) { 
+            //     _errorcount++ 
+            // }
+            // else {
+            //     _successcount++
+            // }
         }
 
-        console.log(_errors.forEach((value) => (value.errors).length > 0));
-
         return { 
-            success: 0,
-            fail: 0,
+            total: _totalcount,
+            success: _successcount,
+            fail: _errorcount,
             errors: _errors
         }
     }
