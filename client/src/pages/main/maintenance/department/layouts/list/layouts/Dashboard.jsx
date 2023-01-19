@@ -34,27 +34,21 @@ const Dashboard = () => {
                     <Typography variant= "body1" sx= { label }>Total</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: '0 5px' }}>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.kc < 10 ? '0' : ''}${count.kc}` }</Typography> : 
-                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>KC Industrial Corp</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: '0 5px' }}>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count?.spower < 10 ? '0' : ''}${count?.spower}` }</Typography> : 
-                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>S-Power Corp</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: '0 5px' }}>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count?.spc < 10 ? '0' : ''}${count?.spc}` }</Typography> : 
-                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>Systems Powermark Corp</Typography>
-                </Stack>
-            </Grid>
+            { !isFetching ? 
+                (count.summary).map((summ, index) => (
+                    <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: '0 5px' }} key= { index}>
+                        <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
+                            <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${summ.count < 10 ? '0' : ''}${summ.count}` }</Typography>
+                            <Typography variant= "body1" sx= { label }>{ summ.name }</Typography>
+                        </Stack>
+                    </Grid>
+                )) : 
+                <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: '0 5px' }}>
+                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
+                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} />
+                        <Skeleton variant= "text" sx= { label } />
+                    </Stack>
+                </Grid> }
         </Grid>
     );
 }

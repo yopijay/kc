@@ -46,8 +46,7 @@ const Form = ({ fetching }) => {
                                                     { id: 0, name: '-- SELECT AN ITEM BELOW --' } : owner[0] } />
                                         ) } /> : 
                                 <Typography color= "text.disabled">You must create a user first!</Typography> }
-                        </Box>
-                    }
+                        </Box> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.owner_id?.message }</Typography>
                 </Stack>
             </Grid>

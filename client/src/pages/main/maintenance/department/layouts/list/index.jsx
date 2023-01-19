@@ -24,9 +24,17 @@ const Index = () => {
     const { data } = useContext(ProfileCntx);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { isFetching: fetching } = useGet({ key: ['dpt_list'], fetch: records({ table: 'tbl_department', data: {} }), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setList(data) });
-    const { refetch: original} = useGet({ key: ['dpt_original'], fetch: excel({ table: 'tbl_department', type: 'original' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Department', `${name} (Admin's copy)`) });
-    const { refetch: formatted } = useGet({ key: ['dpt_formatted'], fetch: excel({ table: 'tbl_department', type: 'formatted' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Department', `${name}`) });
-    const { mutate: uploadfile, isLoading: uploading } = usePost({ fetch: upload, onSuccess: (data) => { if(data.result === 'success') { successToast(data.message, 3000, setTimeout(() => { window.location.href = '/maintenance/department'; }, 3000)); } } });
+    const { refetch: original} = useGet({ key: ['dpt_original'], fetch: excel({ table: 'tbl_department', type: 'original' }), options: { enabled: false }, 
+                                                                onSuccess: (data) => exporttoexcel(data, 'Department', `${name} (Admin's copy)`) });
+    const { refetch: formatted } = useGet({ key: ['dpt_formatted'], fetch: excel({ table: 'tbl_department', type: 'formatted' }), options: { enabled: false }, 
+                                                                    onSuccess: (data) => exporttoexcel(data, 'Department', `${name}`) });
+    const { mutate: uploadfile, isLoading: uploading } = usePost({ fetch: upload, 
+                                                                                                        onSuccess: (data) => { 
+                                                                                                            if(data.result === 'success') { 
+                                                                                                                successToast(data.message, 3000, setTimeout(() => { window.location.href = '/maintenance/department'; }, 3000)); 
+                                                                                                            } 
+                                                                                                        } 
+                                                                                                    });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%' }} spacing= { 3 }>

@@ -25,12 +25,11 @@ const Index = () => {
     const [ message, setMessage ] = useState('');
     const [ errors, setErrors ] = useState([]);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
-    const { isFetching: fetching } = 
-        useGet({ key: ['cmp_list'], fetch: records({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setList(data) });
-    const { refetch: original} = 
-        useGet({ key: ['cmp_original'], fetch: excel({ table: 'tbl_company', type: 'original' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Company', `${name} (Admin's copy)`) });
-    const { refetch: formatted } = 
-        useGet({ key: ['cmp_formatted'], fetch: excel({ table: 'tbl_company', type: 'formatted' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Company', `${name}`) });
+    const { isFetching: fetching } = useGet({ key: ['cmp_list'], fetch: records({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setList(data) });
+    const { refetch: original} = useGet({ key: ['cmp_original'], fetch: excel({ table: 'tbl_company', type: 'original' }), options: { enabled: false }, 
+                                                                onSuccess: (data) => exporttoexcel(data, 'Company', `${name} (Admin's copy)`) });
+    const { refetch: formatted } = useGet({ key: ['cmp_formatted'], fetch: excel({ table: 'tbl_company', type: 'formatted' }), options: { enabled: false }, 
+                                                                    onSuccess: (data) => exporttoexcel(data, 'Company', `${name}`) });
     const { mutate: uploadfile, isLoading: uploading } = usePost({ fetch: upload, 
         onSuccess: (data) => {
             setMessage('');

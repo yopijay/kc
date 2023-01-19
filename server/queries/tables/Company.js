@@ -173,7 +173,7 @@ class Company {
                     if(Global.compare(cmp.rows[0].name, file[count].name)) {
                         _itemchange.push(true);
                         if((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) { _itemerror.push('name already exist!'); }
-                        else { 
+                        else {
                             _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'name', 
                                 previous: cmp.rows[0].name !== null ? (cmp.rows[0].name).toUpperCase() : null, current: (file[count].name).toUpperCase() }); 
                         }
@@ -238,14 +238,16 @@ class Company {
                 _itemchange.push(true);
                 
                 if(file[count].name !== undefined) { 
-                    if(file[count].owner_id !== undefined) { if(!(await new Builder(`tbl_users`).select().condition(`WHERE id = ${file[count].owner_id}`).build()).rowCount > 0) { 
-                        _itemerror.push('owner_id doesn`t exist!'); } 
+                    if(file[count].owner_id !== undefined) { 
+                        if(!(await new Builder(`tbl_users`).select().condition(`WHERE id = ${file[count].owner_id}`).build()).rowCount > 0) { _itemerror.push('owner_id doesn`t exist!'); } 
                     }
+
                     if(file[count].created_by !== undefined) { 
                         if(!(await new Builder(`tbl_users`).select().condition(`WHERE id = ${file[count].created_by}`).build()).rowCount > 0) { 
                             _itemerror.push('created_by doesn`t exist!'); 
                         } 
                     }
+                    
                     if((await new Builder(`tbl_company`).select()
                                             .condition(`WHERE series_no= ${file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : 
                                                                                                                                                                 `'${(series_no).toUpperCase()}'` }`).build()).rowCount > 0) { 
