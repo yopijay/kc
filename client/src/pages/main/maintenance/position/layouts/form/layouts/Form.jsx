@@ -26,7 +26,8 @@ const Form = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 8 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom>*Series No.</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : <TextField { ...register('series_no') } name= "series_no" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { true } sx= { input } /> }
+                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
+                        <TextField { ...register('series_no') } name= "series_no" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { true } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.series_no?.message }</Typography>
                 </Stack>
             </Grid>
@@ -35,21 +36,19 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom>*Company</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= { select }>
-                            {
-                                company?.length > 0 ? 
-                                    <Controller control= { control } name= "company_id" defaultValue= { 0 }
-                                        render= { ({ field: { onChange, value } }) => (
-                                            <Autocomplete options= { company?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable getOptionLabel= { company => company.name || company.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
-                                                isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } onChange= { (e, item) => { setError('company_id', { message: '' }); onChange(item.id); menu({ table: 'tbl_department', data: { id: item.id } }); } }
-                                                renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
-                                                value= { company?.find(data => { return data.id === (getValues().company_id !== undefined ? getValues().company_id : value) }) !== undefined ?
-                                                    company?.find(data => { return data.id === (getValues().company_id !== undefined ? getValues().company_id : value) }) : company.length === 0 ?
-                                                    { id: 0, name: '-- SELECT AN ITEM BELOW --' } : company[0] } />
-                                        ) } /> : 
-                                <Typography color= "text.disabled">You must create a user first!</Typography>
-                            }
-                        </Box>
-                    }
+                            { company?.length > 0 ? 
+                                <Controller control= { control } name= "company_id" defaultValue= { 0 }
+                                    render= { ({ field: { onChange, value } }) => (
+                                        <Autocomplete options= { company?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                            getOptionLabel= { company => company.name || company.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                            isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
+                                            onChange= { (e, item) => { setError('company_id', { message: '' }); onChange(item.id); menu({ table: 'tbl_department', data: { id: item.id } }); } }
+                                            renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
+                                            value= { company?.find(data => { return data.id === (getValues().company_id !== undefined ? getValues().company_id : value) }) !== undefined ?
+                                                company?.find(data => { return data.id === (getValues().company_id !== undefined ? getValues().company_id : value) }) : company.length === 0 ?
+                                                { id: 0, name: '-- SELECT AN ITEM BELOW --' } : company[0] } />
+                                    ) } /> : <Typography color= "text.disabled">You must create a user first!</Typography> }
+                        </Box> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.company_id?.message }</Typography>
                 </Stack>
             </Grid>
@@ -63,32 +62,34 @@ const Form = ({ fetching }) => {
                                     department?.length > 0 ? 
                                         <Controller control= { control } name= "department_id" defaultValue= { 0 }
                                             render= { ({ field: { onChange, value } }) => (
-                                                <Autocomplete options= { department?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable getOptionLabel= { department => department.name || department.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
-                                                    isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } onChange= { (e, item) => { setError('department_id', { message: '' }); onChange(item.id); } }
+                                                <Autocomplete options= { department?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                                    getOptionLabel= { department => department.name || department.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                                    isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
+                                                    onChange= { (e, item) => { setError('department_id', { message: '' }); onChange(item.id); } }
                                                     renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
                                                     value= { department?.find(data => { return data.id === (getValues().department_id !== undefined ? getValues().department_id : value) }) !== undefined ?
                                                         department?.find(data => { return data.id === (getValues().department_id !== undefined ? getValues().department_id : value) }) : department.length === 0 ?
                                                         { id: 0, name: '-- SELECT AN ITEM BELOW --' } : department[0] } />
                                             ) } /> : <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>You must create a user first!</Typography> : 
                                     <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>Please select a company first!</Typography>
-                                : <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>Loading...</Typography>
-                            }
-                        </Box>
-                    }
+                                : <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>Loading...</Typography> }
+                        </Box> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.department_id?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 6 } md= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom>*Name</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : <TextField { ...register('name') } name= "name" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
+                        <TextField { ...register('name') } name= "name" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.name?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom>Description</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "100px" /> : <TextareaAutosize name= "description" { ...register('description') } disabled= { type === 'view' } minRows= { 4 } maxRows= { 4 } style= { textarea } /> }
+                    { fetching ? <Skeleton variant= "rounded" height= "100px" /> : 
+                        <TextareaAutosize name= "description" { ...register('description') } disabled= { type === 'view' } minRows= { 4 } maxRows= { 4 } style= { textarea } /> }
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }>
@@ -96,7 +97,8 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom>Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
+                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 
+                                disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
                             <Typography gutterBottom sx= {{ marginTop: '7px' }}>{ getValues().status !== undefined ? getValues().status > 0 ? 'Active' : 'Inactive' : check ? 'Active' : 'Inactive' }</Typography>
                         </Box> }
                 </Stack>

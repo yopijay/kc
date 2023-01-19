@@ -21,16 +21,26 @@ const Index = () => {
     const navigate = useNavigate();
     const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
     const { isFetching, refetch } =  useGet({ key: ['cmp_specific'], fetch: specific({ table: 'tbl_company', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
-                                                        onSuccess: (data) => { if(Array.isArray(data)) for(let count = 0; count < Object.keys(data[0]).length; count++) { let _name = Object.keys(data[0])[count]; setValue(_name, data[0][_name]); } } });
+                                                        onSuccess: (data) => { 
+                                                            if(Array.isArray(data)) 
+                                                                for(let count = 0; count < Object.keys(data[0]).length; count++) { 
+                                                                    let _name = Object.keys(data[0])[count]; setValue(_name, data[0][_name]); 
+                                                                } 
+                                                        } 
+                                                    });
 
     const { mutate: saving } = usePost({ fetch: save, 
                                                 onSuccess: (data) => { 
-                                                    if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
+                                                    if(data.result === 'error') { 
+                                                        (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); });
+                                                    } 
                                                     else { successToast(data.message, 3000, navigate('/maintenance/company', { replace: true })); } } });
 
     const { mutate: updating } = usePost({ fetch: update, 
                                                     onSuccess: (data) => { 
-                                                        if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
+                                                        if(data.result === 'error') { 
+                                                            (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); 
+                                                        } 
                                                         else { successToast(data.message, 3000, navigate('/maintenance/company', { replace: true })); } } });
 
     useEffect(() => { setValidation(Validation()); if(id !== undefined) { refetch(); } }, [ setValidation, id, refetch ]);

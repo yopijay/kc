@@ -23,7 +23,7 @@ const audit = async (data) => {
         vals += `${ count === 0 ? '' : ', ' }${ _keys === 'item_id' || _keys === 'user_id' ? _vals : _vals !== null ? `'${_vals}'` : null}`;
     }
 
-    console.log(new Builder(`tbl_audit_trail`).insert({ columns: cols, values: vals }).test());
+    await new Builder(`tbl_audit_trail`).insert({ columns: cols, values: vals }).build();
 }
 
 const randomizer = (length) => {

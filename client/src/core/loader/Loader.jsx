@@ -45,9 +45,6 @@ export const SnakeLoader = ({ bg, size, distance }) => {
             <motion.div style={circle} variants={cVariants} transition={cTransition}></motion.div>
             <motion.div style={circle} variants={cVariants} transition={cTransition}></motion.div>
             <motion.div style={circle} variants={cVariants} transition={cTransition}></motion.div>
-            {/* <motion.div style={circle} variants={cVariants} transition={cTransition}></motion.div>
-            <motion.div style={circle} variants={cVariants} transition={cTransition}></motion.div>
-            <motion.div style={circle} variants={cVariants} transition={cTransition}></motion.div> */}
         </motion.div>
     )
 }

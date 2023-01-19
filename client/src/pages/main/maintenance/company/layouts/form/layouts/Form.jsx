@@ -23,7 +23,8 @@ const Form = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 8 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom>*Series No.</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : <TextField { ...register('series_no') } name= "series_no" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { true } sx= { input } /> }
+                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
+                        <TextField { ...register('series_no') } name= "series_no" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { true } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.series_no?.message }</Typography>
                 </Stack>
             </Grid>
@@ -32,19 +33,19 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom>*Owner</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= { select }>
-                            {
-                                owner?.length > 0 ? 
+                            { owner?.length > 0 ? 
                                     <Controller control= { control } name= "owner_id" defaultValue= { 0 }
                                         render= { ({ field: { onChange, value } }) => (
-                                            <Autocomplete options= { owner?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable getOptionLabel= { owner => owner.name || owner.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
-                                                isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } onChange= { (e, item) => { setError('owner_id', { message: '' }); onChange(item.id); } }
+                                            <Autocomplete options= { owner?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                                getOptionLabel= { owner => owner.name || owner.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                                isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
+                                                onChange= { (e, item) => { setError('owner_id', { message: '' }); onChange(item.id); } }
                                                 renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
                                                 value= { owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) !== undefined ?
                                                     owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) : owner.length === 0 ?
                                                     { id: 0, name: '-- SELECT AN ITEM BELOW --' } : owner[0] } />
                                         ) } /> : 
-                                <Typography color= "text.disabled">You must create a user first!</Typography>
-                            }
+                                <Typography color= "text.disabled">You must create a user first!</Typography> }
                         </Box>
                     }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.owner_id?.message }</Typography>
@@ -53,20 +54,23 @@ const Form = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 6 } md= { 5 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom>*Name</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : <TextField { ...register('name') } name= "name" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
+                        <TextField { ...register('name') } name= "name" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.name?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom>Description</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "100px" /> : <TextareaAutosize name= "description" { ...register('description') } disabled= { type === 'view' } minRows= { 4 } maxRows= { 4 } style= { textarea } /> }
+                    { fetching ? <Skeleton variant= "rounded" height= "100px" /> : 
+                        <TextareaAutosize name= "description" { ...register('description') } disabled= { type === 'view' } minRows= { 4 } maxRows= { 4 } style= { textarea } /> }
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom>Address</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "100px" /> : <TextareaAutosize name= "address" { ...register('address') } disabled= { type === 'view' } minRows= { 4 } maxRows= { 4 } style= { textarea } /> }
+                    { fetching ? <Skeleton variant= "rounded" height= "100px" /> : 
+                        <TextareaAutosize name= "address" { ...register('address') } disabled= { type === 'view' } minRows= { 4 } maxRows= { 4 } style= { textarea } /> }
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }>
@@ -74,7 +78,8 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom>Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
+                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 
+                                disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
                             <Typography gutterBottom sx= {{ marginTop: '7px' }}>{ getValues().status !== undefined ? getValues().status > 0 ? 'Active' : 'Inactive' : check ? 'Active' : 'Inactive' }</Typography>
                         </Box> }
                 </Stack>

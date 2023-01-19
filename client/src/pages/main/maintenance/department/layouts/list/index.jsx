@@ -12,7 +12,7 @@ import { excel, look, records, upload } from "core/api"; // API
 import { ProfileCntx } from "core/context/Profile"; // Context
 
 // Constants
-import { btnexport, btnicon, btnimport, btntxt, search } from "./index.style"; // Styles
+import { btnexport, btnicon, btnimport, btntxt, loader, search } from "./index.style"; // Styles
 
 // Layouts
 import Dashboard from "./layouts/Dashboard";
@@ -42,16 +42,21 @@ const Index = () => {
                         </Box>
                     </form>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
-                        <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }} onChange= { async e => { uploadfile({ table: 'tbl_department', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); } } />
+                        <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }} 
+                            onChange= { async e => { uploadfile({ table: 'tbl_department', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); } } />
                         <FormLabel htmlFor= "upload-file" sx= { btnimport }><FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF' }} size= "lg" /></FormLabel>
-                        <Typography onClick= { () => { if(data.user_level === 'superadmin') { original(); } formatted(); }} sx= { btnexport }><FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
-                        <Typography component= { Link } to= "/maintenance/department/form/new" sx= { btnicon }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
+                        <Typography onClick= { () => { if(data.user_level === 'superadmin') { original(); } formatted(); }} sx= { btnexport }>
+                            <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
+                        </Typography>
+                        <Typography component= { Link } to= "/maintenance/department/form/new" sx= { btnicon }>
+                            <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
+                        </Typography>
                         <Typography component= { Link } to= "/maintenance/department/form/new" sx= { btntxt }>New Department</Typography>
                     </Stack>
                 </Stack>
             </Stack>
             { !fetching && !finding ? <Item /> :  
-                <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= {{ backgroundColor: '#FFFFFF', padding: '10px 20px', border: 'solid 1px #F3F3F3', borderRadius: '10px' }} spacing= { 2 }>
+                <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= { loader } spacing= { 2 }>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ flexGrow: 1 }}>
                         <Skeleton variant= "rounded" sx= {{ width: '50%', height: '10px' }} />
                         <Skeleton variant= "rounded" sx= {{ width: '25%', height: '10px' }} />

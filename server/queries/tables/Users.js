@@ -24,8 +24,8 @@ class Users {
 
     profile = async (id) => {
         return (await new Builder(`tbl_users AS usr`)
-                                        .select(`usr.id, usr.series_no, usr.email, usr.password, usr.contact_no, usr.user_level, usr.status, emp.employee_no, emp.rfid, emp.company_id, emp.department_id, emp.position_id,
-                                                    emp.branch, emp.fname, emp.mname, emp.lname, emp.bmonth, emp.bday, emp.byear, emp.address,
+                                        .select(`usr.id, usr.series_no, usr.email, usr.password, usr.contact_no, usr.user_level, usr.status, emp.employee_no, emp.rfid, emp.company_id, 
+                                                    emp.department_id, emp.position_id, emp.branch, emp.fname, emp.mname, emp.lname, emp.bmonth, emp.bday, emp.byear, emp.address,
                                                     emp.vl, emp.sl, emp.employment_status, emp.civil_status, emp.sss, emp.philhealth, emp.tin, emp.hdmf, emp.date_hired, emp.date_resigned`)
                                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: 'LEFT' })
                                         .condition(`WHERE usr.id= ${id}`)
@@ -37,7 +37,13 @@ class Users {
         return { result: 'success', message: 'Successfully logged out!' }
     }
 
-    dropdown = async (data) => { return (await new Builder(`tbl_users AS usr`).select(`usr.id, CONCAT(info.lname, ', ', info.fname, ' ', info.mname) AS name`).join({ table: `tbl_employee AS info`, condition: `info.user_id = usr.id`, type: 'LEFT' }).condition(`WHERE usr.status = 1 ORDER BY info.lname ASC`).build()).rows; }
+    dropdown = async (data) => { 
+        return (await new Builder(`tbl_users AS usr`)
+                                        .select(`usr.id, CONCAT(info.lname, ', ', info.fname, ' ', info.mname) AS name`)
+                                        .join({ table: `tbl_employee AS info`, condition: `info.user_id = usr.id`, type: 'LEFT' })
+                                        .condition(`WHERE usr.status = 1 ORDER BY info.lname ASC`)
+                                        .build()).rows; 
+    }
 }
 
 module.exports = Users;
