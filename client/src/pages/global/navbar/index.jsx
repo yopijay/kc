@@ -9,7 +9,13 @@ import { useContext } from "react";
 import { GlobalCntx } from "core/context/Global"; // Context
 
 // Constants
-import { appbar } from "./index.style"; // Styles
+const appbar = {
+    boxShadow: 'none',
+    padding: '7px 0',
+    maxHeight: '120px',
+    overflow: 'hidden',
+    backgroundColor: '#ffffff'
+}
 
 const Index = () => {
     const { drawerToggle, open, setIsActive } = useContext(GlobalCntx);

@@ -15,7 +15,8 @@ export const FormPrvdr = (props) => {
     const [ loader, setLoader ] = useState(type !== 'new');
     const [ validation, setValidation ] = useState({});
     const [ series, setSeries ] = useState();
-    const { register, handleSubmit, formState: { errors }, getValues, setValue, setError, control, clearErrors } = useForm({ resolver: Object.keys(validation).length === 0 ? '' : yupResolver(validation) });
+    const { register, handleSubmit, formState: { errors }, getValues, setValue, setError, control, clearErrors } = 
+        useForm({ resolver: Object.keys(validation).length === 0 ? '' : yupResolver(validation) });
 
     return (
         <FormCntxt.Provider 

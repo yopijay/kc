@@ -31,7 +31,7 @@ const Dashboard = () => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.total < 10 ? '0' : ''}${count.total}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>Total</Typography>
+                    <Typography variant= "body1" sx= { label }>TOTAL</Typography>
                 </Stack>
             </Grid>
             { !isFetching ? 

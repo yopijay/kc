@@ -276,8 +276,7 @@ class Company {
                                                                                                 ${file[count].address !== undefined ? `'${(file[count].address).toUpperCase()}'` : null}, 
                                                                                                 ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null},
                                                                                                 ${file[count].status !== undefined ? !isNaN(file[count].status) ? file[count].status > 0 ? 1 : 0 : 0 : 0}, 
-                                                                                                ${file[count].created_by !== undefined ? file[count].created_by : data.id},
-                                                                                                ${data.id}, '${date}', '${date}'` })
+                                                                                                ${file[count].created_by ?? data.id}, ${data.id}, '${date}', '${date}'` })
                                                                 .condition(`RETURNING id`)
                                                                 .build();
                         _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company',  item_id: imprt.rows[0].id, field: 'all', 

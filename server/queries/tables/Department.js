@@ -263,7 +263,7 @@ class Department {
                     }
 
                     if(file[count].department_head_id !== undefined) {
-                        if((await new Builder(`tbl_users`).select().condition(`WHERE id= ${file[count].department_head_id}`).build()).rowCount > 0) {
+                        if(!(await new Builder(`tbl_users`).select().condition(`WHERE id= ${file[count].department_head_id}`).build()).rowCount > 0) {
                             _itemerror.push('departement_head_id doesn`t exist!');
                         }
                     }
@@ -292,7 +292,52 @@ class Department {
                     _errorcount++;
                     _errors.push({ row: count + 1, errors: _itemerror });
                 }
+                else {
+                    _successcount++;
+                    if(type === 'create') {
+                        let imprt = await new Builder(`tbl_department`)
+                                                                .insert({ columns: `series_no, company_id, department_head_id, name, description, status, created_by, imported_by, date_created, date_imported`, 
+                                                                                values: `${file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : `'${series_no.toUpperCase()}'` },
+                                                                                                    ${file[count].company_id ?? null}, ${file[count].department_head_id ?? null}, '${(file[count].name).toUpperCase()}',
+                                                                                                    ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null},
+                                                                                                    ${file[count].status !== undefined ? !isNaN(file[count].status) ? file[count].status > 0 ? 1 : 0 : 0 : 0},
+                                                                                                    ${file[count].created_by ?? data.id}, ${data.id}, '${date}', '${date}'` })
+                                                                .condition(`RETURNING id`)
+                                                                .build();
+                        _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_department', item_id: imprt.rows[0].id, field: 'all', 
+                            previous: null, current: null, action: 'create-import', user_id: data.id, date: date });
+                    }
+                    else {
+                        await new Builder(`tbl_department`)
+                                            .update(`series_no= ${file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : null}, company_id= ${file[count].company_id ?? null},
+                                                            department_head_id= ${file[count].department_head_id ?? null}, name= '${(file[count].name).toUpperCase()}',
+                                                            description= ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null},
+                                                            status= ${file[count].status !== undefined ? !isNaN(file[count].status) ? file[count].status > 0 ? 1 : 0 : 0 : 0}, updated_by= ${data.id},
+                                                            imported_by= ${data.id}, date_updated= '${date}', date_imported= '${date}'`)
+                                            .condition(`WHERE id= ${dpt.rows[0].id}`)
+                                            .build();
+                    }
+                    
+                    _audit.forEach(data => console.log(data));
+                }
             }
+        }
+
+        let list = (await new Builder(`tbl_department AS dpt`)
+                                            .select(`dpt.id, dpt.series_no, cmp.name AS company, dpt.name, dpt.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, dpt.date_created, 
+                                                        CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS head_name`)
+                                            .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
+                                            .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
+                                            .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
+                                            .condition(`ORDER BY dpt.date_created DESC`)
+                                            .build()).rows;
+
+        return {
+            total: _totalcount,
+            success: _successcount,
+            fail: _errorcount,
+            errors: _errors,
+            list: list
         }
     }
 }
