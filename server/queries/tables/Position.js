@@ -21,7 +21,8 @@ class Position {
 
     list = async () => {
         return (await new Builder(`tbl_position AS pst`)
-                                        .select(`pst.id, pst.series_no, pst.name, cmp.name AS company, dpt.name AS department, pst.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, pst.date_created`)
+                                        .select(`pst.id, pst.series_no, pst.name, cmp.name AS company, dpt.name AS department, pst.status, 
+                                                    CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, pst.date_created`)
                                         .join({ table: `tbl_company AS cmp`, condition: `pst.company_id = cmp.id`, type: `LEFT` })
                                         .join({ table: `tbl_department AS dpt`, condition: `pst.department_id = dpt.id`, type: `LEFT` })
                                         .join({ table: `tbl_employee AS cb`, condition: `dpt.created_by = cb.user_id`, type: `LEFT`})
@@ -33,9 +34,11 @@ class Position {
         switch(type) {
             case 'formatted':
                 return (await new Builder(`tbl_position AS pst`)
-                                                .select(`pst.series_no AS "Series No.", cmp.name AS "Company", dpt.name AS "Department", pst.name AS "Position", pst.description AS "Description", pst.status AS "Status",
-                                                            CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", pst.date_created AS "Date created", CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", pst.date_updated AS "Date updated",
-                                                            CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", pst.date_deleted AS "Date deleted", CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", pst.date_imported AS "Date imported"`)
+                                                .select(`pst.series_no AS "Series No.", cmp.name AS "Company", dpt.name AS "Department", pst.name AS "Position", 
+                                                            pst.description AS "Description", pst.status AS "Status", CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", 
+                                                            pst.date_created AS "Date created", CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", pst.date_updated AS "Date updated",
+                                                            CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", pst.date_deleted AS "Date deleted", 
+                                                            CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", pst.date_imported AS "Date imported"`)
                                                 .join({ table: `tbl_company AS cmp`, condition: `pst.company_id = cmp.id`, type: 'LEFT' })
                                                 .join({ table: `tbl_department AS dpt`, condition: `pst.department_id = dpt.id`, type: 'LEFT' })
                                                 .join({ table: `tbl_employee AS cb`, condition: `pst.created_by = cb.user_id`, type: `LEFT` })
@@ -50,21 +53,25 @@ class Position {
 
     search = async (data) => {
         return (await new Builder(`tbl_position AS pst`)
-                                        .select(`pst.id, pst.series_no, pst.name, cmp.name AS company, dpt.name AS department, pst.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, pst.date_created`)
+                                        .select(`pst.id, pst.series_no, pst.name, cmp.name AS company, dpt.name AS department, pst.status, 
+                                                    CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, pst.date_created`)
                                         .join({ table: `tbl_company AS cmp`, condition: `pst.company_id = cmp.id`, type: `LEFT` })
                                         .join({ table: `tbl_department AS dpt`, condition: `pst.department_id = dpt.id`, type: `LEFT` })
                                         .join({ table: `tbl_employee AS cb`, condition: `dpt.created_by = cb.user_id`, type: `LEFT`})
-                                        .condition(`WHERE pst.series_no LIKE '%${data.condition}%' OR pst.name LIKE '%${data.condition}%' OR cmp.name LIKE '%${data.condition}%' OR dpt.name LIKE '%${data.condition}%' ORDER BY dpt.date_created DESC`)
+                                        .condition(`WHERE pst.series_no LIKE '%${data.condition}%' OR pst.name LIKE '%${data.condition}%' 
+                                                            OR cmp.name LIKE '%${data.condition}%' OR dpt.name LIKE '%${data.condition}%' ORDER BY dpt.date_created DESC`)
                                         .build()).rows;
     }
 
     save = async (data) => {
         let date = Global.date(new Date());
         if(!(await new Builder(`tbl_position`).select().condition(`WHERE series_no= '${(data.series_no).toUpperCase()}'`).build()).rowCount > 0) {
-            if(!(await new Builder(`tbl_position`).select().condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+            if(!(await new Builder(`tbl_position`).select()
+                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
                 let pst = (await new Builder(`tbl_position`)
                                                     .insert({ columns: `series_no, company_id, department_id, name, description, status, created_by, date_created`,
-                                                                    values: `'${(data.series_no).toUpperCase()}', ${data.company_id}, ${data.department_id}, '${(data.name).toUpperCase()}', ${data.description !== '' ? `'${(data.description).toUpperCase()}'` : null},
+                                                                    values: `'${(data.series_no).toUpperCase()}', ${data.company_id}, ${data.department_id}, '${(data.name).toUpperCase()}', 
+                                                                                    ${data.description !== '' ? `'${(data.description).toUpperCase()}'` : null},
                                                                                     ${data.status ? 1 : 0}, ${data.created_by}, '${date}'` })
                                                     .condition(`RETURNING id`)
                                                     .build()).rows[0];
@@ -93,7 +100,8 @@ class Position {
         audit.date = date;
 
         if(Global.compare(pst.name, data.name)) {
-            if(!(await new Builder(`tbl_position`).select().condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+            if(!(await new Builder(`tbl_position`).select()
+                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
                 audit.series_no = Global.randomizer(7);
                 audit.field = "name";
                 audit.previous = (pst.name).toUpperCase();
@@ -106,7 +114,8 @@ class Position {
         }
 
         if(Global.compare(pst.company_id, data.company_id)) {
-            if(!(await new Builder(`tbl_position`).select().condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+            if(!(await new Builder(`tbl_position`).select()
+                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
                 audit.series_no = Global.randomizer(7);
                 audit.field = "company_id";
                 audit.previous = pst.company_id;
@@ -119,7 +128,8 @@ class Position {
         }
 
         if(Global.compare(pst.department_id, data.department_id)) {
-            if(!(await new Builder(`tbl_position`).select().condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+            if(!(await new Builder(`tbl_position`).select()
+                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
                 audit.series_no = Global.randomizer(7);
                 audit.field = "department_id";
                 audit.previous = pst.department_id;
