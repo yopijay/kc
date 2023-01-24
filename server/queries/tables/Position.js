@@ -7,15 +7,27 @@ class Position {
     series = async () => { return (await new Builder(`tbl_position`).select(`COUNT(*)`).build()).rows; }
 
     dashboard = async () => {
-        let kc = (await new Builder(`tbl_company`).select(`id`).condition(`WHERE name= 'KC INDUSTRIAL CORPORATION'`).build()).rows[0];
-        let spower = (await new Builder(`tbl_company`).select(`id`).condition(`WHERE name= 'S-POWER CORPORATION'`).build()).rows[0];
-        let spc = (await new Builder(`tbl_company`).select(`id`).condition(`WHERE name= 'SYSTEMS POWERMARK CORPORATION'`).build()).rows[0];
+        let summary = [];
+        let _cmp = (await new Builder(`tbl_company`).select(`id, name`).condition(`WHERE status= 1 ORDER BY date_created ASC LIMIT 3`).build()).rows;
+        
+        for(let _count = 0; _count < _cmp.length; _count++) {
+            let _dpt = (await new Builder(`tbl_department`).select('id, name').condition(`WHERE company_id= ${_cmp[_count].id}`).build()).rows;
+            let _total = 0;
+
+            if(_dpt.length > 0) {
+                for(let __count = 0; __count < _dpt.length; __count++) {
+                    _total += parseInt((await new Builder(`tbl_position`).select(`COUNT(*)`)
+                                                                        .condition(`WHERE company_id= ${_cmp[_count].id} AND department_id= ${_dpt[__count].id} AND status= 1`)
+                                                                        .build()).rows[0].count);
+                }
+            }
+
+            summary.push({ name: _cmp[_count].name, count: _total });
+        }
         
         return {
             total: (await new Builder(`tbl_position`).select(`COUNT(*)`).build()).rows[0].count,
-            kc: (await new Builder(`tbl_position`).select(`COUNT(*)`).condition(`WHERE company_id= ${kc.id} AND status= 1`).build()).rows[0].count,
-            spower: (await new Builder(`tbl_position`).select(`COUNT(*)`).condition(`WHERE company_id= ${spower.id} AND status= 1`).build()).rows[0].count,
-            spc: (await new Builder(`tbl_position`).select(`COUNT(*)`).condition(`WHERE company_id= ${spc.id} AND status= 1`).build()).rows[0].count
+            summary
         }
     }
 
@@ -169,68 +181,64 @@ class Position {
     upload = async (data) => {
         let file = data.json;
         let date = Global.date(new Date());
-        let _successcount = 0;
-        let _failcount = 0;
         let _errors = [];
+        let _totalcount = 0;
+        let _successcount = 0;
+        let _errorcount = 0;
 
         for(let count = 0; count < file.length; count++) {
             let _count = (await new Builder(`tbl_position`).select(`COUNT(*)`).build()).rows[0].count;
             let series_no = `PST-${('0000000' + (parseInt(_count) + 1)).substr(('0000000' + (parseInt(_count) + 1)).length - 7)}`;
             let pst = await new Builder(`tbl_position`).select().condition(`WHERE id= ${file[count].id ?? parseInt(count) + 1}`).build();
-
-            audit.user_id = data.id;
-            audit.date = date;
+            let _itemerror = [];
+            let _itemchange = [];
+            let _audit = [];
+            let type = '';
 
             if(pst.rowCount > 0) {
-                audit.item_id = pst.rows[0].id;
-                audit.action = "update-import";
-                let _itemerror = [];
-                let _itemsuccess = [];
-                
-                if(Global.compare(pst.rows[0].series_no, file[count].series_no)) {
-                    audit.series_no = Global.randomizer(7);
-                    audit.field = "series_no";
-                    audit.previous = pst.rows[0].series_no !== null ? (pst.rows[0].series_no).toUpperCase() : null;
-                    
-                    if(file[count].series_no !== undefined) {
-                        if(!(await new Builder(`tbl_position`).select().condition(`WHERE series_no = '${(file[count].series_no).toUpperCase()}'`).build()).rowCount > 0) {
-                            audit.current
-                        }
-                        else { _itemerror.push({ name: 'series_no', message: 'already exist!' }) }
+                type = 'update';
+                if(file[count].name !== undefined) {
+                    if(Global.compare(pst.rows[0].name, file[count].name)) {
+                        _itemchange.push(true);
+                        
                     }
-                    else { _itemsuccess.push(true); }
+                }
+                else {
+                    _itemchange.push(true);
+                    _itemerror.push('name must not be empty!');
                 }
             }
             else {
-                console.log('create');
+                type = 'create';
+                _itemchange.push(true);
             }
+            // audit.user_id = data.id;
+            // audit.date = date;
+
+            // if(pst.rowCount > 0) {
+            //     audit.item_id = pst.rows[0].id;
+            //     audit.action = "update-import";
+            //     let _itemerror = [];
+            //     let _itemsuccess = [];
+                
+            //     if(Global.compare(pst.rows[0].series_no, file[count].series_no)) {
+            //         audit.series_no = Global.randomizer(7);
+            //         audit.field = "series_no";
+            //         audit.previous = pst.rows[0].series_no !== null ? (pst.rows[0].series_no).toUpperCase() : null;
+                    
+            //         if(file[count].series_no !== undefined) {
+            //             if(!(await new Builder(`tbl_position`).select().condition(`WHERE series_no = '${(file[count].series_no).toUpperCase()}'`).build()).rowCount > 0) {
+                            
+            //             }
+            //             else { _itemerror.push({ name: 'series_no', message: 'already exist!' }) }
+            //         }
+            //         else { _itemsuccess.push(true); }
+            //     }
+            // }
+            // else {
+            //     console.log('create');
+            // }
         }
-
-        
-        // return {
-        //     success: { count: 0, message: '' },
-        //     fail: { count: 0, message: 'asd' }
-        // }
-        // for(let count = 0; count < file.length; count++) {
-        //     let _count = (await new Builder(`tbl_position`).select(`COUNT(*)`).build()).rows[0].count;
-        //     let _faileditem = [];
-
-        //     audit.user_id = data.id;
-        //     audit.date = date;
-
-        //     if(pst.rowCount > 0) {
-        //         audit.item_id = pst.rows[0].id;
-        //         audit.action = "update-import";
-
-
-        //     }
-        //     else {
-        //         audit.series_no = Global.randomizer(7);
-        //         audit.field = "all";
-        //         audit.action = "create-import";
-        //     }
-        // }
-        // return { result: 'success', message: 'Successfully imported!' }
     }
 }
 

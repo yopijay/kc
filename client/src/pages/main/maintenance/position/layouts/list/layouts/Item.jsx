@@ -20,6 +20,14 @@ const icons = {
     }
 }
 
+const item = {
+    backgroundColor: '#FFFFFF', 
+    padding: '10px 20px', 
+    border: 'solid 1px #F3F3F3', 
+    borderRadius: '10px',
+    overflow: 'hidden'
+}
+
 const Item = () => {
     const { list } = useContext(ListCntxt);
 
@@ -28,14 +36,15 @@ const Item = () => {
             {
                 list.length > 0 ?
                     list?.map((data, index) => (
-                        <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" key= { index } sx= {{ backgroundColor: '#FFFFFF', padding: '10px 20px', border: 'solid 1px #F3F3F3', borderRadius: '10px' }} spacing= { 2 }>
-                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1 }}>
-                                <Typography variant= "body1" sx= {{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ data.name }</Typography>
-                                <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ data.company } - { data.department }</Typography>
-                                <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>#{ data.series_no }</Typography>
+                        <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= { item } spacing= { 2 }>
+                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
+                                <Typography variant= "body1" sx= {{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{ data.name }</Typography>
+                                <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{ data.company } - { data.department }</Typography>
+                                <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>#{ data.series_no }</Typography>
                             </Stack>
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
-                                { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
+                                { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
+                                    <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
                                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                                     <Typography sx= { icons } component= { Link } to= { `/maintenance/position/form/update/${data.id}` }><FontAwesomeIcon icon= { faPencil } size= "lg" /></Typography>
                                     <Typography sx= { icons } component= { Link } to= { `/maintenance/position/form/view/${data.id}` }><FontAwesomeIcon icon= { faEye } size= "lg" /></Typography>

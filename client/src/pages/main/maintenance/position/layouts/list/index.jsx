@@ -3,34 +3,49 @@ import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH, faFileArrowDown, faFileArrowUp, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Box, FormLabel, Skeleton, Stack, TextField, Typography } from "@mui/material";
-import { redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Core
 import { ListCntxt } from "core/context/List"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
-import { exporttoexcel, importfromexcel, successToast, useGet, usePost } from "core/function/global"; // Function
+import { exporttoexcel, importfromexcel, useGet, usePost } from "core/function/global"; // Function
 import { excel, look, records, upload } from "core/api"; // API
 
 // Layouts
 import Dashboard from "./layouts/Dashboard";
 import Item from "./layouts/Item";
-import { btnexport, btnicon, btnimport, btntxt, search } from "./index.style";
-import { Link } from "react-router-dom";
+
+// Contants
+import { btnexport, btnicon, btnimport, btntxt, loader, search } from "./index.style"; // Styles
 
 const Index = () => {
     let name = `KC-EXPORT-POSITION-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
     const { data } = useContext(ProfileCntx);
+    const [ message, setMessage ] = useState('');
+    const [ errors, setErrors ] = useState([]);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { isFetching: fetching } = useGet({ key: ['pst_list'], fetch: records({ table: 'tbl_position', data: {} }), options: { refetchOnWindowFocuse: false }, onSuccess: (data) => setList(data) });
-    const { refetch: original} = useGet({ key: ['pst_original'], fetch: excel({ table: 'tbl_position', type: 'original' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Position', `${name} (Admin's copy)`) });
-    const { refetch: formatted } = useGet({ key: ['pst_formatted'], fetch: excel({ table: 'tbl_position', type: 'formatted' }), options: { enabled: false }, onSuccess: (data) => exporttoexcel(data, 'Position', `${name}`) });
-    const { mutate: uploadfile, isLoading: uploading } = usePost({ fetch: upload, 
-        onSuccess: (data) => {
-            console.log(data);
-            // successToast('Successfully imported!', 3000, redirect('/maintenance/position'));
-            // if(data.result === 'success') { successToast(data.message, 3000, redirect('/maintenance/position')); } 
-        } });
+    const { refetch: original} = 
+        useGet({ key: ['pst_original'], fetch: excel({ table: 'tbl_position', type: 'original' }), options: { enabled: false }, 
+            onSuccess: (data) => exporttoexcel(data, 'Position', `${name} (Admin's copy)`) 
+        });
+    const { refetch: formatted } = 
+        useGet({ key: ['pst_formatted'], fetch: excel({ table: 'tbl_position', type: 'formatted' }), options: { enabled: false }, 
+            onSuccess: (data) => exporttoexcel(data, 'Position', `${name}`) 
+        });
+    const { mutate: uploadfile, isLoading: uploading } = 
+        usePost({ fetch: upload, 
+            onSuccess: (data) => {
+                setMessage('');
+                setErrors([]);
+                
+                setErrors(data.errors);
+                setMessage(`${data.success} out of ${data.total} row/s successfully imported! ${data.fail} row/s failed!`);
+                setList(data.list);
+                setTimeout(() => { setMessage(''); setErrors([]); }, 5000);
+            } 
+        });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%' }} spacing= { 3 }>
@@ -49,14 +64,23 @@ const Index = () => {
                         <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }} 
                             onChange= { async e => { uploadfile({ table: 'tbl_position', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } />
                         <FormLabel htmlFor= "upload-file" sx= { btnimport }><FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF' }} size= "lg" /></FormLabel>
-                        <Typography onClick= { () => { if(data.user_level === 'superadmin') { original(); } formatted(); }} sx= { btnexport }><FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
-                        <Typography component= { Link } to= "/maintenance/position/form/new" sx= { btnicon }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
+                        <Typography onClick= { () => { if(data.user_level === 'superadmin') { original(); } formatted(); }} sx= { btnexport }>
+                            <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
+                        </Typography>
+                        <Typography component= { Link } to= "/maintenance/position/form/new" sx= { btnicon }>
+                            <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
+                        </Typography>
                         <Typography component= { Link } to= "/maintenance/position/form/new" sx= { btntxt }>New Position</Typography>
+                    </Stack>
+                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
+                        <Typography variant= "body2" sx= {{ color: '#557153', textAlign: 'right' }}>{ message }</Typography>
+                        { errors.map((err, index) => 
+                            <Typography variant= "caption" sx= {{ color: '#F47C7C', textAlign: 'right' }} key= { index }>{ `Error on row${err.row}, ${JSON.stringify(err.errors)}` }</Typography> ) }
                     </Stack>
                 </Stack>
             </Stack>
             { !fetching && !finding ? <Item /> :  
-                <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= {{ backgroundColor: '#FFFFFF', padding: '10px 20px', border: 'solid 1px #F3F3F3', borderRadius: '10px' }} spacing= { 2 }>
+                <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= { loader } spacing= { 2 }>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ flexGrow: 1 }}>
                         <Skeleton variant= "rounded" sx= {{ width: '50%', height: '10px' }} />
                         <Skeleton variant= "rounded" sx= {{ width: '25%', height: '10px' }} />

@@ -9,12 +9,12 @@ class Department {
 
     dashboard = async () => {
         let summary = [];
-        let _count = (await new Builder(`tbl_company`).select(`id, name`).condition(`ORDER BY date_created LIMIT 3`).build()).rows;
+        let _count = (await new Builder(`tbl_company`).select(`id, name`).condition(`WHERE status= 1 ORDER BY date_created ASC LIMIT 3`).build()).rows;
 
         for(let count = 0; count < _count.length; count++) { 
-            summary.push({ 'name': _count[count].name, 'count': (await new Builder(`tbl_department`)
-                                                                                                                        .select(`COUNT(*)`)
-                                                                                                                        .condition(`WHERE company_id= ${_count[count].id}`).build()).rows[0].count }); }
+            summary.push({ name: _count[count].name, 
+                                        count: (await new Builder(`tbl_department`).select(`COUNT(*)`).condition(`WHERE company_id= ${_count[count].id} AND status= 1`).build()).rows[0].count }); 
+        }
         
         return {
             total: (await new Builder(`tbl_department`).select(`COUNT(*)`).build()).rows[0].count,
