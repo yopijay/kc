@@ -161,141 +161,19 @@ class Company {
         for(let count = 0; count < file.length; count++) {
             let _count = (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows[0].count;
             let series_no = `CMP-${('0000000' + (parseInt(_count) + 1)).substr(('0000000' + (parseInt(_count) + 1)).length - 7)}`;
-            let cmp = await new Builder(`tbl_company`).select().condition(`WHERE id= ${file[count].id ?? parseInt(count) + 1}`).build();
             let _itemerror = [];
             let _itemchange = [];
             let _audit = [];
             let type = '';
 
-            if(cmp.rowCount > 0) {
-                type = 'update';
-                if(file[count].name !== undefined) {
-                    if(Global.compare(cmp.rows[0].name, file[count].name)) {
-                        _itemchange.push(true);
-                        if((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) { _itemerror.push('name already exist!'); }
-                        else {
-                            _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'name', 
-                                previous: cmp.rows[0].name !== null ? (cmp.rows[0].name).toUpperCase() : null, current: (file[count].name).toUpperCase() }); 
-                        }
-                    }
-
-                    if(Global.compare(cmp.rows[0].series_no, file[count].series_no)) {
-                        _itemchange.push(true);
-                        if(file[count].series_no !== undefined) {
-                            if((await new Builder(`tbl_company`).select().condition(`WHERE series_no= '${(file[count].series_no).toUpperCase()}'`).build()).rowCount > 0) { 
-                                _itemerror.push('series number already exist!'); 
-                            }
-                            else { 
-                                _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), field: 'series_no', 
-                                    previous: cmp.rows[0].series_no !== null ? (cmp.rows[0].series_no).toUpperCase() : null, current: (file[count].series_no).toUpperCase() }); 
-                            }
-                        }
-                    }
-
-                    if(Global.compare(cmp.rows[0].owner_id, file[count].owner_id)) {
-                        _itemchange.push(true);
-                        if(file[count].owner_id !== undefined) {
-                            if((await new Builder(`tbl_users`).select().condition(`WHERE id= ${file[count].owner_id}`).build()).rowCount > 0) {
-                                _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), 
-                                                        field: 'owner_id', previous: cmp.rows[0].owner_id, current: file[count].owner_id });
-                            }
-                            else { _itemerror.push('owner_id doesn`t exist!'); }
-                        }
-                        else { 
-                            _audit.push({ table_name: 'tbl_company', user_id: data.id, date: date, item_id: cmp.rows[0].id, action: 'update-import', series_no: Global.randomizer(7), 
-                                                    field: 'owner_id', previous: cmp.rows[0].owner_id, current: null }); 
-                        }
-                    }
-
-                    if(Global.compare(cmp.rows[0].address, file[count].address)) {
-                        _itemchange.push(true);
-                        _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company',  item_id: cmp.rows[0].id, field: 'address', 
-                            previous: cmp.rows[0].address !== null ? (cmp.rows[0].address).toUpperCase() : null, current: file[count].address !== undefined ? (file[count].address).toUpperCase() : null, 
-                            action: 'update-import', user_id: data.id, date: date });
-                    }
-
-                    if(Global.compare(cmp.rows[0].description, file[count].description)) {
-                        _itemchange.push(true);
-                        _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company',  item_id: cmp.rows[0].id, field: 'description', 
-                            previous: cmp.rows[0].description !== null ? (cmp.rows[0].description).toUpperCase() : null, 
-                            current: file[count].description !== undefined ? (file[count].description).toUpperCase() : null, action: 'update-import', user_id: data.id, date: date });
-                    }
-
-                    if(Global.compare(cmp.rows[0].status, file[count].status !== undefined ? !isNaN(file[count].status) ? file[count].status > 0 ? 1 : 0 : 0 : 0)) {
-                        _itemchange.push(true);
-                        _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company',  item_id: cmp.rows[0].id, field: 'status', 
-                            previous: cmp.rows[0].status, current: file[count].status !== undefined ? !isNaN(file[count].status) ? file[count].status > 0 ? 1 : 0 : 0 : 0, action: 'update-import', 
-                            user_id: data.id, date: date });
-                    }
-                }
-                else {
-                    _itemchange.push(true);
-                    _itemerror.push('name must not be empty!');
-                }
+            if(file[count].id !== undefined) {
+                type = 'update'
             }
             else {
-                type = 'create';
-                _itemchange.push(true);
-                
-                if(file[count].name !== undefined) { 
-                    if(file[count].owner_id !== undefined) { 
-                        if(!(await new Builder(`tbl_users`).select().condition(`WHERE id = ${file[count].owner_id}`).build()).rowCount > 0) { _itemerror.push('owner_id doesn`t exist!'); } 
-                    }
-
-                    if(file[count].created_by !== undefined) { 
-                        if(!(await new Builder(`tbl_users`).select().condition(`WHERE id = ${file[count].created_by}`).build()).rowCount > 0) { 
-                            _itemerror.push('created_by doesn`t exist!'); 
-                        }
-                    }
-                    
-                    if((await new Builder(`tbl_company`).select()
-                                            .condition(`WHERE series_no= ${file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : 
-                                                                                                                                                                `'${(series_no).toUpperCase()}'` }`).build()).rowCount > 0) { 
-                        _itemerror.push('series_no is already used!'); 
-                    }
-                }
-                else {
-                    _itemchange.push(true);
-                    _itemerror.push('name must not be empty!');
-                }
+                type = 'create'
             }
-            
-            if(_itemchange.length > 0) {
-                _totalcount++;
-                if(_itemerror.length > 0) {
-                    _errorcount++
-                    _errors.push({ row: count + 1, errors: _itemerror });
-                }
-                else {
-                    _successcount++;
-                    if(type === 'create') {
-                        let imprt = await new Builder(`tbl_company`)
-                                                                .insert({ columns: `series_no, owner_id, name, address, description, status, created_by, imported_by, date_created, date_imported`,
-                                                                                values: `${file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : `'${series_no.toUpperCase()}'`}, 
-                                                                                                ${file[count].owner_id ?? null}, '${(file[count].name).toUpperCase()}', 
-                                                                                                ${file[count].address !== undefined ? `'${(file[count].address).toUpperCase()}'` : null}, 
-                                                                                                ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null},
-                                                                                                ${file[count].status !== undefined ? !isNaN(file[count].status) ? file[count].status > 0 ? 1 : 0 : 0 : 0}, 
-                                                                                                ${file[count].created_by ?? data.id}, ${data.id}, '${date}', '${date}'` })
-                                                                .condition(`RETURNING id`)
-                                                                .build();
-                        _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company',  item_id: imprt.rows[0].id, field: 'all', 
-                            previous: null, current: null, action: 'create-import', user_id: data.id, date: date });
-                    }
-                    else {
-                        await new Builder(`tbl_company`)
-                                            .update(`series_no= ${file[count].series_no !== undefined ? `'${(file[count].series_no).toUpperCase()}'` : null}, owner_id= ${file[count].owner_id ?? null}, 
-                                                            name= '${(file[count].name).toUpperCase()}', address= ${file[count].address !== undefined ? `'${(file[count].address).toUpperCase()}'` : null}, 
-                                                            description= ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null}, 
-                                                            status= ${file[count].status !== undefined ? !isNaN(file[count].status) ? file[count].status > 0 ? 1 : 0 : 0 : 0}, updated_by= ${data.id}, 
-                                                            imported_by= ${data.id}, date_updated= '${date}', date_imported= '${date}'`)
-                                            .condition(`WHERE id= ${cmp.rows[0].id}`)
-                                            .build();
-                    }
 
-                    _audit.forEach(data => Global.audit(data));
-                }
-            }
+            console.log(type);
         }
 
         let list = (await new Builder(`tbl_company AS cmp`)

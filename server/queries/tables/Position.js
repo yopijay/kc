@@ -79,7 +79,8 @@ class Position {
         let date = Global.date(new Date());
         if(!(await new Builder(`tbl_position`).select().condition(`WHERE series_no= '${(data.series_no).toUpperCase()}'`).build()).rowCount > 0) {
             if(!(await new Builder(`tbl_position`).select()
-                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} 
+                                                        AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
                 let pst = (await new Builder(`tbl_position`)
                                                     .insert({ columns: `series_no, company_id, department_id, name, description, status, created_by, date_created`,
                                                                     values: `'${(data.series_no).toUpperCase()}', ${data.company_id}, ${data.department_id}, '${(data.name).toUpperCase()}', 
@@ -113,7 +114,8 @@ class Position {
 
         if(Global.compare(pst.name, data.name)) {
             if(!(await new Builder(`tbl_position`).select()
-                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} 
+                                                        AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
                 audit.series_no = Global.randomizer(7);
                 audit.field = "name";
                 audit.previous = (pst.name).toUpperCase();
@@ -127,7 +129,8 @@ class Position {
 
         if(Global.compare(pst.company_id, data.company_id)) {
             if(!(await new Builder(`tbl_position`).select()
-                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} 
+                                                        AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
                 audit.series_no = Global.randomizer(7);
                 audit.field = "company_id";
                 audit.previous = pst.company_id;
@@ -141,7 +144,8 @@ class Position {
 
         if(Global.compare(pst.department_id, data.department_id)) {
             if(!(await new Builder(`tbl_position`).select()
-                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+                                    .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id} 
+                                                        AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
                 audit.series_no = Global.randomizer(7);
                 audit.field = "department_id";
                 audit.previous = pst.department_id;
@@ -212,32 +216,6 @@ class Position {
                 type = 'create';
                 _itemchange.push(true);
             }
-            // audit.user_id = data.id;
-            // audit.date = date;
-
-            // if(pst.rowCount > 0) {
-            //     audit.item_id = pst.rows[0].id;
-            //     audit.action = "update-import";
-            //     let _itemerror = [];
-            //     let _itemsuccess = [];
-                
-            //     if(Global.compare(pst.rows[0].series_no, file[count].series_no)) {
-            //         audit.series_no = Global.randomizer(7);
-            //         audit.field = "series_no";
-            //         audit.previous = pst.rows[0].series_no !== null ? (pst.rows[0].series_no).toUpperCase() : null;
-                    
-            //         if(file[count].series_no !== undefined) {
-            //             if(!(await new Builder(`tbl_position`).select().condition(`WHERE series_no = '${(file[count].series_no).toUpperCase()}'`).build()).rowCount > 0) {
-                            
-            //             }
-            //             else { _itemerror.push({ name: 'series_no', message: 'already exist!' }) }
-            //         }
-            //         else { _itemsuccess.push(true); }
-            //     }
-            // }
-            // else {
-            //     console.log('create');
-            // }
         }
     }
 }
