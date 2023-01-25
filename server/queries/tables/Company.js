@@ -245,7 +245,7 @@ class Company {
                     if(file[count].created_by !== undefined) { 
                         if(!(await new Builder(`tbl_users`).select().condition(`WHERE id = ${file[count].created_by}`).build()).rowCount > 0) { 
                             _itemerror.push('created_by doesn`t exist!'); 
-                        } 
+                        }
                     }
                     
                     if((await new Builder(`tbl_company`).select()
