@@ -5,6 +5,11 @@ export const GlobalCntx = createContext();
 export const GlobalPrvdr = (props) => {
     const { children, window } = props;
     const [ open, setOpen ] = useState({ left: false });
+    const [ orderby, setOrderby ] = useState('asc');
+    const [ category, setCategory ] = useState('date_created');
+    const [ searchtxt, setSearchtxt ] = useState('');
+    const [ message, setMessage ] = useState('');
+    const [ errors, setErrors ] = useState([]);
     const [ isActive, setActive ] = useState(localStorage.getItem('nav'));
 
     const drawerToggle = (open) => (event) => {
@@ -13,5 +18,11 @@ export const GlobalPrvdr = (props) => {
     }
 
     const container = window !== undefined ? () => window().document.body : undefined;
-    return <GlobalCntx.Provider value= {{ open, drawerToggle, container, isActive, setActive, setOpen }}>{ children }</GlobalCntx.Provider>
+    return (
+        <GlobalCntx.Provider 
+            value= {{ open, drawerToggle, container, isActive, setActive, setOpen, orderby, setOrderby, category, setCategory, 
+                            searchtxt, setSearchtxt, message, setMessage, errors, setErrors }}>
+            { children }
+        </GlobalCntx.Provider>
+    )
 }

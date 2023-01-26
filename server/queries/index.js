@@ -21,10 +21,10 @@ const dashboard = (table) => {
     });
 }
 
-const excel = (table, type) => {
+const excel = (table, type, data) => {
     return new Promise(async resolve => {
         switch(table) {
-            case 'tbl_company': resolve(await new Company().excel(type)); break;
+            case 'tbl_company': resolve(await new Company().excel(type, data)); break;
             case 'tbl_department': resolve(await new Department().excel(type)); break;
             case 'tbl_position': resolve(await new Position().excel(type)); break;
         }

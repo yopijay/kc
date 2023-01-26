@@ -25,7 +25,7 @@ class Company {
                                         .build()).rows;
     }
 
-    excel = async (type) => {
+    excel = async (type, data) => {
         switch(type) {
             case 'formatted':
                 return (await new Builder(`tbl_company AS cmp`)
@@ -40,9 +40,10 @@ class Company {
                                                 .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = cmp.updated_by`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS db`, condition: `db.user_id = cmp.deleted_by`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = cmp.imported_by`, type: `LEFT` })
-                                                .condition(`ORDER BY cmp.date_created ASC`)
+                                                .condition(`WHERE cmp.series_no LIKE '%${data.searchtxt}%' OR cmp.name LIKE '%${data.searchtxt}%' AND status= ${data.status}
+                                                                    ORDER BY cmp.${data.category} ${(data.orderby).toUpperCase()}`)
                                                 .build()).rows;
-            default: return (await new Builder(`tbl_company`).select().condition(`ORDER by date_created ASC`).build()).rows;
+            default: return (await new Builder(`tbl_company`).select().condition(`ORDER by ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
         }
     }
 
@@ -164,9 +165,6 @@ class Company {
             let _itemerror = [];
 
             if(file[count].name !== undefined) {
-                if(file[count].owner_id !== undefined) {
-                    if(!((await new Builder(`tbl_users`).select().condition(`WHERE id= ${file[count].owner_id}`).build()).rowCount > 0)) { _itemerror.push('owner_id doesn`t exist'); }
-                }
                 if((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) { _itemerror.push('company already exist!'); }
             }
             else { _itemerror.push('name must not be empty!'); }
@@ -179,7 +177,7 @@ class Company {
                 _successcount++;
                 let cmp = (await new Builder(`tbl_company`)
                                                     .insert({ columns: `series_no, owner_id, name, address, description, status, created_by, imported_by, date_created, date_imported`, 
-                                                                    values: `'${series_no.toUpperCase()}', ${file[count].owner_id ?? null}, '${(file[count].name).toUpperCase()}',
+                                                                    values: `'${series_no.toUpperCase()}', 1, '${(file[count].name).toUpperCase()}',
                                                                                     ${file[count].address !== undefined ? `'${(file[count].address).toUpperCase()}'` : null},
                                                                                     ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null}, 1, ${data.id}, ${data.id},
                                                                                     CURRENT_TIMESTAMP, '${date}'` })
