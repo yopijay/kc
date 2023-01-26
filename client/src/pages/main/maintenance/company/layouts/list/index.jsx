@@ -26,10 +26,13 @@ const Index = () => {
     const [ errors, setErrors ] = useState([]);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { isFetching: fetching } = useGet({ key: ['cmp_list'], fetch: records({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setList(data) });
-    const { refetch: original} = useGet({ key: ['cmp_original'], fetch: excel({ table: 'tbl_company', type: 'original' }), options: { enabled: false }, 
-                                                                onSuccess: (data) => exporttoexcel(data, 'Company', `${name} (Admin's copy)`) });
-    const { refetch: formatted } = useGet({ key: ['cmp_formatted'], fetch: excel({ table: 'tbl_company', type: 'formatted' }), options: { enabled: false }, 
-                                                                    onSuccess: (data) => exporttoexcel(data, 'Company', `${name}`) });
+    const { refetch: original} = 
+        useGet({ key: ['cmp_original'], fetch: excel({ table: 'tbl_company', type: 'original' }), options: { enabled: false }, 
+            onSuccess: (data) => exporttoexcel(data, 'Company', `${name} (Admin's copy)`) });
+    const { refetch: formatted } = 
+        useGet({ key: ['cmp_formatted'], fetch: excel({ table: 'tbl_company', type: 'formatted' }), options: { enabled: false }, 
+            onSuccess: (data) => exporttoexcel(data, 'Company', `${name}`) });
+
     const { mutate: uploadfile, isLoading: uploading } = usePost({ fetch: upload, 
         onSuccess: (data) => {
             setMessage('');
@@ -56,11 +59,11 @@ const Index = () => {
                     </form>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
-                            <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }} 
-                                onChange= { async e => { uploadfile({ table: 'tbl_company', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } />
-                            <FormLabel htmlFor= "upload-file" sx= { btnimport }>
+                            {data.user_level === 'superadmin' ? <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }} 
+                                onChange= { async e => { uploadfile({ table: 'tbl_company', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : '' }
+                            {data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
                                 <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF' }} size= "lg" />
-                            </FormLabel>
+                            </FormLabel> : '' }
                             <Typography onClick= { () => { if(data.user_level === 'superadmin') { original(); } formatted(); }} sx= { btnexport }>
                                 <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>

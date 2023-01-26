@@ -162,18 +162,32 @@ class Company {
             let _count = (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows[0].count;
             let series_no = `CMP-${('0000000' + (parseInt(_count) + 1)).substr(('0000000' + (parseInt(_count) + 1)).length - 7)}`;
             let _itemerror = [];
-            let _itemchange = [];
-            let _audit = [];
-            let type = '';
 
-            if(file[count].id !== undefined) {
-                type = 'update'
+            if(file[count].name !== undefined) {
+                if(file[count].owner_id !== undefined) {
+                    if(!((await new Builder(`tbl_users`).select().condition(`WHERE id= ${file[count].owner_id}`).build()).rowCount > 0)) { _itemerror.push('owner_id doesn`t exist'); }
+                }
+                if((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) { _itemerror.push('company already exist!'); }
+            }
+            else { _itemerror.push('name must not be empty!'); }
+            
+            if(_itemerror.length > 0) {
+                _errorcount++;
+                _errors.push({ row: count + 1, errors: _itemerror });
             }
             else {
-                type = 'create'
-            }
+                _successcount++;
+                let cmp = (await new Builder(`tbl_company`)
+                                                    .insert({ columns: `series_no, owner_id, name, address, description, status, created_by, imported_by, date_created, date_imported`, 
+                                                                    values: `'${series_no.toUpperCase()}', ${file[count].owner_id ?? null}, '${(file[count].name).toUpperCase()}',
+                                                                                    ${file[count].address !== undefined ? `'${(file[count].address).toUpperCase()}'` : null},
+                                                                                    ${file[count].description !== undefined ? `'${(file[count].description).toUpperCase()}'` : null}, 1, ${data.id}, ${data.id},
+                                                                                    CURRENT_TIMESTAMP, '${date}'` })
+                                                    .condition(`RETURNING id`)
+                                                    .build()).rows[0];
 
-            console.log(type);
+                Global.audit({ series_no: Global.randomizer(7), table_name: 'tbl_company',  item_id: cmp.id, field: 'all', previous: null, current: null, action: 'create-import', user_id: data.id, date: date });
+            }
         }
 
         let list = (await new Builder(`tbl_company AS cmp`)
@@ -184,7 +198,7 @@ class Company {
                                             .condition(`ORDER BY cmp.date_created DESC`)
                                             .build()).rows;
 
-        return { 
+        return {
             total: _totalcount,
             success: _successcount,
             fail: _errorcount,

@@ -52,6 +52,7 @@ export const btnimport = {
     borderRadius: '7px',
     padding: '8px 10px',
     backgroundColor: '#1ccaff',
+    cursor: 'pointer',
     transition: 'all 0.2s ease-in-out',
     '&:hover': { backgroundColor: '#0099cc' }
 }
@@ -63,6 +64,7 @@ export const btnexport = {
     alignItems: 'center',
     borderRadius: '7px',
     padding: '8px 10px',
+    cursor: 'pointer',
     backgroundColor: '#1D6F42',
     transition: 'all 0.2s ease-in-out',
     '&:hover': { backgroundColor: '#00431a' }
