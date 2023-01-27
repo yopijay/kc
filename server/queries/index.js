@@ -25,7 +25,7 @@ const excel = (table, type, data) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().excel(type, data)); break;
-            case 'tbl_department': resolve(await new Department().excel(type)); break;
+            case 'tbl_department': resolve(await new Department().excel(type, data)); break;
             case 'tbl_position': resolve(await new Position().excel(type)); break;
         }
     });
@@ -34,8 +34,8 @@ const excel = (table, type, data) => {
 const list = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
-            case 'tbl_company': resolve(await new Company().list()); break;
-            case 'tbl_department': resolve(await new Department().list()); break;
+            case 'tbl_company': resolve(await new Company().list(data)); break;
+            case 'tbl_department': resolve(await new Department().list(data)); break;
             case 'tbl_position': resolve(await new Position().list()); break;
         }
     });

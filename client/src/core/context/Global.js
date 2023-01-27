@@ -5,7 +5,7 @@ export const GlobalCntx = createContext();
 export const GlobalPrvdr = (props) => {
     const { children, window } = props;
     const [ open, setOpen ] = useState({ left: false });
-    const [ orderby, setOrderby ] = useState('asc');
+    const [ orderby, setOrderby ] = useState('desc');
     const [ category, setCategory ] = useState('date_created');
     const [ searchtxt, setSearchtxt ] = useState('');
     const [ message, setMessage ] = useState('');

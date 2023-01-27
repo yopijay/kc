@@ -15,13 +15,14 @@ class Company {
         }
     }
 
-    list = async () => {
+    list = async (data) => {
         return (await new Builder(`tbl_company AS cmp`)
                                         .select(`cmp.id, cmp.series_no, cmp.name, cmp.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, cmp.date_created, CONCAT(owner.lname, ', ', 
                                                     owner.fname, ' ', owner.mname) AS owner_name`)
                                         .join({ table: `tbl_employee AS owner`, condition: `owner.user_id = cmp.owner_id`, type: 'LEFT' })
                                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = cmp.created_by`})
-                                        .condition(`ORDER BY cmp.date_created DESC`)
+                                        .condition(`${data.searchtxt !== '' ? `WHERE cmp.series_no LIKE '%${data.searchtxt}%' OR cmp.name LIKE '%${data.searchtxt}%'` : '' }
+                                                            ORDER BY cmp.${data.category} ${(data.orderby).toUpperCase()}`)
                                         .build()).rows;
     }
 
@@ -40,7 +41,7 @@ class Company {
                                                 .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = cmp.updated_by`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS db`, condition: `db.user_id = cmp.deleted_by`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = cmp.imported_by`, type: `LEFT` })
-                                                .condition(`WHERE cmp.series_no LIKE '%${data.searchtxt}%' OR cmp.name LIKE '%${data.searchtxt}%' AND status= ${data.status}
+                                                .condition(`WHERE cmp.series_no LIKE '%${data.searchtxt}%' OR cmp.name LIKE '%${data.searchtxt}%'
                                                                     ORDER BY cmp.${data.category} ${(data.orderby).toUpperCase()}`)
                                                 .build()).rows;
             default: return (await new Builder(`tbl_company`).select().condition(`ORDER by ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
@@ -53,7 +54,8 @@ class Company {
                                                         CONCAT(owner.lname, ', ', owner.fname, ' ', owner.mname) AS owner_name`)
                                         .join({ table: `tbl_employee AS owner`, condition: `owner.user_id = cmp.owner_id`, type: 'LEFT' })
                                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = cmp.created_by`})
-                                        .condition(`WHERE cmp.series_no LIKE '%${data.condition}%' OR cmp.name LIKE '%${data.condition}%' ORDER BY cmp.date_created DESC`) 
+                                        .condition(`WHERE cmp.series_no LIKE '%${data.condition}%' OR cmp.name LIKE '%${data.condition}%' 
+                                                            ORDER BY cmp.${data.category} ${(data.orderby).toUpperCase()}`) 
                                         .build()).rows;
     }
 

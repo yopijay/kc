@@ -22,18 +22,19 @@ class Department {
         }
     }
 
-    list = async () => {
+    list = async (data) => {
         return (await new Builder(`tbl_department AS dpt`)
                                         .select(`dpt.id, dpt.series_no, cmp.name AS company, dpt.name, dpt.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, dpt.date_created, 
                                                     CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS head_name`)
                                         .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
                                         .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
                                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
-                                        .condition(`ORDER BY dpt.date_created DESC`)
+                                        .condition(`${data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${data.searchtxt}%' OR cmp.name LIKE '%${data.searchtxt}%' 
+                                                            OR dpt.name LIKE '%${data.searchtxt}%'` : ''} ORDER BY dpt.${data.category} ${(data.orderby).toUpperCase()}`)
                                         .build()).rows;
     }
 
-    excel = async (type) => {
+    excel = async (type, data) => {
         switch(type) {
             case 'formatted':
                 return (await new Builder(`tbl_department AS dpt`)
@@ -49,9 +50,10 @@ class Department {
                                                 .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = dpt.updated_by`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS db`, condition: `db.user_id = dpt.deleted_by`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = dpt.imported_by`, type: `LEFT` })
-                                                .condition(`ORDER BY dpt.date_created ASC`)
+                                                .condition(`WHERE dpt.series_no LIKE '%${data.searchtxt}%' OR dpt.name LIKE '%${data.searchtxt}%'
+                                                                    ORDER BY dpt.${data.category} ${(data.orderby).toUpperCase()}`)
                                                 .build()).rows;
-            default: return (await new Builder(`tbl_department`).select().condition(`ORDER by date_created ASC`).build()).rows;
+            default: return (await new Builder(`tbl_department`).select().condition(`ORDER by ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
         }
     }
 
@@ -63,7 +65,7 @@ class Department {
                                         .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
                                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
                                         .condition(`WHERE dpt.series_no LIKE '%${data.condition}%' OR cmp.name LIKE '%${data.condition}%' OR dpt.name LIKE '%${data.condition}%' 
-                                                            ORDER BY dpt.date_created DESC`)
+                                                            ORDER BY cmp.${data.category} ${(data.orderby).toUpperCase()}`)
                                         .build()).rows;
     }
 
