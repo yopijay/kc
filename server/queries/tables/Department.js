@@ -173,13 +173,35 @@ class Department {
         for(let count = 0; count < file.length; count++) {
             let _count = (await new Builder(`tbl_department`).select(`COUNT(*)`).build()).rows[0].count;
             let series_no = `DPT-${('0000000' + (parseInt(_count) + 1)).substr(('0000000' + (parseInt(_count) + 1)).length - 7)}`;
-            let dpt = await new Builder(`tbl_department`).select().condition(`WHERE id= ${file[count].id ?? parseInt(count) + 1}`).build();
             let _itemerror = [];
-
+            
             if(file[count].name !== undefined) {
                 if(file[count].company !== undefined) {
-                    if(!((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].company).toUpperCase()}'`).build()).rowCount > 0)) { _itemerror.push('company doesn`t exist'); }
+                    if(!((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].company).toUpperCase()}'`).build()).rowCount > 0)) {
+                        _itemerror.push('company doesn`t exist!');
+                    }
                 }
+            }
+            else { _itemerror.push('name must not be empty!'); }
+
+            if(_itemerror.length > 0) {
+                _errorcount++;
+                _errors.push({ row: count + 1, errors: _errors });
+            }
+            else {
+                _successcount++;
+                let cmp = file[count].company !== undefined ?
+                                    (await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].company).toUpperCase()}'`).build()).rows[0].id : null;
+
+                let dpt = (await new Builder(`tbl_department`)
+                                                    .insert({ columns: `series_no, company_id, department_head_id, name, description, status, 
+                                                                                    created_by, imported_by, date_created, date_imported`, 
+                                                                    values: `'${series_no.toUpperCase()}', ${cmp}, 1, '${(file[count].name).toUpperCase()}', null, 1, ${data.id}, ${data.id},
+                                                                                    CURRENT_TIMESTAMP, '${date}'` })
+                                                    .condition(`RETURNING id`)
+                                                    .build()).rows[0];
+
+                Global.audit({ series_no: Global.randomizer(7), table_name: 'tbl_department', item_id: dpt.id, field: 'all', previous: null, current: null, action: 'create-import', user_id: data.id, date: date });
             }
         }
 
