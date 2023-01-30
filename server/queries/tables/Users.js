@@ -1,6 +1,14 @@
 const Builder = require("../../function/builder"); // Function
 
 class Users {
+    specific = async (id) => { 
+        return (await new Builder(`tbl_users AS usr`)
+                                        .select()
+                                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
+                                        .condition(`WHERE usr.id= ${id}`)
+                                        .build()).rows;
+    }
+    
     login = async (data) => {
         let email = await new Builder(`tbl_users`).select().condition(`WHERE email= '${data.email}'`).build();
         let verified = await new Builder(`tbl_users`).select().condition(`WHERE email= '${data.email}' AND is_email_verified= 1`).build();
@@ -43,6 +51,22 @@ class Users {
                                         .join({ table: `tbl_employee AS info`, condition: `info.user_id = usr.id`, type: 'LEFT' })
                                         .condition(`WHERE usr.status = 1 ORDER BY info.lname ASC`)
                                         .build()).rows; 
+    }
+
+    list = async (data) => {
+        return [];
+        // return (await new Builder(`tbl_users AS usr`)
+        //                                 .select(`usr.id, usr.email, usr.user_level, usr.date_created, emp.employee_no, cmp.name AS company, dpt.name AS department, pst.name AS position,
+        //                                             emp.fname, emp.lname`)
+        //                                 .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
+        //                                 .join({ table: `tbl_company AS cmp`, condition: `emp.company_id = cmp.id`, type: `LEFT` })
+        //                                 .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
+        //                                 .join({ table: `tbl_position AS pst`, conditon: `emp.position_id = pst.id`, type: `LEFT` })
+        //                                 .condition(`${data.searchtxt !== '' ? `WHERE usr.email LIKE '%${data.searchtxt}%' OR usr.user_level LIKE '%${data.searchtxt}%'
+        //                                                     OR emp.employee_no LIKE '%${data.searchtxt}%' OR cmp.name LIKE '%${data.searchtxt}%' OR dpt.name LIKE '%${data.searchtxt}%'
+        //                                                     OR pst.name LIKE '%${data.searchtxt}%' OR emp.fname LIKE '%${data.searchtxt}%' OR emp.lname LIKE '%${data.searchtxt}%'` : ''}
+        //                                                     ORDER BY ${data.category} ${(data.orderby).toUpperCase()}`)
+        //                                 .except(`WHERE usr.id= ${data.id} ORDER BY ${data.category} ${(data.orderby).toUpperCase()}`))
     }
 }
 

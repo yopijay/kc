@@ -21,11 +21,12 @@ const Index = () => {
     const navigate = useNavigate();
     const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
     const { isFetching, refetch } =  
-        useGet({ key: ['dpt_specific'], fetch: specific({ table: 'tbl_department', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
+        useGet({ key: ['dpt_specific'], fetch: specific({ table: 'tbl_department', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
-                        let _name = Object.keys(data[0])[count]; setValue(_name, data[0][_name]); 
+                        let _name = Object.keys(data[0])[count]; 
+                        setValue(_name, data[0][_name]); 
                     } 
             } 
         });

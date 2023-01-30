@@ -37,6 +37,7 @@ const list = (table, data) => {
             case 'tbl_company': resolve(await new Company().list(data)); break;
             case 'tbl_department': resolve(await new Department().list(data)); break;
             case 'tbl_position': resolve(await new Position().list(data)); break;
+            case 'tbl_users': resolve(await new Users().list(data)); break;
         }
     });
 }
@@ -57,6 +58,7 @@ const specific = (table, id) => {
             case 'tbl_company': resolve(await new Company().specific(id)); break;
             case 'tbl_department': resolve(await new Department().specific(id)); break;
             case 'tbl_position': resolve(await new Position().specific(id)); break;
+            case 'tbl_users': resolve(await new Users().specific(id)); break;
         }
     });
 }
