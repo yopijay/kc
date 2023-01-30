@@ -36,7 +36,7 @@ const list = (table, data) => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().list(data)); break;
             case 'tbl_department': resolve(await new Department().list(data)); break;
-            case 'tbl_position': resolve(await new Position().list()); break;
+            case 'tbl_position': resolve(await new Position().list(data)); break;
         }
     });
 }
