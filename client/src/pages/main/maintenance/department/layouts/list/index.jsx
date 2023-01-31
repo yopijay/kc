@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { GlobalCntx } from "core/context/Global"; // Context
 import { ListCntxt } from "core/context/List"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
+import { FormPrvdr } from "core/context/Form"; // Context
 import { exporttoexcel, importfromexcel, usePost } from "core/function/global"; // Functions
 import { excel, look, records, upload } from "core/api"; // API
 
@@ -90,7 +91,7 @@ const Index = () => {
                     </Stack>
                 </Stack>
             </Stack>
-            <Sort refetch= { record } />
+            <FormPrvdr><Sort refetch= { record } /></FormPrvdr>
             <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>{ !fetching && !finding ? <Item /> : <Loader /> }</Box>
         </Stack>
     );

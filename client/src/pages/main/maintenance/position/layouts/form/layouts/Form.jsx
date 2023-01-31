@@ -15,7 +15,7 @@ import { input, select, textarea } from "../index.style"; // Styles
 const Form = ({ fetching }) => {
     const { type } = useParams();
     const { register, errors, getValues, check, setCheck, control, setValue, setError } = useContext(FormCntxt);
-    const { data: company } = useGet({ key: ['company'], fetch: dropdown({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false } });
+    const { data: company } = useGet({ key: ['dd_company'], fetch: dropdown({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false } });
     const { data: department, mutate: menu, isLoading } = usePost({ fetch: dropdown });
     useGet({ key: ['pst_series'], fetch: series('tbl_position'), options: {}, onSuccess: (data) => { if(type === 'new') setValue('series_no', `PST-${formatter(parseInt(data) + 1, 7)}`); } });
 

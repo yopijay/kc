@@ -8,7 +8,7 @@ const Department = require('./tables/Department');
 const Position = require('./tables/Position');
 
 const login = (data) => { return new Users().login(data); }
-const logout = () => { return new Users().logout(data); }
+const logout = (data) => { return new Users().logout(data); }
 const profile = (id) => { return new Users().profile(id); }
 
 const dashboard = (table) => {
@@ -48,6 +48,7 @@ const search = (table, data) => {
             case 'tbl_company': resolve(await new Company().search(data)); break;
             case 'tbl_department': resolve(await new Department().search(data)); break;
             case 'tbl_position': resolve(await new Position().search(data)); break;
+            case 'tbl_users': resolve(await new Users().search(data)); break;
         }
     });
 }
@@ -69,6 +70,7 @@ const specific = (table, id) => {
             case 'tbl_company': resolve(await new Company().save(data)); break;
             case 'tbl_department': resolve(await new Department().save(data)); break;
             case 'tbl_position': resolve(await new Position().save(data)); break;
+            case 'tbl_users': resolve(await new Users().save(data)); break;
         }
     });
 }
@@ -99,6 +101,7 @@ const dropdown = (table, data) => {
             case 'tbl_users': resolve(await new Users().dropdown(data)); break;
             case 'tbl_company': resolve(await new Company().dropdown(data)); break;
             case 'tbl_department': resolve(await new Department().dropdown(data)); break;
+            case 'tbl_position': resolve(await new Position().dropdown(data)); break;
         }
     });
 }

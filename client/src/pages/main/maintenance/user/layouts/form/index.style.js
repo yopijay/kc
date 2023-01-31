@@ -74,3 +74,10 @@ export const textarea = {
     textTransform: 'uppercase',
     color: '#353b48'
 }
+
+export const label = {
+    border: 'solid 1px #dfe4ea', 
+    borderRadius: '5px', 
+    height: '44px', 
+    padding: '0 10px'
+}

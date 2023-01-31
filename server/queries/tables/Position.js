@@ -6,6 +6,13 @@ class Position {
     specific = async (id) => { return (await new Builder(`tbl_position`).select().condition(`WHERE id= ${id}`).build()).rows; }
     series = async () => { return (await new Builder(`tbl_position`).select(`COUNT(*)`).build()).rows; }
 
+    dropdown = async (data) => {
+        return (await new Builder(`tbl_position`)
+                                        .select(`id, name`)
+                                        .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id}`)
+                                        .build()).rows;
+    }
+
     dashboard = async () => {
         let summary = [];
         let _cmp = (await new Builder(`tbl_company`).select(`id, name`).condition(`WHERE status= 1 ORDER BY date_created ASC LIMIT 3`).build()).rows;

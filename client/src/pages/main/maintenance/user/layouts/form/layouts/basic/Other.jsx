@@ -1,5 +1,5 @@
 // Libraries
-import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Grid, Skeleton, Stack, TextareaAutosize, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import { FormCntxt } from "core/context/Form"; // Context
 
 // Constants
-import { date, input, select } from "../../index.style"; // Styles
+import { date, input, select, textarea } from "../../index.style"; // Styles
 const gender = [{ id: 'male', name: 'MALE' }, { id: 'female', name: 'FEMALE' }]; // Gender
 const cs = [{ id: 'single', name: 'SINGLE' }, { id: 'married', name: 'MARRIED' }, { id: 'widow', name: 'WIDOW' }]; // Civil Status
 
@@ -64,7 +64,7 @@ const Other = ({ fetching }) => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Typography variant= "body2">*Birthdate</Typography>
                     <Box sx= { date }>
-                        <Controller control= { control } name= "bidthdate"
+                        <Controller control= { control } name= "birthdate" defaultValue= { `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}` }
                             render= { ({ field: { onChange, value } }) => (
                                 <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                     <DatePicker 
@@ -75,6 +75,13 @@ const Other = ({ fetching }) => {
                             ) }>
                         </Controller>
                     </Box>
+                </Stack>
+            </Grid>
+            <Grid item xs= { 12 }>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+                    <Typography variant= "body2">Address</Typography>
+                    { fetching ? <Skeleton variant= "rectangular" height= "100px" sx= {{ borderRadius: '5px' }} /> : 
+                        <TextareaAutosize name= "address" { ...register('address') } minRows= { 4 } maxRows= { 4 } style= { textarea } disabled= { type === 'view' } /> }
                 </Stack>
             </Grid>
         </Grid>

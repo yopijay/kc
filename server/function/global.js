@@ -28,7 +28,10 @@ const audit = async (data) => {
 
 const randomizer = (length) => {
     let result = '';
-    for (let i = 0; i < length; i++) { result += ('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789').charAt(Math.floor(Math.random() * ('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789').length)); }
+    
+    for (let i = 0; i < length; i++) { 
+        result += ('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789').charAt(Math.floor(Math.random() * ('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789').length)); 
+    }
     return result;
 }
 
@@ -39,9 +42,12 @@ const compare = (_old, _new) => {
     return __old !== __new;
 }
 
+const series = ({ label, count, limit= 7 }) => { return `${label}${('0000000' + count).substr(('0000000' + count).length - limit)}`; }
+
 module.exports = { 
     randomizer,
     audit,
     date,
-    compare
+    compare,
+    series
 }

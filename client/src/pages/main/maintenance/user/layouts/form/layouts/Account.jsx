@@ -26,7 +26,7 @@ const Account = ({ fetching }) => {
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                         <Typography variant= "body2">*Password</Typography>
                         { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                            <TextField { ...register('password') } name= "password" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { true } sx= { input } /> }
+                            <TextField { ...register('password', { value: '' }) } name= "password" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { true } sx= { input } /> }
                         <Typography variant= "body2" sx= {{ color: '#e84118' }} gutterBottom>{ errors.password?.message }</Typography>
                     </Stack>
                 </Grid>
@@ -34,7 +34,7 @@ const Account = ({ fetching }) => {
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                         <Typography variant= "body2">*Confirm password</Typography>
                         { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                            <TextField { ...register('confirmpassword') } name= "confirmpassword" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { true } sx= { input } /> }
+                            <TextField { ...register('confirmpassword', { value: '' }) } name= "confirmpassword" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { true } sx= { input } /> }
                         <Typography variant= "body2" sx= {{ color: '#e84118' }} gutterBottom>{ errors.confirmpassword?.message }</Typography>
                     </Stack>
                 </Grid>

@@ -43,7 +43,7 @@ const Index = () => {
             }    
         });
 
-    useEffect(() => record({ table: 'tbl_users', data: { category: category, orderby: orderby, searchtxt: searchtxt }}), [ record, category, orderby, searchtxt ]);
+    useEffect(() => record({ table: 'tbl_users', data: { category: category, orderby: orderby, searchtxt: searchtxt, id: atob(localStorage.getItem('token')) }}), [ record, category, orderby, searchtxt ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
@@ -57,9 +57,8 @@ const Index = () => {
                         <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
                         <TextField variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
                             onChange= { e => {
-                                setSearchtxt(e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value);
-                                find({ table: 'tbl_users', data: { condition: e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value,
-                                                                                            category: category, orderby: orderby } }); } } />
+                                setSearchtxt(e.target.value);
+                                find({ table: 'tbl_users', data: { condition: e.target.value, category: category, orderby: orderby, id: atob(localStorage.getItem('token')) } }); } } />
                     </Box>
                 </form>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
