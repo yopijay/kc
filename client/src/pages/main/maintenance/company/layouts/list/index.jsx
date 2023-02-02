@@ -24,7 +24,7 @@ import Sort from "./layouts/Sort";
 const Index = () => {
     let name = `KC-EXPORT-COMPANY-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
-    const { orderby, category, searchtxt, setSearchtxt, message, setMessage, errors, setErrors } = useContext(GlobalCntx);
+    const { orderby, category, setCategory, searchtxt, setSearchtxt, message, setMessage, errors, setErrors } = useContext(GlobalCntx);
     const { data } = useContext(ProfileCntx);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: (data) => setList(data) });
@@ -45,7 +45,7 @@ const Index = () => {
             } 
         });
 
-    useEffect(() => record({ table: 'tbl_company', data: { category: category, orderby: orderby, searchtxt: searchtxt } }), [ record, category, orderby, searchtxt ]);
+    useEffect(() => { setCategory('date_created'); record({ table: 'tbl_company', data: { category: category, orderby: orderby, searchtxt: searchtxt } }); }, [ record, category, orderby, searchtxt ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>

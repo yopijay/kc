@@ -31,7 +31,7 @@ const Index = () => {
             specific({ table: 'tbl_users', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
-                    for(let count = 0; count < Object.keys(data[0]).length; count++) { 
+                    for(let count = 0; count < Object.keys(data[0]).length; count++) {
                         let _name = Object.keys(data[0])[count];
                         setValue(_name, data[0][_name]); 
                     } 

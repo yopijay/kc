@@ -37,8 +37,8 @@ const ctgy = {
     cursor: 'pointer'
 }
 
-const Sort = ({ refetch }) => {
-    const { orderby, setOrderby, category, setCategory, searchtxt } = useContext(GlobalCntx);
+const Sort = ({ refetch, setCategory, category }) => {
+    const { orderby, setOrderby, searchtxt } = useContext(GlobalCntx);
 
     useEffect(() => setCategory('5'), [ setCategory ]);
     return (

@@ -88,30 +88,30 @@ class Users {
         let date = Global.date(new Date());
         
         let series = (await new Builder(`tbl_users`).select(`COUNT(*)`).build()).rows[0];
-        let email = await new Builder(`tbl_users`).select().condition(`WHERE email= '${data.email}'`).build();
+        // let email = await new Builder(`tbl_users`).select().condition(`WHERE email= '${data.email}'`).build();
         let name = await new Builder(`tbl_employee`).select().condition(`WHERE fname= '${(data.fname).toUpperCase()}' AND lname= '${(data.lname).toUpperCase()}'`).build();
-        let employee_no = await new Builder(`tbl_employee`).select().condition(`WHERE employee_no= '${data.employee_no}'`).build();
-        let rfid = data.rfid === '' || data.rfid === '-' ? 0 : await new Builder(`tbl_employee`).select().condition(`WHERE rfid= '${data.rfid}'`).build();
+        // let employee_no = await new Builder(`tbl_employee`).select().condition(`WHERE employee_no= '${data.employee_no}'`).build();
+        // let rfid = data.rfid === '' || data.rfid === '-' ? 0 : await new Builder(`tbl_employee`).select().condition(`WHERE rfid= '${data.rfid}'`).build();
 
-        if(email.rowCount > 0) { errors.push({ name: 'email', message: 'Email already exist!'}); }
+        // if(email.rowCount > 0) { errors.push({ name: 'email', message: 'Email already exist!'}); }
         if(name.rowCount > 0) { errors.push({ name: 'lname', message: 'Name already exist!' }); }
-        if(employee_no.rowCount > 0) { errors.push({ name: 'employee_no', message: 'Employee no already used!' }); }
-        if(rfid.rowCount > 0) { errors.push({ name: 'rfid', message: 'RFID already used!' }); }
+        // if(employee_no.rowCount > 0) { errors.push({ name: 'employee_no', message: 'Employee no already used!' }); }
+        // if(rfid.rowCount > 0) { errors.push({ name: 'rfid', message: 'RFID already used!' }); }
 
         if(!(errors.length > 0)) {
             let usr = (await new Builder(`tbl_users`)
                                                 .insert({ columns: `series_no, email, contact_no, is_email_verified, is_contact_no_verified, user_level, is_logged, status, created_by, date_created`, 
-                                                                values: `'${Global.series({ label: `USR-`, count: series.count, limit: 7 })}', '${data.email}', '${data.mobile_no}', 0, 0, '${data.user_level}', 0, 1,
-                                                                ${data.created_by}, '${date}'` })
+                                                                values: `'${Global.series({ label: `USR-`, count: series.count, limit: 7 })}', ${data.email !== '' ? `'${data.email}'` : null}, 
+                                                                ${data.contact_no !== '' ? `'${data.contact_no}'` : null}, 0, 0, '${data.user_level}', 0, 1, ${data.created_by}, '${date}'` })
                                                 .condition(`RETURNING id`)
                                                 .build()).rows[0];
             await new Builder(`tbl_employee`)
                                 .insert({ columns: `user_id, employee_no, rfid, company_id, department_id, position_id, fname, mname, lname, branch, 
                                                                 employment_status, gender, civil_status, address, vacation_leave, sick_leave, birthdate, date_hired`, 
-                                            values: `${usr.id}, '${data.employee_no}', '${data.rfid}', ${data.company_id}, ${data.department_id}, ${data.position_id}, '${(data.fname).toUpperCase()}',
-                                                            ${data.mname !== '' ? `'${(data.mname).toUpperCase()}'` : null}, '${(data.lname).toUpperCase()}', '${data.branch}',
-                                                            '${data.employment_status}', '${data.gender}', '${data.civil_status}', ${data.address !== '' ? `'${(data.address).toUpperCase()}'` : null},
-                                                            ${data.vl}, ${data.sl}, '${data.birthdate}', '${data.date_hired}'` })
+                                            values: `${usr.id}, ${data.employee_no !== '' ? `'${data.employee_no}'` : null}, ${data.rfid !== '' ? `'${data.rfid}'` : null}, ${data.company_id}, ${data.department_id}, 
+                                                            ${data.position_id}, '${(data.fname).toUpperCase()}', ${data.mname !== '' ? `'${(data.mname).toUpperCase()}'` : null}, 
+                                                            '${(data.lname).toUpperCase()}', '${data.branch}', '${data.employment_status}', '${data.gender}', '${data.civil_status}', 
+                                                            ${data.address !== '' ? `'${(data.address).toUpperCase()}'` : null}, ${data.vl}, ${data.sl}, '${data.birthdate}', '${data.date_hired}'` })
                                 .build();
             
             audit.series_no = Global.randomizer(7);
@@ -138,11 +138,11 @@ class Users {
                                             .build()).rows[0];
 
         if(Global.compare(usr.email, data.email)) {
-            if((await new Builder(`tbl_users`).select().condition(`WHERE email= '${data.email}'`).build()).rowCount > 0) { _errors.push({ name: 'email', message: 'Email already used!' }); }
-            else {
-                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'email', previous: usr.email, 
-                                        current: data.email, action: 'update', user_id: data.updated_by, date: date });
-            }
+            // if((await new Builder(`tbl_users`).select().condition(`WHERE email= '${data.email}'`).build()).rowCount > 0) { _errors.push({ name: 'email', message: 'Email already used!' }); }
+            // else {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'email', previous: usr.email, 
+                                    current: data.email !== '' && data.email !== null ? data.email : null, action: 'update', user_id: data.updated_by, date: date });
+            // }
         }
         
         if(Global.compare(usr.fname, data.fname)) {
@@ -157,7 +157,7 @@ class Users {
 
         if(Global.compare(usr.mname, data.mname)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'mname', previous: usr.mname, 
-                                    current: data.mname !== '' ? (data.mname).toUpperCase() : null, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.mname !== '' && data.mname !== null ? (data.mname).toUpperCase() : null, action: 'update', user_id: data.updated_by, date: date });
         }
         
         if(Global.compare(usr.lname, data.lname)) {
@@ -171,13 +171,13 @@ class Users {
         }
 
         if(Global.compare(usr.contact_no, data.contact_no)) {
-            if((await new Builder(`tbl_users`).select().condition(`WHERE contact_no = '${data.contact_no}' `).build()).rowCount > 0) {
-                _errors.push({ name: 'contact_no', message: 'Contact no already used!' })
-            }
-            else {
-                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'contact_no', previous: usr.contact_no, 
-                                        current: data.contact_no, action: 'update', user_id: data.updated_by, date: date });
-            }
+            // if((await new Builder(`tbl_users`).select().condition(`WHERE contact_no = '${data.contact_no}' `).build()).rowCount > 0) {
+            //     _errors.push({ name: 'contact_no', message: 'Contact no already used!' })
+            // }
+            // else {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'contact_no', previous: usr.contact_no, 
+                                    current: data.contact_no !== '' && data.contact_no !== null ? data.contact_no : null, action: 'update', user_id: data.updated_by, date: date });
+            // }
         }
 
         if(Global.compare(usr.gender, data.gender)) {
@@ -197,7 +197,7 @@ class Users {
 
         if(Global.compare(usr.address, data.address)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'address', previous: usr.address, 
-                                    current: data.address !== '' ? (data.address).toUpperCase() : null, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.address !== '' && data.address !== null ? (data.address).toUpperCase() : null, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(Global.compare(usr.company_id, data.company_id)) {
@@ -216,25 +216,24 @@ class Users {
         }
 
         if(Global.compare(usr.employee_no, data.employee_no)) {
-            if(data.employee_no !== '' || data.employee_no !== '-') {
-                if((await new Builder(`tbl_employee`).select().condition(`WHERE employee_no= '${data.employee_no}'`).build()).rowCount > 0) {
-                    _errors.push({ name: 'employee_no', message: 'Employee no already used!' });
-                }
-            }
-
+            // if(data.employee_no !== '' && data.employee_no !== '-') {
+            //     if((await new Builder(`tbl_employee`).select().condition(`WHERE employee_no= '${data.employee_no}'`).build()).rowCount > 0) {
+            //         _errors.push({ name: 'employee_no', message: 'Employee no already used!' });
+            //     }
+            // }
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'employee_no', previous: usr.employee_no, 
-                                    current: data.employee_no, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.employee_no !== '' && data.employee_no !== null ? data.employee_no : null, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(Global.compare(usr.rfid, data.rfid)) {
-            if(data.rfid !== '' || data.rfid !== '-') {
-                if((await new Builder(`tbl_employee`).select().condition(`WHERE rfid= '${data.rfid}'`).build()).rowCount > 0) {
-                    _errors.push({ name: 'rfid', message: 'RFID already used!' });
-                }
-            }
+            // if(data.rfid !== '' && data.rfid !== '-') {
+            //     if((await new Builder(`tbl_employee`).select().condition(`WHERE rfid= '${data.rfid}'`).build()).rowCount > 0) {
+            //         _errors.push({ name: 'rfid', message: 'RFID already used!' });
+            //     }
+            // }
 
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'rfid', previous: usr.rfid, 
-                                    current: data.rfid, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.rfid !== '' && data.rfid !== null ? data.rfid : null, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(Global.compare(usr.branch, data.branch)) {
@@ -259,16 +258,20 @@ class Users {
         
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_users`)
-                                .update(`email= '${data.email}', contact_no= '${data.contact_no}', user_level= '${data.user_level}', updated_by= ${data.updated_by}, date_updated= '${date}'`)
+                                .update(`email= ${data.email !== '' && data.email !== null ? `'${data.email}'` : null}, 
+                                                contact_no= ${data.contact_no !== '' && data.contact_no !== null ? `'${data.contact_no}'` : null}, 
+                                                user_level= '${data.user_level}', updated_by= ${data.updated_by}, date_updated= '${date}'`)
                                 .condition(`WHERE id= ${usr.id}`)
                                 .build();
 
             await new Builder(`tbl_employee`)
-                                .update(`employee_no= ${data.employee_no !== '' ? `'${data.employee_no}'` : '-'}, rfid= ${data.rfid !== '' ? `'${data.rfid}'` : '-'},
+                                .update(`employee_no= ${data.employee_no !== '' && data.employee !== null ? `'${data.employee_no}'` : null}, 
+                                                rfid= ${data.rfid !== '' && data.rfid !== null ? `'${data.rfid}'` : null},
                                                 company_id= ${data.company_id}, department_id= ${data.department_id}, position_id= ${data.position_id},
-                                                fname= '${(data.fname).toUpperCase()}', mname= ${data.mname !== '' ? `'${(data.mname).toUpperCase()}'` : null},
+                                                fname= '${(data.fname).toUpperCase()}', mname= ${data.mname !== '' || data.mname !== null ? `'${(data.mname).toUpperCase()}'` : null},
                                                 lname= '${(data.lname).toUpperCase()}', branch= '${data.branch}', employment_status= '${data.employment_status}',
-                                                gender= '${data.gender}', civil_status= '${data.civil_status}', address= ${data.address !== '' ? `'${(data.address).toUpperCase()}'` : null},
+                                                gender= '${data.gender}', civil_status= '${data.civil_status}', 
+                                                address= ${data.address !== '' && data.address !== null ? `'${(data.address).toUpperCase()}'` : null},
                                                 birthdate= '${data.birthdate}', date_hired= '${data.date_hired}'`)
                                 .condition(`WHERE user_id= ${usr.id}`)
                                 .build();

@@ -1,5 +1,5 @@
 // Libraries
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, FormLabel, Stack, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { btnexport, btnicon, btnimport, btntxt, search } from "./index.style";
@@ -22,7 +22,8 @@ import Loader from "./layouts/Loader";
 const Index = () => {
     let name = `KC-EXPORT-USERS-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
-    const { orderby, category, searchtxt, setSearchtxt, message, setMessage, errors, setErrors } = useContext(GlobalCntx);
+    const { orderby, searchtxt, setSearchtxt, message, setMessage, errors, setErrors } = useContext(GlobalCntx);
+    const [ category, setCategory ] = useState(5);
     const { data } = useContext(ProfileCntx);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => setList(data) });
@@ -55,7 +56,7 @@ const Index = () => {
                 <form autoComplete= "off">
                     <Box sx= { search }>
                         <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
-                        <TextField variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
+                        <TextField variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }} defaultValue= { searchtxt }
                             onChange= { e => {
                                 setSearchtxt(e.target.value);
                                 find({ table: 'tbl_users', data: { condition: e.target.value, category: category, orderby: orderby, id: atob(localStorage.getItem('token')) } }); } } />
@@ -87,7 +88,7 @@ const Index = () => {
                     </Stack>
                 </Stack>
             </Stack>
-            <Sort refetch= { record } />
+            <Sort setCategory= { setCategory } category= { category } refetch= { record } />
             <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>{ !fetching && !finding ? <Item /> : <Loader /> }</Box>
         </Stack>
     );
