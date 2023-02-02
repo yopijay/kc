@@ -26,8 +26,8 @@ const Other = ({ fetching }) => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Typography variant= "body2">*Mobile no.</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('mobile_no') } name= "mobile_no" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" sx= {{ color: '#e84118' }} gutterBottom>{ errors.mobile_no?.message }</Typography>
+                        <TextField { ...register('contact_no') } name= "contact_no" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" sx= {{ color: '#e84118' }} gutterBottom>{ errors.contact_no?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 4 }>

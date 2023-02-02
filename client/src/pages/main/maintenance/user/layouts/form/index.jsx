@@ -27,7 +27,7 @@ const Index = () => {
     const navigate = useNavigate();
     const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
     const { isFetching, refetch } =
-        useGet({ key: ['dpt_specific'], fetch: 
+        useGet({ key: ['usr_specific'], fetch: 
             specific({ table: 'tbl_users', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
@@ -41,10 +41,7 @@ const Index = () => {
     const { mutate: saving } =
         usePost({ fetch: save,
             onSuccess: (data) => {
-                if(data.result === 'error') {
-                    (data.error).forEach((err, index) => { 
-                        setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); });
-                }
+                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { successToast(data.message, 3000, navigate('/maintenance/user', { replace: true })); }
             } 
         });
@@ -52,10 +49,7 @@ const Index = () => {
     const { mutate: updating } =
         usePost({ fetch: update,
             onSuccess: (data) => {
-                if(data.result === 'error') {
-                    (data.error).forEach((err, index) => { 
-                        setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); });
-                }
+                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { successToast(data.message, 3000, navigate('/maintenance/user', { replace: true })); }
             }
         });

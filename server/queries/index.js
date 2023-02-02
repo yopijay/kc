@@ -81,6 +81,7 @@ const update = (table, data) => {
            case 'tbl_company': resolve(await new Company().update(data)); break;
            case 'tbl_department': resolve(await new Department().update(data)); break;
            case 'tbl_position': resolve(await new Position().update(data)); break;
+           case 'tbl_users': resolve(await new Users().update(data)); break;
        }
    });
 }

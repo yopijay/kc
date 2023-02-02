@@ -40,7 +40,7 @@ const Index = () => {
                 setMessage(`${data.success} out of ${data.total} row/s successfully imported! ${data.fail} row/s failed!`);
                 setList(data.list);
                 setTimeout(() => { setMessage(''); setErrors([]); }, 5000);
-            }    
+            }
         });
 
     useEffect(() => record({ table: 'tbl_users', data: { category: category, orderby: orderby, searchtxt: searchtxt, id: atob(localStorage.getItem('token')) }}), [ record, category, orderby, searchtxt ]);
@@ -65,7 +65,7 @@ const Index = () => {
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing=  { 1 }>
                         { data.user_level === 'superadmin' ?
                             <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
-                                onChange= { async e => { uploadfile({ table: 'tbl_users', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : ''}
+                                onChange= { async e => { uploadfile({ table: 'tbl_users', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : '' }
                         { data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
                             <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF'}} size= "lg" />
                         </FormLabel> : '' }

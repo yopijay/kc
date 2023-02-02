@@ -1,6 +1,6 @@
 // Libraries
 import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
@@ -18,6 +18,15 @@ const Company = ({ fetching }) => {
     const { data: company } = useGet({ key: ['dd_company'], fetch: dropdown({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false } });
     const { data: department, mutate: dpt, dptloading } = usePost({ fetch: dropdown });
     const { data: position, mutate: pst, pstloading } = usePost({ fetch: dropdown });
+
+    useEffect(() => {
+        if(!fetching) {
+            if(type !== 'new') {
+                dpt({ table: 'tbl_department', data: { id: getValues().company_id } });
+                pst({ table: `tbl_position`, data: { company_id: getValues().company_id, department_id: getValues().department_id } });
+            }
+        }
+    }, [ fetching, type, dpt, pst, getValues ]);
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 }>
