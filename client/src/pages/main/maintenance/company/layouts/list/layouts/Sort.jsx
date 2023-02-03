@@ -47,30 +47,30 @@ const Sort = ({ refetch }) => {
                     <Typography sx= { ctgy } 
                         onClick= { () => { 
                             setCategory('name'); 
-                            refetch({ table: 'tbl_company', data: { category: 'name', orderby: orderby, searchtxt: searchtxt } }); } }>Date created</Typography> : 
+                            refetch({ table: 'tbl_company', data: { category: 'name', orderby: orderby, searchtxt: searchtxt, limit: 15 } }); } }>Date created</Typography> : 
                     category === 'name' ? 
                         <Typography sx= { ctgy } 
                             onClick= { () => { 
                                 setCategory('series_no'); 
-                                refetch({ table: 'tbl_company', data: { category: 'series_no', orderby: orderby, searchtxt: searchtxt } }); } }>Name</Typography> :
+                                refetch({ table: 'tbl_company', data: { category: 'series_no', orderby: orderby, searchtxt: searchtxt, limit: 15 } }); } }>Name</Typography> :
                         category === 'series_no' ? 
                             <Typography sx= { ctgy } 
                                 onClick= { () => { 
                                     setCategory('date_created'); 
-                                    refetch({ table: 'tbl_company', data: { category: 'date_created', orderby: orderby, searchtxt: searchtxt } }); } }>Series no</Typography> : '' }
+                                    refetch({ table: 'tbl_company', data: { category: 'date_created', orderby: orderby, searchtxt: searchtxt, limit: 15 } }); } }>Series no</Typography> : '' }
             </Stack>
             { orderby === 'asc' ? 
                 <Typography sx= { asc }>
                     <FontAwesomeIcon icon= { faArrowDownAZ } 
                         onClick= { () => { 
                             setOrderby('desc'); 
-                            refetch({ table: 'tbl_company', data: { category: category, orderby: 'desc', searchtxt: searchtxt } }); } } />
+                            refetch({ table: 'tbl_company', data: { category: category, orderby: 'desc', searchtxt: searchtxt, limit: 15 } }); } } />
                 </Typography> :
                 <Typography sx= { desc }>
                     <FontAwesomeIcon icon= { faArrowDownZA } 
                         onClick= { () => { 
                             setOrderby('asc'); 
-                            refetch({ table: 'tbl_company', data: { category: category, orderby: 'asc', searchtxt: searchtxt } }); } } />
+                            refetch({ table: 'tbl_company', data: { category: category, orderby: 'asc', searchtxt: searchtxt, limit: 15 } }); } } />
                 </Typography> }
         </Stack>
     );
