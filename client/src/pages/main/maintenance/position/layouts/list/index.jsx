@@ -45,7 +45,8 @@ const Index = () => {
             }    
         });
 
-    useEffect(() => { setCategory('date_created'); record({ table: 'tbl_position', data: { category: category, orderby: orderby, searchtxt: searchtxt } }); }, [ record, category, orderby, searchtxt ]);
+    useEffect(() => { 
+        setCategory('date_created'); record({ table: 'tbl_position', data: { category: category, orderby: orderby, searchtxt: searchtxt } }); }, [ record, category, orderby, searchtxt, setCategory ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>

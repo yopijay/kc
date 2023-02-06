@@ -1,7 +1,6 @@
 // Libraries
 import { Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
@@ -10,7 +9,6 @@ import { FormCntxt } from "core/context/Form"; // Context
 import { input } from "../index.style";
 
 const Benefits = ({ fetching }) => {
-    const { type } = useParams();
     const { register, errors } = useContext(FormCntxt);
 
     return (
