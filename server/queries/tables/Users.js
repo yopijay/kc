@@ -10,6 +10,24 @@ class Users {
                                         .condition(`WHERE usr.id= ${id}`)
                                         .build()).rows;
     }
+
+    dashboard = async () => {
+        let summary = [];
+        let _count = (await new Builder(`tbl_company`).select(`id, name`).condition(`WHERE status= 1 ORDER BY date_created ASC LIMIT 3`).build()).rows;
+
+        for(let count = 0; count < _count.length; count++) {
+            summary.push({ name: _count[count].name,
+                                        count: (await new Builder(`tbl_users AS usr`)
+                                                        .select(`COUNT(*)`)
+                                                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
+                                                        .condition(`WHERE emp.company_id= ${_count[count].id} AND usr.status= 1`).build()).rows[0].count });
+        }
+
+        return {
+            total: (await new Builder(`tbl_users`).select(`COUNT(*)`).build()).rows[0].count,
+            summary
+        }
+    }
     
     login = async (data) => {
         let email = await new Builder(`tbl_users`).select().condition(`WHERE email= '${data.email}'`).build();

@@ -1,6 +1,3 @@
-// Connection
-const db = require('../connection');
-
 // Tables
 const Users = require('./tables/Users');
 const Company = require('./tables/Company');
@@ -17,6 +14,7 @@ const dashboard = (table) => {
             case 'tbl_company': resolve(await new Company().dashboard()); break;
             case 'tbl_department': resolve(await new Department().dashboard()); break;
             case 'tbl_position': resolve(await new Position().dashboard()); break;
+            case 'tbl_users': resolve(await new Users().dashboard()); break;
         }
     });
 }

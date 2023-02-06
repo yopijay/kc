@@ -7,6 +7,9 @@ const Department = React.lazy(() => import('pages/main/maintenance/department'))
 const Position = React.lazy(() => import('pages/main/maintenance/position'));
 const User = React.lazy(() => import('pages/main/maintenance/user'));
 
+// Supplies
+const OfficeFurniture = React.lazy(() => import('pages/main/supplies/office-furniture'));
+
 export const Navs = () => ([
     {
         title: 'Main', nav: [
@@ -34,7 +37,7 @@ export const Navs = () => ([
     // },
     {
         title: 'Supplies', nav: [
-            { path: '/supplies/office-furniture', label: 'Office furniture', name: 'office-furniture', component: 'OFFICE FURNITURE' },
+            { path: '/supplies/office-furniture', label: 'Office furniture', name: 'office-furniture', component: <OfficeFurniture /> },
             { path: '/supplies/technology', label: 'Technology', name: 'technology', component: 'TECHNOLOGY' },
             { path: '/supplies/office-essentials', label: 'Office essentials', name: 'office-essentials', component: 'OFFICE ESSENTIALS' },
             { path: '/supplies/breakroom', label: 'Breakroom', name: 'breakroom', component: 'Breakroom' },
