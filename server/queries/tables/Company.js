@@ -3,9 +3,13 @@ const Global = require('../../function/global'); // Function
 
 const audit = { series_no: '', table_name: 'tbl_company',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class Company {
-    dropdown = async () => { return (await new Builder(`tbl_company`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows; }
     specific = async (id) => { return (await new Builder(`tbl_company`).select().condition(`WHERE id= ${id}`).build()).rows; }
     series = async () => { return (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows; }
+
+    dropdown = async () => { 
+        return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                        .concat((await new Builder(`tbl_company`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows); 
+    }
 
     dashboard = async () => {
         return {

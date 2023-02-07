@@ -7,10 +7,9 @@ class Position {
     series = async () => { return (await new Builder(`tbl_position`).select(`COUNT(*)`).build()).rows; }
 
     dropdown = async (data) => {
-        return (await new Builder(`tbl_position`)
-                                        .select(`id, name`)
-                                        .condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id}`)
-                                        .build()).rows;
+        return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                        .concat((await new Builder(`tbl_position`)
+                                            .select(`id, name`).condition(`WHERE company_id= ${data.company_id} AND department_id= ${data.department_id}`).build()).rows);
     }
 
     dashboard = async () => {

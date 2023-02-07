@@ -5,7 +5,11 @@ const audit = { series_no: '', table_name: 'tbl_department',  item_id: 0, field:
 class Department {
     specific = async (id) => { return (await new Builder(`tbl_department`).select().condition(`WHERE id= ${id}`).build()).rows; }
     series = async () => { return (await new Builder(`tbl_department`).select(`COUNT(*)`).build()).rows; }
-    dropdown = async (data) => { return (await new Builder(`tbl_department`).select(`id , name`).condition(`WHERE company_id= ${data.id} ORDER BY name ASC`).build()).rows; }
+    
+    dropdown = async (data) => { 
+        return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                        .concat((await new Builder(`tbl_department`).select(`id , name`).condition(`WHERE company_id= ${data.id} ORDER BY name ASC`).build()).rows); 
+    }
 
     dashboard = async () => {
         let summary = [];
