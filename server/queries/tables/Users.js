@@ -22,9 +22,9 @@ class Users {
                                                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
                                                         .condition(`WHERE emp.company_id= ${_count[count].id} AND usr.status= 1`).build()).rows[0].count });
         }
-
+        
         return {
-            total: (await new Builder(`tbl_users`).select(`COUNT(*)`).build()).rows[0].count,
+            total: (await new Builder(`tbl_users`).select(`id`).except(`WHERE id= 1`).build()).rowCount,
             summary
         }
     }

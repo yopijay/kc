@@ -33,3 +33,34 @@ export const btntxt = {
     transition: 'all 0.2s ease-in-out',
     '&:hover': { backgroundColor: '#1b405d' }
 }
+
+export const input = {
+    border: 'solid 1px #ced6e0',
+    padding: {
+        xs: '10px 8px 8px 8px',
+        md: '6px 10px 5px 10px'
+    },
+    borderRadius: '5px'
+}
+
+export const select = {
+    width: '100%',
+    border: 'solid 1px #dfe4ea',
+    padding: {
+        xs: '12px 8px 9px 8px',
+        md: '9px 10px 6px 10px'
+    },
+    marginBottom: '5px',
+    borderRadius: '5px'
+}
+
+export const textarea = {
+    border: 'solid 1px #ced6e0',
+    borderRadius: '5px',
+    fontFamily: 'Gilroy Light',
+    fontSize: '105%',
+    padding: '10px',
+    outline: 'none',
+    textTransform: 'uppercase',
+    color: '#353b48'
+}

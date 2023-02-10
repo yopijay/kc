@@ -42,7 +42,7 @@ const Index = () => {
         usePost({ fetch: save,
             onSuccess: (data) => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
-                else { successToast(data.message, 3000, navigate('/maintenance/user', { replace: true })); }
+                else { successToast(data.message, 3000, navigate('/user-roleaccess/user', { replace: true })); }
             } 
         });
 
@@ -50,7 +50,7 @@ const Index = () => {
         usePost({ fetch: update,
             onSuccess: (data) => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
-                else { successToast(data.message, 3000, navigate('/maintenance/user', { replace: true })); }
+                else { successToast(data.message, 3000, navigate('/user-roleaccess/user', { replace: true })); }
             }
         });
 
@@ -60,7 +60,7 @@ const Index = () => {
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Users</Typography>
-                <Typography sx= { btnicon } component= { Link } to= "/maintenance/user" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
+                <Typography sx= { btnicon } component= { Link } to= "/user-roleaccess/user" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" divider= { <Divider orientation= "horizontal" flexItem /> } sx= { card } spacing= { 2 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 2 }>

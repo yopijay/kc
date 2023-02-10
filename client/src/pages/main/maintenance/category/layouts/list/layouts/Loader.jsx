@@ -1,8 +1,6 @@
 // Libraries
-import { Skeleton, Stack } from "@mui/material";
-
-// Constants
-import { loader } from "../index.style"; // Styles
+import { Skeleton, Stack } from "@mui/material"
+import { loader } from "../index.style"
 
 const Loader = () => {
     return (
