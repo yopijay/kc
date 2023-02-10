@@ -34,7 +34,7 @@ export const Navs = () => ([
     },
     {
         title: 'Supplies', nav: [
-            { path: '/supplies', label: 'Supplies', name: 'supplies', component: 'SUPPLIES' }
+            { path: '/supplies', label: 'Supplies Registration', name: 'supplies-registration', component: 'SUPPLIES REGISTRATION' }
         ]
     },
     {

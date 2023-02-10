@@ -18,9 +18,9 @@ const Form = ({ fetching }) => {
     const { register, errors, getValues, check, setCheck, control, setValue, setError } = useContext(FormCntxt);
     const { data: category, mutate: menu, isLoading } = usePost({ fetch: dropdown });
     // const { data: category } = useGet({ key: ['ctgy_menu'], fetch: dropdown({ table: 'tbl_category', data: {} }), options: { refetchOnWindowFocus: false } });
-    useGet({ key: ['dpt_series'], fetch: series('tbl_brand'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `CTGY-${formatter(parseInt(data) + 1, 7)}`); } });
+    useGet({ key: ['brd_series'], fetch: series('tbl_brand'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `BRD-${formatter(parseInt(data) + 1, 7)}`); } });
 
-    useEffect(() => { menu({ table: 'tbl_category', data: { module: getValues().module } }); }, [ menu, getValues ]);
+    useEffect(() => { if(!fetching) { menu({ table: 'tbl_category', data: { module: getValues()?.module } }); } }, [ fetching, menu, getValues ]);
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>
