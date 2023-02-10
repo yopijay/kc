@@ -22,7 +22,7 @@ const Form = ({ fetching }) => {
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>
             <Grid item xs= { 12 } sm= { 8 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom>*Series No.</Typography>
+                    <Typography gutterBottom variant= "body2">*Series No.</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <TextField { ...register('series_no') } name= "series_no" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { true } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.series_no?.message }</Typography>
@@ -30,7 +30,7 @@ const Form = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 6 } md= { 7 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom>*Owner</Typography>
+                    <Typography gutterBottom variant= "body2">*Owner</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= { select }>
                             { owner?.length > 0 ? 
@@ -52,7 +52,7 @@ const Form = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 6 } md= { 5 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom>*Name</Typography>
+                    <Typography gutterBottom variant= "body2">*Name</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <TextField { ...register('name') } name= "name" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.name?.message }</Typography>
@@ -60,21 +60,21 @@ const Form = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom>Description</Typography>
+                    <Typography gutterBottom variant= "body2">Description</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "100px" /> : 
                         <TextareaAutosize name= "description" { ...register('description') } disabled= { type === 'view' } minRows= { 4 } maxRows= { 4 } style= { textarea } /> }
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom>Address</Typography>
+                    <Typography gutterBottom variant= "body2">Address</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "100px" /> : 
                         <TextareaAutosize name= "address" { ...register('address') } disabled= { type === 'view' } minRows= { 4 } maxRows= { 4 } style= { textarea } /> }
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom>Status</Typography>
+                    <Typography gutterBottom variant= "body2">Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                             <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 

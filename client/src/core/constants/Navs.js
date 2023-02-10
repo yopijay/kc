@@ -5,10 +5,11 @@ import React from 'react';
 const Company = React.lazy(() => import('pages/main/maintenance/company'));
 const Department = React.lazy(() => import('pages/main/maintenance/department'));
 const Position = React.lazy(() => import('pages/main/maintenance/position'));
-const User = React.lazy(() => import('pages/main/maintenance/user'));
+const Category = React.lazy(() => import('pages/main/maintenance/category'));
+const Brand = React.lazy(() => import('pages/main/maintenance/brand'));
 
-// Supplies
-const OfficeFurniture = React.lazy(() => import('pages/main/supplies/office-furniture'));
+// User & Role Access
+const User = React.lazy(() => import('pages/main/user-roleaccess/user'));
 
 export const Navs = () => ([
     {
@@ -27,28 +28,24 @@ export const Navs = () => ([
             { path: '/maintenance/company', label: 'Company', name: 'company', component: <Company /> },
             { path: '/maintenance/department', label: 'Department', name: 'department', component: <Department /> },
             { path: '/maintenance/position', label: 'Position', name: 'position', component: <Position /> },
-            { path: '/maintenance/user', label: 'User', name: 'user', component: <User /> },
+            { path: '/maintenance/category', label: 'Category', name: 'category', component: <Category /> },
+            { path: '/maintenance/brand', label: 'Brand', name: 'brand', component: <Brand /> },
         ]
     },
-    // {
-    //     title: 'Warehouse', nav: [
-    //         { path: '/warehouse/products', label: 'Products', name: 'products', component: 'PRODUCTS' },
-    //     ]
-    // },
     {
         title: 'Supplies', nav: [
-            { path: '/supplies/office-furniture', label: 'Office furniture', name: 'office-furniture', component: <OfficeFurniture /> },
-            { path: '/supplies/technology', label: 'Technology', name: 'technology', component: 'TECHNOLOGY' },
-            { path: '/supplies/office-essentials', label: 'Office essentials', name: 'office-essentials', component: 'OFFICE ESSENTIALS' },
-            { path: '/supplies/breakroom', label: 'Breakroom', name: 'breakroom', component: 'Breakroom' },
+            { path: '/supplies', label: 'Supplies', name: 'supplies', component: 'SUPPLIES' }
         ]
     },
-    // {
-    //     title: 'Assets', nav: [
-    //         { path: '/assets/category', label: 'Category', name: 'category', component: 'Category' },
-    //         { path: '/assets/brand', label: 'Brand', name: 'brand', component: 'brand' },
-    //         { path: '/assets/asset-registration', label: 'Asset Registration', name: 'asset-registration', component: 'ASSET REGISTRATION' },
-    //         { path: '/assets/asset-issuance', label: 'Asset Issuance', name: 'asset-issuance', component: 'ASSET ISSUANCE' },
-    //     ]
-    // }
+    {
+        title: 'Assets', nav: [
+            { path: '/assets/asset-registration', label: 'Asset Registration', name: 'asset-registration', component: 'ASSET REGISTRATION' },
+            { path: '/assets/asset-issuance', label: 'Asset Issuance', name: 'asset-issuance', component: 'ASSET ISSUANCE' },
+        ]
+    },
+    {
+        title: 'User Role & Access', nav: [
+            { path: '/user-roleaccess/user', label: 'User', name: 'user', component: <User /> },
+        ]
+    },
 ])

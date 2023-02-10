@@ -92,6 +92,11 @@ class Category {
     upload = async (data) => {
         return [];
     }
+
+    dropdown = async (data) => {
+        return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                        .concat((await new Builder(`tbl_category`).select(`id, name`).condition(`WHERE module= '${data.module}' AND status= 1 ORDER BY name ASC`).build()).rows);
+    }
 }
 
 module.exports = Category;
