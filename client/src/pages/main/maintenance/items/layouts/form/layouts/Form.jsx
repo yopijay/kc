@@ -17,7 +17,7 @@ const Form = ({ fetching }) => {
     const { type } = useParams();
     const { register, errors, getValues, check, setCheck, control, setValue, setError } = useContext(FormCntxt);
     const { data: category, mutate: menu, isLoading } = usePost({ fetch: dropdown });
-    useGet({ key: ['brd_series'], fetch: series('tbl_brand'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `BRD-${formatter(parseInt(data) + 1, 7)}`); } });
+    useGet({ key: ['itm_series'], fetch: series('tbl_items'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `ITM-${formatter(parseInt(data) + 1, 7)}`); } });
 
     useEffect(() => { if(!fetching) { menu({ table: 'tbl_category', data: { module: getValues()?.module } }); } }, [ fetching, menu, getValues ]);
 
@@ -68,7 +68,7 @@ const Form = ({ fetching }) => {
                                     <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>Please select a module first!</Typography>
                                 : <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>Loading...</Typography> }
                         </Box> }
-                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.category_id?.message }</Typography>
+                    <Typography variant= "body2" color= "error.dark">{ errors.category_id?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 6 } md= { 6 }>

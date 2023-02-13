@@ -60,7 +60,7 @@ const Index = () => {
                             <TextField variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
                                 onChange= { e => { 
                                     setSearchtxt(e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value); 
-                                    find({ table: 'tbl_brand', data: { condition: e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value,
+                                    find({ table: 'tbl_assets', data: { condition: e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value,
                                                                                                 category: category, orderby: orderby } }); } } />
                         </Box>
                     </form>
@@ -68,14 +68,14 @@ const Index = () => {
                         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
                             { data.user_level === 'superadmin' ?
                                 <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
-                                    onChange= { async e => { uploadfile({ table: 'tbl_brand', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : ''}
+                                    onChange= { async e => { uploadfile({ table: 'tbl_assets', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : ''}
                             { data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
                                 <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF'}} size= "lg" />
                             </FormLabel> : '' }
                             <Typography 
                                 onClick= { () => { 
-                                    if(data.user_level === 'superadmin') { original({ table: 'tbl_brand', type: 'original', condition: { orderby: orderby, category: category } }); } 
-                                    formatted({ table: 'tbl_brand', type: 'formatted', condition: { orderby: orderby, category: category, searchtxt: searchtxt } }); }} sx= { btnexport }>
+                                    if(data.user_level === 'superadmin') { original({ table: 'tbl_assets', type: 'original', condition: { orderby: orderby, category: category } }); } 
+                                    formatted({ table: 'tbl_assets', type: 'formatted', condition: { orderby: orderby, category: category, searchtxt: searchtxt } }); }} sx= { btnexport }>
                                 <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
                             <Typography component= { Link } to= "/assets/asset-registration/form/new" sx= { btnicon }>
