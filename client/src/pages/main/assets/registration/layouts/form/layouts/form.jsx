@@ -7,16 +7,17 @@ import { Controller } from "react-hook-form";
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
 import { dropdown, series } from "core/api"; // API
-import { formatter, useGet } from "core/function/global"; // Function
+import { formatter, useGet, usePost } from "core/function/global"; // Function
 
 // Constants
 import { input, select } from "../index.style"; // Styles
+import Types from "./types";
 
 const Form = ({ fetching }) => {
     const { type } = useParams();
     const { register, errors, getValues, check, setCheck, control, setValue, setError } = useContext(FormCntxt);
-    // const { data: head } = useGet({ key: ['head'], fetch: dropdown({ table: 'tbl_users', data: {} }), options: { refetchOnWindowFocus: false } });
-    // const { data: company } = useGet({ key: ['company'], fetch: dropdown({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false } });
+    const { data: category } = useGet({ key: ['ctgy_dropdown'], fetch: dropdown({ table: `tbl_category`, data: { module: 'assets' } }), options: { refetchOnWindowFocus: false } });
+    const { data: items, mutate: menu, isLoading } = usePost({ fetch: dropdown });
     useGet({ key: ['asst_series'], fetch: series('tbl_assets'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `QIM-${formatter(parseInt(data) + 1, 7)}`); } });
 
     return (
@@ -30,48 +31,52 @@ const Form = ({ fetching }) => {
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 6 } md= { 7 }>
-                {/* <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">*Category</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= { select }>
-                            { company?.length > 0 ? 
-                                <Controller control= { control } name= "company_id" defaultValue= { 0 }
+                            { category?.length > 0 ? 
+                                <Controller control= { control } name= "category_id" defaultValue= { 0 }
                                     render= { ({ field: { onChange, value } }) => (
-                                        <Autocomplete options= { company?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
-                                            getOptionLabel= { company => company.name || company.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                        <Autocomplete options= { category?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                            getOptionLabel= { category => category.name || category.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
                                             isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
-                                            onChange= { (e, item) => { setError('company_id', { message: '' }); onChange(item.id); } }
+                                            onChange= { (e, item) => { setError('category_id', { message: '' }); onChange(item.id); menu({ table: `tbl_items`, data: { category_id: item.id } }); } }
                                             renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
-                                            value= { company?.find(data => { return data.id === (getValues().company_id !== undefined ? getValues().company_id : value) }) !== undefined ?
-                                                company?.find(data => { return data.id === (getValues().company_id !== undefined ? getValues().company_id : value) }) : company.length === 0 ?
-                                                { id: 0, name: '-- SELECT AN ITEM BELOW --' } : company[0] } />
-                                    ) } /> : <Typography color= "text.disabled">You must create a user first!</Typography> }
+                                            value= { category?.find(data => { return data.id === (getValues().category_id !== undefined ? getValues().category_id : value) }) !== undefined ?
+                                                category?.find(data => { return data.id === (getValues().category_id !== undefined ? getValues().category_id : value) }) : category.length === 0 ?
+                                                { id: 0, name: '-- SELECT AN ITEM BELOW --' } : category[0] } />
+                                    ) } /> : <Typography color= "text.disabled">You must create a category first!</Typography> }
                         </Box> }
-                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.company_id?.message }</Typography>
-                </Stack> */}
+                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.category_id?.message }</Typography>
+                </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 6 } md= { 5 }>
-                {/* <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">*Brand</Typography>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                    <Typography gutterBottom variant= "body2">*Category</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= { select }>
-                            { head?.length > 0 ? 
-                                <Controller control= { control } name= "department_head_id" defaultValue= { 0 }
-                                    render= { ({ field: { onChange, value } }) => (
-                                        <Autocomplete options= { head?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable getOptionLabel= { head => head.name || head.id } 
-                                            noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
-                                            isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
-                                            onChange= { (e, item) => { setError('department_head_id', { message: '' }); onChange(item.id); } }
-                                            renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
-                                            value= { head?.find(data => { return data.id === (getValues().department_head_id !== undefined ? getValues().department_head_id : value) }) !== undefined ?
-                                                head?.find(data => { return data.id === (getValues().department_head_id !== undefined ? getValues().department_head_id : value) }) : head.length === 0 ?
-                                                { id: 0, name: '-- SELECT AN ITEM BELOW --' } : head[0] } />
-                                    ) } /> : <Typography color= "text.disabled">You must create a user first!</Typography> }
-                        </Box>
-                    }
-                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.department_head_id?.message }</Typography>
-                </Stack> */}
+                            { !isLoading ?
+                                items !== undefined ?
+                                    items?.length > 0 ? 
+                                        <Controller control= { control } name= "item_id" defaultValue= { 0 }
+                                            render= { ({ field: { onChange, value } }) => (
+                                                <Autocomplete options= { items?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                                    getOptionLabel= { items => items.name || items.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                                    isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
+                                                    onChange= { (e, item) => { setError('item_id', { message: '' }); onChange(item.id); } }
+                                                    renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
+                                                    value= { items?.find(data => { return data.id === (getValues().item_id !== undefined ? getValues().item_id : value) }) !== undefined ?
+                                                        items?.find(data => { return data.id === (getValues().item_id !== undefined ? getValues().item_id : value) }) : items.length === 0 ?
+                                                        { id: 0, name: '-- SELECT AN ITEM BELOW --' } : items[0] } />
+                                            ) } /> : <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>You must create a items first!</Typography> : 
+                                    <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>Please select a module first!</Typography>
+                                : <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>Loading...</Typography> }
+                        </Box> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.item_id?.message }</Typography>
+                </Stack>
             </Grid>
+            <Grid item xs= { 12 }><Types /></Grid>
             <Grid item xs= { 12 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Status</Typography>
