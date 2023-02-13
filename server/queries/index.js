@@ -6,6 +6,7 @@ const Position = require('./tables/Position');
 const Supplies = require('./tables/Supplies');
 const Category = require('./tables/Category');
 const Brand = require('./tables/Brand');
+const Assets = require('./tables/Assets');
 
 const login = (data) => { return new Users().login(data); }
 const logout = (data) => { return new Users().logout(data); }
@@ -19,7 +20,7 @@ const dashboard = (table) => {
             case 'tbl_position': resolve(await new Position().dashboard()); break;
             case 'tbl_users': resolve(await new Users().dashboard()); break;
             case 'tbl_category': resolve(await new Category().dashboard()); break;
-            case 'tbl_brand': resolve(await new Brand().dashboard()); break;
+            case 'tbl_assets': resolve(await new Assets().dashboard()); break;
         }
     });
 }
@@ -32,6 +33,7 @@ const excel = (table, type, data) => {
             case 'tbl_position': resolve(await new Position().excel(type)); break;
             case 'tbl_category': resolve(await new Category().excel(type, data)); break;
             case 'tbl_brand': resolve(await new Brand().excel(type, data)); break;
+            case 'tbl_assets': resolve(await new Assets().excel(type, data)); break;
         }
     });
 }
@@ -46,6 +48,7 @@ const list = (table, data) => {
             case 'tbl_supplies': resolve(await new Supplies().list(data)); break;
             case 'tbl_category': resolve(await new Category().list(data)); break;
             case 'tbl_brand': resolve(await new Brand().list(data)); break;
+            case 'tbl_assets': resolve(await new Assets().list(data)); break;
         }
     });
 }
@@ -59,6 +62,7 @@ const search = (table, data) => {
             case 'tbl_users': resolve(await new Users().search(data)); break;
             case 'tbl_category': resolve(await new Category().search(data)); break;
             case 'tbl_brand': resolve(await new Brand().search(data)); break;
+            case 'tbl_assets': resolve(await new Assets().search(data)); break;
         }
     });
 }
@@ -72,6 +76,7 @@ const specific = (table, id) => {
             case 'tbl_users': resolve(await new Users().specific(id)); break;
             case 'tbl_category': resolve(await new Category().specific(id)); break;
             case 'tbl_brand': resolve(await new Brand().specific(id)); break;
+            case 'tbl_assets': resolve(await new Assets().specific(id)); break;
         }
     });
 }
@@ -85,6 +90,7 @@ const specific = (table, id) => {
             case 'tbl_users': resolve(await new Users().save(data)); break;
             case 'tbl_category': resolve(await new Category().save(data)); break;
             case 'tbl_brand': resolve(await new Brand().save(data)); break;
+            case 'tbl_assets': resolve(await new Assets().save(data)); break;
         }
     });
 }
@@ -98,6 +104,7 @@ const update = (table, data) => {
            case 'tbl_users': resolve(await new Users().update(data)); break;
            case 'tbl_category': resolve(await new Category().update(data)); break;
            case 'tbl_brand': resolve(await new Brand().update(data)); break;
+           case 'tbl_assets': resolve(await new Assets().update(data)); break;
        }
    });
 }
@@ -110,6 +117,7 @@ const series = (table) => {
             case 'tbl_position': resolve(await new Position().series()); break;
             case 'tbl_category': resolve(await new Category().series()); break;
             case 'tbl_brand': resolve(await new Brand().series()); break;
+            case 'tbl_assets': resolve(await new Assets().series()); break;
         }
     });
 }
@@ -123,6 +131,7 @@ const dropdown = (table, data) => {
             case 'tbl_position': resolve(await new Position().dropdown(data)); break;
             case 'tbl_category': resolve(await new Category().dropdown(data)); break;
             case 'tbl_brand': resolve(await new Brand().dropdown(data)); break;
+            case 'tbl_assets': resolve(await new Assets().dropdown(data)); break;
         }
     });
 }
@@ -135,6 +144,7 @@ const upload = (table, data) => {
             case 'tbl_position': resolve(new Position().upload(data)); break;
             case 'tbl_category': resolve(new Category().update(data)); break;
             case 'tbl_brand': resolve(new Brand().update(data)); break;
+            case 'tbl_assets': resolve(new Assets().update(data)); break;
         }
     });
 }

@@ -37,7 +37,19 @@ class Category {
         switch(type) {
             case 'formatted':
                 return (await new Builder(`tbl_category AS ctgy`)
-                                                .select(`ctgy.series_no "Series No.", ctgy.module AS "Module", ctgy.name AS "Name", `))
+                                                .select(`ctgy.series_no AS "Series No.", ctgy.module AS "Module", ctgy.name AS "Name", 
+                                                                CASE WHEN ctgy.status =1 THEN 'Active' ELSE 'Inactive' END AS "Status",
+                                                                CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", ctgy.date_created AS "Date created", 
+                                                                CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", ctgy.date_updated AS "Date updated",
+                                                                CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", ctgy.date_deleted AS "Date deleted", 
+                                                                CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", ctgy.date_imported AS "Date imported"`)
+                                                .join({ table: `tbl_employee AS cb`, condition: `ctgy.created_by = cb.user_id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS ub`, condition: `ctgy.updated_by = ub.user_id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS db`, condition: `ctgy.deleted_by = db.user_id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS ib`, condition: `ctgy.imported_by = ib.user_id`, type: `LEFT` })
+                                                .condition(`WHERE ctgy.series_no LIKE '%${data.searchtxt}%' OR ctgy.name LIKE '%${data.searchtxt}%'
+                                                                    ORDER BY ctgy.${data.category} ${(data.orderby).toUpperCase()}`)
+                                                .build()).rows;
             default: return (await new Builder(`tbl_category`).select().condition(`ORDER by ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
         }
     }
@@ -86,7 +98,42 @@ class Category {
     }
 
     update = async (data) => {
-        return [];
+        let ctgy = (await new Builder(`tbl_category`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
+        let date = Global.date(new Date());
+        let _audit = [];
+        let _errors = [];
+
+        if(Global.compare(ctgy.module, data.module)) {
+            if(!((await new Builder(`tbl_category`).select().condition(`WHERE module= '${data.module}' AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category',  item_id: ctgy.id, 
+                                        field: 'module', previous: ctgy.module, current: data.module, action: 'update', user_id: data.updated_by, date: date });
+            }
+            else { _errors.push({ name: 'name', message: 'Category exist in this module!' }); }
+        }
+
+        if(Global.compare(ctgy.name, data.name)) {
+            if(!((await new Builder(`tbl_category`).select().condition(`WHERE module= '${data.module}' AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category',  item_id: ctgy.id, 
+                                        field: 'name', previous: ctgy.name, current: (data.name).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+            }
+            else { _errors.push({ name: 'name', message: 'Category exist in this module!' }); }
+        }
+
+        if(Global.compare(ctgy.status, data.status ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category',  item_id: ctgy.id, 
+                                    field: 'status', previous: ctgy.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(!(_errors.length > 0)) {
+            await new Builder(`tbl_category`)
+                                .update(`module= '${data.module}', name= '${(data.name).toUpperCase()}', status= ${data.status ? 1: 0}, updated_by= ${data.updated_by},
+                                                date_updated= '${date}'`)
+                                .condition(`WHERE id= ${ctgy.id}`)
+                                .build();
+            _audit.forEach(data => Global.audit(data));
+            return { result: 'success', message: 'Successfully updated!' }
+        }
+        else { return { result: 'error', error: _errors } }
     }
 
     upload = async (data) => {

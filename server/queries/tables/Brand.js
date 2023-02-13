@@ -12,10 +12,6 @@ class Brand {
                                         .condition(`WHERE brd.id= ${id}`).build()).rows;
     }
 
-    dashboard = async () => {
-        return [];
-    }
-
     list = async (data) => {
         return (await new Builder(`tbl_brand AS brd`)
                                         .select(`brd.id, brd.series_no, ctg.module, ctg.name AS category, brd.name, brd.status, 
@@ -29,7 +25,26 @@ class Brand {
     }
 
     excel = async (type, data) => {
-        return [];
+        switch(type) {
+            case 'formatted':
+                return (await new Builder(`tbl_brand AS brd`)
+                                                .select(`brd.series_no AS "Series No.", ctgy.module AS "Module", ctgy.name AS "Category", brd.name AS "Name", 
+                                                                CASE WHEN brd.status =1 THEN 'Active' ELSE 'Inactive' END AS "Status",
+                                                                CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", brd.date_created AS "Date created", 
+                                                                CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", brd.date_updated AS "Date updated",
+                                                                CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", brd.date_deleted AS "Date deleted", 
+                                                                CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", brd.date_imported AS "Date imported"`)
+                                                .join({ table: `tbl_category AS ctgy`, condition: `brd.category_id = ctgy.id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS cb`, condition: `brd.created_by = cb.user_id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS ub`, condition: `brd.updated_by = ub.user_id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS db`, condition: `brd.deleted_by = db.user_id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS ib`, condition: `brd.imported_by = ib.user_id`, type: `LEFT` })
+                                                .condition(`WHERE brd.series_no LIKE '%${data.searchtxt}%' OR brd.name LIKE '%${data.searchtxt}%' OR
+                                                                        ctgy.module LIKE '%${data.searchtxt}%' OR ctgy.name LIKE '%${data.searchtxt}%'
+                                                                        ORDER BY brd.${data.category} ${(data.orderby).toUpperCase()}`)
+                                                .build()).rows;
+            default: return (await new Builder(`tbl_brand`).select().condition(`ORDER by ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
+        }
     }
 
     search = async (data) => {
@@ -77,7 +92,42 @@ class Brand {
     }
 
     update = async (data) => {
-        return [];
+        let brd = (await new Builder(`tbl_brand`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
+        let date = Global.date(new Date());
+        let _audit = [];
+        let _errors= [];
+
+        if(Global.compare(brd.category_id, data.category_id)) {
+            if(!((await new Builder(`tbl_brand`).select().condition(`WHERE category_id= ${data.category_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_brand',  item_id: brd.id, 
+                                field: 'name', previous: brd.category_id, current: data.category_id, action: 'update', user_id: data.updated_by, date: date });
+            }
+            else { _errors.push({ name: 'name', message: 'Brand already exist in this category!' }); }
+        }
+
+        if(Global.compare(brd.name, data.name)) {
+            if(!((await new Builder(`tbl_brand`).select().condition(`WHERE category_id= ${data.category_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_brand',  item_id: brd.id, 
+                                field: 'name', previous: brd.name, current: (data.name).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+            }
+            else { _errors.push({ name: 'name', message: 'Brand already exist in this category!' }); }
+        }
+
+        if(Global.compare(brd.status, data.status ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_brand',  item_id: brd.id, 
+                            field: 'status', previous: brd.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(!(_errors.length > 0)) {
+            await new Builder(`tbl_brand`)
+                                .update(`category_id= ${data.category_id}, name= '${(data.name).toUpperCase()}', status= ${data.status ? 1: 0}, updated_by= ${data.updated_by},
+                                                date_updated= '${date}'`)
+                                .condition(`WHERE id= ${brd.id}`)
+                                .build();
+            _audit.forEach(data => Global.audit(data));
+            return { result: 'success', message: 'Successfully updated!' }
+        }
+        else { return { result: 'error', error: _errors } }
     }
 
     upload = async (data) => {

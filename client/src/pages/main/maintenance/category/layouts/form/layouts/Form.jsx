@@ -30,8 +30,8 @@ const Form = ({ fetching }) => {
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 6 } md= { 7 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Typography variant= "body2">*Module</Typography>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                    <Typography variant= "body2" gutterBottom>*Module</Typography>
                     <Box sx= { select }>
                         <Controller control= { control } name= "module" defaultValue= "supplies"
                                 render= { ({ field: { onChange, value } }) => (

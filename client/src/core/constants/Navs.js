@@ -8,6 +8,9 @@ const Position = React.lazy(() => import('pages/main/maintenance/position'));
 const Category = React.lazy(() => import('pages/main/maintenance/category'));
 const Brand = React.lazy(() => import('pages/main/maintenance/brand'));
 
+// Assets
+const AssetRegistration = React.lazy(() => import('pages/main/assets/registration'));
+
 // User & Role Access
 const User = React.lazy(() => import('pages/main/user-roleaccess/user'));
 
@@ -39,7 +42,7 @@ export const Navs = () => ([
     },
     {
         title: 'Assets', nav: [
-            { path: '/assets/asset-registration', label: 'Asset Registration', name: 'asset-registration', component: 'ASSET REGISTRATION' },
+            { path: '/assets/asset-registration', label: 'Asset Registration', name: 'asset-registration', component: <AssetRegistration /> },
             { path: '/assets/asset-issuance', label: 'Asset Issuance', name: 'asset-issuance', component: 'ASSET ISSUANCE' },
         ]
     },
