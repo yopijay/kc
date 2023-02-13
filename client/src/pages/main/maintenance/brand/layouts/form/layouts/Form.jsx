@@ -17,7 +17,6 @@ const Form = ({ fetching }) => {
     const { type } = useParams();
     const { register, errors, getValues, check, setCheck, control, setValue, setError } = useContext(FormCntxt);
     const { data: category, mutate: menu, isLoading } = usePost({ fetch: dropdown });
-    // const { data: category } = useGet({ key: ['ctgy_menu'], fetch: dropdown({ table: 'tbl_category', data: {} }), options: { refetchOnWindowFocus: false } });
     useGet({ key: ['brd_series'], fetch: series('tbl_brand'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `BRD-${formatter(parseInt(data) + 1, 7)}`); } });
 
     useEffect(() => { if(!fetching) { menu({ table: 'tbl_category', data: { module: getValues()?.module } }); } }, [ fetching, menu, getValues ]);
@@ -38,7 +37,7 @@ const Form = ({ fetching }) => {
                     <Box sx= { select }>
                         <Controller control= { control } name= "module" defaultValue= "supplies"
                                 render= { ({ field: { onChange, value } }) => (
-                                    <Autocomplete options= { module } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
+                                    <Autocomplete options= { module } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type !== 'new' }
                                         noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                         renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
                                         onChange= { (e, item) => { onChange(item.id); menu({ table: 'tbl_category', data: { module: getValues().module } }); } }
