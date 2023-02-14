@@ -115,6 +115,14 @@ class Category {
             else { _errors.push({ name: 'name', message: 'Category exist in this module!' }); }
         }
 
+        if(Global.compare(ctgy.tag, data.tag)) {
+            if(!((await new Builder(`tbl_category`).select().condition(`WHERE tag= '${(data.tag).toUpperCase()}'`).build()).rowCount > 0)) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category',  item_id: ctgy.id, 
+                                        field: 'tag', previous: ctgy.tag, current: (data.tag).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+            }
+            else { _errors.push({ name: 'tag', message: 'Tag already used in other category!' }); }
+        }
+
         if(Global.compare(ctgy.name, data.name)) {
             if(!((await new Builder(`tbl_category`).select().condition(`WHERE module= '${data.module}' AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
                 _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category',  item_id: ctgy.id, 
@@ -130,8 +138,8 @@ class Category {
 
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_category`)
-                                .update(`module= '${data.module}', name= '${(data.name).toUpperCase()}', status= ${data.status ? 1: 0}, updated_by= ${data.updated_by},
-                                                date_updated= '${date}'`)
+                                .update(`module= '${data.module}', name= '${(data.name).toUpperCase()}', tag= '${(data.tag).toUpperCase()}', 
+                                                status= ${data.status ? 1: 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
                                 .condition(`WHERE id= ${ctgy.id}`)
                                 .build();
             _audit.forEach(data => Global.audit(data));
@@ -146,7 +154,7 @@ class Category {
 
     dropdown = async (data) => {
         return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
-                        .concat((await new Builder(`tbl_category`).select(`id, name`).condition(`WHERE module= '${data.module}' AND status= 1 ORDER BY name ASC`).build()).rows);
+                        .concat((await new Builder(`tbl_category`).select(`id, name, tag`).condition(`WHERE module= '${data.module}' AND status= 1 ORDER BY name ASC`).build()).rows);
     }
 }
 

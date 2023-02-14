@@ -23,15 +23,15 @@ import Sort from "./layouts/Sort";
 import Dashboard from "./layouts/Dashboard";
 
 const Index = () => {
-    let name = `KC-EXPORT-ITEMS-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
+    let name = `KC-EXPORT-SUB-CATEGORY-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
     const { orderby, category, searchtxt, setSearchtxt, message, setMessage, errors, setErrors } = useContext(GlobalCntx);
     const { data } = useContext(ProfileCntx);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => setList(data) });
 
-    const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) =>  exporttoexcel(data, 'Items', `${name} (Admin's copy)`) });
-    const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Items', `${name}`) });
+    const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) =>  exporttoexcel(data, 'Sub-category', `${name} (Admin's copy)`) });
+    const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Sub-category', `${name}`) });
 
     const { mutate: uploadfile, isLoading: uploading } =
         usePost({ fetch: upload,
@@ -51,7 +51,7 @@ const Index = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Items</Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Sub category</Typography>
                 <Dashboard />
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                     <form autoComplete= "off">
@@ -81,7 +81,7 @@ const Index = () => {
                             <Typography component= { Link } to= "/maintenance/sub-category/form/new" sx= { btnicon }>
                                 <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
-                            <Typography component= { Link } to= "/maintenance/sub-category/form/new" sx= { btntxt }>New Item</Typography>
+                            <Typography component= { Link } to= "/maintenance/sub-category/form/new" sx= { btntxt }>New Sub Category</Typography>
                         </Stack>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                             <Typography variant= "body2" sx= {{ color: '#557153', textAlign: 'right' }}>{ message }</Typography>
