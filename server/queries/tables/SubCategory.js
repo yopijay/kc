@@ -165,7 +165,7 @@ class SubCategory {
 
     dropdown = async (data) => {
         return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
-                        .concat((await new Builder(`tbl_sub_category`).select(`id, name`).condition(`WHERE category_id= ${data.category_id} AND status= 1 ORDER BY name ASC`).build()).rows);
+                        .concat((await new Builder(`tbl_sub_category`).select(`id, name, tag`).condition(`WHERE category_id= ${data.category_id} AND status= 1 ORDER BY name ASC`).build()).rows);
     }
 }
 

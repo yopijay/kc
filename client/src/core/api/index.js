@@ -17,3 +17,4 @@ export const series = async (table) => { return await api({ url: `${Env[env].url
 export const look = async ({ table, data }) => { return await api({ url: `${Env[env].url}/search/${table}`, method: 'post', data: data }).then(res => res.data); }
 export const excel = async ({ table, type, condition }) => { return await api({ url: `${Env[env].url}/excel/${table}/${type}`, method: 'post', data: condition }).then(res => res.data); }
 export const upload = async ({ table, data }) => { return await api({ url: `${Env[env].url}/upload/${table}`, method: 'post', data: data }).then(res => res.data); }
+export const assettag = async ({ table, data }) => { return await api({ url: `${Env[env].url}/assettag/${table}`, method: 'post', data: data }).then(res => res.data); }

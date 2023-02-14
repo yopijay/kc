@@ -18,5 +18,6 @@ router.get('/series/:table', (req, res) => { query.series(req.params.table).then
 router.post('/search/:table', (req, res) => { query.search(req.params.table, req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
 router.post('/excel/:table/:type', (req, res) => { query.excel(req.params.table, req.params.type, req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
 router.post('/upload/:table', (req, res) => { query.upload(req.params.table, req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
+router.post('/assettag/:table', (req, res) => { query.assettag(req.params.table, req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
 
 module.exports = router;

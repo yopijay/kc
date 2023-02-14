@@ -36,14 +36,14 @@ const Dashboard = () => {
             </Grid>
             { !isFetching ? 
                 (count.summary).map((summ, index) => (
-                    <Grid item xs= { 3 } sx= {{ padding: '0 5px' }} key= { index}>
+                    <Grid item xs= { 4 } sm= { 3 } sx= {{ padding: '0 5px' }} key= { index}>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                             <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${summ.count < 10 ? '0' : ''}${summ.count}` }</Typography>
                             <Typography variant= "body1" sx= { label }>{ (summ.name).toUpperCase() }</Typography>
                         </Stack>
                     </Grid>
                 )) : 
-                <Grid item xs= { 3 } sx= {{ padding: '0 5px' }}>
+                <Grid item xs= { 4 } sm= { 3 } sx= {{ padding: '0 5px' }}>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} />
                         <Skeleton variant= "text" sx= { label } />

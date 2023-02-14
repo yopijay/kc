@@ -19,7 +19,7 @@ const App = () => {
         <Router>
             <QueryClientProvider client= { client }>
                 <GlobalPrvdr><Routes><Route path= "*" element= { localStorage.getItem('token') ? <ProfilePrvdr><Main /></ProfilePrvdr> : <Account /> } /></Routes></GlobalPrvdr>
-                <ReactQueryDevtools initialIsOpen= { false } position= "bottom-right" />
+                {/* <ReactQueryDevtools initialIsOpen= { false } position= "bottom-right" /> */}
             </QueryClientProvider>
         </Router> 
     ); 

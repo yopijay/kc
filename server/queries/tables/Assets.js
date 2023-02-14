@@ -5,6 +5,11 @@ const audit = { series_no: '', table_name: 'tbl_assets',  item_id: 0, field: '',
 class Assets {
     series = async () => { return (await new Builder(`tbl_assets`).select(`COUNT(*)`).build()).rows; }
 
+    assettag = async (data) => {
+        return ((await new Builder(`tbl_assets`).select()
+                                        .condition(`WHERE category_id= ${data.category_id} AND sub_category_id= ${data.sub_category_id}`)
+                                        .build()).rowCount).toString(); }
+
     dashboard = async () => {
         return {
             total: (await new Builder(`tbl_assets`).select(`COUNT(*)`).build()).rows[0].count,
@@ -23,13 +28,13 @@ class Assets {
 
     list = async (data) => {
         return (await new Builder(`tbl_assets AS assts`)
-                                        .select(`assts.id, assts.series_no, ctgy.name AS category, brd.name AS brand, assts.type, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
+                                        .select(`assts.id, assts.series_no, ctgy.name AS category, brd.name AS brand, assts.asset_tag, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
                                                         info.serial_no, info.model, info.sku, assts.date_created`)
                                         .join({ table: `tbl_category AS ctgy`, condition: `assts.category_id = ctgy.id`, type: `LEFT` })
                                         .join({ table: `tbl_sub_category AS brd`, condition: `assts.sub_category_id = brd.id`, type: `LEFT` })
                                         .join({ table: `tbl_assets_info AS info`, condition: `info.assets_id = assts.id`, type: `LEFT` })
                                         .join({ table: `tbl_employee AS cb`, condition: `assts.created_by = cb.user_id`, type: `LEFT` })
-                                        .condition(`${data.searchtxt !== '' ? `WHERE assts.series_no LIKE '%${data.searchtxt}%' OR assts.type LIKE '%${data.searchtxt}%'
+                                        .condition(`${data.searchtxt !== '' ? `WHERE assts.series_no LIKE '%${data.searchtxt}%' OR assts.asset_tag LIKE '%${data.searchtxt}%'
                                                                 OR info.serial_no LIKE '%${data.searchtxt}%' OR info.model LIKE '%${data.searchtxt}%' OR info.sku LIKE '%${data.searchtxt}%'` : ''}
                                                                 ORDER BY assts.${data.category} ${(data.orderby).toUpperCase()}`)
                                         .build()).rows;
@@ -51,7 +56,7 @@ class Assets {
                                                 .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = assts.updated_by`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS db`, condition: `db.user_id = assts.deleted_by`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = assts.imported_by`, type: `LEFT` })
-                                                .condition(`WHERE assts.series_no LIKE '%${data.searchtxt}%' OR assts.type LIKE '%${data.searchtxt}%'
+                                                .condition(`WHERE assts.series_no LIKE '%${data.searchtxt}%' OR assts.asset_tag LIKE '%${data.searchtxt}%'
                                                                         OR info.serial_no LIKE '%${data.searchtxt}%' OR info.model LIKE '%${data.searchtxt}%' OR info.sku LIKE '%${data.searchtxt}%'
                                                                         ORDER BY assts.${data.category} ${(data.orderby).toUpperCase()}`)
                                                 .build()).rows;
@@ -65,20 +70,24 @@ class Assets {
 
     search = async (data) => {
         return (await new Builder(`tbl_assets AS assts`)
-                                        .select(`assts.id, assts.series_no, ctgy.name AS category, brd.name AS brand, assts.type, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
+                                        .select(`assts.id, assts.series_no, ctgy.name AS category, brd.name AS brand, assts.asset_tag, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
                                                         info.serial_no, info.model, info.sku, assts.date_created`)
                                         .join({ table: `tbl_category AS ctgy`, condition: `assts.category_id = ctgy.id`, type: `LEFT` })
                                         .join({ table: `tbl_sub_category AS brd`, condition: `assts.sub_category_id = brd.id`, type: `LEFT` })
                                         .join({ table: `tbl_assets_info AS info`, condition: `info.assets_id = assts.id`, type: `LEFT` })
                                         .join({ table: `tbl_employee AS cb`, condition: `assts.created_by = cb.user_id`, type: `LEFT` })
-                                        .condition(`WHERE assts.series_no LIKE '%${data.searchtxt}%' OR assts.type LIKE '%${data.searchtxt}%'
+                                        .condition(`WHERE assts.series_no LIKE '%${data.searchtxt}%' OR assts.asset_tag LIKE '%${data.searchtxt}%'
                                                                 OR info.serial_no LIKE '%${data.searchtxt}%' OR info.model LIKE '%${data.searchtxt}%' OR info.sku LIKE '%${data.searchtxt}%'
                                                                 ORDER BY assts.${data.category} ${(data.orderby).toUpperCase()}`)
                                         .build()).rows;
     }
 
     save = async (data) => {
-        return [];
+        let date = Global.date(new Date());
+        let errors = [];
+
+        if(await new Builder(`tbl_assets`).select().condition(`WHERE `))
+        return data;
     }
 
     update = async (data) => {

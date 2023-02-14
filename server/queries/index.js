@@ -12,6 +12,14 @@ const login = (data) => { return new Users().login(data); }
 const logout = (data) => { return new Users().logout(data); }
 const profile = (id) => { return new Users().profile(id); }
 
+const assettag = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_assets': resolve(await new Assets().assettag(data)); break;
+        }
+    });
+}
+
 const dashboard = (table) => {
     return new Promise(async resolve => {
         switch(table) {
@@ -163,5 +171,6 @@ module.exports = {
     series,
     search,
     excel,
-    upload
+    upload,
+    assettag
 }

@@ -33,19 +33,16 @@ const Index = () => {
     const { mutate: saving } = 
         usePost({ fetch: save, 
             onSuccess: (data) => {
-                if(data.result === 'error') { 
-                    (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); 
-                }
-                else { successToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true })); } 
+                console.log(data);
+                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
+                // else { successToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true })); } 
             } 
         });
 
     const { mutate: updating } = 
         usePost({ fetch: update, 
             onSuccess: (data) => {
-                if(data.result === 'error') { 
-                    (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); 
-                }
+                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { successToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true })); } 
             } 
         });
@@ -64,7 +61,9 @@ const Index = () => {
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
-                            console.log(data);
+                            
+                            if(type === 'new') { saving({ table: 'tbl_assets', data: data }); }
+                            else { updating({ table: 'tbl_assets', data: data }); }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }
