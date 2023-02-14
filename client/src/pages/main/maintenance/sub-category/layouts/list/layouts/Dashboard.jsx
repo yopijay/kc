@@ -23,7 +23,7 @@ const label = {
 }
 
 const Dashboard = () => {
-    const { data: count, isFetching } = useGet({ key: ['brd_dashboard'], fetch: dashboard('tbl_items') });
+    const { data: count, isFetching } = useGet({ key: ['brd_dashboard'], fetch: dashboard('tbl_sub_category') });
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: '5px 0' }}>

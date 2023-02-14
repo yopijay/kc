@@ -6,7 +6,7 @@ const Company = React.lazy(() => import('pages/main/maintenance/company'));
 const Department = React.lazy(() => import('pages/main/maintenance/department'));
 const Position = React.lazy(() => import('pages/main/maintenance/position'));
 const Category = React.lazy(() => import('pages/main/maintenance/category'));
-const Items = React.lazy(() => import('pages/main/maintenance/items'));
+const SubCategory = React.lazy(() => import('pages/main/maintenance/sub-category'));
 
 // Assets
 const AssetRegistration = React.lazy(() => import('pages/main/assets/registration'));
@@ -32,7 +32,7 @@ export const Navs = () => ([
             { path: '/maintenance/department', label: 'Department', name: 'department', component: <Department /> },
             { path: '/maintenance/position', label: 'Position', name: 'position', component: <Position /> },
             { path: '/maintenance/category', label: 'Category', name: 'category', component: <Category /> },
-            { path: '/maintenance/items', label: 'Items', name: 'item', component: <Items /> },
+            { path: '/maintenance/sub-category', label: 'Sub-category', name: 'sub-category', component: <SubCategory /> },
         ]
     },
     {

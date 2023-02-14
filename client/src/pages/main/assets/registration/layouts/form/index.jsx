@@ -20,7 +20,7 @@ const Index = () => {
     const navigate = useNavigate();
     const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
     const { isFetching, refetch } =  
-        useGet({ key: ['dpt_specific'], fetch: specific({ table: 'tbl_department', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
+        useGet({ key: ['assts_specific'], fetch: specific({ table: 'tbl_assets', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
@@ -36,7 +36,7 @@ const Index = () => {
                 if(data.result === 'error') { 
                     (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); 
                 }
-                else { successToast(data.message, 3000, navigate('/maintenance/department', { replace: true })); } 
+                else { successToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true })); } 
             } 
         });
 
@@ -46,7 +46,7 @@ const Index = () => {
                 if(data.result === 'error') { 
                     (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); 
                 }
-                else { successToast(data.message, 3000, navigate('/maintenance/department', { replace: true })); } 
+                else { successToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true })); } 
             } 
         });
 

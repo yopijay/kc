@@ -52,6 +52,15 @@ const Form = ({ fetching }) => {
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.name?.message }</Typography>
                 </Stack>
             </Grid>
+            <Grid item xs= { 12 } sm= { 6 } md= { 5 }>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                    <Typography gutterBottom variant= "body2">*Tag</Typography>
+                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
+                        <TextField { ...register('tag') } name= "tag" variant= "standard" InputProps= {{ disableUnderline: true }} 
+                            inputProps= {{ maxLength: 4 }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.tag?.message }</Typography>
+                </Stack>
+            </Grid>
             <Grid item xs= { 12 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Status</Typography>

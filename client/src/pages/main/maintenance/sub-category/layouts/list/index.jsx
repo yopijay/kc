@@ -46,7 +46,7 @@ const Index = () => {
             }    
         });
 
-    useEffect(() => record({ table: 'tbl_items', data: { category: category, orderby: orderby, searchtxt: searchtxt }}), [ record, category, orderby, searchtxt ]);
+    useEffect(() => record({ table: 'tbl_sub_category', data: { category: category, orderby: orderby, searchtxt: searchtxt }}), [ record, category, orderby, searchtxt ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
@@ -60,7 +60,7 @@ const Index = () => {
                             <TextField variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
                                 onChange= { e => { 
                                     setSearchtxt(e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value); 
-                                    find({ table: 'tbl_items', data: { condition: e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value,
+                                    find({ table: 'tbl_sub_category', data: { condition: e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value,
                                                                                                 category: category, orderby: orderby } }); } } />
                         </Box>
                     </form>
@@ -68,20 +68,20 @@ const Index = () => {
                         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
                             { data.user_level === 'superadmin' ?
                                 <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
-                                    onChange= { async e => { uploadfile({ table: 'tbl_items', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : ''}
+                                    onChange= { async e => { uploadfile({ table: 'tbl_sub_category', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : ''}
                             { data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
                                 <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF'}} size= "lg" />
                             </FormLabel> : '' }
                             <Typography 
                                 onClick= { () => { 
-                                    if(data.user_level === 'superadmin') { original({ table: 'tbl_items', type: 'original', condition: { orderby: orderby, category: category } }); } 
-                                    formatted({ table: 'tbl_items', type: 'formatted', condition: { orderby: orderby, category: category, searchtxt: searchtxt } }); }} sx= { btnexport }>
+                                    if(data.user_level === 'superadmin') { original({ table: 'tbl_sub_category', type: 'original', condition: { orderby: orderby, category: category } }); } 
+                                    formatted({ table: 'tbl_sub_category', type: 'formatted', condition: { orderby: orderby, category: category, searchtxt: searchtxt } }); }} sx= { btnexport }>
                                 <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
-                            <Typography component= { Link } to= "/maintenance/items/form/new" sx= { btnicon }>
+                            <Typography component= { Link } to= "/maintenance/sub-category/form/new" sx= { btnicon }>
                                 <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
-                            <Typography component= { Link } to= "/maintenance/items/form/new" sx= { btntxt }>New Item</Typography>
+                            <Typography component= { Link } to= "/maintenance/sub-category/form/new" sx= { btntxt }>New Item</Typography>
                         </Stack>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                             <Typography variant= "body2" sx= {{ color: '#557153', textAlign: 'right' }}>{ message }</Typography>

@@ -25,7 +25,7 @@ class Category {
 
     list = async (data) => {
         return (await new Builder(`tbl_category AS ctgy`)
-                                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
+                                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.tag, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
                                                         ctgy.date_created`)
                                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = ctgy.created_by`, type: 'LEFT' })
                                         .condition(`${data.searchtxt !== '' ? `WHERE ctgy.series_no LIKE '%${data.searchtxt}%' OR ctgy.name LIKE '%${data.searchtxt}%'` : ''} 
@@ -37,7 +37,7 @@ class Category {
         switch(type) {
             case 'formatted':
                 return (await new Builder(`tbl_category AS ctgy`)
-                                                .select(`ctgy.series_no AS "Series No.", ctgy.module AS "Module", ctgy.name AS "Name", 
+                                                .select(`ctgy.series_no AS "Series No.", ctgy.module AS "Module", ctgy.tag AS "Tag", ctgy.name AS "Name", 
                                                                 CASE WHEN ctgy.status =1 THEN 'Active' ELSE 'Inactive' END AS "Status",
                                                                 CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", ctgy.date_created AS "Date created", 
                                                                 CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", ctgy.date_updated AS "Date updated",
@@ -56,7 +56,7 @@ class Category {
 
     search = async (data) => {
         return (await new Builder(`tbl_category AS ctgy`)
-                                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
+                                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.tag, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
                                                         ctgy.date_created`)
                                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = ctgy.created_by`, type: 'LEFT' })
                                         .condition(`WHERE ctgy.series_no LIKE '%${data.condition}%' OR ctgy.name LIKE '%${data.condition}%' 
@@ -72,15 +72,19 @@ class Category {
             errors.push({ name: 'series_no', message: 'Series number already used!' });
         }
 
+        if((await new Builder(`tbl_category`).select().condition(`WHERE tag= '${(data.tag).toUpperCase()}'`).build()).rowCount > 0) {
+            errors.push({ name: 'tag', message: 'Tag already used in other category!' });
+        }
+
         if((await new Builder(`tbl_category`).select().condition(`WHERE module= '${data.module}' AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
             errors.push({ name: 'name', message: 'Category already exist in this module!' });
         }
 
         if(!(errors.length > 0)) {
             let ctgy = (await new Builder(`tbl_category`)
-                                                .insert({ columns: `series_no, module, name, status, created_by, date_created`, 
-                                                                values: `'${(data.series_no).toUpperCase()}', '${data.module}', '${(data.name).toUpperCase()}', ${data.status ? 1 : 0},
-                                                                                    ${data.created_by}, '${date}'` })
+                                                .insert({ columns: `series_no, module, name, tag, status, created_by, date_created`, 
+                                                                values: `'${(data.series_no).toUpperCase()}', '${data.module}', '${(data.name).toUpperCase()}', '${(data.tag).toUpperCase()}',
+                                                                                ${data.status ? 1 : 0}, ${data.created_by}, '${date}'` })
                                                 .condition(`RETURNING id`)
                                                 .build()).rows[0];
             

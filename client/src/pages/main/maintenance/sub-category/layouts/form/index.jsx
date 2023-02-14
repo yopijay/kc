@@ -21,7 +21,7 @@ const Index = () => {
     const navigate = useNavigate();
     const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
     const { isFetching, refetch } =  
-        useGet({ key: ['itm_specific'], fetch: specific({ table: 'tbl_items', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
+        useGet({ key: ['itm_specific'], fetch: specific({ table: 'tbl_sub_category', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
@@ -35,7 +35,7 @@ const Index = () => {
         usePost({ fetch: save, 
             onSuccess: (data) => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
-                else { successToast(data.message, 3000, navigate('/maintenance/items', { replace: true })); } 
+                else { successToast(data.message, 3000, navigate('/maintenance/sub-category', { replace: true })); } 
             } 
         });
 
@@ -43,7 +43,7 @@ const Index = () => {
         usePost({ fetch: update, 
             onSuccess: (data) => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
-                else { successToast(data.message, 3000, navigate('/maintenance/items', { replace: true })); } 
+                else { successToast(data.message, 3000, navigate('/maintenance/sub-category', { replace: true })); } 
             } 
         });
 
@@ -53,7 +53,7 @@ const Index = () => {
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Items</Typography>
-                <Typography sx= { btnicon } component= { Link } to= "/maintenance/items" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
+                <Typography sx= { btnicon } component= { Link } to= "/maintenance/sub-category" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
             <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { input }><Form fetching= { isFetching } /></ThemeProvider></form></Box>
             { type !== 'view' ?
@@ -63,8 +63,8 @@ const Index = () => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
 
                             if(data.category_id !== undefined) {
-                                if(type === 'new') { saving({ table: 'tbl_items', data: data }); }
-                                else { updating({ table: 'tbl_items', data: data }); }
+                                if(type === 'new') { saving({ table: 'tbl_sub_category', data: data }); }
+                                else { updating({ table: 'tbl_sub_category', data: data }); }
                             } else { setError('category_id', { message: 'This field is required!' }); }
                         }) }>Save</Box>
                     </Grid>

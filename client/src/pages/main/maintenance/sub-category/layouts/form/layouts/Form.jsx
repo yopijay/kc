@@ -17,7 +17,7 @@ const Form = ({ fetching }) => {
     const { type } = useParams();
     const { register, errors, getValues, check, setCheck, control, setValue, setError } = useContext(FormCntxt);
     const { data: category, mutate: menu, isLoading } = usePost({ fetch: dropdown });
-    useGet({ key: ['itm_series'], fetch: series('tbl_items'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `ITM-${formatter(parseInt(data) + 1, 7)}`); } });
+    useGet({ key: ['itm_series'], fetch: series('tbl_sub_category'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `ITM-${formatter(parseInt(data) + 1, 7)}`); } });
 
     useEffect(() => { if(!fetching) { menu({ table: 'tbl_category', data: { module: getValues()?.module } }); } }, [ fetching, menu, getValues ]);
 
