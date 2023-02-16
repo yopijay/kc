@@ -26,7 +26,20 @@ export const formatter = (num, size) => { return (`000000${num}`).substr((`00000
 
 export const successToast = (message, duration = 3000, navigate) => {
     return toast.success(message, {
-        position: 'bottom-right',
+        position: 'bottom-left',
+        autoClose: duration,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        onClose: () => navigate
+    });
+}
+
+export const infoToast = (message, duration = 3000, navigate) => {
+    return toast.info(message, {
+        position: 'bottom-left',
         autoClose: duration,
         hideProgressBar: false,
         closeOnClick: true,

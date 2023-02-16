@@ -20,6 +20,14 @@ const assettag = (table, data) => {
     });
 }
 
+const filter = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_sub_category': resolve(await new SubCategory().filter(data)); break;
+        }
+    });
+}
+
 const dashboard = (table) => {
     return new Promise(async resolve => {
         switch(table) {
@@ -172,5 +180,6 @@ module.exports = {
     search,
     excel,
     upload,
-    assettag
+    assettag,
+    filter
 }

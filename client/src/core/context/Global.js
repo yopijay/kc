@@ -9,6 +9,7 @@ export const GlobalPrvdr = (props) => {
     const [ category, setCategory ] = useState('date_created');
     const [ searchtxt, setSearchtxt ] = useState('');
     const [ message, setMessage ] = useState('');
+    const [ filters, setFilters ] = useState({});
     const [ errors, setErrors ] = useState([]);
     const [ isActive, setActive ] = useState(localStorage.getItem('nav'));
 
@@ -21,7 +22,7 @@ export const GlobalPrvdr = (props) => {
     return (
         <GlobalCntx.Provider 
             value= {{ open, drawerToggle, container, isActive, setActive, setOpen, orderby, setOrderby, category, setCategory, 
-                            searchtxt, setSearchtxt, message, setMessage, errors, setErrors }}>
+                            searchtxt, setSearchtxt, message, setMessage, errors, setErrors, filters, setFilters }}>
             { children }
         </GlobalCntx.Provider>
     )

@@ -167,6 +167,15 @@ class SubCategory {
         return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
                         .concat((await new Builder(`tbl_sub_category`).select(`id, name, tag`).condition(`WHERE category_id= ${data.category_id} AND status= 1 ORDER BY name ASC`).build()).rows);
     }
+
+    filter = async (data) => {
+        let ctgy = (await new Builder(`tbl_category`).select('id').condition(`WHERE module= '${data.module}'`).build()).rows;
+        let condition = '';
+
+        ctgy.forEach((data, index) => condition += `${index !== 0 ? 'OR ' : ''}category_id= ${data.id} `);
+        
+        return [{ id: 'all', name: 'ALL' }].concat((await new Builder(`tbl_sub_category`).select(`id, name`).condition(`WHERE ${condition}`).build()).rows);
+    }
 }
 
 module.exports = SubCategory;

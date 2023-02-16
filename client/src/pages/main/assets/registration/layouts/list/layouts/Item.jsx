@@ -36,24 +36,24 @@ const Item = () => {
     const { list } = useContext(ListCntxt);
 
     return (
-        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 2 } sx= {{ padding: '0 0 40px 0', overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>
+        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } sx= {{ padding: '0 0 40px 0', overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>
             { list.length > 0 ?
                 list?.map((data, index) => (
                     <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= { item } spacing= { 2 }>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
-                            <Typography variant= "body1" sx= {{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{ data.name }</Typography>
+                            <Typography variant= "body1" sx= {{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{ data.asset_tag }</Typography>
                             <Typography variant= "body2" sx= { txt }>#{ data.series_no }</Typography>
-                            <Typography variant= "body2" sx= { txt }>{ (data.module)?.toUpperCase() } - { data.category }</Typography>
+                            <Typography variant= "body2" sx= { txt }>{ data.category } - { data.sub_category }</Typography>
                             <Typography variant= "body2" sx= { txt }>{ data.date_created }</Typography>
                         </Stack>
                         <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
                             { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
                                 <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
-                                <Typography sx= { icons } component= { Link } to= { `/maintenance/brand/form/update/${data.id}` }>
+                                <Typography sx= { icons } component= { Link } to= { `/assets/asset-registration/form/update/${data.id}` }>
                                     <FontAwesomeIcon icon= { faPencil } size= "lg" />
                                 </Typography>
-                                <Typography sx= { icons } component= { Link } to= { `/maintenance/brand/form/view/${data.id}` }>
+                                <Typography sx= { icons } component= { Link } to= { `/assets/asset-registration/form/view/${data.id}` }>
                                     <FontAwesomeIcon icon= { faEye } size= "lg" />
                                 </Typography>
                             </Stack>

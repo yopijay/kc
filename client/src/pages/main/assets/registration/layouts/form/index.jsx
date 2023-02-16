@@ -7,7 +7,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 // Core
 import { save, specific, update } from "core/api"; // API
 import { FormCntxt } from "core/context/Form"; // Context
-import { successToast, useGet, usePost } from "core/function/global"; // Function
+import { infoToast, successToast, useGet, usePost } from "core/function/global"; // Function
 import { input } from "core/theme/form.theme"; // Themes
 
 // Constants
@@ -33,9 +33,11 @@ const Index = () => {
     const { mutate: saving } = 
         usePost({ fetch: save, 
             onSuccess: (data) => {
-                console.log(data);
-                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
-                // else { successToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true })); } 
+                switch(data.result) {
+                    case 'error': (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); break;
+                    case 'maintenance': infoToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true })); break;
+                    default: successToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true }))
+                }
             } 
         });
 
@@ -43,14 +45,14 @@ const Index = () => {
         usePost({ fetch: update, 
             onSuccess: (data) => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
-                else { successToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true })); } 
+                // else { successToast(data.message, 3000, navigate('/assets/asset-registration', { replace: true })); } 
             } 
         });
 
     useEffect(() => { setValidation(Validation()); if(id !== undefined) { refetch(); } }, [ setValidation, id, refetch ]);
 
     return (
-        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
+        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 1.5 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Assets</Typography>
                 <Typography sx= { btnicon } component= { Link } to= "/assets/asset-registration" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>

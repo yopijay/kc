@@ -66,31 +66,33 @@ const OfficeDesk = ({ fetching, tag }) => {
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography variant= "body2" gutterBottom>Appearance</Typography>
-                    <Box sx= { select }>
-                        <Controller control= { control } name= "assymbly_required"
-                                render= { ({ field: { onChange } }) => (
-                                    <Autocomplete options= { appearance } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
-                                        noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
-                                        renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
-                                        onChange= { (e, item) => { onChange(item.id); } }
-                                        value= { appearance.find(data => { return data.id === (getValues().assymbly_required !== undefined ? getValues().assymbly_required : 'good') }) } />
-                                ) } />
-                    </Box>
+                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
+                        <Box sx= { select }>
+                            <Controller control= { control } name= "appearance"
+                                    render= { ({ field: { onChange, value } }) => (
+                                        <Autocomplete options= { appearance } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
+                                            noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
+                                            renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
+                                            onChange= { (e, item) => { onChange(item.id); } }
+                                            value= { appearance.find(data => { return data.id === (getValues().appearance !== undefined ? getValues().appearance : value) }) } />
+                                    ) } />
+                        </Box> }
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography variant= "body2" gutterBottom>With Side table</Typography>
-                    <Box sx= { select }>
-                        <Controller control= { control } name= "with_sidetable"
-                                render= { ({ field: { onChange } }) => (
-                                    <Autocomplete options= { sidetable } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
-                                        noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
-                                        renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
-                                        onChange= { (e, item) => { onChange(item.id); } }
-                                        value= { sidetable.find(data => { return data.id === (getValues().with_sidetable !== undefined ? getValues().with_sidetable : 'no') }) } />
-                                ) } />
-                    </Box>
+                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
+                        <Box sx= { select }>
+                            <Controller control= { control } name= "with_sidetable"
+                                    render= { ({ field: { onChange, value } }) => (
+                                        <Autocomplete options= { sidetable } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
+                                            noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
+                                            renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
+                                            onChange= { (e, item) => { onChange(item.id); } }
+                                            value= { sidetable.find(data => { return data.id === (getValues().with_sidetable !== undefined ? getValues().with_sidetable : value) }) } />
+                                    ) } />
+                        </Box> }
                 </Stack>
             </Grid>
         </Grid>

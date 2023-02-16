@@ -11,7 +11,7 @@ import { GlobalCntx } from "core/context/Global"; // Context
 import { ListCntxt } from "core/context/List"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
 import { exporttoexcel, importfromexcel, usePost } from "core/function/global"; // Functions
-import { FormPrvdr } from "core/context/Form"; // Provider
+import { FormCntxt } from "core/context/Form"; // Provider
 
 // Constants
 import { btnexport, btnicon, btnimport, btntxt, search } from "./index.style"; // Styles
@@ -25,12 +25,13 @@ import Dashboard from "./layouts/Dashboard";
 const Index = () => {
     let name = `KC-EXPORT-ASSETS-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
-    const { orderby, category, searchtxt, setSearchtxt, message, setMessage, errors, setErrors } = useContext(GlobalCntx);
+    const { register, getValues, setValue } = useContext(FormCntxt);
+    const { message, setMessage, errors, setErrors } = useContext(GlobalCntx);
     const { data } = useContext(ProfileCntx);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => setList(data) });
 
-    const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) =>  exporttoexcel(data, 'Assets', `${name} (Admin's copy)`) });
+    const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Assets', `${name} (Admin's copy)`) });
     const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Assets', `${name}`) });
 
     const { mutate: uploadfile, isLoading: uploading } =
@@ -46,25 +47,24 @@ const Index = () => {
             }    
         });
 
-    useEffect(() => record({ table: 'tbl_assets', data: { category: category, orderby: orderby, searchtxt: searchtxt }}), [ record, category, orderby, searchtxt ]);
+    useEffect(() => {
+        register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' }); register('sub_category_id', { value: 'all' }); register('sub_category_name', { value: 'all' });
+        record({ table: 'tbl_assets', data: getValues() }); }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
-            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Assets</Typography>
                 <Dashboard />
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                     <form autoComplete= "off">
                         <Box sx= { search }>
                             <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
-                            <TextField variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
-                                onChange= { e => { 
-                                    setSearchtxt(e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value); 
-                                    find({ table: 'tbl_assets', data: { condition: e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value,
-                                                                                                category: category, orderby: orderby } }); } } />
+                            <TextField { ...register('searchtxt') } variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
+                                onChange= { e => { setValue('searchtxt', e.target.value); find({ table: 'tbl_assets', data: getValues() }); } } />
                         </Box>
                     </form>
-                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } sx= {{ padding: '8px 0 0 0' }}>
                         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
                             { data.user_level === 'superadmin' ?
                                 <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
@@ -72,10 +72,8 @@ const Index = () => {
                             { data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
                                 <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF'}} size= "lg" />
                             </FormLabel> : '' }
-                            <Typography 
-                                onClick= { () => { 
-                                    if(data.user_level === 'superadmin') { original({ table: 'tbl_assets', type: 'original', condition: { orderby: orderby, category: category } }); } 
-                                    formatted({ table: 'tbl_assets', type: 'formatted', condition: { orderby: orderby, category: category, searchtxt: searchtxt } }); }} sx= { btnexport }>
+                            <Typography onClick= { () => { if(data.user_level === 'superadmin') { original({ table: 'tbl_assets', type: 'original', data: getValues() }); } 
+                                    formatted({ table: 'tbl_assets', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
                                 <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
                             <Typography component= { Link } to= "/assets/asset-registration/form/new" sx= { btnicon }>
@@ -91,8 +89,10 @@ const Index = () => {
                     </Stack>
                 </Stack>
             </Stack>
-            <FormPrvdr><Sort refetch= { record } /></FormPrvdr>
-            <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>{ !fetching && !finding ? <Item /> : <Loader /> }</Box>
+            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>
+                <Sort refetch= { record } />
+                <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>{ !fetching && !finding ? <Item /> : <Loader /> }</Box>
+            </Stack>
         </Stack>
     );
 }
