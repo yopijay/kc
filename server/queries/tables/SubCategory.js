@@ -174,7 +174,7 @@ class SubCategory {
 
         ctgy.forEach((data, index) => condition += `${index !== 0 ? 'OR ' : ''}category_id= ${data.id} `);
         
-        return [{ id: 'all', name: 'ALL' }].concat((await new Builder(`tbl_sub_category`).select(`id, name`).condition(`WHERE ${condition}`).build()).rows);
+        return [{ id: 'all', name: 'ALL' }].concat((await new Builder(`tbl_sub_category`).select(`id, name`).condition(`WHERE ${condition} ORDER BY name ASC`).build()).rows);
     }
 }
 

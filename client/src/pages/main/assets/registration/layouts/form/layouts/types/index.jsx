@@ -20,6 +20,7 @@ const Index = ({ item, fetching, tag }) => {
         setValue('with_sidetable', 'no'); 
         setValue('with_armrest', 'yes');
         setValue('assembly_required', 'yes');
+        setValue('mount_type', 'wall-mounted');
     }, [ setValue, item ]);
 
     return (

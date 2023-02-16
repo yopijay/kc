@@ -71,11 +71,65 @@ class Assets {
                                                                             ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
                                                         .build()).rows;
                     case 'office-chairs':
-                        return [];
+                        return (await new Builder(`tbl_assets AS assts`)
+                                                        .select(`assts.series_no AS "Series No.", assts.asset_tag AS "Asset Tag", info.brand AS "Brand", info.color AS "Color", info.weight AS "Weight",
+                                                                        info.dimension AS "Dimension", info.appearance AS "Appearance", info.with_armrest AS "W/ Armrest",
+                                                                        info.assembly_required AS "Assembly required", CASE WHEN assts.is_released = 1 THEN 'Released' ELSE 'Vacant' END AS "Is Released", 
+                                                                        CASE WHEN assts.status = 1 THEN 'Active' ELSE 'Inactive' END AS "Status",
+                                                                        CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", assts.date_created AS "Date created",
+                                                                        CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", assts.date_updated AS "Date updated",
+                                                                        CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", assts.date_deleted AS "Date deleted",
+                                                                        CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", assts.date_imported AS "Date imported"`)
+                                                        .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = assts.created_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = assts.updated_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS db`, condition: `db.user_id = assts.deleted_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = assts.imported_by`, type: `LEFT` })
+                                                        .condition(`WHERE assts.sub_category_id= ${data.sub_category_id}
+                                                                            ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                                    OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                                            ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                                        .build()).rows;
                     case 'whiteboards':
-                        return [];
+                        return (await new Builder(`tbl_assets AS assts`)
+                                                        .select(`assts.series_no AS "Series No.", assts.asset_tag AS "Asset Tag", info.brand AS "Brand",
+                                                                        info.dimension AS "Dimension", info.appearance AS "Appearance", info.mount_type AS "Mount Type",
+                                                                        CASE WHEN assts.is_released = 1 THEN 'Released' ELSE 'Vacant' END AS "Is Released", 
+                                                                        CASE WHEN assts.status = 1 THEN 'Active' ELSE 'Inactive' END AS "Status",
+                                                                        CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", assts.date_created AS "Date created",
+                                                                        CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", assts.date_updated AS "Date updated",
+                                                                        CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", assts.date_deleted AS "Date deleted",
+                                                                        CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", assts.date_imported AS "Date imported"`)
+                                                        .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = assts.created_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = assts.updated_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS db`, condition: `db.user_id = assts.deleted_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = assts.imported_by`, type: `LEFT` })
+                                                        .condition(`WHERE assts.sub_category_id= ${data.sub_category_id}
+                                                                            ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                                    OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                                            ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                                        .build()).rows;
                     case 'filing-cabinets':
-                        return [];
+                        return (await new Builder(`tbl_assets AS assts`)
+                                                        .select(`assts.series_no AS "Series No.", assts.asset_tag AS "Asset Tag", info.brand AS "Brand",
+                                                                        info.dimension AS "Dimension", info.appearance AS "Appearance", info.no_of_drawers AS "No. of Drawers",
+                                                                        CASE WHEN assts.is_released = 1 THEN 'Released' ELSE 'Vacant' END AS "Is Released", 
+                                                                        CASE WHEN assts.status = 1 THEN 'Active' ELSE 'Inactive' END AS "Status",
+                                                                        CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", assts.date_created AS "Date created",
+                                                                        CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", assts.date_updated AS "Date updated",
+                                                                        CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", assts.date_deleted AS "Date deleted",
+                                                                        CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", assts.date_imported AS "Date imported"`)
+                                                        .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = assts.created_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = assts.updated_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS db`, condition: `db.user_id = assts.deleted_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = assts.imported_by`, type: `LEFT` })
+                                                        .condition(`WHERE assts.sub_category_id= ${data.sub_category_id}
+                                                                            ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                                    OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                                            ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                                        .build()).rows;
                     default: return [];
                 }
                 // return (await new Builder(`tbl_assets AS assts`)
@@ -110,11 +164,38 @@ class Assets {
                                                                             ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
                                                         .build()).rows;
                     case 'office-chairs':
-                        return [];
+                        return (await new Builder(`tbl_assets AS assts`)
+                                                        .select(`assts.id, assts.series_no, assts.category_id, assts.sub_category_id, assts.asset_tag, info.brand, info.color, info.weight, info.dimension,
+                                                                        info.appearance, info.with_armrest, info.assembly_required, assts.is_released, assts.status, assts.created_by, assts.updated_by, 
+                                                                        assts.deleted_by, assts.imported_by, assts.date_created, assts.date_updated, assts.date_deleted, assts.date_imported`)
+                                                        .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                                        .condition(`WHERE assts.sub_category_id= ${data.sub_category_id}
+                                                                            ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                                    OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                                            ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                                        .build()).rows;
                     case 'whiteboards':
-                        return [];
+                        return (await new Builder(`tbl_assets AS assts`)
+                                                        .select(`assts.id, assts.series_no, assts.category_id, assts.sub_category_id, assts.asset_tag, info.brand, info.dimension,
+                                                                        info.appearance, info.mount_type, assts.is_released, assts.status, assts.created_by, assts.updated_by, 
+                                                                        assts.deleted_by, assts.imported_by, assts.date_created, assts.date_updated, assts.date_deleted, assts.date_imported`)
+                                                        .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                                        .condition(`WHERE assts.sub_category_id= ${data.sub_category_id}
+                                                                            ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                                    OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                                            ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                                        .build()).rows;
                     case 'filing-cabinets':
-                        return [];
+                        return (await new Builder(`tbl_assets AS assts`)
+                                                        .select(`assts.id, assts.series_no, assts.category_id, assts.sub_category_id, assts.asset_tag, info.brand, info.dimension,
+                                                                        info.appearance, info.no_of_drawers, assts.is_released, assts.status, assts.created_by, assts.updated_by, 
+                                                                        assts.deleted_by, assts.imported_by, assts.date_created, assts.date_updated, assts.date_deleted, assts.date_imported`)
+                                                        .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                                        .condition(`WHERE assts.sub_category_id= ${data.sub_category_id}
+                                                                            ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                                    OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                                            ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                                        .build()).rows;
                     default: return [];
                 }
                 // return (await new Builder(`tbl_assets AS assts`)
@@ -184,10 +265,40 @@ class Assets {
     
                 Global.audit(audit);
                 return { result: 'success', message: 'Successfully saved!' }
+            case 'whiteboards':
+                await new Builder(`tbl_assets_info`)
+                                    .insert({ columns: `asset_id, brand, dimension, appearance, mount_type`, 
+                                                    values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.dimension !== '' ? `'${(data.dimension).toUpperCase()}'`: null},
+                                                                    '${data.appearance}', '${data.mount_type}'` })
+                                    .build();
+            
+                audit.series_no = Global.randomizer(7);
+                audit.field = 'all';
+                audit.item_id = assets.id;
+                audit.action = 'create';
+                audit.user_id = data.created_by;
+                audit.date = date;
+    
+                Global.audit(audit);
+                return { result: 'success', message: 'Successfully saved!' }
+            case 'filing-cabinets':
+                await new Builder(`tbl_assets_info`)
+                                    .insert({ columns: `asset_id, brand, dimension, appearance, no_of_drawers`, 
+                                                    values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.dimension !== '' ? `'${(data.dimension).toUpperCase()}'`: null},
+                                                                    '${data.appearance}', ${data.no_of_drawers !== '' ? data.no_of_drawers : null}` })
+                                    .build();
+            
+                audit.series_no = Global.randomizer(7);
+                audit.field = 'all';
+                audit.item_id = assets.id;
+                audit.action = 'create';
+                audit.user_id = data.created_by;
+                audit.date = date;
+    
+                Global.audit(audit);
+                return { result: 'success', message: 'Successfully saved!' }
             default: return { result: 'maintenance', message: 'Unable to save! This module is under maintenance!' }
         }
-        
-        return data;
     }
 
     update = async (data) => {
