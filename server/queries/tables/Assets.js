@@ -130,6 +130,7 @@ class Assets {
                                                                                                                     OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
                                                                             ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
                                                         .build()).rows;
+                    case 'system-unit':
                     default: return [];
                 }
                 // return (await new Builder(`tbl_assets AS assts`)
@@ -286,6 +287,25 @@ class Assets {
                                     .insert({ columns: `asset_id, brand, dimension, appearance, no_of_drawers`, 
                                                     values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.dimension !== '' ? `'${(data.dimension).toUpperCase()}'`: null},
                                                                     '${data.appearance}', ${data.no_of_drawers !== '' ? data.no_of_drawers : null}` })
+                                    .build();
+            
+                audit.series_no = Global.randomizer(7);
+                audit.field = 'all';
+                audit.item_id = assets.id;
+                audit.action = 'create';
+                audit.user_id = data.created_by;
+                audit.date = date;
+    
+                Global.audit(audit);
+                return { result: 'success', message: 'Successfully saved!' }
+            case 'system-unit':
+                await new Builder(`tbl_assets_info`)
+                                    .insert({ columns: `asset_id, brand, serial_no, model, os, processor, video_card, ram, hdd, ssd, input_connectivity`, 
+                                                    values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'`: null},
+                                                                    ${data.model !== '' ? `'${(data.model).toUpperCase()}'`: null}, ${data.os !== '' ? `'${(data.os).toUpperCase()}'`: null},
+                                                                    ${data.processor !== '' ? `'${(data.processor).toUpperCase()}'`: null}, ${data.video_card !== '' ? `'${(data.video_card).toUpperCase()}'`: null},
+                                                                    ${data.ram !== '' ? `'${(data.ram).toUpperCase()}'`: null}, ${data.hdd !== '' ? `'${(data.hdd).toUpperCase()}'`: null},
+                                                                    ${data.ssd !== '' ? `'${(data.ssd).toUpperCase()}'`: null}, '${JSON.stringify(data.input_connectivity)}'` })
                                     .build();
             
                 audit.series_no = Global.randomizer(7);

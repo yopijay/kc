@@ -64,3 +64,13 @@ export const textarea = {
     textTransform: 'uppercase',
     color: '#353b48'
 }
+
+export const date = {
+    border: 'solid 1px #dfe4ea',
+    padding: {
+        xs: '12px 8px 9px 8px',
+        md: '9px 10px 6px 10px'
+    },
+    marginBottom: '5px',
+    borderRadius: '5px'
+}
