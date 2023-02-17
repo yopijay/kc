@@ -20,24 +20,28 @@ import Monitor from "./technology/Monitor";
 import NetworkingEquipments from "./technology/NetworkingEquipments";
 import Harddrives from "./technology/Harddrives";
 import Phone from "./technology/Phone";
+import { useParams } from "react-router-dom";
 
 const Index = ({ item, fetching, tag }) => {
+    const { type } = useParams();
     const { setValue } = useContext(FormCntxt);
 
     useEffect(() => { 
-        setValue('item', item); 
-        setValue('appearance', 'good'); 
-        setValue('with_sidetable', 'no'); 
-        setValue('with_armrest', 'yes');
-        setValue('assembly_required', 'yes');
-        setValue('mount_type', 'wall-mounted');
-        setValue('input_connectivity', []);
-        setValue('interface', 'usb');
-        setValue('orientation', 'right-handed');
-        setValue('printer_type', 'inkjet');
-        setValue('equipment_type', 'switch');
-        setValue('date_purchased', `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}`)
-    }, [ setValue, item ]);
+        if(type === 'new') {
+            setValue('item', item); 
+            setValue('appearance', 'good'); 
+            setValue('with_sidetable', 'no'); 
+            setValue('with_armrest', 'yes');
+            setValue('assembly_required', 'yes');
+            setValue('mount_type', 'wall-mounted');
+            setValue('input_connectivity', []);
+            setValue('interface', 'usb');
+            setValue('orientation', 'right-handed');
+            setValue('printer_type', 'inkjet');
+            setValue('equipment_type', 'switch');
+            setValue('date_purchased', `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}`)
+        }
+    }, [ type, setValue, item ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">

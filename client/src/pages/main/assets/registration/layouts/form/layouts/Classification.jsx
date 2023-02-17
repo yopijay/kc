@@ -21,8 +21,8 @@ const Classification = ({ fetching, setItem, ctgy, subctgy }) => {
     useEffect(() => {
         if(!fetching) {
             if(type !== 'new') {
-                setItem(getValues()?.item_id);
-                menu({ table: 'tbl_sub_category', data: { category_id: getValues?.category_id } });
+                setItem(((getValues().item).replace(' ', '-')).toLowerCase());
+                menu({ table: 'tbl_sub_category', data: { category_id: getValues()?.category_id } });
             }
         }
     }, [ fetching, type, getValues, menu, setItem ]);
@@ -37,7 +37,7 @@ const Classification = ({ fetching, setItem, ctgy, subctgy }) => {
                             { category?.length > 0 ? 
                                 <Controller control= { control } name= "category_id" defaultValue= { 0 }
                                     render= { ({ field: { onChange, value } }) => (
-                                        <Autocomplete options= { category?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                        <Autocomplete options= { category?.sort((a, b) => a.id - b.id) } disabled= { type !== 'new' } disableClearable 
                                             getOptionLabel= { category => category.name || category.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
                                             isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
                                             onChange= { (e, item) => { setError('category_id', { message: '' }); onChange(item.id); 
@@ -61,7 +61,7 @@ const Classification = ({ fetching, setItem, ctgy, subctgy }) => {
                                     items?.length > 0 ? 
                                         <Controller control= { control } name= "sub_category_id" defaultValue= { 0 }
                                             render= { ({ field: { onChange, value } }) => (
-                                                <Autocomplete options= { items?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                                <Autocomplete options= { items?.sort((a, b) => a.id - b.id) } disabled= { type !== 'new' } disableClearable 
                                                     getOptionLabel= { items => items.name || items.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
                                                     isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
                                                     onChange= { (e, item) => { setError('sub_category_id', { message: '' }); onChange(item.id);

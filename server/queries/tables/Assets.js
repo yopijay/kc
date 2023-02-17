@@ -22,14 +22,15 @@ class Assets {
 
     specific = async (id) => {
         return (await new Builder(`tbl_assets AS assts`)
-                                        .select()
+                                        .select(`assts.*, info.*, sub.name AS item`)
                                         .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                        .join({ table: `tbl_sub_category AS sub`, condition: `assts.sub_category_id = sub.id`, type: `LEFT` })
                                         .condition(`WHERE assts.id = ${id}`)
                                         .build()).rows;
     }
 
     list = async (data) => {
-        if((Object.keys(data)).length > 0) {
+        // if((Object.keys(data)).length > 0) {
             return (await new Builder(`tbl_assets AS assts`)
                                             .select(`assts.id, assts.series_no, ctgy.name AS category, sctgy.name AS sub_category, assts.asset_tag, assts.is_released, assts.status, 
                                                             CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, assts.date_created`)
@@ -43,7 +44,7 @@ class Assets {
                                                                                                         OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
                                                                 ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
                                             .build()).rows;
-        }
+        // }
     }
 
     excel = async (type, data) => {

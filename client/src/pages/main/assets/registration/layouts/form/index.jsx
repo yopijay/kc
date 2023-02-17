@@ -21,12 +21,12 @@ const Index = () => {
     const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
     const { isFetching, refetch } =  
         useGet({ key: ['assts_specific'], fetch: specific({ table: 'tbl_assets', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
-            onSuccess: (data) => { 
+            onSuccess: (data) => {
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
                         let _name = Object.keys(data[0])[count]; 
-                        setValue(_name, data[0][_name]); 
-                    } 
+                        setValue(_name, data[0][_name] !== null ? _name === 'input_connectivity' ? JSON.parse(data[0][_name]) : data[0][_name] : ''); 
+                    }
             } 
         });
 
