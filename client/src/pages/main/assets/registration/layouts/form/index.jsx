@@ -64,9 +64,8 @@ const Index = () => {
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
                             
-                            console.log(data);
-                            // if(type === 'new') { saving({ table: 'tbl_assets', data: data }); }
-                            // else { updating({ table: 'tbl_assets', data: data }); }
+                            if(type === 'new') { saving({ table: 'tbl_assets', data: data }); }
+                            else { updating({ table: 'tbl_assets', data: data }); }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }

@@ -12,6 +12,7 @@ import Whiteboards from "./office-furniture/Whiteboards";
 import FilingCabinet from "./office-furniture/FilingCabinet";
 import SystemUnit from "./technology/SystemUnit";
 import dayjs from "dayjs";
+import Laptop from "./technology/Laptop";
 
 const Index = ({ item, fetching, tag }) => {
     const { setValue } = useContext(FormCntxt);
@@ -33,7 +34,8 @@ const Index = ({ item, fetching, tag }) => {
                 item === 'office-chairs' ? <OfficeChairs fetching= { fetching } tag= { tag } /> :
                     item === 'whiteboards' ? <Whiteboards tag= { tag } fetching= { fetching } /> :
                         item === 'filing-cabinets' ? <FilingCabinet tag= { tag } fetching= { fetching } /> : 
-                            item === 'system-unit' ? <SystemUnit tag= { tag } fetching= { fetching } /> : '' }
+                            item === 'system-unit' ? <SystemUnit tag= { tag } fetching= { fetching } /> :
+                                item === 'laptops' ? <Laptop tag= { tag } fetching= { fetching } /> : '' }
         </Stack>
     );
 }

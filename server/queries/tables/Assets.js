@@ -232,6 +232,7 @@ class Assets {
                                                         .build()).rows[0];
         
         switch(data.item) {
+            // Start for Office Furniture Category
             case 'office-desks':
                 await new Builder(`tbl_assets_info`)
                                     .insert({ columns: `asset_id, brand, color, weight, dimension, appearance, with_sidetable`, 
@@ -298,14 +299,17 @@ class Assets {
     
                 Global.audit(audit);
                 return { result: 'success', message: 'Successfully saved!' }
+            // End of Office furniture Category
+            // Start of Technology Category
             case 'system-unit':
                 await new Builder(`tbl_assets_info`)
-                                    .insert({ columns: `asset_id, brand, serial_no, model, os, processor, video_card, ram, hdd, ssd, input_connectivity`, 
+                                    .insert({ columns: `asset_id, brand, serial_no, model, os, processor, video_card, ram, hdd, ssd, input_connectivity, warranty, date_purchased`, 
                                                     values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'`: null},
                                                                     ${data.model !== '' ? `'${(data.model).toUpperCase()}'`: null}, ${data.os !== '' ? `'${(data.os).toUpperCase()}'`: null},
                                                                     ${data.processor !== '' ? `'${(data.processor).toUpperCase()}'`: null}, ${data.video_card !== '' ? `'${(data.video_card).toUpperCase()}'`: null},
                                                                     ${data.ram !== '' ? `'${(data.ram).toUpperCase()}'`: null}, ${data.hdd !== '' ? `'${(data.hdd).toUpperCase()}'`: null},
-                                                                    ${data.ssd !== '' ? `'${(data.ssd).toUpperCase()}'`: null}, '${JSON.stringify(data.input_connectivity)}'` })
+                                                                    ${data.ssd !== '' ? `'${(data.ssd).toUpperCase()}'`: null}, '${JSON.stringify(data.input_connectivity)}', 
+                                                                    ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}'` })
                                     .build();
             
                 audit.series_no = Global.randomizer(7);
@@ -317,6 +321,35 @@ class Assets {
     
                 Global.audit(audit);
                 return { result: 'success', message: 'Successfully saved!' }
+            case 'laptops':
+                if(data.serial_no !== '') {
+                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
+                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
+                    }
+                }
+
+                if(!(errors.length > 0)) {
+                    await new Builder(`tbl_assets_info`)
+                                        .insert({ columns: `asset_id, brand, serial_no, model, os, processor, video_card, ram, hdd, ssd, input_connectivity, warranty, date_purchased, resolution`, 
+                                                        values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'`: null},
+                                                                        ${data.model !== '' ? `'${(data.model).toUpperCase()}'`: null}, ${data.os !== '' ? `'${(data.os).toUpperCase()}'`: null},
+                                                                        ${data.processor !== '' ? `'${(data.processor).toUpperCase()}'`: null}, ${data.video_card !== '' ? `'${(data.video_card).toUpperCase()}'`: null},
+                                                                        ${data.ram !== '' ? `'${(data.ram).toUpperCase()}'`: null}, ${data.hdd !== '' ? `'${(data.hdd).toUpperCase()}'`: null},
+                                                                        ${data.ssd !== '' ? `'${(data.ssd).toUpperCase()}'`: null}, '${JSON.stringify(data.input_connectivity)}', 
+                                                                        ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', ${data.resolution !== '' ? `'${(data.resolution).toUpperCase()}'` : null}` })
+                                        .build();
+                
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = 'all';
+                    audit.item_id = assets.id;
+                    audit.action = 'create';
+                    audit.user_id = data.created_by;
+                    audit.date = date;
+        
+                    Global.audit(audit);
+                    return { result: 'success', message: 'Successfully saved!' }
+                }
+                else { return { result: 'error', error: errors } }
             default: return { result: 'maintenance', message: 'Unable to save! This module is under maintenance!' }
         }
     }

@@ -16,7 +16,7 @@ import { assettag } from "core/api"; // API
 import { date, input, select } from "../../../index.style"; // Styles
 const input_connectivity = [{ id: 'vga', name: 'VGA' }, { id: 'hdmi', name: 'HDMI' }, { id: 'dvi', name: 'DVI' }]; // Input Connectivity
 
-const SystemUnit = ({ fetching, tag }) => {
+const Laptop = ({ fetching, tag }) => {
     const { type } = useParams();
     const { register, errors, control, getValues, setValue } = useContext(FormCntxt);
     useGet({ key: ['su_tag'],
@@ -65,7 +65,7 @@ const SystemUnit = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.os?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 5 } md= { 3 }>
+            <Grid item xs= { 12 } sm= { 5 } md= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Processor</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -73,7 +73,7 @@ const SystemUnit = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.processor?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } md= { 3 }>
+            <Grid item xs= { 12 } sm= { 7 } md= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Video Card</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -81,7 +81,15 @@ const SystemUnit = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.video_card?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 4 } md= { 2 }>
+            <Grid item xs= { 12 } sm= { 5 } md= { 4 }>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                    <Typography gutterBottom variant= "body2">Resolution</Typography>
+                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
+                        <TextField { ...register('resolution') } name= "resolution" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.resolution?.message }</Typography>
+                </Stack>
+            </Grid>
+            <Grid item xs= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">RAM</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -89,7 +97,7 @@ const SystemUnit = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.ram?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 4 } md= { 2 }>
+            <Grid item xs= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">HDD</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -97,7 +105,7 @@ const SystemUnit = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.hdd?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 4 } md= { 2 }>
+            <Grid item xs= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">SSD</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -140,7 +148,8 @@ const SystemUnit = ({ fetching, tag }) => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Warranty</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('warranty') } name= "warranty" variant= "standard" type= "number" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                        <TextField { ...register('warranty') } name= "warranty" variant= "standard" type= "number" 
+                            InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark">{ errors.warranty?.message }</Typography>
                 </Stack>
             </Grid>
@@ -148,4 +157,4 @@ const SystemUnit = ({ fetching, tag }) => {
     );
 }
 
-export default SystemUnit;
+export default Laptop;
