@@ -14,12 +14,13 @@ import { assettag } from "core/api"; // API
 
 // Constants
 import { date, input, select } from "../../../index.style"; // Styles
-const input_connectivity = [{ id: 'vga', name: 'VGA' }, { id: 'hdmi', name: 'HDMI' }, { id: 'dvi', name: 'DVI' }]; // Input Connectivity
+const intrfce = [{ id: 'usb', name: 'USB' }, { id: 'bluetooth', name: 'Bluetooth' }]; // Interface
+const orientation = [{ id: 'right-handed', name: 'RIGHT HANDED' }, { id: 'left-handed', name: 'LEFT HANDED' }]; // Orientation
 
-const Laptop = ({ fetching, tag }) => {
+const Mouse = ({ fetching, tag }) => {
     const { type } = useParams();
     const { register, errors, control, getValues, setValue } = useContext(FormCntxt);
-    useGet({ key: ['lt_tag'],
+    useGet({ key: ['mouse_tag'],
                     fetch: assettag({ table: 'tbl_assets', data: { category_id: getValues().category_id, sub_category_id: getValues().sub_category_id } }), options: { refetchOnWindowFocus: true },
                     onSuccess: data => { if(type === 'new') setValue('asset_tag', `ASSTS-${tag}-${formatter(parseInt(data) + 1, 7)}`); } });
 
@@ -57,73 +58,48 @@ const Laptop = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.model?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 7 } md= { 4 }>
+            <Grid item xs= { 6 } sm= { 3 } md= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Operating System</Typography>
+                    <Typography gutterBottom variant= "body2">Color</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('os') } name= "os" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.os?.message }</Typography>
+                        <TextField { ...register('color') } name= "color" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.color?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 5 } md= { 4 }>
+            <Grid item xs= { 6 } sm= { 3 } md= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Processor</Typography>
+                    <Typography gutterBottom variant= "body2">DPI</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('processor') } name= "processor" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.processor?.message }</Typography>
+                        <TextField { ...register('dpi') } type= "number" name= "dpi" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.dpi?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 7 } md= { 4 }>
+            <Grid item xs= { 5 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Video Card</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('video_card') } name= "video_card" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.video_card?.message }</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 12 } sm= { 5 } md= { 4 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Resolution</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('resolution') } name= "resolution" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.resolution?.message }</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 4 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">RAM</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('ram') } name= "ram" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.ram?.message }</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 4 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">HDD</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('hdd') } name= "hdd" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.hdd?.message }</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 4 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">SSD</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('ssd') } name= "ssd" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.ssd?.message }</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 12 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography variant= "body2" gutterBottom>Input Connectivity</Typography>
+                    <Typography variant= "body2" gutterBottom>Interface</Typography>
                     <Box sx= { select }>
-                        <Controller control= { control } name= "input_connectivity"
+                        <Controller control= { control } name= "interface"
                                 render= { ({ field: { onChange, value } }) => (
-                                    <Autocomplete options= { input_connectivity } multiple disableClearable
-                                        getOptionLabel= { input_connectivity => input_connectivity.name || input_connectivity.id } noOptionsText= "No results.." 
-                                        getOptionDisabled= { option => option.id === 0 } isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
-                                        onChange= { (e, item) => { onChange(item); } } renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } 
-                                        value= { getValues().input_connectivity !== undefined ? (getValues().input_connectivity).length > 0 ? getValues().input_connectivity : [] : value } />
+                                    <Autocomplete options= { intrfce } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
+                                        noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
+                                        renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } 
+                                        getOptionDisabled= { option => option.id === 0 } onChange= { (e, item) => { onChange(item.id); } }
+                                        value= { intrfce.find(data => { return data.id === (getValues().interface !== undefined ? getValues().interface : value) }) } />
+                                ) } />
+                    </Box>
+                </Stack>
+            </Grid>
+            <Grid item xs= { 7 } sm= { 3 }>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                    <Typography variant= "body2" gutterBottom>Orientation</Typography>
+                    <Box sx= { select }>
+                        <Controller control= { control } name= "orientation"
+                                render= { ({ field: { onChange, value } }) => (
+                                    <Autocomplete options= { orientation } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
+                                        noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
+                                        renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } 
+                                        getOptionDisabled= { option => option.id === 0 } onChange= { (e, item) => { onChange(item.id); } }
+                                        value= { orientation.find(data => { return data.id === (getValues().orientation !== undefined ? getValues().orientation : value) }) } />
                                 ) } />
                     </Box>
                 </Stack>
@@ -157,4 +133,4 @@ const Laptop = ({ fetching, tag }) => {
     );
 }
 
-export default Laptop;
+export default Mouse;

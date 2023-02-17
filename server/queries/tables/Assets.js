@@ -350,6 +350,165 @@ class Assets {
                     return { result: 'success', message: 'Successfully saved!' }
                 }
                 else { return { result: 'error', error: errors } }
+            case 'mouse':
+                if(data.serial_no !== '') {
+                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
+                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
+                    }
+                }
+
+                if(!(errors.length > 0)) {
+                    await new Builder(`tbl_assets_info`)
+                                        .insert({ columns: `asset_id, brand, color, serial_no, model, warranty, date_purchased, interface, orientation, dpi`, 
+                                                        values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
+                                                                        ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'` : null}, ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, 
+                                                                        ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', '${data.interface}', '${data.orientation}', ${data.dpi !== '' ? data.dpi : null}` })
+                                        .build();
+                
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = 'all';
+                    audit.item_id = assets.id;
+                    audit.action = 'create';
+                    audit.user_id = data.created_by;
+                    audit.date = date;
+        
+                    Global.audit(audit);
+                    return { result: 'success', message: 'Successfully saved!' }
+                }
+                else { return { result: 'error', error: errors } }
+            case 'keyboard':
+                if(data.serial_no !== '') {
+                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
+                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
+                    }
+                }
+
+                if(!(errors.length > 0)) {
+                    await new Builder(`tbl_assets_info`)
+                                        .insert({ columns: `asset_id, brand, color, serial_no, model, warranty, date_purchased, interface, no_of_keys`, 
+                                                        values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
+                                                                        ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'` : null}, ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, 
+                                                                        ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', '${data.interface}', ${data.no_of_keys !== '' ? data.no_of_keys : null}` })
+                                        .build();
+                
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = 'all';
+                    audit.item_id = assets.id;
+                    audit.action = 'create';
+                    audit.user_id = data.created_by;
+                    audit.date = date;
+
+                    Global.audit(audit);
+                    return { result: 'success', message: 'Successfully saved!' }
+                }
+                else { return { result: 'error', error: errors } }
+            case 'printer':
+                if(data.serial_no !== '') {
+                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
+                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
+                    }
+                }
+
+                if(!(errors.length > 0)) {
+                    await new Builder(`tbl_assets_info`)
+                                        .insert({ columns: `asset_id, brand, color, dimension, serial_no, model, warranty, date_purchased, interface, printer_type`, 
+                                                        values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
+                                                                        ${data.dimension !== '' ? `'${(data.dimension).toUpperCase()}'` : null}, ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'` : null}, 
+                                                                        ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', 
+                                                                        '${data.interface}', '${data.printer_type}'` })
+                                        .build();
+                
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = 'all';
+                    audit.item_id = assets.id;
+                    audit.action = 'create';
+                    audit.user_id = data.created_by;
+                    audit.date = date;
+
+                    Global.audit(audit);
+                    return { result: 'success', message: 'Successfully saved!' }
+                }
+                else { return { result: 'error', error: errors } }
+            case 'monitor':
+                if(data.serial_no !== '') {
+                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
+                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
+                    }
+                }
+
+                if(!(errors.length > 0)) {
+                    await new Builder(`tbl_assets_info`)
+                                        .insert({ columns: `asset_id, brand, color, dimension, serial_no, model, input_connectivity, warranty, date_purchased, resolution,
+                                                                        screen_size, aspect_ratio, refresh_rate`, 
+                                                        values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
+                                                                        ${data.dimension !== '' ? `'${(data.dimension).toUpperCase()}'` : null}, ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'` : null}, 
+                                                                        ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, '${JSON.stringify(data.input_connectivity)}', 
+                                                                        ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', ${data.resolution !== '' ? `'${(data.resolution).toUpperCase()}'` : null},
+                                                                        ${data.screen_size !== '' ? `'${(data.screen_size).toUpperCase()}'` : null}, ${data.aspect_ratio !== '' ? `'${(data.aspect_ratio).toUpperCase()}'` : null},
+                                                                        ${data.refresh_rate !== '' ? `'${(data.refresh_rate).toUpperCase()}'` : null}` })
+                                        .build();
+                
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = 'all';
+                    audit.item_id = assets.id;
+                    audit.action = 'create';
+                    audit.user_id = data.created_by;
+                    audit.date = date;
+
+                    Global.audit(audit);
+                    return { result: 'success', message: 'Successfully saved!' }
+                }
+                else { return { result: 'error', error: errors } }
+            case 'networking-equipments':
+                if(data.serial_no !== '') {
+                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
+                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
+                    }
+                }
+
+                if(!(errors.length > 0)) {
+                    switch(data.equipment_type) {
+                        case 'switch':
+                            await new Builder(`tbl_assets_info`)
+                                                .insert({ columns: `asset_id, brand, color, serial_no, model, warranty, date_purchased, equipment_type, no_of_ports`, 
+                                                                values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'` : null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
+                                                                                ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'` : null}, ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, 
+                                                                                ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', '${data.equipment_type}', 
+                                                                                ${data.no_of_ports !== '' ? data.no_of_ports : null}` })
+                                                .build();
+                            break;
+                        case 'router':
+                            await new Builder(`tbl_assets_info`)
+                                                .insert({ columns: `asset_id, brand, color, serial_no, model, warranty, date_purchased, equipment_type, no_of_ports, data_transfer, frequency`, 
+                                                                values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'` : null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
+                                                                                ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'` : null}, ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, 
+                                                                                ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', '${data.equipment_type}', 
+                                                                                ${data.no_of_ports !== '' ? data.no_of_ports : null}, ${data.data_transfer !== '' ? `'${(data.data_transfer).toUpperCase()}'` : null}, 
+                                                                                ${data.frequency !== '' ? `'${(data.frequency).toUpperCase()}'` : null}` })
+                                                .build();
+                            break;
+                        case 'tools':
+                            await new Builder(`tbl_assets_info`)
+                                                .insert({ columns: `asset_id, brand, serial_no, warranty, date_purchased, equipment_type, tool, stock`, 
+                                                                values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'` : null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
+                                                                                ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}',
+                                                                                ${data.tool !== '' ? `'${(data.tool).toUpperCase()}'` : null}, ${data.stock !== '' ? data.stock : null}` })
+                                                .build();
+                            break;
+                        default: ''
+                    }
+                
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = 'all';
+                    audit.item_id = assets.id;
+                    audit.action = 'create';
+                    audit.user_id = data.created_by;
+                    audit.date = date;
+
+                    Global.audit(audit);
+                    return { result: 'success', message: 'Successfully saved!' }
+                }
+                else { return { result: 'error', error: errors } }
             default: return { result: 'maintenance', message: 'Unable to save! This module is under maintenance!' }
         }
     }

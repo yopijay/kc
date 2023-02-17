@@ -16,10 +16,10 @@ import { assettag } from "core/api"; // API
 import { date, input, select } from "../../../index.style"; // Styles
 const input_connectivity = [{ id: 'vga', name: 'VGA' }, { id: 'hdmi', name: 'HDMI' }, { id: 'dvi', name: 'DVI' }]; // Input Connectivity
 
-const Laptop = ({ fetching, tag }) => {
+const Monitor = ({ fetching, tag }) => {
     const { type } = useParams();
     const { register, errors, control, getValues, setValue } = useContext(FormCntxt);
-    useGet({ key: ['lt_tag'],
+    useGet({ key: ['monitor_tag'],
                     fetch: assettag({ table: 'tbl_assets', data: { category_id: getValues().category_id, sub_category_id: getValues().sub_category_id } }), options: { refetchOnWindowFocus: true },
                     onSuccess: data => { if(type === 'new') setValue('asset_tag', `ASSTS-${tag}-${formatter(parseInt(data) + 1, 7)}`); } });
 
@@ -49,7 +49,7 @@ const Laptop = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.brand?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 8 } md= { 4 }>
+            <Grid item xs= { 12 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Model</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -57,31 +57,31 @@ const Laptop = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.model?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 7 } md= { 4 }>
+            <Grid item xs= { 12 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Operating System</Typography>
+                    <Typography gutterBottom variant= "body2">Dimension</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('os') } name= "os" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.os?.message }</Typography>
+                        <TextField { ...register('dimension') } name= "dimension" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.dimension?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 5 } md= { 4 }>
+            <Grid item xs= { 12 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Processor</Typography>
+                    <Typography gutterBottom variant= "body2">Color</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('processor') } name= "processor" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.processor?.message }</Typography>
+                        <TextField { ...register('color') } name= "color" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.color?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 7 } md= { 4 }>
+            <Grid item xs= { 12 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Video Card</Typography>
+                    <Typography gutterBottom variant= "body2">Screen Size</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('video_card') } name= "video_card" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.video_card?.message }</Typography>
+                        <TextField { ...register('screen_size') } name= "screen_size" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.screen_size?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 5 } md= { 4 }>
+            <Grid item xs= { 12 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Resolution</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -89,28 +89,20 @@ const Laptop = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.resolution?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 4 }>
+            <Grid item xs= { 6 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">RAM</Typography>
+                    <Typography gutterBottom variant= "body2">Aspect Ratio</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('ram') } name= "ram" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.ram?.message }</Typography>
+                        <TextField { ...register('aspect_ratio') } name= "aspect_ratio" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.aspect_ratio?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 4 }>
+            <Grid item xs= { 6 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">HDD</Typography>
+                    <Typography gutterBottom variant= "body2">Refresh Rate</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('hdd') } name= "hdd" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.hdd?.message }</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 4 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">SSD</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('ssd') } name= "ssd" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.ssd?.message }</Typography>
+                        <TextField { ...register('refresh_rate') } name= "refresh_rate" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.refresh_rate?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }>
@@ -128,7 +120,7 @@ const Laptop = ({ fetching, tag }) => {
                     </Box>
                 </Stack>
             </Grid>
-            <Grid item xs= { 8 }>
+            <Grid item xs= { 8 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Date purchased</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -144,7 +136,7 @@ const Laptop = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.date_purchased?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 4 }>
+            <Grid item xs= { 4 } sm= { 2 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Warranty</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -157,4 +149,4 @@ const Laptop = ({ fetching, tag }) => {
     );
 }
 
-export default Laptop;
+export default Monitor;
