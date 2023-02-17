@@ -18,6 +18,8 @@ import Keyboard from "./technology/Keyboard";
 import Printer from "./technology/Printer";
 import Monitor from "./technology/Monitor";
 import NetworkingEquipments from "./technology/NetworkingEquipments";
+import Harddrives from "./technology/Harddrives";
+import Phone from "./technology/Phone";
 
 const Index = ({ item, fetching, tag }) => {
     const { setValue } = useContext(FormCntxt);
@@ -49,7 +51,9 @@ const Index = ({ item, fetching, tag }) => {
                 item === 'keyboard' ? <Keyboard tag= { tag } fetching= { fetching } /> :
                 item === 'printer' ? <Printer tag= { tag } fetching= { fetching } /> :
                 item === 'monitor' ? <Monitor tag= { tag } fetching= { fetching } /> :
-                item === 'networking-equipments' ? <NetworkingEquipments tag= { tag } fetching= { fetching } /> : '' }
+                item === 'networking-equipments' ? <NetworkingEquipments tag= { tag } fetching= { fetching } /> :
+                item === 'harddrives' ? <Harddrives tag= { tag } fetching= { fetching } /> :
+                item === 'phones' ? <Phone tag= { tag } fetching= { fetching } /> : '' }
         </Stack>
     );
 }

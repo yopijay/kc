@@ -322,12 +322,6 @@ class Assets {
                 Global.audit(audit);
                 return { result: 'success', message: 'Successfully saved!' }
             case 'laptops':
-                if(data.serial_no !== '') {
-                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
-                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
-                    }
-                }
-
                 if(!(errors.length > 0)) {
                     await new Builder(`tbl_assets_info`)
                                         .insert({ columns: `asset_id, brand, serial_no, model, os, processor, video_card, ram, hdd, ssd, input_connectivity, warranty, date_purchased, resolution`, 
@@ -377,12 +371,6 @@ class Assets {
                 }
                 else { return { result: 'error', error: errors } }
             case 'keyboard':
-                if(data.serial_no !== '') {
-                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
-                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
-                    }
-                }
-
                 if(!(errors.length > 0)) {
                     await new Builder(`tbl_assets_info`)
                                         .insert({ columns: `asset_id, brand, color, serial_no, model, warranty, date_purchased, interface, no_of_keys`, 
@@ -403,12 +391,6 @@ class Assets {
                 }
                 else { return { result: 'error', error: errors } }
             case 'printer':
-                if(data.serial_no !== '') {
-                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
-                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
-                    }
-                }
-
                 if(!(errors.length > 0)) {
                     await new Builder(`tbl_assets_info`)
                                         .insert({ columns: `asset_id, brand, color, dimension, serial_no, model, warranty, date_purchased, interface, printer_type`, 
@@ -430,12 +412,6 @@ class Assets {
                 }
                 else { return { result: 'error', error: errors } }
             case 'monitor':
-                if(data.serial_no !== '') {
-                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
-                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
-                    }
-                }
-
                 if(!(errors.length > 0)) {
                     await new Builder(`tbl_assets_info`)
                                         .insert({ columns: `asset_id, brand, color, dimension, serial_no, model, input_connectivity, warranty, date_purchased, resolution,
@@ -460,12 +436,6 @@ class Assets {
                 }
                 else { return { result: 'error', error: errors } }
             case 'networking-equipments':
-                if(data.serial_no !== '') {
-                    if((await new Builder(`tbl_assets_info`).select().condition(`WHERE serial_no = '${(data.serial_no).toUpperCase()}'`).build()).rowCount > 0) {
-                        errors.push({ name: 'serial_no', message: 'Serial No. / Product ID already exist!' });
-                    }
-                }
-
                 if(!(errors.length > 0)) {
                     switch(data.equipment_type) {
                         case 'switch':
@@ -497,6 +467,46 @@ class Assets {
                             break;
                         default: ''
                     }
+                
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = 'all';
+                    audit.item_id = assets.id;
+                    audit.action = 'create';
+                    audit.user_id = data.created_by;
+                    audit.date = date;
+
+                    Global.audit(audit);
+                    return { result: 'success', message: 'Successfully saved!' }
+                }
+                else { return { result: 'error', error: errors } }
+            case 'harddrives':
+                if(!(errors.length > 0)) {
+                    await new Builder(`tbl_assets_info`)
+                                        .insert({ columns: `asset_id, brand, color, serial_no, model, warranty, date_purchased, capacity`, 
+                                                        values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
+                                                                        ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'` : null}, ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, 
+                                                                        ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', ${data.capacity !== '' ? `'${(data.capacity).toUpperCase()}'` : null}` })
+                                        .build();
+                
+                    audit.series_no = Global.randomizer(7);
+                    audit.field = 'all';
+                    audit.item_id = assets.id;
+                    audit.action = 'create';
+                    audit.user_id = data.created_by;
+                    audit.date = date;
+
+                    Global.audit(audit);
+                    return { result: 'success', message: 'Successfully saved!' }
+                }
+                else { return { result: 'error', error: errors } }
+            case 'phones':
+                if(!(errors.length > 0)) {
+                    await new Builder(`tbl_assets_info`)
+                                        .insert({ columns: `asset_id, brand, color, serial_no, model, warranty, date_purchased, extension`, 
+                                                        values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'`: null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
+                                                                        ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'` : null}, ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, 
+                                                                        ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', ${data.extension !== '' ? `'${(data.extension).toUpperCase()}'` : null}` })
+                                        .build();
                 
                     audit.series_no = Global.randomizer(7);
                     audit.field = 'all';

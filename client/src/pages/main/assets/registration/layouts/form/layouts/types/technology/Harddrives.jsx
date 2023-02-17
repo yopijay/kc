@@ -1,6 +1,6 @@
 // Libraries
-import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
-import { useContext, useState } from "react";
+import { Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Controller } from "react-hook-form";
 import dayjs from "dayjs";
@@ -13,14 +13,12 @@ import { formatter, useGet } from "core/function/global"; // Function
 import { assettag } from "core/api"; // API
 
 // Constants
-import { date, input, select } from "../../../index.style"; // Styles
-const eqpmnt_type = [{ id: 'switch', name: 'SWITCH' }, { id: 'router', name: 'ROUTER' }, { id: 'tools', name: 'TOOLS' }]; // Equipment Type
+import { date, input } from "../../../index.style"; // Styles
 
-const NetworkingEquipments = ({ fetching, tag }) => {
+const Harddrives = ({ fetching, tag }) => {
     const { type } = useParams();
     const { register, errors, control, getValues, setValue } = useContext(FormCntxt);
-    const [ eqptype, setEqptype ] = useState(getValues().equipment_type);
-    useGet({ key: ['ntwrk_tag'],
+    useGet({ key: ['hd_tag'],
                     fetch: assettag({ table: 'tbl_assets', data: { category_id: getValues().category_id, sub_category_id: getValues().sub_category_id } }), options: { refetchOnWindowFocus: true },
                     onSuccess: data => { if(type === 'new') setValue('asset_tag', `ASSTS-${tag}-${formatter(parseInt(data) + 1, 7)}`); } });
 
@@ -36,28 +34,13 @@ const NetworkingEquipments = ({ fetching, tag }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography variant= "body2" gutterBottom>Type</Typography>
-                    <Box sx= { select }>
-                        <Controller control= { control } name= "equipment_type"
-                                render= { ({ field: { onChange, value } }) => (
-                                    <Autocomplete options= { eqpmnt_type } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
-                                        noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
-                                        renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } 
-                                        getOptionDisabled= { option => option.id === 0 } onChange= { (e, item) => { setEqptype(item.id); onChange(item.id); } }
-                                        value= { eqpmnt_type.find(data => { return data.id === (getValues().equipment_type !== undefined ? getValues().equipment_type : value) }) } />
-                                ) } />
-                    </Box>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 12 } sm= { 6 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Serial No. / Product ID</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('serial_no') } name= "serial_no" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark">{ errors.serial_no?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 } sm= { 6 }>
+            <Grid item xs= { 12 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Brand</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
@@ -65,63 +48,30 @@ const NetworkingEquipments = ({ fetching, tag }) => {
                     <Typography variant= "body2" color= "error.dark">{ errors.brand?.message }</Typography>
                 </Stack>
             </Grid>
-            { eqptype === 'switch' || eqptype === 'router' ? <Grid item xs= { 12 } sm= { 4 }>
+            <Grid item xs= { 12 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Model</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('model') } name= "model" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark">{ errors.model?.message }</Typography>
                 </Stack>
-            </Grid> : '' }
-            { eqptype === 'switch' || eqptype === 'router' ? <Grid item xs= { 8 } sm= { 4 }>
+            </Grid>
+            <Grid item xs= { 12 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Color</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('color') } name= "color" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
                     <Typography variant= "body2" color= "error.dark">{ errors.color?.message }</Typography>
                 </Stack>
-            </Grid> : '' }
-            { eqptype === 'switch' || eqptype === 'router' ? <Grid item xs= { 4 } sm= { 4 }>
+            </Grid>
+            <Grid item xs= { 12 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">No. of Ports</Typography>
+                    <Typography gutterBottom variant= "body2">Capacity</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('no_of_ports') } type= "number" name= "no_of_ports" variant= "standard" 
-                            InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.no_of_ports?.message }</Typography>
+                        <TextField { ...register('capacity') } name= "capacity" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
+                    <Typography variant= "body2" color= "error.dark">{ errors.capacity?.message }</Typography>
                 </Stack>
-            </Grid> : '' }
-            { eqptype === 'router' ? <Grid item xs= { 6 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Frequency</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('frequency') } name= "frequency" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.frequency?.message }</Typography>
-                </Stack>
-            </Grid> : '' }
-            { eqptype === 'tools' ? <Grid item xs= { 8 } sm= { 4 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Tool name</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('tool') } name= "tool" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.tool?.message }</Typography>
-                </Stack>
-            </Grid> : '' }
-            { eqptype === 'tools' ? <Grid item xs= { 4 } sm= { 2 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Stock</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('stock') } name= "stock" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.stock?.message }</Typography>
-                </Stack>
-            </Grid> : '' }
-            { eqptype === 'router' ? <Grid item xs= { 6 }>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography gutterBottom variant= "body2">Data Transfer</Typography>
-                    { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('data_transfer') } name= "data_transfer" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.data_transfer?.message }</Typography>
-                </Stack>
-            </Grid> : '' }
+            </Grid>
             <Grid item xs= { 8 } sm= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">Date purchased</Typography>
@@ -151,4 +101,4 @@ const NetworkingEquipments = ({ fetching, tag }) => {
     );
 }
 
-export default NetworkingEquipments;
+export default Harddrives;
