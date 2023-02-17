@@ -1,12 +1,12 @@
 // Libraries
 import { Box, Checkbox, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
-import { dropdown, series } from "core/api"; // API
-import { formatter, useGet, usePost } from "core/function/global"; // Function
+import { series } from "core/api"; // API
+import { formatter, useGet } from "core/function/global"; // Function
 
 // Constants
 import { input } from "../index.style"; // Styles
