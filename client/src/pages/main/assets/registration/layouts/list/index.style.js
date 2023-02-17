@@ -110,7 +110,7 @@ export const select = {
         xs: '120px',
         sm: '200px'
     },
-    border: 'solid 1px #dfe4ea',
+    border: 'solid 1px #F3F3F3',
     padding: {
         xs: '12px 8px 9px 8px',
         md: '9px 10px 6px 10px'
