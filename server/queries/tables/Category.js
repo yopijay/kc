@@ -1,7 +1,7 @@
 const Builder = require("../../function/builder"); // Query builder
 const Global = require('../../function/global'); // Function
 
-const audit = { series_no: '', table_name: 'tbl_category',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
+const audit = { series_no: '', table_name: 'tbl_category', item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class Category {
     specific = async (id) => { return (await new Builder(`tbl_category`).select().condition(`WHERE id= ${id}`).build()).rows; }
     series = async () => { return (await new Builder(`tbl_category`).select(`COUNT(*)`).build()).rows; }
@@ -109,7 +109,7 @@ class Category {
 
         if(Global.compare(ctgy.module, data.module)) {
             if(!((await new Builder(`tbl_category`).select().condition(`WHERE module= '${data.module}' AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
-                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category',  item_id: ctgy.id, 
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category', item_id: ctgy.id, 
                                         field: 'module', previous: ctgy.module, current: data.module, action: 'update', user_id: data.updated_by, date: date });
             }
             else { _errors.push({ name: 'name', message: 'Category exist in this module!' }); }
@@ -117,7 +117,7 @@ class Category {
 
         if(Global.compare(ctgy.tag, data.tag)) {
             if(!((await new Builder(`tbl_category`).select().condition(`WHERE tag= '${(data.tag).toUpperCase()}'`).build()).rowCount > 0)) {
-                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category',  item_id: ctgy.id, 
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category', item_id: ctgy.id, 
                                         field: 'tag', previous: ctgy.tag, current: (data.tag).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
             }
             else { _errors.push({ name: 'tag', message: 'Tag already used in other category!' }); }
@@ -125,14 +125,14 @@ class Category {
 
         if(Global.compare(ctgy.name, data.name)) {
             if(!((await new Builder(`tbl_category`).select().condition(`WHERE module= '${data.module}' AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
-                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category',  item_id: ctgy.id, 
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category', item_id: ctgy.id, 
                                         field: 'name', previous: ctgy.name, current: (data.name).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
             }
             else { _errors.push({ name: 'name', message: 'Category exist in this module!' }); }
         }
 
         if(Global.compare(ctgy.status, data.status ? 1 : 0)) {
-            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category',  item_id: ctgy.id, 
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_category', item_id: ctgy.id, 
                                     field: 'status', previous: ctgy.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
         }
 
