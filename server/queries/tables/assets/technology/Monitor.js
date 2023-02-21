@@ -124,8 +124,20 @@ class Monitor {
 
         await new Builder(`tbl_assets`).update(`status= ${data.status ? 1: 0}, updated_by= ${data.updated_by}`).condition(`WHERE id= ${data.id}`).build();
         await new Builder(`tbl_assets_info`)
-                            .update()
-                            .condition()
+                            .update(`serial_no= ${data.serial_no !== '' || data.serial_no !== null ? `'${(data.serial_no).toUpperCase()}'` : null},
+                                            brand= ${data.brand !== '' || data.brand !== null ? `'${(data.brand).toUpperCase()}'` : null},
+                                            model= ${data.model !== '' || data.model !== null ? `'${(data.model).toUpperCase()}'` : null},
+                                            dimension= ${data.dimension !== '' || data.dimension !== null ? `'${(data.dimension).toUpperCase()}'` : null},
+                                            color= ${data.color !== '' || data.color !== null ? `'${(data.color).toUpperCase()}'` : null},
+                                            screen_size= ${data.screen_size !== '' || data.screen_size !== null ? `'${(data.screen_size).toUpperCase()}'` : null},
+                                            resolution= ${data.resolution !== '' || data.resolution !== null ? `'${(data.resolution).toUpperCase()}'` : null},
+                                            aspect_ratio= ${data.aspect_ratio !== '' || data.aspect_ratio !== null ? `'${(data.aspect_ratio).toUpperCase()}'` : null},
+                                            refresh_rate= ${data.refresh_rate !== '' || data.refresh_rate !== null ? `'${(data.refresh_rate).toUpperCase()}'` : null},
+                                            input_connectivity= ${(data.input_connectivity).length > 0 || 
+                                                                                    data.input_connectivity !== '' || 
+                                                                                    data.input_connectivity !== null ? `'${JSON.stringify(data.input_connectivity)}'` : null},
+                                            date_purchased= '${data.date_purchased}', warranty= ${data.warranty !== '' || data.warranty !== null ? data.warranty : null}`)
+                            .condition(`WHERE asset_id= ${data.id}`)
                             .build();
 
         _audit.forEach(data => Global.audit(data));

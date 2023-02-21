@@ -40,7 +40,7 @@ const NetworkingEquipments = ({ fetching, tag }) => {
                     <Box sx= { select }>
                         <Controller control= { control } name= "equipment_type"
                                 render= { ({ field: { onChange, value } }) => (
-                                    <Autocomplete options= { eqpmnt_type } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
+                                    <Autocomplete options= { eqpmnt_type } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type !== 'new' }
                                         noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                         renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } 
                                         getOptionDisabled= { option => option.id === 0 } onChange= { (e, item) => { setEqptype(item.id); onChange(item.id); } }

@@ -52,6 +52,60 @@ class Harddrive {
         let date = Global.date(new Date());
         let _audit = [];
         let errors = [];
+
+        if(Global.compare(assts.serial_no, data.serial_no)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'serial_no', previous: assts.serial_no, current: (data.serial_no).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.brand, data.brand)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'brand', previous: assts.brand, current: (data.brand).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.model, data.model)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'model', previous: assts.model, current: (data.model).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.color, data.color)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'color', previous: assts.color, current: (data.color).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.capacity, data.capacity)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'capacity', previous: assts.capacity, current: (data.capacity).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.date_purchased, data.date_purchased)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'date_purchased', previous: assts.date_purchased, current: data.date_purchased, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.warranty, data.warranty)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'warranty', previous: assts.warranty, current: data.warranty, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.status, data.status ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'status', previous: assts.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        await new Builder(`tbl_assets`).update(`status= ${data.status ? 1: 0}, updated_by= ${data.updated_by}`).condition(`WHERE id= ${data.id}`).build();
+        await new Builder(`tbl_assets_info`)
+                            .update(`serial_no= ${data.serial_no !== '' || data.serial_no !== null ? `'${(data.serial_no).toUpperCase()}'` : null},
+                                            brand= ${data.brand !== '' || data.brand !== null ? `'${(data.brand).toUpperCase()}'` : null},
+                                            model= ${data.model !== '' || data.model !== null ? `'${(data.model).toUpperCase()}'` : null},
+                                            color= ${data.color !== '' || data.color !== null ? `'${(data.color).toUpperCase()}'` : null},
+                                            capacity= ${data.capacity !== '' || data.capacity !== null ? `'${(data.capacity).toUpperCase()}'` : null},
+                                            date_purchased= '${data.date_purchased}', warranty= ${data.warranty !== '' || data.warranty !== null ? data.warranty : null}`)
+                            .condition(`WHERE asset_id= ${data.id}`)
+                            .build();
+
+        _audit.forEach(data => Global.audit(data));
+        return { result: 'success', message: 'Successfully updated!' }
     }
 }
 

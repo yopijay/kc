@@ -45,8 +45,8 @@ class NetworkingEquipment {
                 case 'tools':
                     await new Builder(`tbl_assets_info`)
                                         .insert({ columns: `asset_id, brand, serial_no, warranty, date_purchased, equipment_type, tool, stock`, 
-                                                        values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'` : null}, ${data.color !== '' ? `'${(data.color).toUpperCase()}'` : null},
-                                                                        ${data.model !== '' ? `'${(data.model).toUpperCase()}'` : null}, ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}',
+                                                        values: `${assets.id}, ${data.brand !== '' ? `'${(data.brand).toUpperCase()}'` : null}, ${data.serial_no !== '' ? `'${(data.serial_no).toUpperCase()}'` : null}, 
+                                                                        ${data.warranty !== '' ? data.warranty : null}, '${data.date_purchased}', '${data.equipment_type}', 
                                                                         ${data.tool !== '' ? `'${(data.tool).toUpperCase()}'` : null}, ${data.stock !== '' ? data.stock : null}` })
                                         .build();
                     break;
@@ -76,6 +76,54 @@ class NetworkingEquipment {
         let date = Global.date(new Date());
         let _audit = [];
         let errors = [];
+
+        if(Global.compare(assts.serial_no, data.serial_no)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'serial_no', previous: assts.serial_no, current: (data.serial_no).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.brand, data.brand)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'brand', previous: assts.brand, current: (data.brand).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.tool, data.tool)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'tool', previous: assts.tool, current: (data.tool).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.stock, data.stock)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'stock', previous: assts.stock, current: data.stock, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.date_purchased, data.date_purchased)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'date_purchased', previous: assts.date_purchased, current: data.date_purchased, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.warranty, data.warranty)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'warranty', previous: assts.warranty, current: data.warranty, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assts.status, data.status ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assets', item_id: assts.id, 
+                                    field: 'status', previous: assts.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        await new Builder(`tbl_assets`).update(`status= ${data.status ? 1: 0}, updated_by= ${data.updated_by}`).condition(`WHERE id= ${data.id}`).build();
+        await new Builder(`tbl_assets_info`)
+                            .update(`serial_no= ${data.serial_no !== '' || data.serial_no !== null ? `'${(data.serial_no).toUpperCase()}'` : null},
+                                            brand= ${data.brand !== '' || data.brand !== null ? `'${(data.brand).toUpperCase()}'` : null},
+                                            tool= ${data.tool !== '' || data.tool !== null ? `'${(data.tool).toUpperCase()}'` : null},
+                                            stock= ${data.stock !== '' || data.stock !== null ? data.stock : null}, date_purchased= '${data.date_purchased}', 
+                                            warranty= ${data.warranty !== '' || data.warranty !== null ? data.warranty : null}`)
+        .condition(`WHERE asset_id= ${data.id}`)
+        .build();
+
+        _audit.forEach(data => Global.audit(data));
+        return { result: 'success', message: 'Successfully updated!' }
     }
 }
 
