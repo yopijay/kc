@@ -97,7 +97,7 @@ class FilingCabinet {
                                     field: 'appearance', previous: assts.appearance, current: data.appearance, action: 'update', user_id: data.updated_by, date: date });
         }
 
-        await new Builder(`tbl_assets`).update(`status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}`).condition(`WHERE id= ${data.id}`).build();
+        await new Builder(`tbl_assets`).update(`status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${data.id}`).build();
         await new Builder(`tbl_assets_info`)
                             .update(`brand= ${data.brand !== '' || data.brand !== null ? `'${(data.brand).toUpperCase()}'` : null},
                                             dimension= ${data.dimension !== '' || data.dimension !== null ? `'${(data.dimension).toUpperCase()}'` : null},

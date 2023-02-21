@@ -70,16 +70,43 @@ class Assets {
                     case 'office-chairs': return await new OfficeChair().formatted(data);
                     case 'whiteboards': return await new Whiteboard().formatted(data);
                     case 'filing-cabinets': return await new FilingCabinet().formatted(data);
-                    case 'system-unit':
-                    case 'laptops':
-                    case 'mouse':
-                    case 'keyboard':
-                    case 'printer':
-                    case 'monitor':
-                    case 'networking-equipments':
-                    case 'harddrives':
-                    case 'phones':
-                    default: return [];
+                    case 'system-unit': return await new SystemUnit().formatted(data);
+                    case 'laptops': return await new Laptop().formatted(data);
+                    case 'mouse': return await new Mouse().formatted(data);
+                    case 'keyboard': return await new Keyboard().formatted(data);
+                    case 'printer': return await new Printer().formatted(data);
+                    case 'monitor': return await new Monitor().formatted(data);
+                    case 'networking-equipments': return await new NetworkingEquipment().formatted(data);
+                    case 'harddrives': return await new Harddrive().formatted(data);
+                    case 'phones': return await new Phone().formatted(data);
+                    default: 
+                        return (await new Builder(`tbl_assets AS assts`)
+                                                            .select(`assts.series_no AS "Series No.", info.serial_no AS "Serial no.", assts.asset_tag AS "Asset Tag", info.brand AS "Brand", info.model AS "Model",
+                                                                            info.color AS "Color", info.weight AS "Weight", info.dimension AS "Dimension", info.appearance AS "Appearance", 
+                                                                            info.with_sidetable AS "W/ Sidetable", info.with_armrest AS "W/ Armrest", info.assembly_required AS "Assembly required", 
+                                                                            info.mount_type AS "Mount type", info.no_of_drawers AS "No. of drawers", info.os AS "Operating system", info.processor AS "Processor",
+                                                                            info.video_card AS "Video card", info.ram AS "RAM", info.hdd AS "HDD", info.ssd AS "SSD",
+                                                                            info.input_connectivity AS "Input Connectivity", info.resolution AS "Resolution", info.interface AS "Interface", info.orientation AS "Orientation",
+                                                                            info.dpi AS "DPI", info.no_of_keys AS "No. of Keys", info.printer_type AS "Printer type", info.screen_size AS "Screen size", 
+                                                                            info.aspect_ratio AS "Aspect ratio", info.refresh_rate AS "Refresh rate", info.equipment_type AS "Equipment type", 
+                                                                            info.no_of_ports AS "No. of ports", info.data_transfer AS "Data transfer", info.frequency AS "Frequency", info.tool AS "Tool",
+                                                                            info.stock AS "Stock", info.capacity AS "Capacity", info.extension AS "Extension", info.date_purchased AS "Date purchased", 
+                                                                            info.warranty AS "Warranty", CASE WHEN assts.is_released = 1 THEN 'Released' ELSE 'Vacant' END AS "Is Released", 
+                                                                            CASE WHEN assts.status = 1 THEN 'Active' ELSE 'Inactive' END AS "Status",
+                                                                            CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", assts.date_created AS "Date created",
+                                                                            CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", assts.date_updated AS "Date updated",
+                                                                            CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", assts.date_deleted AS "Date deleted",
+                                                                            CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", assts.date_imported AS "Date imported"`)
+                                                            .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                                            .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = assts.created_by`, type: `LEFT` })
+                                                            .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = assts.updated_by`, type: `LEFT` })
+                                                            .join({ table: `tbl_employee AS db`, condition: `db.user_id = assts.deleted_by`, type: `LEFT` })
+                                                            .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = assts.imported_by`, type: `LEFT` })
+                                                            .condition(`${data.sub_category_id !== 'all' ? `WHERE assts.sub_category_id= ${data.sub_category_id}` : '' }
+                                                                                ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                                        OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                                                ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                                            .build()).rows;
                 }
 
             default: 
@@ -88,16 +115,34 @@ class Assets {
                     case 'office-chairs': return await new OfficeChair().original(data);
                     case 'whiteboards': return await new Whiteboard().original(data);
                     case 'filing-cabinets': return await new FilingCabinet().original(data);
-                    case 'system-unit':
-                    case 'laptops':
-                    case 'mouse':
-                    case 'keyboard':
-                    case 'printer':
-                    case 'monitor':
-                    case 'networking-equipments':
-                    case 'harddrives':
-                    case 'phones':
-                    default: return [];
+                    case 'system-unit': return await new SystemUnit().original(data);
+                    case 'laptops': return await new Laptop().original(data);
+                    case 'mouse': return await new Mouse().original(data);
+                    case 'keyboard': return await new Keyboard().original(data);
+                    case 'printer': return await new Printer().original(data);
+                    case 'monitor': return await new Monitor().original(data);
+                    case 'networking-equipments': return await new NetworkingEquipment().original(data);
+                    case 'harddrives': return await new Harddrive().original(data);
+                    case 'phones': return await new Phone().original(data);
+                    default: 
+                        return (await new Builder(`tbl_assets AS assts`)
+                                                        .select(`assts.id, assts.series_no, assts.category_id, assts.sub_category_id, info.serial_no, assts.asset_tag, info.brand, info.model,
+                                                                        info.color, info.weight, info.dimension, info.appearance, info.with_sidetable, info.with_armrest, info.assembly_required, 
+                                                                        info.mount_type, info.no_of_drawers, info.os, info.processor, info.video_card, info.ram, info.hdd, info.ssd, info.input_connectivity,
+                                                                        info.resolution, info.interface, info.orientation, info.dpi, info.no_of_keys, info.printer_type, info.screen_size, info.aspect_ratio,
+                                                                        info.refresh_rate, info.equipment_type, info.no_of_ports, info.data_transfer, info.frequency, info.tool, info.stock, info.capacity,
+                                                                        info.extension, info.date_purchased, info.warranty, assts.is_released, assts.status, assts.created_by, assts.updated_by, 
+                                                                        assts.deleted_by, assts.imported_by, assts.date_created, assts.date_updated, assts.date_deleted, assts.date_imported`)
+                                                        .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = assts.created_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = assts.updated_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS db`, condition: `db.user_id = assts.deleted_by`, type: `LEFT` })
+                                                        .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = assts.imported_by`, type: `LEFT` })
+                                                        .condition(`${data.sub_category_id !== 'all' ? `WHERE assts.sub_category_id= ${data.sub_category_id}` : '' }
+                                                                            ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                                    OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                                            ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                                        .build()).rows;
                 }
         }
     }

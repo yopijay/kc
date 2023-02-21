@@ -118,7 +118,7 @@ class OfficeChair {
                                     field: 'status', previous: assts.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
         }
 
-        await new Builder(`tbl_assets`).update(`status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}`).condition(`WHERE id= ${data.id}`).build();
+        await new Builder(`tbl_assets`).update(`status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${data.id}`).build();
         await new Builder(`tbl_assets_info`)
                             .update(`brand= ${data.brand !== '' || data.brand !== null ? `'${(data.brand).toUpperCase()}'` : null},
                                             color= ${data.color !== '' || data.color !== null ? `'${(data.color).toUpperCase()}'` : null},

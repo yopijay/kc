@@ -4,11 +4,44 @@ const Global = require("../../../../function/global"); // Global functions
 const audit = { series_no: '', table_name: 'tbl_assets',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class NetworkingEquipment {
     formatted = async (data) => {
-        return [];
+        return (await new Builder(`tbl_assets AS assts`)
+                                        .select(`assts.series_no AS "Series No.", info.serial_no AS "Serial no.", assts.asset_tag AS "Asset Tag", info.brand AS "Brand", info.model AS "Model",
+                                                        info.equipment_type AS "Equipment type", info.no_of_ports AS "No. of Ports", info.data_transfer AS "Data transfer", info.frequency AS "Frequency",
+                                                        info.tool AS "Tool", info.stock AS "Stock", info.date_purchased AS "Date purchased", 
+                                                        info.warranty AS "Warranty", CASE WHEN assts.is_released = 1 THEN 'Released' ELSE 'Vacant' END AS "Is Released", 
+                                                        CASE WHEN assts.status = 1 THEN 'Active' ELSE 'Inactive' END AS "Status",
+                                                        CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", assts.date_created AS "Date created",
+                                                        CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", assts.date_updated AS "Date updated",
+                                                        CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", assts.date_deleted AS "Date deleted",
+                                                        CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", assts.date_imported AS "Date imported"`)
+                                        .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = assts.created_by`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = assts.updated_by`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS db`, condition: `db.user_id = assts.deleted_by`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = assts.imported_by`, type: `LEFT` })
+                                        .condition(`WHERE assts.sub_category_id= ${data.sub_category_id}
+                                                            ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                    OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                            ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                        .build()).rows;
     }
 
     original = async (data) => {
-        return [];
+        return (await new Builder(`tbl_assets AS assts`)
+                                        .select(`assts.id, assts.series_no, assts.category_id, assts.sub_category_id, info.serial_no, assts.asset_tag, info.brand, info.model,
+                                                        info.equipment_type, info.no_of_ports, info.data_transfer, info.frequency, info.tool, info.stock,
+                                                        info.date_purchased, info.warranty, assts.is_released, assts.status, assts.created_by, assts.updated_by, assts.deleted_by, 
+                                                        assts.imported_by, assts.date_created, assts.date_updated, assts.date_deleted, assts.date_imported`)
+                                        .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = assts.created_by`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = assts.updated_by`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS db`, condition: `db.user_id = assts.deleted_by`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = assts.imported_by`, type: `LEFT` })
+                                        .condition(`WHERE assts.sub_category_id= ${data.sub_category_id}
+                                                            ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                    OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
+                                                            ORDER BY assts.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                        .build()).rows;
     }
     
     save = async (data) => {
@@ -112,7 +145,7 @@ class NetworkingEquipment {
                                     field: 'status', previous: assts.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
         }
 
-        await new Builder(`tbl_assets`).update(`status= ${data.status ? 1: 0}, updated_by= ${data.updated_by}`).condition(`WHERE id= ${data.id}`).build();
+        await new Builder(`tbl_assets`).update(`status= ${data.status ? 1: 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${data.id}`).build();
         await new Builder(`tbl_assets_info`)
                             .update(`serial_no= ${data.serial_no !== '' || data.serial_no !== null ? `'${(data.serial_no).toUpperCase()}'` : null},
                                             brand= ${data.brand !== '' || data.brand !== null ? `'${(data.brand).toUpperCase()}'` : null},
