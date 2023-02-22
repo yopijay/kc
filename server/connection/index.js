@@ -5,9 +5,9 @@ const config = process.env.DATABASE_URL ? {
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 } : {
-    user: 'pijay',
+    user: 'postgres',
     host: 'localhost',
-    database: 'db_kcic_v2',
+    database: 'db_kc',
     password: 'root',
     port: 5432
 }
