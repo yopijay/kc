@@ -65,12 +65,15 @@ class Users {
         return { result: 'success', message: 'Successfully logged out!' }
     }
 
-    dropdown = async (data) => { 
+    dropdown = async (data) => {
         return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
                         .concat((await new Builder(`tbl_users AS usr`)
                                                             .select(`usr.id, CONCAT(info.lname, ', ', info.fname, ' ', info.mname) AS name`)
                                                             .join({ table: `tbl_employee AS info`, condition: `info.user_id = usr.id`, type: 'LEFT' })
-                                                            .condition(`WHERE usr.status = 1 ORDER BY info.lname ASC`)
+                                                            .condition(`WHERE usr.status = 1 ${data.company_id !== undefined ? `AND info.company_id= ${data.company_id}` : ''}
+                                                                                ${data.department_id !== undefined ? `AND info.department_id= ${data.department_id}` : ''}
+                                                                                ${data.branch !== undefined ? `AND info.branch= '${data.branch}'` : ''}
+                                                                                ORDER BY info.lname ASC`)
                                                             .build()).rows);
     }
 

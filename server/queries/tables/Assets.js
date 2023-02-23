@@ -1,5 +1,4 @@
 const Builder = require("../../function/builder"); // Query builder
-const Global = require('../../function/global'); // Function
 
 // Sub category
 // Office furniture
@@ -134,10 +133,6 @@ class Assets {
                                                                         info.extension, info.date_purchased, info.warranty, assts.is_released, assts.status, assts.created_by, assts.updated_by, 
                                                                         assts.deleted_by, assts.imported_by, assts.date_created, assts.date_updated, assts.date_deleted, assts.date_imported`)
                                                         .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
-                                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = assts.created_by`, type: `LEFT` })
-                                                        .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = assts.updated_by`, type: `LEFT` })
-                                                        .join({ table: `tbl_employee AS db`, condition: `db.user_id = assts.deleted_by`, type: `LEFT` })
-                                                        .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = assts.imported_by`, type: `LEFT` })
                                                         .condition(`${data.sub_category_id !== 'all' ? `WHERE assts.sub_category_id= ${data.sub_category_id}` : '' }
                                                                             ${data.searchtxt !== '' ? `AND (assts.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
                                                                                                                     OR assts.asset_tag LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}
@@ -207,7 +202,20 @@ class Assets {
     }
 
     dropdown = async (data) => {
-        return [];
+        return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                        .concat((await new Builder(`tbl_assets AS assts`)
+                                                            .select(`assts.id, assts.series_no, assts.category_id, assts.sub_category_id, info.serial_no, assts.asset_tag AS name, info.brand, info.model,
+                                                                            info.color, info.weight, info.dimension, info.appearance, info.with_sidetable, info.with_armrest, info.assembly_required, 
+                                                                            info.mount_type, info.no_of_drawers, info.os, info.processor, info.video_card, info.ram, info.hdd, info.ssd, info.input_connectivity,
+                                                                            info.resolution, info.interface, info.orientation, info.dpi, info.no_of_keys, info.printer_type, info.screen_size, info.aspect_ratio,
+                                                                            info.refresh_rate, info.equipment_type, info.no_of_ports, info.data_transfer, info.frequency, info.tool, info.stock, info.capacity,
+                                                                            info.extension, info.date_purchased, info.warranty, assts.is_released, assts.status, assts.created_by, assts.updated_by, 
+                                                                            assts.deleted_by, assts.imported_by, assts.date_created, assts.date_updated, assts.date_deleted, assts.date_imported`)
+                                                            .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
+                                                            .condition(`WHERE assts.status= 1 AND is_released= 0
+                                                                                ${data.category_id !== undefined ? `AND category_id= ${data.category_id}` : ''}
+                                                                                ${data.sub_category_id !== undefined ? `AND sub_category_id= ${data.sub_category_id}` : ''}`)
+                                                            .build()).rows);
     }
 }
 

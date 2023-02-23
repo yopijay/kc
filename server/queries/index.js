@@ -7,6 +7,7 @@ const Supplies = require('./tables/Supplies');
 const Category = require('./tables/Category');
 const SubCategory = require('./tables/SubCategory');
 const Assets = require('./tables/Assets');
+const AssignAssets = require('./tables/AssignAssets');
 
 const login = (data) => { return new Users().login(data); }
 const logout = (data) => { return new Users().logout(data); }
@@ -51,6 +52,7 @@ const excel = (table, type, data) => {
             case 'tbl_category': resolve(await new Category().excel(type, data)); break;
             case 'tbl_sub_category': resolve(await new SubCategory().excel(type, data)); break;
             case 'tbl_assets': resolve(await new Assets().excel(type, data)); break;
+            case 'tbl_assign_asset': resolve(await new AssignAssets().excel(type, data)); break;
         }
     });
 }
@@ -66,6 +68,7 @@ const list = (table, data) => {
             case 'tbl_category': resolve(await new Category().list(data)); break;
             case 'tbl_sub_category': resolve(await new SubCategory().list(data)); break;
             case 'tbl_assets': resolve(await new Assets().list(data)); break;
+            case 'tbl_assign_asset': resolve(await new AssignAssets().list(data));
         }
     });
 }
@@ -80,6 +83,7 @@ const search = (table, data) => {
             case 'tbl_category': resolve(await new Category().search(data)); break;
             case 'tbl_sub_category': resolve(await new SubCategory().search(data)); break;
             case 'tbl_assets': resolve(await new Assets().search(data)); break;
+            case 'tbl_assign_asset': resolve(await new AssignAssets().search(data)); break;
         }
     });
 }
@@ -94,6 +98,7 @@ const specific = (table, id) => {
             case 'tbl_category': resolve(await new Category().specific(id)); break;
             case 'tbl_sub_category': resolve(await new SubCategory().specific(id)); break;
             case 'tbl_assets': resolve(await new Assets().specific(id)); break;
+            case 'tbl_assign_asset': resolve(await new AssignAssets().specific(id)); break;
         }
     });
 }
@@ -108,6 +113,7 @@ const specific = (table, id) => {
             case 'tbl_category': resolve(await new Category().save(data)); break;
             case 'tbl_sub_category': resolve(await new SubCategory().save(data)); break;
             case 'tbl_assets': resolve(await new Assets().save(data)); break;
+            case'tbl_assign_asset': resolve(await new AssignAssets().save(data)); break;
         }
     });
 }
@@ -122,6 +128,7 @@ const update = (table, data) => {
            case 'tbl_category': resolve(await new Category().update(data)); break;
            case 'tbl_sub_category': resolve(await new SubCategory().update(data)); break;
            case 'tbl_assets': resolve(await new Assets().update(data)); break;
+           case 'tbl_assign_asset': resolve(await new AssignAssets().update(data)); break;
        }
    });
 }
@@ -135,6 +142,7 @@ const series = (table) => {
             case 'tbl_category': resolve(await new Category().series()); break;
             case 'tbl_sub_category': resolve(await new SubCategory().series()); break;
             case 'tbl_assets': resolve(await new Assets().series()); break;
+            case 'tbl_assign_asset': resolve(await new AssignAssets().series()); break;
         }
     });
 }
@@ -159,9 +167,10 @@ const upload = (table, data) => {
             case 'tbl_company': resolve(new Company().upload(data)); break;
             case 'tbl_department': resolve(new Department().upload(data)); break;
             case 'tbl_position': resolve(new Position().upload(data)); break;
-            case 'tbl_category': resolve(new Category().update(data)); break;
-            case 'tbl_sub_category': resolve(new SubCategory().update(data)); break;
-            case 'tbl_assets': resolve(new Assets().update(data)); break;
+            case 'tbl_category': resolve(new Category().upload(data)); break;
+            case 'tbl_sub_category': resolve(new SubCategory().upload(data)); break;
+            case 'tbl_assets': resolve(new Assets().upload(data)); break;
+            case 'tbl_assign_asset': resolve(await new AssignAssets().upload(data)); break;
         }
     });
 }
