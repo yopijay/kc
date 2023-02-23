@@ -61,19 +61,19 @@ const Index = () => {
                         <Box sx= { search }>
                             <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
                             <TextField { ...register('searchtxt') } variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
-                                onChange= { e => { setValue('searchtxt', e.target.value); find({ table: 'tbl_assets', data: getValues() }); } } />
+                                onChange= { e => { setValue('searchtxt', e.target.value); find({ table: 'tbl_assign_asset', data: getValues() }); } } />
                         </Box>
                     </form>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } sx= {{ padding: '8px 0 0 0' }}>
                         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
                             { data.user_level === 'superadmin' ?
                                 <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
-                                    onChange= { async e => { uploadfile({ table: 'tbl_assets', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : ''}
+                                    onChange= { async e => { uploadfile({ table: 'tbl_assign_asset', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : ''}
                             { data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
                                 <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF'}} size= "lg" />
                             </FormLabel> : '' }
-                            <Typography onClick= { () => { if(data.user_level === 'superadmin') { original({ table: 'tbl_assets', type: 'original', data: getValues() }); } 
-                                    formatted({ table: 'tbl_assets', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
+                            <Typography onClick= { () => { if(data.user_level === 'superadmin') { original({ table: 'tbl_assign_asset', type: 'original', data: getValues() }); } 
+                                    formatted({ table: 'tbl_assign_asset', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
                                 <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
                             <Typography component= { Link } to= "/assets/asset-issuance/form/new" sx= { btnicon }>

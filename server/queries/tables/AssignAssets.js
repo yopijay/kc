@@ -29,7 +29,19 @@ class AssignAssets {
     }
 
     search = async (data) => {
-        return [];
+        return (await new Builder(`tbl_assign_asset AS assgn`)
+                                        .select(`assgn.id, assgn.series_no, cmp.name AS company, dpt.name AS department, ctg.name AS category, subctg.name AS sub_category,
+                                                        CONCAT(it.lname, ', ', it.fname, ' ', it.mname) AS issued_to, assgn.date_created, assgn.status`)
+                                        .join({ table: `tbl_company AS cmp`, condition: `assgn.company_id = cmp.id`, type: `LEFT` })
+                                        .join({ table: `tbl_department AS dpt`, condition: `assgn.department_id = dpt.id`, type: `LEFT` })
+                                        .join({ table: `tbl_category AS ctg`, condition: `assgn.category_id = ctg.id`, type: `LEFT` })
+                                        .join({ table: `tbl_sub_category AS subctg`, condition: `assgn.sub_category_id = subctg.id`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS it`, condition: `assgn.issued_to = it.user_id`, type: `LEFT` })
+                                        .condition(`WHERE (assgn.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR it.lname LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                OR it.fname LIKE '%${(data.searchtxt).toUpperCase()}%' OR it.mname LIKE '%${(data.searchtxt).toUpperCase()}%')
+                                                                ${data.sub_category_id !== 'all' ? ` AND assgn.sub_category_id= ${data.sub_category_id} ` : ''}
+                                                                ORDER BY assgn.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                        .build()).rows;
     }
 
     save = async (data) => {
