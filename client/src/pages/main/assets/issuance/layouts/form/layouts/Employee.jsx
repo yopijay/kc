@@ -1,5 +1,5 @@
 // Libraries
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
@@ -23,6 +23,15 @@ const Employee = ({ fetching }) => {
     const { data: company } = useGet({ key: ['dd_company'], fetch: dropdown({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false } });
     const { data: department, mutate: dpt, isLoading: dptloading } = usePost({ fetch: dropdown });
     const { data: users, mutate: usr, isLoading: usrloading } = usePost({ fetch: dropdown });
+
+    useEffect(() => {
+        if(!fetching) {
+            if(type !== 'new') {
+                dpt({ table: 'tbl_department', data: { id: getValues().company_id } });
+                usr({ table: 'tbl_users', data: { company_id: getValues().company_id, department_id: getValues().department_id, branch: getValues().branch } });
+            }
+        }
+    }, [ fetching, type, dpt, usr, getValues ]);
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 }>
@@ -115,17 +124,17 @@ const Employee = ({ fetching }) => {
                             users !== undefined ? 
                                 users?.length > 0 ? 
                                     <Box sx= { select }>
-                                        <Controller control= { control } name= "users_id" defaultValue= { 0 }
+                                        <Controller control= { control } name= "issued_to" defaultValue= { 0 }
                                             render= { ({ field: { onChange, value } }) => (
                                                 <Autocomplete options= { users?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
                                                     getOptionLabel= { users => users.name || users.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
                                                     isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
                                                     onChange= { (e, item) => { 
-                                                        setError('users_id', { message: '' }); 
+                                                        setError('issued_to', { message: '' }); 
                                                         onChange(item.id); 
                                                     } } renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
-                                                    value= { users?.find(data => { return data.id === (getValues().users_id !== undefined ? getValues().users_id : value) }) !== undefined ?
-                                                        users?.find(data => { return data.id === (getValues().users_id !== undefined ? getValues().users_id : value) }) : users.length === 0 ?
+                                                    value= { users?.find(data => { return data.id === (getValues().issued_to !== undefined ? getValues().issued_to : value) }) !== undefined ?
+                                                        users?.find(data => { return data.id === (getValues().issued_to !== undefined ? getValues().issued_to : value) }) : users.length === 0 ?
                                                         { id: 0, name: '-- SELECT AN ITEM BELOW --' } : users[0] } />
                                             ) } />
                                     </Box> :
@@ -135,7 +144,7 @@ const Employee = ({ fetching }) => {
                                     direction= "row" justifyContent= "flex-start" alignItems= "center">Please select a department first!</Typography> :
                             <Typography color= "text.disabled" component= { Stack } sx= { label } 
                                 direction= "row" justifyContent= "flex-start" alignItems= "center">Loading...</Typography> }
-                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.users_id?.message }</Typography>
+                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.issued_to?.message }</Typography>
                 </Stack>
             </Grid>
         </Grid>

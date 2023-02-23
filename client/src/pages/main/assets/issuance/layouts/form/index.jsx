@@ -23,6 +23,7 @@ const Index = () => {
     const { isFetching, refetch } =
         useGet({ key: ['issuance_specific'], fetch: specific({ table: `tbl_assign_asset`, id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false },
             onSuccess: data => {
+                console.log(data);
                 if(Array.isArray(data))
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
                         let _name = Object.keys(data[0])[count]; 

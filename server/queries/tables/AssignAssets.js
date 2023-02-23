@@ -4,7 +4,13 @@ const Global = require("../../function/global"); // Global functions
 const audit = { series_no: '', table_name: 'tbl_assign_asset',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class AssignAssets {
     series = async () => { return (await new Builder(`tbl_assign_asset`).select(`COUNT(*)`).build()).rows; }
-    specific = async (id) => { return (await new Builder(`tbl_assign_asset`).select().condition(`WHERE id= ${id}`).build()).rows; }
+    specific = async (id) => { 
+        return (await new Builder(`tbl_assign_asset AS assgn`)
+                                        .select(`assgn.*, emp.branch`)
+                                        .join({ table: `tbl_employee AS emp`, condition: `assgn.issued_to = emp.user_id`, type: `LEFT` })
+                                        .condition(`WHERE assgn.id= ${id}`)
+                                        .build()).rows;
+    }
 
     list = async (data) => {
         return (await new Builder(`tbl_assign_asset AS assgn`)
@@ -49,7 +55,7 @@ class AssignAssets {
         let issuance = (await new Builder(`tbl_assign_asset`)
                                                     .insert({ columns: `series_no, company_id, department_id, category_id, sub_category_id, asset_id, issued_to, remarks, status, created_by, date_created`, 
                                                                     values: `'${(data.series_no).toUpperCase()}', ${data.company_id}, ${data.department_id}, ${data.category_id}, ${data.sub_category_id}, 
-                                                                                    ${data.asset_id}, ${data.users_id}, ${data.remarks !== '' ? `'${(data.remarks).toUpperCase()}'` : null}, ${data.status ? 1 : 0},
+                                                                                    ${data.asset_id}, ${data.issued_to}, ${data.remarks !== '' ? `'${(data.remarks).toUpperCase()}'` : null}, ${data.status ? 1 : 0},
                                                                                     ${data.created_by}, '${date}'` })
                                                     .condition(`RETURNING id`)
                                                     .build()).rows[0];

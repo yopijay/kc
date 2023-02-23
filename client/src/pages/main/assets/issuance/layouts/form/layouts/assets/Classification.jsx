@@ -1,5 +1,5 @@
 // Libraries
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Controller } from "react-hook-form";
 import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
@@ -31,6 +31,15 @@ const Classification = ({ fetching, setItem, setEqptype }) => {
             }
         });
 
+    useEffect(() => {
+        if(!fetching) {
+            if(type !== 'new') {
+                menu({ table: 'tbl_sub_category', data: { category_id: getValues().category_id } });
+                assets({ table: 'tbl_assets', data: { category_id: getValues().category_id, sub_category_id: getValues().sub_category_id } });
+            }
+        }
+    }, [ fetching, type, menu, assets, getValues ]);
+    
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 }>
             <Grid item xs= { 12 } sm= { 6 } md= { 7 }>

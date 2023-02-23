@@ -21,7 +21,6 @@ import Loader from "./layouts/Loader";
 // Constants
 import { btnexport, btnicon, btnimport, btntxt, search } from "./index.style"; // Styles
 
-
 const Index = () => {
     let name = `KC-EXPORT-ASSETS-ISSUANCE-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
