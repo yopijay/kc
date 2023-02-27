@@ -32,7 +32,35 @@ class AssignAssets {
     }
 
     excel = async (type, data) => {
-        return [];
+        switch(type) {
+            case 'formatted':
+                return (await new Builder(`tbl_assign_asset AS assgn`)
+                                                .select(`assgn.series_no AS "Series No.", cmp.name AS "Company", dpt.name AS "Department", ctg.name AS "Category", subctg.name AS "Sub Category",
+                                                                asst.asset_tag AS "Asset Tag", CONCAT(it.lname, ', ', it.fname, ' ', it.mname) AS "Issued To", assgn.remarks AS Remarks, 
+                                                                CASE WHEN assgn.status = 1 THEN 'Active' ELSE 'Inactive' END AS "Status", 
+                                                                CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", assgn.date_created AS "Date created", 
+                                                                CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", assgn.date_updated AS "Date updated",
+                                                                CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", assgn.date_deleted AS "Date deleted", 
+                                                                CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", assgn.date_imported AS "Date imported"`)
+                                                .join({ table: `tbl_company AS cmp`, condition: `assgn.company_id = cmp.id`, type: `LEFT` })
+                                                .join({ table: `tbl_department AS dpt`, condition: `assgn.department_id = dpt.id`, type: `LEFT` })
+                                                .join({ table: `tbl_category AS ctg`, condition: `assgn.category_id = ctg.id`, type: `LEFT` })
+                                                .join({ table: `tbl_sub_category AS subctg`, condition: `assgn.sub_category_id = subctg.id`, type: `LEFT` })
+                                                .join({ table: `tbl_assets AS asst`, condition: `assgn.asset_id = asst.id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS it`, condition: `assgn.issued_to = it.user_id`, type: `LEFT`})
+                                                .join({ table: `tbl_employee AS cb`, condition: `assgn.created_by = cb.user_id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS ub`, condition: `assgn.updated_by = ub.user_id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS db`, condition: `assgn.deleted_by = db.user_id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS ib`, condition: `assgn.imported_by = ib.user_id`, type: `LEFT` })
+                                                .condition(`${data.sub_category_id !== 'all' || data.searchtxt !== '' ? `WHERE ` : ''}
+                                                                    ${data.sub_category_id !== 'all' ? `assgn.sub_category_id= ${data.sub_category_id} ` : ''}
+                                                                    ${data.sub_category_id !== 'all' && data.searchtxt !== '' ? `AND ` : ''}
+                                                                    ${data.searchtxt !== '' ? `(assgn.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR it.lname LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                                                                OR it.fname LIKE '%${(data.searchtxt).toUpperCase()}%' OR it.mname LIKE '%${(data.mname).toUpperCase()}%')` : ''}
+                                                                    ORDER BY assgn.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                                .build()).rows;
+            default: return (await new Builder(`tbl_assign_asset`).select().condition(`ORDER BY ${data.orderby} ${(data.sort).toUpperCase()}`).build()).rows;
+        }
     }
 
     search = async (data) => {

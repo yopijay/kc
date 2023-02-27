@@ -59,7 +59,7 @@ class SubCategory {
                                                                         ctgy.module LIKE '%${data.searchtxt}%' OR ctgy.name LIKE '%${data.searchtxt}%'
                                                                         ORDER BY sc.${data.category} ${(data.orderby).toUpperCase()}`)
                                                 .build()).rows;
-            default: return (await new Builder(`tbl_sub_category`).select().condition(`ORDER by ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
+            default: return (await new Builder(`tbl_sub_category`).select().condition(`ORDER BY ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
         }
     }
 
