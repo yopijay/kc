@@ -86,7 +86,7 @@ class Users {
                                         .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
                                         .join({ table: `tbl_position AS pst`, condition: `emp.position_id = pst.id`, type: `LEFT` })
                                         .condition(`${data.searchtxt !== '' ? `WHERE usr.email LIKE '%${data.searchtxt}%' OR emp.employee_no LIKE '%${data.searchtxt}%'
-                                                            OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''}`)
+                                                            OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''}`)
                                         .except(`WHERE usr.id= ${data.id} ORDER BY ${data.category} ${(data.orderby).toUpperCase()}`)
                                         .build()).rows;
     }
@@ -100,7 +100,7 @@ class Users {
                                         .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
                                         .join({ table: `tbl_position AS pst`, condition: `emp.position_id = pst.id`, type: `LEFT` })
                                         .condition(`WHERE usr.email LIKE '%${data.condition}%' OR emp.employee_no LIKE '%${data.condition}%'
-                                                            OR emp.lname LIKE '%${(data.condition).toUpperCase()}%'`)
+                                                            OR emp.lname LIKE '%${(data.condition).toUpperCase()}%' OR emp.fname LIKE '%${(data.condition).toUpperCase()}%'`)
                                         .except(`WHERE usr.id= ${data.id} ORDER BY ${data.category} ${(data.orderby).toUpperCase()}`)
                                         .build()).rows;
     }
