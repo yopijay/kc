@@ -25,7 +25,7 @@ const Classification = ({ fetching, setItem, setEqptype }) => {
                     for(let count = 0; count < Object.keys(data[0]).length; count++) {
                         let _name = Object.keys(data[0])[count]; 
 
-                        if(_name !== 'series_no') { setValue(_name, data[0][_name] !== null ? _name === 'item' ? ((data[0][_name]).replace(' ', '-')).toLowerCase() : data[0][_name] : ''); }
+                        if(_name !== 'series_no' && _name !== 'id') { setValue(_name, data[0][_name] !== null ? _name === 'item' ? ((data[0][_name]).replace(' ', '-')).toLowerCase() : data[0][_name] : ''); }
                         setEqptype(data[0]['equipment_type']);
                     }
             }
@@ -36,9 +36,11 @@ const Classification = ({ fetching, setItem, setEqptype }) => {
             if(type !== 'new') {
                 menu({ table: 'tbl_sub_category', data: { category_id: getValues().category_id } });
                 assets({ table: 'tbl_assets', data: { category_id: getValues().category_id, sub_category_id: getValues().sub_category_id } });
+                info({ table: 'tbl_assets', id: getValues().asset_id });
+                setItem(getValues().item);
             }
         }
-    }, [ fetching, type, menu, assets, getValues ]);
+    }, [ fetching, type, menu, assets, getValues, setItem, info ]);
     
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 }>
@@ -79,7 +81,7 @@ const Classification = ({ fetching, setItem, setEqptype }) => {
                                                     isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
                                                     onChange= { (e, item) => { setItem(''); setError('sub_category_id', { message: '' }); onChange(item.id); 
                                                         setValue('item', ((item.name).replace(' ', '-')).toLowerCase()); 
-                                                        assets({ table: 'tbl_assets', data: { category_id: getValues().category_id, sub_category_id: item.id } });
+                                                        assets({ table: 'tbl_assets', data: { category_id: getValues().category_id, sub_category_id: item.id, is_released: 0 } });
                                                     } }
                                                     renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
                                                     value= { items?.find(data => { return data.id === (getValues().sub_category_id !== undefined ? getValues().sub_category_id : value) }) !== undefined ?

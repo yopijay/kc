@@ -212,7 +212,7 @@ class Assets {
                                                                             info.extension, info.date_purchased, info.warranty, assts.is_released, assts.status, assts.created_by, assts.updated_by, 
                                                                             assts.deleted_by, assts.imported_by, assts.date_created, assts.date_updated, assts.date_deleted, assts.date_imported`)
                                                             .join({ table: `tbl_assets_info AS info`, condition: `info.asset_id = assts.id`, type: `LEFT` })
-                                                            .condition(`WHERE assts.status= 1 AND is_released= 0
+                                                            .condition(`WHERE assts.status= 1 ${data.is_released !== undefined ? `AND is_released= ${data.is_released}` : ''}
                                                                                 ${data.category_id !== undefined ? `AND category_id= ${data.category_id}` : ''}
                                                                                 ${data.sub_category_id !== undefined ? `AND sub_category_id= ${data.sub_category_id}` : ''}`)
                                                             .build()).rows);

@@ -47,7 +47,7 @@ const Item = () => {
                             <Typography variant= "body2" sx= { txt }>{ data.date_created }</Typography>
                         </Stack>
                         <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
-                            { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
+                            { data.is_released === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
                                 <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                                 <Typography sx= { icons } component= { Link } to= { `/assets/asset-registration/form/update/${data.id}` }>

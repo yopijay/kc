@@ -23,17 +23,16 @@ const Index = () => {
     const { isFetching, refetch } =
         useGet({ key: ['issuance_specific'], fetch: specific({ table: `tbl_assign_asset`, id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false },
             onSuccess: data => {
-                console.log(data);
                 if(Array.isArray(data))
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
                         let _name = Object.keys(data[0])[count]; 
                         setValue(_name, 
                             data[0][_name] !== null ? 
                                 _name === 'input_connectivity' ? JSON.parse(data[0][_name]) : 
-                                    _name === 'item' ? ((data[0][_name]).replace(' ', '-')).toLowerCase() 
-                                : data[0][_name] : ''); 
+                                    _name === 'item' ? ((data[0][_name]).replace(' ', '-')).toLowerCase()
+                                : data[0][_name] : '');
                     }
-            } 
+            }
         });
 
     const { mutate: saving } = 
@@ -70,11 +69,10 @@ const Index = () => {
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             let errors = [];
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
-
                             if(data.company_id === undefined || data.company_id === 0) { errors.push({ name: 'company_id', message: 'This field is required!' }); }
                             if(data.department_id === undefined || data.department_id === 0) { errors.push({ name: 'department_id', message: 'This field is required!' }); }
                             if(data.branch === undefined || data.branch === 0) { errors.push({ name: 'branch', message: 'This field is required!' }); }
-                            if(data.users_id === undefined || data.users_id === 0) { errors.push({ name: 'users_id', message: 'This field is required!' }); }
+                            if(data.issued_to === undefined || data.issued_to === 0) { errors.push({ name: 'issued_to', message: 'This field is required!' }); }
                             if(data.category_id === undefined || data.category_id === 0) { errors.push({ name: 'category_id', message: 'This field is required!' }); }
                             if(data.sub_category_id === undefined || data.sub_category_id === 0) { errors.push({ name: 'sub_category_id', message: 'This field is required!' }); }
                             if(data.asset_id === undefined || data.asset_id === 0) { errors.push({ name: 'asset_id', message: 'This field is required!' }); }

@@ -4,10 +4,11 @@ const Global = require("../../function/global"); // Global functions
 const audit = { series_no: '', table_name: 'tbl_assign_asset',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class AssignAssets {
     series = async () => { return (await new Builder(`tbl_assign_asset`).select(`COUNT(*)`).build()).rows; }
-    specific = async (id) => { 
+    specific = async (id) => {
         return (await new Builder(`tbl_assign_asset AS assgn`)
-                                        .select(`assgn.*, emp.branch`)
+                                        .select(`assgn.*, emp.branch, subctg.name AS item`)
                                         .join({ table: `tbl_employee AS emp`, condition: `assgn.issued_to = emp.user_id`, type: `LEFT` })
+                                        .join({ table: `tbl_sub_category AS subctg`, condition: `assgn.sub_category_id = subctg.id`, type: `LEFT` })
                                         .condition(`WHERE assgn.id= ${id}`)
                                         .build()).rows;
     }
@@ -83,7 +84,49 @@ class AssignAssets {
     }
 
     update = async (data) => {
-        return [];
+        let assgn = (await new Builder(`tbl_assign_asset`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
+        let date = Global.date(new Date());
+        let _audit = [];
+        let _errors = [];
+
+        if(Global.compare(assgn.company_id, data.company_id)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assign_asset',  item_id: assgn.id, 
+                            field: 'company_id', previous: assgn.company_id, current: data.company_id, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assgn.department_id, data.department_id)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assign_asset',  item_id: assgn.id, 
+                            field: 'department_id', previous: assgn.department_id, current: data.department_id, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assgn.issued_to, data.issued_to)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assign_asset',  item_id: assgn.id, 
+                            field: 'issued_to', previous: assgn.issued_to, current: data.issued_to, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assgn.remarks, data.remarks)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assign_asset',  item_id: assgn.id, 
+                            field: 'remarks', previous: (assgn.remarks).toUpperCase(), current: (data.remarks).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(assgn.status, data.status ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_assign_asset',  item_id: assgn.id, 
+                            field: 'status', previous: assgn.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(!(_errors.length > 0)) {
+            await new Builder(`tbl_assign_asset`)
+                                .update(`company_id= ${data.company_id}, department_id= ${data.department_id}, issued_to= ${data.issued_to},
+                                                remarks= ${data.remarks !== '' ? `'${(data.remarks).toUpperCase()}'` : null}, status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, 
+                                                date_updated= '${date}'`)
+                                .condition(`WHERE id= ${assgn.id}`)
+                                .build();
+
+            _audit.forEach(data => Global.audit(data));
+            console.log(_audit);
+            return { result: 'success', message: 'Successfully updated!' }
+        }
+        else { return { result: 'error', error: _errors } }
     }
 }
 
