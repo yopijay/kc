@@ -10,6 +10,7 @@ import { faEllipsisH, faFileArrowDown, faFileArrowUp, faMagnifyingGlass, faPlus 
 import { ListCntxt } from "core/context/List"; // Context
 import { GlobalCntx } from "core/context/Global"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
+import { FormCntxt } from "core/context/Form"; // Context
 import { excel, look, records, upload } from "core/api"; // API
 import { exporttoexcel, importfromexcel, usePost } from "core/function/global"; // Functions
 
@@ -22,14 +23,15 @@ import Loader from "./layouts/Loader";
 const Index = () => {
     let name = `KC-EXPORT-USERS-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
-    const { orderby, searchtxt, setSearchtxt, message, setMessage, errors, setErrors } = useContext(GlobalCntx);
+    const { register, getValues, setValue } = useContext(FormCntxt);
+    const { message, setMessage, errors, setErrors } = useContext(GlobalCntx);
     const [ category, setCategory ] = useState(5);
     const { data } = useContext(ProfileCntx);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => setList(data) });
 
-    const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) =>  exporttoexcel(data, 'Users', `${name} (Admin's copy)`) });
-    const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Users', `${name}`) });
+    const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => console.log(data) }); //exporttoexcel(data, 'Users', `${name} (Admin's copy)`)
+    const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => console.log(data) }); //exporttoexcel(data, 'Users', `${name}`)
 
     const { mutate: uploadfile, isLoading: uploading } =
         usePost({ fetch: upload,
@@ -44,7 +46,9 @@ const Index = () => {
             }
         });
 
-    useEffect(() => record({ table: 'tbl_users', data: { category: category, orderby: orderby, searchtxt: searchtxt, id: atob(localStorage.getItem('token')) }}), [ record, category, orderby, searchtxt ]);
+    useEffect(() => {
+        register('id', { value: atob(localStorage.getItem('token')) }); register('orderby', { value: 'date_hired' }); register('sort', { value: 'desc' }); register('company_id', { value: 'all' });
+        if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_users', data: getValues() }); } }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
@@ -56,10 +60,8 @@ const Index = () => {
                 <form autoComplete= "off">
                     <Box sx= { search }>
                         <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
-                        <TextField variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }} defaultValue= { searchtxt }
-                            onChange= { e => {
-                                setSearchtxt(e.target.value);
-                                find({ table: 'tbl_users', data: { condition: e.target.value, category: category, orderby: orderby, id: atob(localStorage.getItem('token')) } }); } } />
+                        <TextField { ...register('searchtxt') } variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
+                            onChange= { e => { setValue('searchtxt', e.target.value); find({ table: 'tbl_users', data: getValues() }); } } />
                     </Box>
                 </form>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
@@ -72,8 +74,8 @@ const Index = () => {
                         </FormLabel> : '' }
                         <Typography 
                             onClick= { () => { 
-                                if(data.user_level === 'superadmin') { original({ table: 'tbl_users', type: 'original', condition: { orderby: orderby, category: category } }); } 
-                                formatted({ table: 'tbl_users', type: 'formatted', condition: { orderby: orderby, category: category, searchtxt: searchtxt } }); }} sx= { btnexport }>
+                                if(data.user_level === 'superadmin') { original({ table: 'tbl_users', type: 'original', data: getValues() }); } 
+                                formatted({ table: 'tbl_users', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
                             <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                         </Typography>
                         <Typography component= { Link } to= "/user-roleaccess/user/form/new" sx= { btnicon }>

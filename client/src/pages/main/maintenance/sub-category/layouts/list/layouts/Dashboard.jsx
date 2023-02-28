@@ -27,7 +27,7 @@ const Dashboard = () => {
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: '5px 0' }}>
-            <Grid item xs= { 3 } sm= { 6 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
+            <Grid item xs= { 4 } sm= { 6 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.total < 10 ? '0' : ''}${count.total}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }

@@ -24,6 +24,7 @@ const assettag = (table, data) => {
 const filter = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
+            case 'tbl_company': resolve(await new Company().filter()); break;
             case 'tbl_sub_category': resolve(await new SubCategory().filter(data)); break;
         }
     });
@@ -46,6 +47,7 @@ const dashboard = (table) => {
 const excel = (table, type, data) => {
     return new Promise(async resolve => {
         switch(table) {
+            case 'tbl_users': resolve(await new Users().excel(type, data)); break;
             case 'tbl_company': resolve(await new Company().excel(type, data)); break;
             case 'tbl_department': resolve(await new Department().excel(type, data)); break;
             case 'tbl_position': resolve(await new Position().excel(type)); break;

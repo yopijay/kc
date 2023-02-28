@@ -74,3 +74,47 @@ export const loader = {
     border: 'solid 1px #F3F3F3', 
     borderRadius: '10px'
 }
+
+export const select = {
+    backgroundColor: '#FFFFFF',
+    width: {
+        xs: '120px',
+        sm: '200px'
+    },
+    border: 'solid 1px #F3F3F3',
+    padding: {
+        xs: '12px 8px 9px 8px',
+        md: '9px 10px 6px 10px'
+    },
+    marginBottom: '5px',
+    borderRadius: '5px'
+}
+
+export const asc = {
+    padding: '3px 10px',
+    borderRadius: '5px',
+    fontSize: '100%',
+    color: '#959595',
+    backgroundColor: '#E5E5E5',
+    transition: 'all 0.2s ease-in-out',
+    cursor: 'pointer',
+    '&:hover': { backgroundColor: '#E5E5E5' }
+}
+
+export const desc = {
+    padding: '3px 10px',
+    borderRadius: '5px',
+    fontSize: '100%',
+    color: '#959595',
+    backgroundColor: '#E5E5E5',
+    cursor: 'pointer'
+}
+
+export const ctgy = {
+    padding: '3px 10px',
+    borderRadius: '5px',
+    fontSize: '95%',
+    color: '#959595',
+    backgroundColor: '#E5E5E5',
+    cursor: 'pointer'
+}

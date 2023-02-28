@@ -5,12 +5,14 @@ const audit = { series_no: '', table_name: 'tbl_company',  item_id: 0, field: ''
 class Company {
     specific = async (id) => { return (await new Builder(`tbl_company`).select().condition(`WHERE id= ${id}`).build()).rows; }
     series = async () => { return (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows; }
+    filter = async () => { return [{ id: 'all', name: 'ALL' }].concat((await new Builder(`tbl_company`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows); }
 
     dropdown = async () => { 
         return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
                         .concat((await new Builder(`tbl_company`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows); 
     }
 
+ 
     dashboard = async () => {
         return {
             total: (await new Builder(`tbl_company`).select(`COUNT(*)`).build()).rows[0].count,
