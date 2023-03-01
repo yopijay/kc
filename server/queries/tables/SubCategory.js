@@ -34,9 +34,9 @@ class SubCategory {
                                                         CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, sc.date_created`)
                                         .join({ table: `tbl_category AS ctg`, condition: `sc.category_id = ctg.id`, type: `LEFT` })
                                         .join({ table: `tbl_employee AS cb`, condition: `sc.created_by = cb.user_id`, type: `LEFT` })
-                                        .condition(`${data.searchtxt !== '' ? `WHERE sc.series_no LIKE '%${data.searchtxt}%' OR sc.name LIKE '%${data.searchtxt}%' OR
-                                                                ctg.module LIKE '%${data.searchtxt}%' OR ctg.name LIKE '%${data.searchtxt}%'` : ''} 
-                                                            ORDER BY sc.${data.category} ${(data.orderby).toUpperCase()}`)
+                                        .condition(`${data.searchtxt !== '' ? `WHERE sc.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR sc.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR
+                                                                ctg.module LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctg.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
+                                                            ORDER BY sc.${data.orderby} ${(data.sort).toUpperCase()}`)
                                         .build()).rows;
     }
 
@@ -55,11 +55,11 @@ class SubCategory {
                                                 .join({ table: `tbl_employee AS ub`, condition: `sc.updated_by = ub.user_id`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS db`, condition: `sc.deleted_by = db.user_id`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS ib`, condition: `sc.imported_by = ib.user_id`, type: `LEFT` })
-                                                .condition(`WHERE sc.series_no LIKE '%${data.searchtxt}%' OR sc.name LIKE '%${data.searchtxt}%' OR
-                                                                        ctgy.module LIKE '%${data.searchtxt}%' OR ctgy.name LIKE '%${data.searchtxt}%'
-                                                                        ORDER BY sc.${data.category} ${(data.orderby).toUpperCase()}`)
+                                                .condition(`${data.searchtxt !== '' ? `WHERE sc.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR sc.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR
+                                                                        ctgy.module LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
+                                                                    ORDER BY sc.${data.orderby} ${(data.sort).toUpperCase()}`)
                                                 .build()).rows;
-            default: return (await new Builder(`tbl_sub_category`).select().condition(`ORDER BY ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
+            default: return (await new Builder(`tbl_sub_category`).select().condition(`ORDER BY ${data.orderby} ${(data.sort).toUpperCase()}`).build()).rows;
         }
     }
 
@@ -69,8 +69,8 @@ class SubCategory {
                                                         CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, sc.date_created`)
                                         .join({ table: `tbl_category AS ctg`, condition: `sc.category_id = ctg.id`, type: `LEFT` })
                                         .join({ table: `tbl_employee AS cb`, condition: `sc.created_by = cb.user_id`, type: `LEFT` })
-                                        .condition(`WHERE sc.series_no LIKE '%${data.condition}%' OR sc.name LIKE '%${data.condition}%' OR
-                                                                ctg.module LIKE '%${data.condition}%' OR ctg.name LIKE '%${data.condition}%' ORDER BY sc.${data.category} ${(data.orderby).toUpperCase()}`)
+                                        .condition(`WHERE sc.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR sc.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR
+                                                                ctg.module LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctg.name LIKE '%${(data.searchtxt).toUpperCase()}%' ORDER BY sc.${data.orderby} ${(data.sort).toUpperCase()}`)
                                         .build()).rows;
     }
 

@@ -47,7 +47,7 @@ class Category {
                                                 .join({ table: `tbl_employee AS ub`, condition: `ctgy.updated_by = ub.user_id`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS db`, condition: `ctgy.deleted_by = db.user_id`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS ib`, condition: `ctgy.imported_by = ib.user_id`, type: `LEFT` })
-                                                .condition(`WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                .condition(`${data.searchtxt !== '' ? `WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
                                                                     ORDER BY ctgy.${data.orderby} ${(data.sort).toUpperCase()}`)
                                                 .build()).rows;
             default: return (await new Builder(`tbl_category`).select().condition(`ORDER by ${data.orderby} ${(data.sort).toUpperCase()}`).build()).rows;

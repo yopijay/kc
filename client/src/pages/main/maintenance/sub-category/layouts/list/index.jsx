@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { GlobalCntx } from "core/context/Global"; // Context
 import { ListCntxt } from "core/context/List"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
-import { FormPrvdr } from "core/context/Form"; // Context
+import { FormCntxt } from "core/context/Form"; // Context
 import { exporttoexcel, importfromexcel, usePost } from "core/function/global"; // Functions
 import { excel, look, records, upload } from "core/api"; // API
 
@@ -25,7 +25,8 @@ import Dashboard from "./layouts/Dashboard";
 const Index = () => {
     let name = `KC-EXPORT-SUB-CATEGORY-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
-    const { orderby, category, searchtxt, setSearchtxt, message, setMessage, errors, setErrors } = useContext(GlobalCntx);
+    const { register, getValues, setValue } = useContext(FormCntxt);
+    const { message, setMessage, errors, setErrors } = useContext(GlobalCntx);
     const { data } = useContext(ProfileCntx);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => setList(data) });
@@ -46,7 +47,9 @@ const Index = () => {
             }    
         });
 
-    useEffect(() => record({ table: 'tbl_sub_category', data: { category: category, orderby: orderby, searchtxt: searchtxt }}), [ record, category, orderby, searchtxt ]);
+    useEffect(() => {
+        register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
+        if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_sub_category', data: getValues() }); } }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
@@ -57,11 +60,8 @@ const Index = () => {
                     <form autoComplete= "off">
                         <Box sx= { search }>
                             <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
-                            <TextField variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
-                                onChange= { e => { 
-                                    setSearchtxt(e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value); 
-                                    find({ table: 'tbl_sub_category', data: { condition: e.target.value !== '' ? (e.target.value).toUpperCase() : e.target.value,
-                                                                                                category: category, orderby: orderby } }); } } />
+                            <TextField { ...register('searchtxt') } variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
+                                onChange= { e => { setValue('searchtxt', e.target.value); find({ table: 'tbl_sub_category', data: getValues() }); } } />
                         </Box>
                     </form>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
@@ -74,8 +74,8 @@ const Index = () => {
                             </FormLabel> : '' }
                             <Typography 
                                 onClick= { () => { 
-                                    if(data.user_level === 'superadmin') { original({ table: 'tbl_sub_category', type: 'original', condition: { orderby: orderby, category: category } }); } 
-                                    formatted({ table: 'tbl_sub_category', type: 'formatted', condition: { orderby: orderby, category: category, searchtxt: searchtxt } }); }} sx= { btnexport }>
+                                    if(data.user_level === 'superadmin') { original({ table: 'tbl_sub_category', type: 'original', data: getValues() });} 
+                                    formatted({ table: 'tbl_sub_category', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
                                 <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
                             <Typography component= { Link } to= "/maintenance/sub-category/form/new" sx= { btnicon }>
@@ -91,7 +91,7 @@ const Index = () => {
                     </Stack>
                 </Stack>
             </Stack>
-            <FormPrvdr><Sort refetch= { record } /></FormPrvdr>
+            <Sort refetch= { record } />
             <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>{ !fetching && !finding ? <Item /> : <Loader /> }</Box>
         </Stack>
     );

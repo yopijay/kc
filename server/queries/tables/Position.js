@@ -65,8 +65,8 @@ class Position {
                                                 .join({ table: `tbl_employee AS ub`, condition: `pst.updated_by = ub.user_id`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS db`, condition: `pst.deleted_by = db.user_id`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS ib`, condition: `pst.imported_by = ib.user_id`, type: `LEFT` })
-                                                .condition(`WHERE pst.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR pst.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                                                                    OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                .condition(`${data.searchtxt !== '' ? `WHERE pst.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR pst.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                    OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
                                                                     ORDER BY pst.${data.orderby} ${(data.sort).toUpperCase()}`)
                                                 .build()).rows;
             default: return (await new Builder(`tbl_position`).select().condition(`ORDER by ${data.orderby} ${(data.sort).toUpperCase()}`).build()).rows;
