@@ -44,9 +44,9 @@ class Position {
                                         .join({ table: `tbl_company AS cmp`, condition: `pst.company_id = cmp.id`, type: `LEFT` })
                                         .join({ table: `tbl_department AS dpt`, condition: `pst.department_id = dpt.id`, type: `LEFT` })
                                         .join({ table: `tbl_employee AS cb`, condition: `dpt.created_by = cb.user_id`, type: `LEFT`})
-                                        .condition(`${data.searchtxt !== '' ? `WHERE pst.series_no LIKE '%${data.searchtxt}%' OR pst.name LIKE '%${data.searchtxt}%' 
-                                                            OR cmp.name LIKE '%${data.searchtxt}%' OR dpt.name LIKE '%${data.searchtxt}%'` : ''} 
-                                                            ORDER BY pst.${data.category} ${(data.orderby).toUpperCase()}`)
+                                        .condition(`${data.searchtxt !== '' ? `WHERE pst.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR pst.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                            OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
+                                                            ORDER BY pst.${data.orderby} ${(data.sort).toUpperCase()}`)
                                         .build()).rows;
     }
 
@@ -65,11 +65,11 @@ class Position {
                                                 .join({ table: `tbl_employee AS ub`, condition: `pst.updated_by = ub.user_id`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS db`, condition: `pst.deleted_by = db.user_id`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS ib`, condition: `pst.imported_by = ib.user_id`, type: `LEFT` })
-                                                .condition(`WHERE pst.series_no LIKE '%${data.searchtxt}%' OR pst.name LIKE '%${data.searchtxt}%' 
-                                                                    OR cmp.name LIKE '%${data.searchtxt}%' OR dpt.name LIKE '%${data.searchtxt}%' 
-                                                                    ORDER BY pst.${data.category} ${(data.orderby).toUpperCase()}`)
+                                                .condition(`WHERE pst.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR pst.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                    OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                    ORDER BY pst.${data.orderby} ${(data.sort).toUpperCase()}`)
                                                 .build()).rows;
-            default: return (await new Builder(`tbl_position`).select().condition(`ORDER by ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
+            default: return (await new Builder(`tbl_position`).select().condition(`ORDER by ${data.orderby} ${(data.sort).toUpperCase()}`).build()).rows;
         }
     }
 
@@ -80,9 +80,9 @@ class Position {
                                         .join({ table: `tbl_company AS cmp`, condition: `pst.company_id = cmp.id`, type: `LEFT` })
                                         .join({ table: `tbl_department AS dpt`, condition: `pst.department_id = dpt.id`, type: `LEFT` })
                                         .join({ table: `tbl_employee AS cb`, condition: `dpt.created_by = cb.user_id`, type: `LEFT`})
-                                        .condition(`WHERE pst.series_no LIKE '%${data.condition}%' OR pst.name LIKE '%${data.condition}%' 
-                                                            OR cmp.name LIKE '%${data.condition}%' OR dpt.name LIKE '%${data.condition}%' 
-                                                            ORDER BY pst.${data.category} ${(data.orderby).toUpperCase()}`)
+                                        .condition(`WHERE pst.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR pst.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                            OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                            ORDER BY pst.${data.orderby} ${(data.sort).toUpperCase()}`)
                                         .build()).rows;
     }
 
