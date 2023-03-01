@@ -28,7 +28,7 @@ class Company {
                                         .join({ table: `tbl_employee AS owner`, condition: `owner.user_id = cmp.owner_id`, type: 'LEFT' })
                                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = cmp.created_by`})
                                         .condition(`${data.searchtxt !== '' ? `WHERE cmp.series_no LIKE '%${data.searchtxt}%' OR cmp.name LIKE '%${data.searchtxt}%'` : '' }
-                                                            ORDER BY cmp.${data.category} ${(data.orderby).toUpperCase()}`)
+                                                            ORDER BY cmp.${data.orderby} ${(data.sort).toUpperCase()}`)
                                         .build()).rows;
     }
 
@@ -48,9 +48,9 @@ class Company {
                                                 .join({ table: `tbl_employee AS db`, condition: `db.user_id = cmp.deleted_by`, type: `LEFT` })
                                                 .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = cmp.imported_by`, type: `LEFT` })
                                                 .condition(`WHERE cmp.series_no LIKE '%${data.searchtxt}%' OR cmp.name LIKE '%${data.searchtxt}%'
-                                                                    ORDER BY cmp.${data.category} ${(data.orderby).toUpperCase()}`)
+                                                                    ORDER BY cmp.${data.orderby} ${(data.sort).toUpperCase()}`)
                                                 .build()).rows;
-            default: return (await new Builder(`tbl_company`).select().condition(`ORDER by ${data.category} ${(data.orderby).toUpperCase()}`).build()).rows;
+            default: return (await new Builder(`tbl_company`).select().condition(`ORDER by ${data.orderby} ${(data.sort).toUpperCase()}`).build()).rows;
         }
     }
 
@@ -60,8 +60,8 @@ class Company {
                                                         CONCAT(owner.lname, ', ', owner.fname, ' ', owner.mname) AS owner_name`)
                                         .join({ table: `tbl_employee AS owner`, condition: `owner.user_id = cmp.owner_id`, type: 'LEFT' })
                                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = cmp.created_by`})
-                                        .condition(`WHERE cmp.series_no LIKE '%${data.condition}%' OR cmp.name LIKE '%${data.condition}%' 
-                                                            ORDER BY cmp.${data.category} ${(data.orderby).toUpperCase()}`) 
+                                        .condition(`WHERE cmp.series_no LIKE '%${data.searchtxt}%' OR cmp.name LIKE '%${data.searchtxt}%' 
+                                                            ORDER BY cmp.${data.orderby} ${(data.sort).toUpperCase()}`) 
                                         .build()).rows;
     }
 

@@ -1,11 +1,11 @@
 // Libraries
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Stack, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownAZ, faArrowDownZA } from "@fortawesome/free-solid-svg-icons";
 
 // Core
-import { GlobalCntx } from "core/context/Global"; // Context
+import { FormCntxt } from "core/context/Form"; // Context
 
 // Constants
 const asc = {
@@ -37,41 +37,31 @@ const ctgy = {
 }
 
 const Sort = ({ refetch }) => {
-    const { orderby, setOrderby, category, setCategory, searchtxt } = useContext(GlobalCntx);
+    const { getValues, setValue } = useContext(FormCntxt);
+    const [ orderby, setOrderby ] = useState('date_created');
+    const [ sort, setSort ] = useState('desc');
 
     return (
         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" spacing= { 1 }>
             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                 <Typography variant= "caption">Order by:</Typography>
-                { category === 'date_created' ? 
+                { orderby === 'date_created' ? 
                     <Typography sx= { ctgy } 
-                        onClick= { () => { 
-                            setCategory('name'); 
-                            refetch({ table: 'tbl_company', data: { category: 'name', orderby: orderby, searchtxt: searchtxt, limit: 15 } }); } }>Date created</Typography> : 
-                    category === 'name' ? 
+                        onClick= { () => {  setValue('orderby', 'name'); setOrderby('name'); refetch({ table: 'tbl_company', data: getValues() }); } }>Date created</Typography> : 
+                    orderby === 'name' ? 
                         <Typography sx= { ctgy } 
-                            onClick= { () => { 
-                                setCategory('series_no'); 
-                                refetch({ table: 'tbl_company', data: { category: 'series_no', orderby: orderby, searchtxt: searchtxt, limit: 15 } }); } }>Name</Typography> :
-                        category === 'series_no' ? 
+                            onClick= { () => {  setValue('orderby', 'series_no'); setOrderby('series_no'); refetch({ table: 'tbl_company', data: getValues() }); } }>Name</Typography> :
+                        orderby === 'series_no' ? 
                             <Typography sx= { ctgy } 
-                                onClick= { () => { 
-                                    setCategory('date_created'); 
-                                    refetch({ table: 'tbl_company', data: { category: 'date_created', orderby: orderby, searchtxt: searchtxt, limit: 15 } }); } }>Series no</Typography> : '' }
+                                onClick= { () => {  setValue('orderby', 'date_created'); setOrderby('date_created'); refetch({ table: 'tbl_company', data: getValues() }); } }>Series no</Typography> : '' }
             </Stack>
-            { orderby === 'asc' ? 
-                <Typography sx= { asc }>
-                    <FontAwesomeIcon icon= { faArrowDownAZ } 
-                        onClick= { () => { 
-                            setOrderby('desc'); 
-                            refetch({ table: 'tbl_company', data: { category: category, orderby: 'desc', searchtxt: searchtxt, limit: 15 } }); } } />
-                </Typography> :
-                <Typography sx= { desc }>
-                    <FontAwesomeIcon icon= { faArrowDownZA } 
-                        onClick= { () => { 
-                            setOrderby('asc'); 
-                            refetch({ table: 'tbl_company', data: { category: category, orderby: 'asc', searchtxt: searchtxt, limit: 15 } }); } } />
-                </Typography> }
+                { sort === 'desc' ? 
+                    <Typography sx= { asc }>
+                        <FontAwesomeIcon icon= { faArrowDownZA } onClick= { () => { setValue('sort', 'asc'); setSort('asc'); refetch({ table: 'tbl_company', data: getValues() }); } } />
+                    </Typography> :
+                    <Typography sx= { desc }>
+                        <FontAwesomeIcon icon= { faArrowDownAZ } onClick= { () => { setValue('sort', 'desc'); setSort('desc'); refetch({ table: 'tbl_company', data: getValues() }); } } />
+                    </Typography> }
         </Stack>
     );
 }
