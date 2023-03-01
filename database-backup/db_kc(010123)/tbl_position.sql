@@ -12,7 +12,7 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 21/02/2023 16:49:30
+ Date: 01/03/2023 13:17:15
 */
 
 
@@ -189,6 +189,8 @@ INSERT INTO "public"."tbl_position" VALUES (146, 'PST-0000145', 2, 38, 'WAREHOUS
 INSERT INTO "public"."tbl_position" VALUES (147, 'PST-0000146', 2, 38, 'WAREHOUSE STORAGE IN CHARGE', NULL, 1, 1, NULL, NULL, NULL, '2023-01-30 09:53:19+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_position" VALUES (148, 'PST-0000147', 1, 6, 'SALES MANAGER', NULL, 1, 1, NULL, NULL, NULL, '2023-02-02 13:44:12+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_position" VALUES (91, 'PST-0000090', 2, 28, 'PRODUCTION ENGINEER', NULL, 1, 1, 1, NULL, NULL, '2023-01-30 08:41:48+08', '2023-02-09 14:10:40+08', NULL, NULL);
+INSERT INTO "public"."tbl_position" VALUES (149, 'PST-0000148', 2, 31, 'PRODUCTION ENCODER', NULL, 1, 1, NULL, NULL, NULL, '2023-02-27 15:26:13+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_position" VALUES (150, 'PST-0000149', 2, 38, 'PPIC ASSISTANT', NULL, 1, 1, NULL, NULL, NULL, '2023-02-27 15:55:04+08', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_position
