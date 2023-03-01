@@ -17,6 +17,19 @@
 
 
 -- ----------------------------
+-- Table sequence for tbl_assign_asset
+-- ----------------------------
+CREATE SEQUENCE "public"."tbl_assign_asset_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+SELECT setval('"public"."tbl_assign_asset_id_seq"', 12, true);
+
+
+-- ----------------------------
 -- Table structure for tbl_assign_asset
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tbl_assign_asset";
