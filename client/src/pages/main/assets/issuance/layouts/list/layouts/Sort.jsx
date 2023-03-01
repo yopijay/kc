@@ -3,15 +3,15 @@ import { useContext, useState } from "react";
 import { Autocomplete, Box, Skeleton, Stack, TextField, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownAZ, faArrowDownZA } from "@fortawesome/free-solid-svg-icons";
+import { Controller } from "react-hook-form";
 
 // Core
-import { Controller } from "react-hook-form";
-import { useGet } from "core/function/global";
-import { filter } from "core/api";
-import { FormCntxt } from "core/context/Form";
+import { useGet } from "core/function/global"; // Function
+import { filter } from "core/api"; // API
+import { FormCntxt } from "core/context/Form"; // Context
 
 // Constants
-import { asc, ctgy, desc, select } from "../index.style";
+import { asc, ctgy, desc, select } from "../index.style"; // Styles
 
 const Sort = ({ refetch }) => {
     const { getValues, control, setValue } = useContext(FormCntxt);
@@ -26,12 +26,17 @@ const Sort = ({ refetch }) => {
                     <Box sx= { select }>
                         <Controller control= { control } name= "sub_category_id" defaultValue= "all"
                                 render= { ({ field: { onChange, value } }) => (
-                                    <Autocomplete options= { subctgy } disableClearable getOptionLabel= { opt => opt.name || opt.id }
-                                        noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
-                                        renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
+                                    <Autocomplete options= { subctgy } disableClearable 
+                                        getOptionLabel= { opt => opt.name || opt.id }
+                                        noOptionsText= "No results..." 
+                                        isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
+                                        renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } 
+                                        getOptionDisabled= { option => option.id === 0 }
                                         onChange= { (e, item) => { 
-                                            onChange(item.id); setValue('sub_category_name', ((item.name).replace(' ', '-')).toLowerCase()); refetch({ table: 'tbl_assign_asset', data: getValues() }); } } 
-                                        value= { subctgy.find(data => { return data.id === (getValues().sub_category_id !== undefined ? getValues().sub_category_id : value) }) } />
+                                            onChange(item.id);
+                                            setValue('sub_category_name', ((item.name).replace(' ', '-')).toLowerCase());
+                                            refetch({ table: 'tbl_assign_asset', data: getValues() }); 
+                                        } } value= { subctgy.find(data => { return data.id === (getValues().sub_category_id !== undefined ? getValues().sub_category_id : value) }) } />
                                 ) } />
                     </Box> }
             </Stack>
@@ -40,17 +45,27 @@ const Sort = ({ refetch }) => {
                     <Typography variant= "caption">Order by:</Typography>
                     { orderby === 'date_created' ? 
                         <Typography sx= { ctgy } 
-                            onClick= { () => {  setValue('orderby', 'series_no'); setOrderby('series_no'); refetch({ table: 'tbl_assign_asset', data: getValues() }); } }>Date created</Typography> : 
+                            onClick= { () => {  
+                                setValue('orderby', 'series_no'); 
+                                setOrderby('series_no'); 
+                                refetch({ table: 'tbl_assign_asset', data: getValues() }); 
+                            } }>Date created</Typography> : 
                             orderby === 'series_no' ? 
                                 <Typography sx= { ctgy } 
-                                    onClick= { () => {  setValue('orderby', 'date_created'); setOrderby('date_created'); refetch({ table: 'tbl_assign_asset', data: getValues() }); } }>Series no</Typography> : '' }
+                                    onClick= { () => {  
+                                        setValue('orderby', 'date_created'); 
+                                        setOrderby('date_created'); 
+                                        refetch({ table: 'tbl_assign_asset', data: getValues() }); 
+                                    } }>Series no</Typography> : '' }
                 </Stack>
                 { sort === 'desc' ? 
                     <Typography sx= { asc }>
-                        <FontAwesomeIcon icon= { faArrowDownZA } onClick= { () => { setValue('sort', 'asc'); setSort('asc'); refetch({ table: 'tbl_assign_asset', data: getValues() }); } } />
+                        <FontAwesomeIcon icon= { faArrowDownZA } 
+                            onClick= { () => { setValue('sort', 'asc'); setSort('asc'); refetch({ table: 'tbl_assign_asset', data: getValues() }); } } />
                     </Typography> :
                     <Typography sx= { desc }>
-                        <FontAwesomeIcon icon= { faArrowDownAZ } onClick= { () => { setValue('sort', 'desc'); setSort('desc'); refetch({ table: 'tbl_assign_asset', data: getValues() }); } } />
+                        <FontAwesomeIcon icon= { faArrowDownAZ } 
+                            onClick= { () => { setValue('sort', 'desc'); setSort('desc'); refetch({ table: 'tbl_assign_asset', data: getValues() }); } } />
                     </Typography> }
             </Stack>
         </Stack>

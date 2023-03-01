@@ -18,3 +18,9 @@ export const link = {
     padding: '3px 0',
     '&:hover': { color: '#728ca1' }
 }
+
+export const sidebar = {
+    height: '100vh', 
+    padding: '0 10px 20px 0', 
+    display: { xs: 'none', lg: 'flex' }
+}

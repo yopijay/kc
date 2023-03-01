@@ -4,19 +4,23 @@ import { GlobalCntx } from "core/context/Global";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-// Constants
-import { link, swipe } from "./index.style"; // Design
-
 // Layouts
-import Navs from "./layouts/Navs";
 import Account from "./layouts/Account";
+import Navs from "./layouts/Navs";
+
+// Constants
+import { link, sidebar, swipe } from "./index.style"; // Design
+import { usePost } from "core/function/global";
+import { logout } from "core/api";
 
 const Index = () => {
     const { open, drawerToggle, container, setIsActive } = useContext(GlobalCntx);
     const [ elem, setElem ] = useState(null);
+    const { mutate: signout } = usePost({ fetch: logout, onSuccess: data => { if(data.result === 'success') { localStorage.removeItem('token'); window.location.href = "/" } } });
 
     const pop = Boolean(elem);
     const id = pop ? 'simple-popover' : undefined;
+
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: { lg: 280 }, flexShrink: { xs: 0 } }}>
             <SwipeableDrawer anchor= "left" variant= "temporary" sx= { swipe } ModalProps= {{ keepMounted: true }} container= { container } 
@@ -26,7 +30,7 @@ const Index = () => {
                     <Account setElem= { setElem } />
                 </Stack>
             </SwipeableDrawer>
-            <Stack direction= "column" justifyContent= "space-between" alignItems= "stretch" sx= {{ height: '100vh', padding: '0 10px 20px 0', display: { xs: 'none', lg: 'flex' } }} spacing= { 2 }>
+            <Stack direction= "column" justifyContent= "space-between" alignItems= "stretch" sx= { sidebar } spacing= { 2 }>
                 <Navs />
                 <Account setElem= { setElem } />
             </Stack>
@@ -39,7 +43,9 @@ const Index = () => {
                         <Typography gutterBottom variant= "body1" component= { Link } to= "" sx= { link } 
                             onClick= { () => { setElem(null); localStorage.setItem('nav', 'settings'); setIsActive('settings'); } }>Settings</Typography>
                     </Stack>
-                    <Box sx= {{ padding: '10px 20px' }}><Typography variant= "body1" /*onClick= { () => signout({ id: localStorage.getItem('token') }) }*/ sx= { link }>Logout</Typography></Box>
+                    <Box sx= {{ padding: '10px 20px' }}>
+                        <Typography variant= "body1" onClick= { () => signout({ id: localStorage.getItem('token') }) } sx= { link }>Logout</Typography>
+                    </Box>
                 </Stack>
             </Popover>
         </Stack>

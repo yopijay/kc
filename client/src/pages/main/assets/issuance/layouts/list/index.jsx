@@ -30,8 +30,7 @@ const Index = () => {
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: data => setList(data) });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: data => setList(data) });
 
-    const { mutate: original } =
-        usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: data => exporttoexcel(data, 'Assets Issuance', `${name} (Admin's copy)`) });
+    const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: data => exporttoexcel(data, 'Assets Issuance', `${name} (Admin's copy)`) });
     const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: data => exporttoexcel(data, 'Assets Issuance', `${name}`) });
 
     const { mutate: uploadfile, isLoading: uploading } =
@@ -67,7 +66,8 @@ const Index = () => {
                         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
                             { data.user_level === 'superadmin' ?
                                 <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
-                                    onChange= { async e => { uploadfile({ table: 'tbl_assign_asset', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : ''}
+                                    onChange= { async e => { 
+                                        uploadfile({ table: 'tbl_assign_asset', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : ''}
                             { data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
                                 <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF'}} size= "lg" />
                             </FormLabel> : '' }

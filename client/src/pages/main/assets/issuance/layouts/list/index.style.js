@@ -118,3 +118,50 @@ export const select = {
     marginBottom: '5px',
     borderRadius: '5px'
 }
+
+export const icons = {
+    color: 'rgb(99, 115, 129)', 
+    padding: '3px', 
+    lineHeight: 0, 
+    transition: 'transform .2s', 
+    '&:hover': { 
+        transform: 'scale(1.1)', 
+        transition: 'transform .2s' 
+    }
+}
+
+export const item = {
+    backgroundColor: '#FFFFFF', 
+    padding: '10px 20px', 
+    border: 'solid 1px #F3F3F3', 
+    borderRadius: '10px',
+    overflow: 'hidden'
+}
+
+export const txt = {
+    whiteSpace: 'nowrap', 
+    overflow: 'hidden', 
+    textOverflow: 'ellipsis', 
+    width: '100%'
+}
+
+export const txttitle = {
+    fontWeight: 'bold', 
+    whiteSpace: 'nowrap', 
+    overflow: 'hidden', 
+    textOverflow: 'ellipsis', 
+    width: '100%'
+}
+
+export const empty = {
+    backgroundColor: '#FFFFFF', 
+    padding: '10px', 
+    border: 'solid 1px #F3F3F3', 
+    borderRadius: '10px'
+}
+
+export const container = {
+    padding: '0 0 40px 0', 
+    overflowY: 'scroll', 
+    '&::-webkit-scrollbar': { display: 'none' }
+}
