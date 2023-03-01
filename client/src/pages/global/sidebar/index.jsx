@@ -44,7 +44,7 @@ const Index = () => {
                             onClick= { () => { setElem(null); localStorage.setItem('nav', 'settings'); setIsActive('settings'); } }>Settings</Typography>
                     </Stack>
                     <Box sx= {{ padding: '10px 20px' }}>
-                        <Typography variant= "body1" onClick= { () => signout({ id: localStorage.getItem('token') }) } sx= { link }>Logout</Typography>
+                        <Typography variant= "body1" onClick= { () => signout({ id: atob(localStorage.getItem('token')) }) } sx= { link }>Logout</Typography>
                     </Box>
                 </Stack>
             </Popover>
