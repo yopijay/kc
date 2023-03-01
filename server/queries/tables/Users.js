@@ -149,7 +149,7 @@ class Users {
 
     search = async (data) => {
         return (await new Builder(`tbl_users AS usr`)
-                                        .select(`usr.id, usr.email, usr.status, emp.employee_no, cmp.name, dpt.name, emp.fname, emp.lname, emp.date_hired`)
+                                        .select(`usr.id, usr.email, usr.status, emp.employee_no, cmp.name AS company, dpt.name AS department, emp.fname, emp.lname, emp.date_hired`)
                                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
                                         .join({ table: `tbl_company AS cmp`, condition: `emp.company_id = cmp.id`, type: `LEFT` })
                                         .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
