@@ -1,5 +1,5 @@
 // Libraries
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Box, FormLabel, Stack, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { btnexport, btnicon, btnimport, btntxt, search } from "./index.style";
@@ -25,13 +25,12 @@ const Index = () => {
     const { setList } = useContext(ListCntxt);
     const { register, getValues, setValue } = useContext(FormCntxt);
     const { message, setMessage, errors, setErrors } = useContext(GlobalCntx);
-    const [ category, setCategory ] = useState(5);
     const { data } = useContext(ProfileCntx);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => setList(data) });
 
-    const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => console.log(data) }); //exporttoexcel(data, 'Users', `${name} (Admin's copy)`)
-    const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => console.log(data) }); //exporttoexcel(data, 'Users', `${name}`)
+    const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Users', `${name} (Admin's copy)`) });
+    const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Users', `${name}`) });
 
     const { mutate: uploadfile, isLoading: uploading } =
         usePost({ fetch: upload,
@@ -90,7 +89,7 @@ const Index = () => {
                     </Stack>
                 </Stack>
             </Stack>
-            <Sort setCategory= { setCategory } category= { category } refetch= { record } />
+            <Sort refetch= { record } />
             <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>{ !fetching && !finding ? <Item /> : <Loader /> }</Box>
         </Stack>
     );

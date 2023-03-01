@@ -18,6 +18,7 @@ const Sort = ({ refetch }) => {
     const { data: cmp, isFetching } = useGet({ key: ['cmp_dropdown'], fetch: filter({ table: 'tbl_company', data: {} }) });
     const [ orderby, setOrderby ] = useState('date_hired');
     const [ sort, setSort ] = useState('desc');
+
     return (
         <Stack direction= "row" justifyContent= "space-between" alignItems= "center" spacing= { 1 }>
             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
@@ -28,8 +29,7 @@ const Sort = ({ refetch }) => {
                                     <Autocomplete options= { cmp } disableClearable getOptionLabel= { opt => opt.name || opt.id }
                                         noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                         renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
-                                        onChange= { (e, item) => { 
-                                            onChange(item.id); setValue('company_id', ((item.name).replace(' ', '-')).toLowerCase()); refetch({ table: 'tbl_company', data: getValues() }); } } 
+                                        onChange= { (e, item) => { onChange(item.id); refetch({ table: 'tbl_users', data: getValues() }); } } 
                                         value= { cmp.find(data => { return data.id === (getValues().company_id !== undefined ? getValues().company_id : value) }) } />
                                 ) } />
                     </Box> }
@@ -49,10 +49,10 @@ const Sort = ({ refetch }) => {
                 </Stack>
                 { sort === 'desc' ? 
                     <Typography sx= { asc }>
-                        <FontAwesomeIcon icon= { faArrowDownZA } onClick= { () => { setValue('sort', 'asc'); setSort('asc'); refetch({ table: 'tbl_company', data: getValues() }); } } />
+                        <FontAwesomeIcon icon= { faArrowDownZA } onClick= { () => { setValue('sort', 'asc'); setSort('asc'); refetch({ table: 'tbl_users', data: getValues() }); } } />
                     </Typography> :
                     <Typography sx= { desc }>
-                        <FontAwesomeIcon icon= { faArrowDownAZ } onClick= { () => { setValue('sort', 'desc'); setSort('desc'); refetch({ table: 'tbl_company', data: getValues() }); } } />
+                        <FontAwesomeIcon icon= { faArrowDownAZ } onClick= { () => { setValue('sort', 'desc'); setSort('desc'); refetch({ table: 'tbl_users', data: getValues() }); } } />
                     </Typography> }
             </Stack>
         </Stack>

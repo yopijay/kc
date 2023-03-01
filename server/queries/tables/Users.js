@@ -78,52 +78,88 @@ class Users {
     }
 
     list = async (data) => {
-        console.log(new Builder(`tbl_users AS usr`)
-        .select(`MAX(usr.id) AS id, MAX(usr.email) AS email, MAX(usr.status) AS status, MAX(emp.employee_no) AS employee_no, MAX(cmp.name) AS company,
-                        MAX(dpt.name) AS department, MAX(emp.fname) AS fname, MAX(emp.lname) AS lname`)
-        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
-        .join({ table: `tbl_company AS cmp`, condition: `emp.company_id = cmp.id`, type: `LEFT` })
-        .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
-        .condition(`${data.company_id !== 'all' || data.searchtxt !== '' ? `WHERE `: ''}
-                            ${data.company_id !== 'all' ? `emp.company_id= ${data.company_id}` : ''}
-                            ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
-                            ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                            OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}
-                            ORDER BY emp.${data.orderby} ${(data.sort).toUpperCase()}`)
-        .except(`WHERE usr.id= ${data.id}`)
-        .test());
-        return [];
-        // return (await new Builder(`tbl_users AS usr`)
-        //                                 .select(`MAX(usr.id) AS id, MAX(usr.email) AS email, MAX(usr.status) AS status, MAX(emp.employee_no) AS employee_no, MAX(cmp.name) AS company,
-        //                                                 MAX(dpt.name) AS department, MAX(emp.fname) AS fname, MAX(emp.lname) AS lname`)
-        //                                 .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
-        //                                 .join({ table: `tbl_company AS cmp`, condition: `emp.company_id = cmp.id`, type: `LEFT` })
-        //                                 .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
-        //                                 .condition(`${data.company_id !== 'all' || data.searchtxt !== '' ? `WHERE `: ''}
-        //                                                     ${data.company_id !== 'all' ? `emp.company_id= ${data.company_id}` : ''}
-        //                                                     ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
-        //                                                     ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
-        //                                                                                             OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}
-        //                                                     ORDER BY emp.${data.orderby} ${(data.sort).toUpperCase()}`)
-        //                                 .except(`WHERE usr.id= ${data.id} ORDER BY ${data.orderby} ${(data.sort).toUpperCase()}`)
-        //                                 .build()).rows;
+        return (await new Builder(`tbl_users AS usr`)
+                                        .select(`usr.id, usr.email, usr.status, emp.employee_no, cmp.name AS company, dpt.name AS department, emp.fname, emp.lname, emp.date_hired`)
+                                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
+                                        .join({ table: `tbl_company AS cmp`, condition: `emp.company_id = cmp.id`, type: `LEFT` })
+                                        .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
+                                        .condition(`${data.company_id !== 'all' || data.searchtxt !== '' ? `WHERE `: ''}
+                                                            ${data.company_id !== 'all' ? `emp.company_id= ${data.company_id}` : ''}
+                                                            ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
+                                                            ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                            OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}`)
+                                        .except(`WHERE usr.id= ${data.id} 
+                                                        ORDER BY ${data.orderby === 'date_hired' ? `9 ${(data.sort).toUpperCase()}, 8 ${(data.sort).toUpperCase()}` : 
+                                                                                data.orderby === 'employee_no' ? `4 ${(data.sort).toUpperCase()}` : 
+                                                                                data.orderby === 'lname' ? `8 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
+                                        .build()).rows;
     }
 
     excel = async (type, data) => {
-        return data;
+        switch(type) {
+            case 'formatted':
+                return (await new Builder(`tbl_users AS usr`)
+                                                .select(`usr.series_no AS "Series No.", emp.employee_no AS "Employee No.", emp.rfid AS "RFID", cmp.name AS "Company", dpt.name AS "Department", 
+                                                                pst.name AS "Position", usr.email AS "Email", emp.fname AS "First name", emp.mname AS "Middle name", emp.lname AS "Last name",
+                                                                usr.contact_no AS "Contact No.", emp.gender AS "Gender", emp.civil_status AS "Civil status", emp.birthdate AS "Birthdate",
+                                                                emp.employment_status AS "Employment Status", emp.branch AS "Branch", usr.user_level AS "User level", emp.date_hired AS "Date hired",
+                                                                emp.date_resigned AS "Date resigned", CASE WHEN emp.date_resigned IS NULL THEN 'Active' ELSE 'Resigned' END AS "Status",
+                                                                CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", usr.date_created AS "Date created",
+                                                                CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", usr.date_updated AS "Date updated",
+                                                                CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", usr.date_deleted AS "Date deleted",
+                                                                CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", usr.date_imported AS "Date imported"`)
+                                                .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
+                                                .join({ table: `tbl_company AS cmp`, condition: `emp.company_id = cmp.id`, type: `LEFT` })
+                                                .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
+                                                .join({ table: `tbl_position AS pst`, condition: `emp.position_id = pst.id`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = usr.created_by`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = usr.updated_by`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS db`, condition: `db.user_id = usr.deleted_by`, type: `LEFT` })
+                                                .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = usr.imported_by`, type: `LEFT` })
+                                                .condition(`${data.company_id !== 'all' || data.searchtxt !== '' ? `WHERE `: ''}
+                                                                    ${data.company_id !== 'all' ? `emp.company_id= ${data.company_id}` : ''}
+                                                                    ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
+                                                                    ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                    OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}`)
+                                                .except(`WHERE usr.id= ${data.id} 
+                                                                ORDER BY ${data.orderby === 'date_hired' ? `18 ${(data.sort).toUpperCase()}, 10 ${(data.sort).toUpperCase()}` : 
+                                                                                        data.orderby === 'employee_no' ? `2 ${(data.sort).toUpperCase()}` : 
+                                                                                        data.orderby === 'lname' ? `10 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
+                                                .build()).rows;
+            default:
+                return (await new Builder(`tbl_users AS usr`)
+                                                .select(`usr.id, usr.series_no, usr.email, usr.password, usr.contact_no, usr.is_email_verified, usr.is_contact_no_verified, usr.user_level,
+                                                                emp.employee_no, emp.rfid, emp.company_id, emp.department_id, emp.position_id, emp.fname, emp.mname, emp.lname,
+                                                                emp.branch, emp.employment_status, emp.gender, emp.civil_status, emp.address, emp.birthdate, emp.date_hired, emp.date_resigned,
+                                                                usr.status, usr.created_by, usr.updated_by, usr.deleted_by, usr.imported_by, usr.date_created, usr.date_updated,
+                                                                usr.date_deleted, usr.date_imported`)
+                                                .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
+                                                .condition(`${data.company_id !== 'all' || data.searchtxt !== '' ? `WHERE `: ''}
+                                                                    ${data.company_id !== 'all' ? `emp.company_id= ${data.company_id}` : ''}
+                                                                    ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
+                                                                    ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                    OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}`)
+                                                .except(`WHERE usr.id= ${data.id} 
+                                                                ORDER BY ${data.orderby === 'date_hired' ? `23 ${(data.sort).toUpperCase()}, 16 ${(data.sort).toUpperCase()}` : 
+                                                                                        data.orderby === 'employee_no' ? `9 ${(data.sort).toUpperCase()}` : 
+                                                                                        data.orderby === 'lname' ? `16 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
+                                                .build()).rows;
+        }
     }
 
     search = async (data) => {
         return (await new Builder(`tbl_users AS usr`)
-                                        .select(`usr.id, usr.email, usr.user_level, usr.status, usr.date_created, emp.employee_no, emp.rfid, 
-                                                    cmp.name AS company, dpt.name AS department, pst.name AS position, emp.fname, emp.lname`)
+                                        .select(`usr.id, usr.email, usr.status, emp.employee_no, cmp.name, dpt.name, emp.fname, emp.lname, emp.date_hired`)
                                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
                                         .join({ table: `tbl_company AS cmp`, condition: `emp.company_id = cmp.id`, type: `LEFT` })
                                         .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
-                                        .join({ table: `tbl_position AS pst`, condition: `emp.position_id = pst.id`, type: `LEFT` })
-                                        .condition(`WHERE usr.email LIKE '%${data.condition}%' OR emp.employee_no LIKE '%${data.condition}%'
-                                                            OR emp.lname LIKE '%${(data.condition).toUpperCase()}%' OR emp.fname LIKE '%${(data.condition).toUpperCase()}%'`)
-                                        .except(`WHERE usr.id= ${data.id} ORDER BY ${data.category} ${(data.orderby).toUpperCase()}`)
+                                        .condition(`WHERE (emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                            OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')
+                                                            ${data.company_id !== 'all' ? ` AND emp.company_id= ${data.company_id}` : ''}`)
+                                        .except(`WHERE usr.id= ${data.id} 
+                                                        ORDER BY ${data.orderby === 'date_hired' ? `9 ${(data.sort).toUpperCase()}, 8 ${(data.sort).toUpperCase()}` : 
+                                                                                data.orderby === 'employee_no' ? `4 ${(data.sort).toUpperCase()}` : 
+                                                                                    data.orderby === 'lname' ? `8 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
                                         .build()).rows;
     }
 
