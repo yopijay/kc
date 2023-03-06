@@ -1,10 +1,19 @@
 // Libraries
 import { createTheme } from "@mui/material";
 
-export const input = createTheme({
+export const theme = (custom) => createTheme({
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 768,
+            md: 1024,
+            lg: 1440,
+            xl: 2560
+        }
+    },
     palette: {
         primary: {
-            main: '#1ccaff',
+            main: '#204c6f',
             light: '#d1fffc',
             dark: '#0099cc',
             contrastText: '#212b36'
@@ -39,29 +48,20 @@ export const input = createTheme({
             dark: '#007a29',
             contrastText: '#ffffff'
         },
-        excel: { main: '#1b8a0d' },
-        pdf: { main: '#e17055' },
         text: {
             primary: '#212b36',
             secondary: '#637381',
-            disabled: '#bdc3c7'
+            disabled: '#919eab'
         }
     },
     typography: {
-        fontFamily: [ '-apple-system', 'Gilroy Light' ],
+        fontFamily: [
+            '-apple-system',
+            'Gilroy Light'
+        ],
         fontSize: 13
     },
     components: {
-        MuiInput: {
-            styleOverrides: {
-                root: {
-                    '&:before': { borderBottom: 'none' },
-                    '&:after': { borderBottom: 'none' },
-                    '&.Mui-disabled:before': { borderBottom: 'none' },
-                    '&:hover:not(.Mui-disabled):before': { borderBottom: 'none' }
-                },
-                input: { textTransform: 'uppercase' }
-            }
-        }
+        ...custom
     }
 });

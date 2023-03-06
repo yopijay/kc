@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 // Core
 import { GlobalCntx } from "core/context/Global"; // Context
-import { Navs as links } from "core/constants/Navs"; // Navs
+import { ProfileCntx } from "core/context/Profile";
 
 // Custom styles
 const linkNormal = {
@@ -33,11 +33,38 @@ const container = {
 }
 
 const Navs = () => {
+    const { data } = useContext(ProfileCntx);
     const { isActive, setActive, setOpen } = useContext(GlobalCntx);
     
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch"  sx= { container } spacing= { 2 }>
-            { links().map((ctgy, index) => (
+            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+                <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Main</Typography>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                    <Typography variant= "body1" component= { Link } to= "/" color= "text.secondary"
+                        onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'dashboard'); setActive('dashboard'); } }
+                        sx= { isActive === 'dashboard' ? linkActive : linkNormal }>Dashboard</Typography>
+                </Stack>
+            </Stack>
+            { data.user_level === 'superadmin' ? 
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+                    <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Setup</Typography>
+                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                        <Typography variant= "body1" component= { Link } to= "/setup/module" color= "text.secondary"
+                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'module'); setActive('module'); } }
+                            sx= { isActive === 'module' ? linkActive : linkNormal }>Module</Typography>
+                        <Typography variant= "body1" component= { Link } to= "/setup/sub-module" color= "text.secondary"
+                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'sub-module'); setActive('sub-module'); } }
+                            sx= { isActive === 'sub-module' ? linkActive : linkNormal }>Sub-module</Typography>
+                        <Typography variant= "body1" component= { Link } to= "/setup/user" color= "text.secondary"
+                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'user'); setActive('user'); } }
+                            sx= { isActive === 'user' ? linkActive : linkNormal }>User</Typography>
+                        <Typography variant= "body1" component= { Link } to= "/setup/user-access" color= "text.secondary"
+                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'user-access'); setActive('user-access'); } }
+                            sx= { isActive === 'user-access' ? linkActive : linkNormal }>User role-access</Typography>
+                    </Stack>
+                </Stack> : '' }
+            {/* { links().map((ctgy, index) => (
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } key= { index }>
                     <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: 'rgb(200, 200, 200)' }} color= "text.primary">{ ctgy.title }</Typography>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
@@ -46,7 +73,7 @@ const Navs = () => {
                                     onClick= { () => { setOpen({ left: false }); localStorage.setItem('nav', link.name); setActive(link.name); } }
                                     sx= { isActive === link.name ? linkActive : linkNormal }>{ link.label }</Typography> )) }
                     </Stack>
-                </Stack> )) }
+                </Stack> )) } */}
         </Stack>
     );
 }

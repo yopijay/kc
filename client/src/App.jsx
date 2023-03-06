@@ -12,7 +12,7 @@ import { GlobalPrvdr } from "core/context/Global";
 
 const App = () => {
     const client = new QueryClient();
-    localStorage.setItem('nav', window.location.pathname === '/' ? 'home' : localStorage.getItem('nav'));
+    localStorage.setItem('nav', window.location.pathname === '/' ? 'dashboard' : localStorage.getItem('nav'));
     
     return ( 
         <Router>
