@@ -3,9 +3,8 @@ const Global = require('../../function/global'); // Function
 
 const audit = { series_no: '', table_name: 'tbl_module', item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class Mdl {
-
-    specific = async (id) => { return (await new Builder(`tbl_module`).select().condition(`WHERE id= ${id}`).build()).rows; }
     series = async () => { return (await new Builder(`tbl_module`).select(`COUNT(*)`).build()).rows; }
+    specific = async (id) => { return (await new Builder(`tbl_module`).select().condition(`WHERE id= ${id}`).build()).rows; }
 
     dropdown = async () => {
         return [{ id: 0, name: '-- SELECT A MODULE BELOW' }]

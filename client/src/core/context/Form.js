@@ -12,6 +12,7 @@ export const FormPrvdr = (props) => {
     const [ fields, setFields ] = useState({});
     const [ disabled, setDisabled ] = useState(false);
     const [ check, setCheck ] = useState(true);
+    const [ maintenance, setMaintenance ] = useState(true);
     const [ loader, setLoader ] = useState(type !== 'new');
     const [ validation, setValidation ] = useState({});
     const [ series, setSeries ] = useState();
@@ -21,7 +22,7 @@ export const FormPrvdr = (props) => {
     return (
         <FormCntxt.Provider 
             value= {{ fields, setFields, disabled, setDisabled, setValidation, register, handleSubmit, errors, getValues, setValue, setError, check, setCheck,
-                            loader, setLoader, control, clearErrors, series, setSeries }}>
+                            loader, setLoader, control, clearErrors, series, setSeries, maintenance, setMaintenance }}>
             { children }
         </FormCntxt.Provider>
     );

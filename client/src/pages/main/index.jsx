@@ -13,7 +13,7 @@ import { LoaderScreen } from "core/loader/Screen"; // Loader
 import Navbar from 'pages/global/navbar';
 import Sidebar from 'pages/global/sidebar';
 import Module from 'pages/main/setup/module';
-// import Users from 'pages/main/setup/user';
+import SubModule from 'pages/main/setup/sub-module';
 
 const Index = () => {
     const { setData } = useContext(ProfileCntx);
@@ -30,8 +30,8 @@ const Index = () => {
                             <Routes>
                                 <Route exact path= "/" element= { <Suspense fallback= { <LoaderScreen /> }><Typography variant= "h6">Dashboard</Typography></Suspense> } />
                                 { prof[0].user_level === 'superadmin' ? <Route exact path= "/setup/module/*" element= { <Suspense fallback= { <LoaderScreen /> }><Module /></Suspense> } /> : '' }
-                                {/* <Route exact path= "/setup/sub-module/*" element= { <Suspense fallback= { <LoaderScreen /> }><Typography variant= "h6">Sub-module</Typography></Suspense> } />
-                                <Route exact path= "/setup/user/*" element= { <Suspense fallback= { <LoaderScreen /> }><Users /></Suspense> } />
+                                <Route exact path= "/setup/sub-module/*" element= { <Suspense fallback= { <LoaderScreen /> }><SubModule /></Suspense> } />
+                                {/* <Route exact path= "/setup/user/*" element= { <Suspense fallback= { <LoaderScreen /> }><Users /></Suspense> } />
                                 <Route exact path= "/setup/user-role-access/*" element= { <Suspense fallback= { <LoaderScreen /> }><Typography variant= "h6">User role-access</Typography></Suspense> } /> */}
                                 {/* // { components().map(ctgy => { 
                                 // return (ctgy.nav).map((layout, index) => ( 
