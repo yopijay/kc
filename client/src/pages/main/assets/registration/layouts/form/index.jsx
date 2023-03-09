@@ -72,7 +72,7 @@ const Index = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 1.5 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Assets</Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>{ type } Assets</Typography>
                 <Typography sx= { btnicon } component= { Link } to= "/assets/asset-registration" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
             <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { theme(input) }><Form fetching= { isFetching } /></ThemeProvider></form></Box>

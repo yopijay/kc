@@ -8,6 +8,12 @@ const Position = React.lazy(() => import('pages/main/maintenance/position'));
 const Category = React.lazy(() => import('pages/main/maintenance/category'));
 const SubCategory = React.lazy(() => import('pages/main/maintenance/sub-category'));
 
+// Services
+const ServiceRequest = React.lazy(() => import('pages/main/services/request'));
+const ServiceEvaluation = React.lazy(() => import('pages/main/services/evaluation'));
+const ServiceDispatch = React.lazy(() => import('pages/main/services/dispatch'));
+const ServiceReport = React.lazy(() => import('pages/main/services/reports'));
+
 // Assets
 const AssetRegistration = React.lazy(() => import('pages/main/assets/registration'));
 const AssetIssuance = React.lazy(() => import('pages/main/assets/issuance'));
@@ -38,6 +44,15 @@ export const Navs = () => ([
             { path: '/maintenance/position', label: 'Position', name: 'position', component: <Position /> },
             { path: '/maintenance/category', label: 'Category', name: 'category', component: <Category /> },
             { path: '/maintenance/sub-category', label: 'Sub-category', name: 'sub-category', component: <SubCategory /> },
+            { path: '/maintenance/customer', label: 'Customer', name: 'customer', component: 'Customer' },
+        ]
+    },
+    {
+        title: 'Services', nav: [
+            { path: '/services/request', label: 'Request', name: 'service_request', component: <ServiceRequest /> },
+            { path: '/services/evaluation', label: 'Evaluation', name: 'service_evaluation', component: <ServiceEvaluation /> },
+            { path: '/services/dispatch', label: 'Dispatch', name: 'service_dispatch', component: <ServiceDispatch /> },
+            { path: '/services/reports', label: 'Reports', name: 'service_reports', component: <ServiceReport /> },
         ]
     },
     {

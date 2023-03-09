@@ -11,6 +11,7 @@ const Assets = require('./tables/Assets');
 const AssignAssets = require('./tables/AssignAssets');
 const Module = require('./tables/Module');
 const SubModule = require('./tables/SubModule');
+const Services = require('./tables/Services');
 
 const login = (data) => { return new Users().login(data); }
 const logout = (data) => { return new Users().logout(data); }
@@ -44,6 +45,7 @@ const dashboard = (table) => {
             case 'tbl_category': resolve(await new Category().dashboard()); break;
             case 'tbl_assets': resolve(await new Assets().dashboard()); break;
             case 'tbl_sub_category': resolve(await new SubCategory().dashboard()); break;
+            case 'tbl_services': resolve(await new Services().dashboard()); break;
         }
     });
 }
@@ -61,6 +63,7 @@ const excel = (table, type, data) => {
             case 'tbl_assign_asset': resolve(await new AssignAssets().excel(type, data)); break;
             case 'tbl_module': resolve(await new Module().excel(type, data)); break;
             case 'tbl_sub_module': resolve(await new SubModule().excel(type, data)); break;
+            case 'tbl_services': resolve(await new Services().excel(type, data)); break;
         }
     });
 }
@@ -79,6 +82,7 @@ const list = (table, data) => {
             case 'tbl_assign_asset': resolve(await new AssignAssets().list(data)); break
             case 'tbl_module': resolve(await new Module().list(data)); break
             case 'tbl_sub_module': resolve(await new SubModule().list(data)); break
+            case 'tbl_services': resolve(await new Services().list(data)); break;
         }
     });
 }
@@ -96,6 +100,7 @@ const search = (table, data) => {
             case 'tbl_assign_asset': resolve(await new AssignAssets().search(data)); break;
             case 'tbl_module': resolve(await new Module().search(data)); break;
             case 'tbl_sub_module': resolve(await new SubModule().search(data)); break;
+            case 'tbl_services': resolve(await new Services().search(data)); break;
         }
     });
 }
@@ -113,6 +118,7 @@ const specific = (table, id) => {
             case 'tbl_assign_asset': resolve(await new AssignAssets().specific(id)); break;
             case 'tbl_module': resolve(await new Module().specific(id)); break;
             case 'tbl_sub_module': resolve(await new SubModule().specific(id)); break;
+            case 'tbl_services': resolve(await new Services().specific(id)); break;
         }
     });
 }
@@ -127,9 +133,10 @@ const specific = (table, id) => {
             case 'tbl_category': resolve(await new Category().save(data)); break;
             case 'tbl_sub_category': resolve(await new SubCategory().save(data)); break;
             case 'tbl_assets': resolve(await new Assets().save(data)); break;
-            case'tbl_assign_asset': resolve(await new AssignAssets().save(data)); break;
-            case'tbl_module': resolve(await new Module().save(data)); break;
-            case'tbl_sub_module': resolve(await new SubModule().save(data)); break;
+            case 'tbl_assign_asset': resolve(await new AssignAssets().save(data)); break;
+            case 'tbl_module': resolve(await new Module().save(data)); break;
+            case 'tbl_sub_module': resolve(await new SubModule().save(data)); break;
+            case 'tbl_services': resolve(await new Services().save(data)); break;
         }
     });
 }
@@ -147,6 +154,7 @@ const update = (table, data) => {
            case 'tbl_assign_asset': resolve(await new AssignAssets().update(data)); break;
            case 'tbl_module': resolve(await new Module().update(data)); break;
            case 'tbl_sub_module': resolve(await new SubModule().update(data)); break;
+           case 'tbl_services': resolve(await new Services().update(data)); break;
        }
    });
 }
@@ -163,6 +171,7 @@ const series = (table) => {
             case 'tbl_assign_asset': resolve(await new AssignAssets().series()); break;
             case 'tbl_module': resolve(await new Module().series()); break;
             case 'tbl_sub_module': resolve(await new SubModule().series()); break;
+            case 'tbl_services': resolve(await new Services().series()); break;
         }
     });
 }
