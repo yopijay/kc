@@ -31,21 +31,21 @@ const Dashboard = () => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.total < 10 ? '0' : ''}${count.total}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>TOTAL</Typography>
+                    <Typography variant= "body1" sx= { label }>TOTAL</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 4 } sm= { 3 } sx= {{ padding: '0 5px' }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.released < 10 ? '0' : ''}${count.released}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>RELEASED</Typography>
+                    <Typography variant= "body1" sx= { label }>RELEASED</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 4 } sm= { 3 } sx= {{ padding: '0 5px' }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count?.vacant < 10 ? '0' : ''}${count?.vacant}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>VACANT</Typography>
+                    <Typography variant= "body1" sx= { label }>VACANT</Typography>
                 </Stack>
             </Grid>
         </Grid>

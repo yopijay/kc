@@ -1,13 +1,10 @@
 // Libraries
 import { Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 // Core
 import { GlobalCntx } from "core/context/Global"; // Context
-import { ProfileCntx } from "core/context/Profile"; // Context
-import { groupBy, useGet } from "core/function/global"; // Function
-import { component } from "core/api"; // API
 import { Navs as links } from "core/constants/Navs";
 
 // Custom styles
@@ -36,7 +33,7 @@ const container = {
 }
 
 const Navs = () => {
-    const { data } = useContext(ProfileCntx);
+    // const { data } = useContext(ProfileCntx);
     const { isActive, setActive, setOpen } = useContext(GlobalCntx);
     // const { data: navs } = useGet({ key: ['component'], fetch: component(localStorage.getItem('token')), options: { refetchOnWindowFocus: false } });
 
