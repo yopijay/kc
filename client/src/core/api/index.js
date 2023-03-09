@@ -2,7 +2,7 @@
 import { api } from "core/function/global";
 import Env from '../constants/Env.json';
 
-const env = 'live'; // Environment
+const env = 'lan'; // Environment
 
 export const authentication = async (data) => { return await api({ url: `${Env[env].url}/login`, method: 'post', data: data }).then(res => res.data); }
 export const logout = async (data) => { return await api({ url: `${Env[env].url}/logout`, method: 'post', data: data }).then(res => res.data); }
@@ -19,3 +19,4 @@ export const excel = async ({ table, type, data }) => { return await api({ url: 
 export const upload = async ({ table, data }) => { return await api({ url: `${Env[env].url}/upload/${table}`, method: 'post', data: data }).then(res => res.data); }
 export const assettag = async ({ table, data }) => { return await api({ url: `${Env[env].url}/assettag/${table}`, method: 'post', data: data }).then(res => res.data); }
 export const filter = async ({ table, data }) => { return await api({ url: `${Env[env].url}/filter/${table}`, method: 'post', data: data }).then(res => res.data); }
+export const component = async (id) => { return await api({ url: `${Env[env].url}/component/${id}`, method: 'get'}).then(res => res.data); }

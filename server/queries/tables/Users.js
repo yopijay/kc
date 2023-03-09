@@ -7,7 +7,7 @@ class Users {
         return (await new Builder(`tbl_users AS usr`)
                                         .select()
                                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
-                                        .condition(`WHERE usr.id= ${id}`)
+                                        .condition(`WHERE usr.id= ${atob(id)}`)
                                         .build()).rows;
     }
 
@@ -56,12 +56,12 @@ class Users {
                                                     emp.department_id, emp.position_id, emp.branch, emp.fname, emp.mname, emp.lname, emp.birthdate, emp.address,
                                                     emp.vacation_leave, emp.sick_leave, emp.employment_status, emp.civil_status, emp.date_hired, emp.date_resigned`)
                                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: 'LEFT' })
-                                        .condition(`WHERE usr.id= ${id}`)
+                                        .condition(`WHERE usr.id= ${atob(id)}`)
                                         .build()).rows;
     }
 
     logout = async (data) => {
-        await new Builder(`tbl_users`).update(`is_logged= 0`).condition(`WHERE id= ${data.id}`).build();
+        await new Builder(`tbl_users`).update(`is_logged= 0`).condition(`WHERE id= ${atob(data.id)}`).build();
         return { result: 'success', message: 'Successfully logged out!' }
     }
 
@@ -88,7 +88,7 @@ class Users {
                                                             ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
                                                             ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
                                                             OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}`)
-                                        .except(`WHERE usr.id= ${data.id} 
+                                        .except(`WHERE usr.id= ${atob(data.id)} 
                                                         ORDER BY ${data.orderby === 'date_hired' ? `9 ${(data.sort).toUpperCase()}, 8 ${(data.sort).toUpperCase()}` : 
                                                                                 data.orderby === 'employee_no' ? `4 ${(data.sort).toUpperCase()}` : 
                                                                                 data.orderby === 'lname' ? `8 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
@@ -121,7 +121,7 @@ class Users {
                                                                     ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
                                                                     ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
                                                                     OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}`)
-                                                .except(`WHERE usr.id= ${data.id} 
+                                                .except(`WHERE usr.id= ${atob(data.id)} 
                                                                 ORDER BY ${data.orderby === 'date_hired' ? `18 ${(data.sort).toUpperCase()}, 10 ${(data.sort).toUpperCase()}` : 
                                                                                         data.orderby === 'employee_no' ? `2 ${(data.sort).toUpperCase()}` : 
                                                                                         data.orderby === 'lname' ? `10 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
@@ -139,7 +139,7 @@ class Users {
                                                                     ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
                                                                     ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
                                                                     OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}`)
-                                                .except(`WHERE usr.id= ${data.id} 
+                                                .except(`WHERE usr.id= ${atob(data.id)} 
                                                                 ORDER BY ${data.orderby === 'date_hired' ? `23 ${(data.sort).toUpperCase()}, 16 ${(data.sort).toUpperCase()}` : 
                                                                                         data.orderby === 'employee_no' ? `9 ${(data.sort).toUpperCase()}` : 
                                                                                         data.orderby === 'lname' ? `16 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
@@ -156,7 +156,7 @@ class Users {
                                         .condition(`WHERE (emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
                                                             OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')
                                                             ${data.company_id !== 'all' ? ` AND emp.company_id= ${data.company_id}` : ''}`)
-                                        .except(`WHERE usr.id= ${data.id} 
+                                        .except(`WHERE usr.id= ${atob(data.id)} 
                                                         ORDER BY ${data.orderby === 'date_hired' ? `9 ${(data.sort).toUpperCase()}, 8 ${(data.sort).toUpperCase()}` : 
                                                                                 data.orderby === 'employee_no' ? `4 ${(data.sort).toUpperCase()}` : 
                                                                                     data.orderby === 'lname' ? `8 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
@@ -182,7 +182,7 @@ class Users {
             let usr = (await new Builder(`tbl_users`)
                                                 .insert({ columns: `series_no, email, contact_no, is_email_verified, is_contact_no_verified, user_level, is_logged, status, created_by, date_created`, 
                                                                 values: `'${Global.series({ label: `USR-`, count: series.count, limit: 7 })}', ${data.email !== '' ? `'${data.email}'` : null}, 
-                                                                ${data.contact_no !== '' ? `'${data.contact_no}'` : null}, 0, 0, '${data.user_level}', 0, 1, ${data.created_by}, '${date}'` })
+                                                                ${data.contact_no !== '' ? `'${data.contact_no}'` : null}, 0, 0, '${data.user_level}', 0, 1, ${atob(data.created_by)}, '${date}'` })
                                                 .condition(`RETURNING id`)
                                                 .build()).rows[0];
             await new Builder(`tbl_employee`)
@@ -198,7 +198,7 @@ class Users {
             audit.field = 'all';
             audit.item_id = usr.id;
             audit.action = 'create';
-            audit.user_id = data.created_by;
+            audit.user_id = atob(data.created_by);
             audit.date = date;
 
             Global.audit(audit);
@@ -214,14 +214,14 @@ class Users {
         let usr = (await new Builder(`tbl_users AS usr`)
                                             .select()
                                             .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
-                                            .condition(`WHERE usr.id= ${data.id}`)
+                                            .condition(`WHERE usr.id= ${atob(data.id)}`)
                                             .build()).rows[0];
 
         if(Global.compare(usr.email, data.email)) {
             // if((await new Builder(`tbl_users`).select().condition(`WHERE email= '${data.email}'`).build()).rowCount > 0) { _errors.push({ name: 'email', message: 'Email already used!' }); }
             // else {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'email', previous: usr.email, 
-                                    current: data.email !== '' && data.email !== null ? data.email : null, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.email !== '' && data.email !== null ? data.email : null, action: 'update', user_id: atob(data.updated_by), date: date });
             // }
         }
         
@@ -231,13 +231,13 @@ class Users {
             }
             else {
                 _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'fname', previous: usr.fname, 
-                                        current: (data.fname).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+                                        current: (data.fname).toUpperCase(), action: 'update', user_id: atob(data.updated_by), date: date });
             }
         }
 
         if(Global.compare(usr.mname, data.mname)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'mname', previous: usr.mname, 
-                                    current: data.mname !== '' && data.mname !== null ? (data.mname).toUpperCase() : null, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.mname !== '' && data.mname !== null ? (data.mname).toUpperCase() : null, action: 'update', user_id: atob(data.updated_by), date: date });
         }
         
         if(Global.compare(usr.lname, data.lname)) {
@@ -246,7 +246,7 @@ class Users {
             }
             else {
                 _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'lname', previous: usr.lname, 
-                                        current: (data.lname).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+                                        current: (data.lname).toUpperCase(), action: 'update', user_id: atob(data.updated_by), date: date });
             }
         }
 
@@ -256,43 +256,43 @@ class Users {
             // }
             // else {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'contact_no', previous: usr.contact_no, 
-                                    current: data.contact_no !== '' && data.contact_no !== null ? data.contact_no : null, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.contact_no !== '' && data.contact_no !== null ? data.contact_no : null, action: 'update', user_id: atob(data.updated_by), date: date });
             // }
         }
 
         if(Global.compare(usr.gender, data.gender)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'gender', previous: usr.gender, 
-                                    current: data.gender, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.gender, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.civil_status, data.civil_status)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'civil_status', previous: usr.civil_status, 
-                                    current: data.civil_status, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.civil_status, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.birthdate, data.birthdate)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'birthdate', previous: usr.birthdate, 
-                                    current: data.birthdate, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.birthdate, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.address, data.address)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'address', previous: usr.address, 
-                                    current: data.address !== '' && data.address !== null ? (data.address).toUpperCase() : null, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.address !== '' && data.address !== null ? (data.address).toUpperCase() : null, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.company_id, data.company_id)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'company_id', previous: usr.company_id, 
-                                    current: data.company_id, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.company_id, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.department_id, data.department_id)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'department_id', previous: usr.department_id, 
-                                    current: data.department_id, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.department_id, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.position_id, data.position_id)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'position_id', previous: usr.position_id, 
-                                    current: data.position_id, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.position_id, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.employee_no, data.employee_no)) {
@@ -302,7 +302,7 @@ class Users {
             //     }
             // }
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'employee_no', previous: usr.employee_no, 
-                                    current: data.employee_no !== '' && data.employee_no !== null ? data.employee_no : null, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.employee_no !== '' && data.employee_no !== null ? data.employee_no : null, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.rfid, data.rfid)) {
@@ -313,34 +313,34 @@ class Users {
             // }
 
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'rfid', previous: usr.rfid, 
-                                    current: data.rfid !== '' && data.rfid !== null ? data.rfid : null, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.rfid !== '' && data.rfid !== null ? data.rfid : null, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.branch, data.branch)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'branch', previous: usr.branch, 
-                                    current: data.branch, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.branch, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.employment_status, data.employment_status)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'employment_status', previous: usr.employment_status, 
-                                    current: data.employment_status, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.employment_status, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.user_level, data.user_level)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'user_level', previous: usr.user_level, 
-                                    current: data.user_level, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.user_level, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(Global.compare(usr.date_hired, data.date_hired)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_users',  item_id: usr.id, field: 'date_hired', previous: usr.date_hired, 
-                                    current: data.date_hired, action: 'update', user_id: data.updated_by, date: date });
+                                    current: data.date_hired, action: 'update', user_id: atob(data.updated_by), date: date });
         }
         
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_users`)
                                 .update(`email= ${data.email !== '' && data.email !== null ? `'${data.email}'` : null}, 
                                                 contact_no= ${data.contact_no !== '' && data.contact_no !== null ? `'${data.contact_no}'` : null}, 
-                                                user_level= '${data.user_level}', updated_by= ${data.updated_by}, date_updated= '${date}'`)
+                                                user_level= '${data.user_level}', updated_by= ${atob(data.updated_by)}, date_updated= '${date}'`)
                                 .condition(`WHERE id= ${usr.id}`)
                                 .build();
 

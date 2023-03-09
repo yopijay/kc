@@ -2,13 +2,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-// Layouts
-import Account from 'pages/account';
-import Main from 'pages/main';
-
 // Core
 import { ProfilePrvdr } from "core/context/Profile";
 import { GlobalPrvdr } from "core/context/Global";
+
+// Layouts
+import Account from 'pages/account';
+import Main from 'pages/main';
 
 const App = () => {
     const client = new QueryClient();

@@ -12,8 +12,12 @@ const SubCategory = React.lazy(() => import('pages/main/maintenance/sub-category
 const AssetRegistration = React.lazy(() => import('pages/main/assets/registration'));
 const AssetIssuance = React.lazy(() => import('pages/main/assets/issuance'));
 
-// User & Role Access
+// Setup
 const User = React.lazy(() => import('pages/main/user-roleaccess/user'));
+
+// export const Navs = () => ({
+//     user: <User />
+// })
 
 export const Navs = () => ([
     {

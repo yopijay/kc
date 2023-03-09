@@ -9,12 +9,26 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { save, specific, update } from "core/api"; // API
 import { FormCntxt } from "core/context/Form"; // Context
 import { infoToast, successToast, useGet, usePost } from "core/function/global"; // Function
-import { input } from "core/theme/form.theme"; // Themes
+import { theme } from "core/theme/form.theme"; // Themes
 
 // Constants
 import { validation as Validation } from './index.validation'; // Validation
 import { btnicon, btntxt, card } from "./index.style"; // Styles
 import Form from "./layouts/Form"; // Layouts
+
+const input = {
+    MuiInput: {
+        styleOverrides: {
+            root: {
+                '&:before': { borderBottom: 'none' },
+                '&:after': { borderBottom: 'none' },
+                '&.Mui-disabled:before': { borderBottom: 'none' },
+                '&:hover:not(.Mui-disabled):before': { borderBottom: 'none' }
+            },
+            input: { textTransform: 'uppercase' }
+        }
+    }
+}
 
 const Index = () => {
     const { type, id } = useParams();
@@ -62,13 +76,14 @@ const Index = () => {
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Assets Issuance</Typography>
                 <Typography sx= { btnicon } component= { Link } to= "/assets/asset-issuance" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
-            <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { input }><Form fetching= { isFetching } /></ThemeProvider></form></Box>
+            <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { theme(input) }><Form fetching= { isFetching } /></ThemeProvider></form></Box>
             { type !== 'view' ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             let errors = [];
-                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token');
+                            
                             if(data.company_id === undefined || data.company_id === 0) { errors.push({ name: 'company_id', message: 'This field is required!' }); }
                             if(data.department_id === undefined || data.department_id === 0) { errors.push({ name: 'department_id', message: 'This field is required!' }); }
                             if(data.branch === undefined || data.branch === 0) { errors.push({ name: 'branch', message: 'This field is required!' }); }

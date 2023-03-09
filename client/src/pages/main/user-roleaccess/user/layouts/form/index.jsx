@@ -10,7 +10,7 @@ import { ThemeProvider } from "@emotion/react";
 import { FormCntxt } from "core/context/Form"; // Context
 import { successToast, useGet, usePost } from "core/function/global"; // Function
 import { save, specific, update } from "core/api"; // API
-import { input } from "core/theme/form.theme"; // Theme
+import { theme } from "core/theme/form.theme"; // Theme
 
 // Constants
 import { validation as Validation } from "./index.validation"; // Validation
@@ -21,6 +21,20 @@ import Account from "./layouts/Account";
 import Basic from "./layouts/Basic";
 import Employee from "./layouts/Employee";
 import Benefits from "./layouts/Benefits";
+
+const input = {
+    MuiInput: {
+        styleOverrides: {
+            root: {
+                '&:before': { borderBottom: 'none' },
+                '&:after': { borderBottom: 'none' },
+                '&.Mui-disabled:before': { borderBottom: 'none' },
+                '&:hover:not(.Mui-disabled):before': { borderBottom: 'none' }
+            },
+            input: { textTransform: 'uppercase' }
+        }
+    }
+}
 
 const Index = () => {
     const { type, id } = useParams();
@@ -69,11 +83,11 @@ const Index = () => {
                 </Stack>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 2 }>
                     <Typography sx= {{ fontWeight: 'bold', textTransform: 'uppercase' }} variant= "body1" gutterBottom>Basic Information</Typography>
-                    <ThemeProvider theme= { input }><Basic fetching= { isFetching } /></ThemeProvider>
+                    <ThemeProvider theme= { theme(input) }><Basic fetching= { isFetching } /></ThemeProvider>
                 </Stack>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 2 }>
                     <Typography sx= {{ fontWeight: 'bold', textTransform: 'uppercase' }} variant= "body1" gutterBottom>Employee Information</Typography>
-                    <ThemeProvider theme= { input }><Employee fetching= { isFetching } /></ThemeProvider>
+                    <ThemeProvider theme= { theme(input) }><Employee fetching= { isFetching } /></ThemeProvider>
                 </Stack>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 2 }>
                     <Typography sx= {{ fontWeight: 'bold', textTransform: 'uppercase' }} variant= "body1" gutterBottom>Benefits</Typography>
@@ -85,7 +99,7 @@ const Index = () => {
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             let _errors = [];
-                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token');
                             
                             if(data.company_id === undefined) { _errors.push({ name: 'company_id', message: 'This field is required!' }); }
                             if(data.department_id === undefined) { _errors.push({ name: 'department_id', message: 'This field is required!' }); }

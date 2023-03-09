@@ -85,7 +85,7 @@ const Index = () => {
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             let _errors = [];
-                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token'));
                             
                             if(data.company_id === undefined) { _errors.push({ name: 'company_id', message: 'This field is required!' }); }
                             if(data.department_id === undefined) { _errors.push({ name: 'department_id', message: 'This field is required!' }); }

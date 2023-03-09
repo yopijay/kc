@@ -1,5 +1,6 @@
 // Tables
 const Users = require('./tables/Users');
+const UserAccess = require('./tables/UserAccess');
 const Company = require('./tables/Company');
 const Department = require('./tables/Department');
 const Position = require('./tables/Position');
@@ -14,6 +15,7 @@ const SubModule = require('./tables/SubModule');
 const login = (data) => { return new Users().login(data); }
 const logout = (data) => { return new Users().logout(data); }
 const profile = (id) => { return new Users().profile(id); }
+const component = (id) => { return new UserAccess().components(id); }
 
 const assettag = (table, data) => {
     return new Promise(async resolve => {
@@ -212,5 +214,6 @@ module.exports = {
     excel,
     upload,
     assettag,
-    filter
+    filter,
+    component
 }

@@ -9,12 +9,26 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { FormCntxt } from "core/context/Form"; // Context
 import { successToast, useGet, usePost } from "core/function/global"; // Function
 import { save, specific, update } from "core/api"; // API
-import { input } from "core/theme/form.theme"; // Theme
+import { theme } from "core/theme/form.theme"; // Theme
 
 // Constants
 import { btnicon, btntxt, card } from "./index.style"; // Styles
 import Form from "./layouts/Form"; // Layout
 import { validation as Validation } from './index.validation'; // Validation
+
+const input = {
+    MuiInput: {
+        styleOverrides: {
+            root: {
+                '&:before': { borderBottom: 'none' },
+                '&:after': { borderBottom: 'none' },
+                '&.Mui-disabled:before': { borderBottom: 'none' },
+                '&:hover:not(.Mui-disabled):before': { borderBottom: 'none' }
+            },
+            input: { textTransform: 'uppercase' }
+        }
+    }
+}
 
 const Index = () => {
     const { type, id } = useParams();
@@ -55,12 +69,12 @@ const Index = () => {
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Sub category</Typography>
                 <Typography sx= { btnicon } component= { Link } to= "/maintenance/sub-category" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
-            <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { input }><Form fetching= { isFetching } /></ThemeProvider></form></Box>
+            <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { theme(input) }><Form fetching= { isFetching } /></ThemeProvider></form></Box>
             { type !== 'view' ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
-                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token');
 
                             if(data.category_id !== undefined) {
                                 if(type === 'new') { saving({ table: 'tbl_sub_category', data: data }); }

@@ -46,7 +46,7 @@ const Index = () => {
         });
 
     useEffect(() => {
-        register('id', { value: atob(localStorage.getItem('token')) }); register('orderby', { value: 'date_hired' }); register('sort', { value: 'desc' }); register('company_id', { value: 'all' });
+        register('id', { value: localStorage.getItem('token')) }); register('orderby', { value: 'date_hired' }); register('sort', { value: 'desc' }); register('company_id', { value: 'all' });
         if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_users', data: getValues() }); } }, [ register, record, getValues ]);
 
     return (
@@ -67,7 +67,7 @@ const Index = () => {
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing=  { 1 }>
                         { data.user_level === 'superadmin' ?
                             <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
-                                onChange= { async e => { uploadfile({ table: 'tbl_users', data: { json: await importfromexcel(e), id: atob(localStorage.getItem('token')) } }); e.target.value = '' } } /> : '' }
+                                onChange= { async e => { uploadfile({ table: 'tbl_users', data: { json: await importfromexcel(e), id: localStorage.getItem('token')) } }); e.target.value = '' } } /> : '' }
                         { data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
                             <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF'}} size= "lg" />
                         </FormLabel> : '' }

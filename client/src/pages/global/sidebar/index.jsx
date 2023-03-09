@@ -4,14 +4,16 @@ import { GlobalCntx } from "core/context/Global";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
+// Core
+import { usePost } from "core/function/global"; // Function
+import { logout } from "core/api"; // API
+
 // Layouts
 import Account from "./layouts/Account";
 import Navs from "./layouts/Navs";
 
 // Constants
 import { link, sidebar, swipe } from "./index.style"; // Design
-import { usePost } from "core/function/global";
-import { logout } from "core/api";
 
 const Index = () => {
     const { open, drawerToggle, container, setIsActive } = useContext(GlobalCntx);
@@ -44,7 +46,7 @@ const Index = () => {
                             onClick= { () => { setElem(null); localStorage.setItem('nav', 'settings'); setIsActive('settings'); } }>Settings</Typography>
                     </Stack>
                     <Box sx= {{ padding: '10px 20px' }}>
-                        <Typography variant= "body1" onClick= { () => signout({ id: atob(localStorage.getItem('token')) }) } sx= { link }>Logout</Typography>
+                        <Typography variant= "body1" onClick= { () => signout({ id: localStorage.getItem('token') }) } sx= { link }>Logout</Typography>
                     </Box>
                 </Stack>
             </Popover>

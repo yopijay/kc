@@ -1,11 +1,14 @@
 // Libraries
 import { Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 // Core
 import { GlobalCntx } from "core/context/Global"; // Context
-import { ProfileCntx } from "core/context/Profile";
+import { ProfileCntx } from "core/context/Profile"; // Context
+import { groupBy, useGet } from "core/function/global"; // Function
+import { component } from "core/api"; // API
+import { Navs as links } from "core/constants/Navs";
 
 // Custom styles
 const linkNormal = {
@@ -35,6 +38,9 @@ const container = {
 const Navs = () => {
     const { data } = useContext(ProfileCntx);
     const { isActive, setActive, setOpen } = useContext(GlobalCntx);
+    // const { data: navs } = useGet({ key: ['component'], fetch: component(localStorage.getItem('token')), options: { refetchOnWindowFocus: false } });
+
+    // useEffect(() => { groupBy(navs, 'module') }, [ navs ]);
     
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch"  sx= { container } spacing= { 2 }>
@@ -46,25 +52,25 @@ const Navs = () => {
                         sx= { isActive === 'dashboard' ? linkActive : linkNormal }>Dashboard</Typography>
                 </Stack>
             </Stack>
-            { data.user_level === 'superadmin' ? 
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Setup</Typography>
-                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+            {/* <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+                <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Setup</Typography>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                    { data.user_level === 'superadmin' ? 
                         <Typography variant= "body1" component= { Link } to= "/setup/module" color= "text.secondary"
                             onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'module'); setActive('module'); } }
-                            sx= { isActive === 'module' ? linkActive : linkNormal }>Module</Typography>
+                            sx= { isActive === 'module' ? linkActive : linkNormal }>Module</Typography> : '' }
+                    { data.user_level === 'superadmin' ? 
                         <Typography variant= "body1" component= { Link } to= "/setup/sub-module" color= "text.secondary"
                             onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'sub-module'); setActive('sub-module'); } }
-                            sx= { isActive === 'sub-module' ? linkActive : linkNormal }>Sub-module</Typography>
-                        <Typography variant= "body1" component= { Link } to= "/setup/user" color= "text.secondary"
-                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'user'); setActive('user'); } }
-                            sx= { isActive === 'user' ? linkActive : linkNormal }>User</Typography>
-                        <Typography variant= "body1" component= { Link } to= "/setup/user-access" color= "text.secondary"
-                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'user-access'); setActive('user-access'); } }
-                            sx= { isActive === 'user-access' ? linkActive : linkNormal }>User role-access</Typography>
-                    </Stack>
-                </Stack> : '' }
-            {/* { links().map((ctgy, index) => (
+                            sx= { isActive === 'sub-module' ? linkActive : linkNormal }>Sub-module</Typography> : '' }
+                    { (navs?.filter(sub => sub.module === 'setup'))?.map((nav, index) => (
+                        <Typography key= { index } variant= "body1" component= { Link } to= { `/${nav.module}${nav.path}` } color= "text.secondary"
+                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', nav.sub_module); setActive(nav.sub_module); } } 
+                            sx= { isActive === nav.sub_module ? linkActive : linkNormal }>{ (nav.sub_module).charAt(0).toUpperCase() + (nav.sub_module).slice(1) }</Typography>
+                    )) }
+                </Stack>
+            </Stack> */}
+            { links().map((ctgy, index) => (
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } key= { index }>
                     <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: 'rgb(200, 200, 200)' }} color= "text.primary">{ ctgy.title }</Typography>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
@@ -73,7 +79,7 @@ const Navs = () => {
                                     onClick= { () => { setOpen({ left: false }); localStorage.setItem('nav', link.name); setActive(link.name); } }
                                     sx= { isActive === link.name ? linkActive : linkNormal }>{ link.label }</Typography> )) }
                     </Stack>
-                </Stack> )) } */}
+                </Stack> )) }
         </Stack>
     );
 }
