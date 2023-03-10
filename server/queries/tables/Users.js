@@ -56,7 +56,7 @@ class Users {
                                                     emp.department_id, emp.position_id, emp.branch, emp.fname, emp.mname, emp.lname, emp.birthdate, emp.address,
                                                     emp.vacation_leave, emp.sick_leave, emp.employment_status, emp.civil_status, emp.date_hired, emp.date_resigned`)
                                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: 'LEFT' })
-                                        .condition(`WHERE usr.id= ${atob(id)}`)
+                                        .condition(`WHERE usr.id= ${id}`)
                                         .build()).rows;
     }
 

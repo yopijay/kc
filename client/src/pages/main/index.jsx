@@ -18,9 +18,9 @@ import SubModule from 'pages/main/setup/sub-module';
 
 const Index = () => {
     const { setData } = useContext(ProfileCntx);
-    const { data: layouts } = useGet({ key: ['component'], fetch: component(localStorage.getItem('token')), options: { refetchOnWindowFocus: false } });
+    // const { data: layouts } = useGet({ key: ['component'], fetch: component(localStorage.getItem('token')), options: { refetchOnWindowFocus: false } });
     const { data: prof, isFetching: prof_fetching } = 
-        useGet({ key: ['profile'], fetch: profile(localStorage.getItem('token')), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setData(data[0]) });
+        useGet({ key: ['profile'], fetch: profile(atob(localStorage.getItem('token'))), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setData(data[0]) });
 
         return (
             <Box display= "flex">
