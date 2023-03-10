@@ -41,14 +41,14 @@ const Navs = () => {
     
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch"  sx= { container } spacing= { 2 }>
-            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+            {/* <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Main</Typography>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography variant= "body1" component= { Link } to= "/" color= "text.secondary"
                         onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'dashboard'); setActive('dashboard'); } }
                         sx= { isActive === 'dashboard' ? linkActive : linkNormal }>Dashboard</Typography>
                 </Stack>
-            </Stack>
+            </Stack> */}
             {/* <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Setup</Typography>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
