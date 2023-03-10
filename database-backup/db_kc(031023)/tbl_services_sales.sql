@@ -12,8 +12,19 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 10/03/2023 14:09:16
+ Date: 10/03/2023 14:40:30
 */
+
+
+-- ----------------------------
+-- Table sequence for tbl_services_sales
+-- ----------------------------
+CREATE SEQUENCE "public"."tbl_services_sales_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
 
 
 -- ----------------------------
@@ -57,3 +68,8 @@ INSERT INTO "public"."tbl_services_sales" VALUES (4, 4, '2023-ZSP-015', NULL, 'J
 -- Primary Key structure for table tbl_services_sales
 -- ----------------------------
 ALTER TABLE "public"."tbl_services_sales" ADD CONSTRAINT "tbl_services_sales_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Foreign Keys structure for table tbl_services_sales
+-- ----------------------------
+ALTER TABLE "public"."tbl_services_sales" ADD CONSTRAINT "tbl_services_sales_service_id_fkey" FOREIGN KEY ("service_id") REFERENCES "public"."tbl_services" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;

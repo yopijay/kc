@@ -46,10 +46,10 @@ const Index = () => {
                                         )) : '' } */}
                                     {/* <Route exact path= "/setup/user/*" element= { <Suspense fallback= { <LoaderScreen /> }><Users /></Suspense> } />
                                     <Route exact path= "/setup/user-role-access/*" element= { <Suspense fallback= { <LoaderScreen /> }><Typography variant= "h6">User role-access</Typography></Suspense> } /> */}
-                                    {/* { components().map(ctgy => { 
+                                    { components().map(ctgy => { 
                                         return (ctgy.nav).map((layout, index) => ( 
                                         <Route exact path= { `${layout.path}/*` } key= { index } element= { <Suspense fallback= { <LoaderScreen /> }>{ layout.component }</Suspense> } /> 
-                                    )) }) } */}
+                                    )) }) }
                                 </Routes>
                             </Stack>
                         </Stack> : <LoaderScreen /> }
