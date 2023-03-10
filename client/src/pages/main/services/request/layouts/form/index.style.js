@@ -71,7 +71,6 @@ export const date = {
         xs: '12px 8px 9px 8px',
         md: '9px 10px 6px 10px'
     },
-    marginBottom: '5px',
     borderRadius: '5px'
 }
 
@@ -85,4 +84,16 @@ export const addrow = {
     },
     transition: 'all 0.2s ease-in-out',
     '&:hover': { backgroundColor: '#1b405d' }
+}
+
+export const deleterow = {
+    color: '#ffffff',
+    backgroundColor: '#EF9F9F',
+    borderRadius: '7px',
+    padding: {
+        xs: '5px 12px',
+        md: '4px 10px'
+    },
+    transition: 'all 0.2s ease-in-out',
+    '&:hover': { backgroundColor: '#d18c8c' }
 }

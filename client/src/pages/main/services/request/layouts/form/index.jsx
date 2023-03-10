@@ -58,7 +58,7 @@ const Index = () => {
 
     const { mutate: updating } = 
         usePost({ fetch: update, 
-            onSuccess: (data) => { 
+            onSuccess: (data) => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
                 else { successToast(data.message, 3000, navigate('/services/request', { replace: true })); } 
             } 
@@ -88,7 +88,7 @@ const Index = () => {
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token');
-
+                            
                             if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
                             else { updating({ table: 'tbl_services', data: data }); }
                         }) }>Save</Box>

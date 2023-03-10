@@ -23,7 +23,7 @@ const Other = ({ fetching }) => {
                     <Typography variant= "body2" gutterBottom>Date needed</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <Box sx= { date }>
-                            <Controller control= { control } name= "date_needed"
+                            <Controller control= { control } name= "date_needed" defaultValue= { `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}` }
                                 render= { ({ field: { onChange, value } }) => (
                                     <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                         <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
