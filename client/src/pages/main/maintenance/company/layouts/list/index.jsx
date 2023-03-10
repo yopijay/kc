@@ -28,8 +28,8 @@ const Index = () => {
     const { register, getValues, setValue } = useContext(FormCntxt);
     const { message, setMessage, errors, setErrors } = useContext(GlobalCntx);
     const { data } = useContext(ProfileCntx);
-    const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
-    const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: (data) => setList(data) });
+    const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => { console.log(data); setList(data) } });
+    const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: (data) => { console.log(data); setList(data)} });
 
     const { mutate: original } = usePost({fetch: excel, options: { refetchOnWindowFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Company', `${name} (Admin's copy)`) });
     const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Company', `${name}`) });

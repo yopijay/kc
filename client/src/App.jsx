@@ -12,7 +12,7 @@ import Main from 'pages/main';
 
 const App = () => {
     const client = new QueryClient();
-    localStorage.setItem('nav', window.location.pathname === '/' ? 'dashboard' : localStorage.getItem('nav'));
+    localStorage.setItem('nav', window.location.pathname === '/' ? 'home' : localStorage.getItem('nav'));
     
     return ( 
         <Router>
