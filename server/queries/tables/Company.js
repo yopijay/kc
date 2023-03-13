@@ -98,68 +98,50 @@ class Company {
     update = async (data) => {
         let cmp = (await new Builder(`tbl_company`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
         let date = Global.date(new Date());
-
-        audit.item_id = cmp.id;
-        audit.action = "update";
-        audit.user_id = data.updated_by;
-        audit.date = date;
+        let _audit = [];
+        let _errors = [];
 
         if(Global.compare(cmp.name, data.name)) {
-            if(!(await new Builder(`tbl_company`).select().condition(`WHERE name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
-                audit.series_no = Global.randomizer(7);
-                audit.field = "name";
-                audit.previous = (cmp.name).toUpperCase();
-                audit.current = (data.name).toUpperCase();
-
-                await new Builder(`tbl_company`).update(`name= '${(data.name).toUpperCase()}'`).condition(`WHERE id= ${cmp.id}`).build();
-                Global.audit(audit);
+            if(!((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company', item_id: cmp.id, field: 'name', previous: cmp.name, 
+                                        current: (data.name).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
             }
-            else { return { result: 'error', error: [{ name: 'name', message: 'Company name already used!' }] } }
+            else { _errors.push({ name: 'name', message: 'Name already used!' }); }
         }
 
         if(Global.compare(cmp.owner_id, data.owner_id)) {
-            audit.series_no = Global.randomizer(7);
-            audit.field = "owner_id",
-            audit.previous = cmp.owner_id;
-            audit.current = data.owner_id;
-
-            await new Builder(`tbl_company`).update(`owner_id= ${data.owner_id}`).condition(`WHERE id= ${cmp.id}`).build();
-            Global.audit(audit);
-        }
-
-        if(Global.compare(cmp.address, data.address)) {
-            audit.series_no = Global.randomizer(7);
-            audit.field = "address";
-            audit.previous = cmp.address !== null ? (cmp.address).toUpperCase() : null;
-            audit.current = data.address !== '' ? (data.address).toUpperCase() : null;
-
-            await new Builder(`tbl_company`).update(`address= ${data.address !== '' ? `'${(data.address).toUpperCase()}'` : null}`).condition(`WHERE id= ${cmp.id}`).build();
-            Global.audit(audit);
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company', item_id: cmp.id, field: 'owner_id', previous: cmp.owner_id, 
+                                    current: data.owner_id, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(Global.compare(cmp.description, data.description)) {
-            audit.series_no = Global.randomizer(7);
-            audit.field = "description";
-            audit.previous = cmp.description !== null ? (cmp.description).toUpperCase() : null;
-            audit.current = data.description !== '' ? (data.description).toUpperCase() : null;
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company', item_id: cmp.id, field: 'description', previous: cmp.description, 
+                                    current: data.description !== '' && data.description !== null ? (data.description).toUpperCase() : null, action: 'update', user_id: data.updated_by, date: date });
+        }
 
-            await new Builder(`tbl_company`).update(`description= ${data.description !== '' ? `'${(data.description).toUpperCase()}'` : null}`).condition(`WHERE id= ${cmp.id}`).build();
-            Global.audit(audit);
+        if(Global.compare(cmp.address, data.address)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company', item_id: cmp.id, field: 'address', previous: cmp.address, 
+                                    current: data.address !== '' && data.address !== null ? (data.address).toUpperCase() : null, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(Global.compare(cmp.status, data.status ? 1 : 0)) {
-            let _status = data.status === true || data.status === 'true' ? 1 : 0;
-            audit.series_no = Global.randomizer(7);
-            audit.field = "status";
-            audit.previous = cmp.status;
-            audit.current = _status;
-
-            await new Builder(`tbl_company`).update(`status= ${_status}`).condition(`WHERE id= ${cmp.id}`).build();
-            Global.audit(audit);
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_company', item_id: cmp.id, field: 'status', previous: cmp.status, 
+                                    current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
         }
 
-        await new Builder(`tbl_company`).update(`updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${cmp.id}`).build();
-        return { result: 'success', message: 'Successfully updated!' }
+        if(!(_errors.length > 0)) {
+            await new Builder(`tbl_company`)
+                .update(`owner_id= ${data.owner_id}, name= '${(data.name).toUpperCase()}', 
+                                    description= ${data.description !== '' && data.description !== null ? `'${(data.description).toUpperCase()}'` : null},
+                                    address= ${data.address !== '' && data.address !== null ? `'${(data.address).toUpperCase()}'` : null}, 
+                                    status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
+                .condition(`WHERE id= ${cmp.id}`)
+                .build();
+
+            _audit.forEach(data => Global.audit(data));
+            return { result: 'success', message: 'Successfully updated!' }
+        }
+        else { return { result: 'error', error: _errors } }
     }
 
     upload = async (data) => {
