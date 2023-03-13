@@ -47,7 +47,7 @@ const Index = () => {
             } 
         });
 
-        useEffect(() => { console.log(getValues()); console.log(record({ table: 'tbl_company', data: getValues() })); }, [ getValues, record ] );
+        useEffect(() => { record({ table: 'tbl_company', data: getValues() }) }, [ getValues, record ] );
 
     // useEffect(() => {
     //     register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
