@@ -78,8 +78,7 @@ class Users {
     }
 
     list = async (data) => {
-        console.log(data);
-        return [];
+        return data;
         // return (await new Builder(`tbl_users AS usr`)
         //                 .select(`usr.id, usr.email, usr.status, emp.employee_no, cmp.name AS company, dpt.name AS department, emp.fname, emp.lname, emp.date_hired`)
         //                 .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
