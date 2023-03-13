@@ -69,31 +69,30 @@ class Company {
     }
 
     save = async (data) => {
-        return data;
-        // let date = Global.date(new Date()); // Date
-        // if(!(await new Builder(`tbl_company`).select().condition(`WHERE series_no= '${(data.series_no).toUpperCase()}'`).build()).rowCount > 0) {
-        //     if(!(await new Builder(`tbl_company`).select().condition(`WHERE name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
-        //         let cmp = (await new Builder(`tbl_company`)
-        //                                             .insert({ columns: `series_no, owner_id, name, address, description, status, created_by, date_created`,
-        //                                                         values: `'${(data.series_no).toUpperCase()}', ${data.owner_id}, '${(data.name).toUpperCase()}', 
-        //                                                                         ${data.address !== '' ? `'${(data.address).toUpperCase()}'` : null}, ${data.description !== '' ? `'${(data.description).toUpperCase()}'` : null},
-        //                                                                         ${data.status === true ? 1 : 0}, ${data.created_by}, '${date}'` })
-        //                                             .condition(`RETURNING id`)
-        //                                             .build()).rows[0];
+        let date = Global.date(new Date()); // Date
+        if(!(await new Builder(`tbl_company`).select().condition(`WHERE series_no= '${(data.series_no).toUpperCase()}'`).build()).rowCount > 0) {
+            if(!(await new Builder(`tbl_company`).select().condition(`WHERE name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+                let cmp = (await new Builder(`tbl_company`)
+                                                    .insert({ columns: `series_no, owner_id, name, address, description, status, created_by, date_created`,
+                                                                values: `'${(data.series_no).toUpperCase()}', ${data.owner_id}, '${(data.name).toUpperCase()}', 
+                                                                                ${data.address !== '' ? `'${(data.address).toUpperCase()}'` : null}, ${data.description !== '' ? `'${(data.description).toUpperCase()}'` : null},
+                                                                                ${data.status === true ? 1 : 0}, ${data.created_by}, '${date}'` })
+                                                    .condition(`RETURNING id`)
+                                                    .build()).rows[0];
 
-        //         audit.series_no = Global.randomizer(7);
-        //         audit.field = 'all',
-        //         audit.item_id = cmp.id;
-        //         audit.action = 'create';
-        //         audit.user_id = data.created_by;
-        //         audit.date = date;
+                audit.series_no = Global.randomizer(7);
+                audit.field = 'all',
+                audit.item_id = cmp.id;
+                audit.action = 'create';
+                audit.user_id = data.created_by;
+                audit.date = date;
 
-        //         Global.audit(audit);
-        //         return { result: 'success', message: 'Successfully saved!' }
-        //     }
-        //     else { return { result: 'error', error: [{ name: 'name', message: 'Company already exist!' }] } }
-        // }
-        // else { return { result: 'error', error: [{ name: 'series_no', message: 'Series no already used!' }] } }
+                Global.audit(audit);
+                return { result: 'success', message: 'Successfully saved!' }
+            }
+            else { return { result: 'error', error: [{ name: 'name', message: 'Company already exist!' }] } }
+        }
+        else { return { result: 'error', error: [{ name: 'series_no', message: 'Series no already used!' }] } }
     }
 
     update = async (data) => {
