@@ -21,10 +21,6 @@ const AssetIssuance = React.lazy(() => import('pages/main/assets/issuance'));
 // Setup
 const User = React.lazy(() => import('pages/main/user-roleaccess/user'));
 
-// export const Navs = () => ({
-//     user: <User />
-// })
-
 export const Navs = () => ([
     {
         title: 'Main', nav: [

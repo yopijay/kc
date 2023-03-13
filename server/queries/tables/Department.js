@@ -105,68 +105,52 @@ class Department {
     update = async (data) => {
         let dpt = (await new Builder(`tbl_department`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
         let date = Global.date(new Date());
+        let _audit = [];
+        let _errors = [];
 
-        // audit.item_id = dpt.id;
-        // audit.action = "update";
-        // audit.user_id = data.updated_by;
-        // audit.date = date;
+        if(Global.compare(dpt.name, data.name)) {
+            if(!((await new Builder(`tbl_department`).select().condition(`WHERE company_id= ${data.company_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_department', item_id: dpt.id, field: 'name', previous: dpt.name, 
+                                        current: (data.name).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+            }
+            else { _errors.push({ name: 'name', message: 'Department already exist in this company!' }); }
+        }
 
-        // if(Global.compare(dpt.name, data.name)) {
-        //     if(!(await new Builder(`tbl_department`).select().condition(`WHERE company_id= ${data.company_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
-        //         audit.series_no = Global.randomizer(7);
-        //         audit.field = "name";
-        //         audit.previous = (dpt.name).toUpperCase();
-        //         audit.current = (data.name).toUpperCase();
+        if(Global.compare(dpt.company_id, data.company_id)) {
+            if(!((await new Builder(`tbl_department`).select().condition(`WHERE company_id= ${data.company_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_department', item_id: dpt.id, field: 'company_id', previous: dpt.company_id, 
+                                        current: data.company_id, action: 'update', user_id: data.updated_by, date: date });
+            }
+            else { _errors.push({ name: 'name', message: 'Department already exist in this company!' }); }
+        }
 
-        //         await new Builder(`tbl_department`).update(`name= '${(data.name).toUpperCase()}'`).condition(`WHERE id= ${dpt.id}`).build();
-        //         Global.audit(audit);
-        //     }
-        //     else { return { result: 'error', error: [{ name: 'name', message: 'Department already exist in this company!' }] } }
-        // }
+        if(Global.compare(dpt.department_head_id, data.department_head_id)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_department', item_id: dpt.id, field: 'department_head_id', previous: dpt.department_head_id, 
+                                    current: data.department_head_id, action: 'update', user_id: data.updated_by, date: date });
+        }
 
-        // if(Global.compare(dpt.company_id, data.company_id)) {
-        //     audit.series_no = Global.randomizer(7);
-        //     audit.field = "company_id";
-        //     audit.previous = dpt.company_id;
-        //     audit.current = data.company_id;
+        if(Global.compare(dpt.description, data.description)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_department', item_id: dpt.id, field: 'description', previous: dpt.description, 
+                                    current: data.description !== '' && data.description !== null ? (data.description).toUpperCase() : null, action: 'update', user_id: data.updated_by, date: date });
+        }
 
-        //     await new Builder(`tbl_department`).update(`company_id= ${data.company_id}`).condition(`WHERE id= ${dpt.id}`).build();
-        //     Global.audit(audit);
-        // }
+        if(Global.compare(dpt.status, data.status ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_department', item_id: dpt.id, field: 'status', previous: dpt.status, 
+                                    current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+        
+        if(!(_errors.length > 0)) {
+            await new Builder(`tbl_department`)
+                .update(`company_id= ${data.company_id}, department_head_id= ${data.department_head_id}, name= '${(data.name).toUpperCase()}',
+                                    description= ${data.description !== '' && data.description !== null ? `'${(data.description).toUpperCase()}'` : null},
+                                    status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
+                .condition(`WHERE id= ${dpt.id}`)
+                .build();
 
-        // if(Global.compare(dpt.department_head_id, data.department_head_id)) {
-        //     audit.series_no = Global.randomizer(7);
-        //     audit.field = "department_head_id";
-        //     audit.previous = dpt.department_head_id;
-        //     audit.current = data.department_head_id;
-
-        //     await new Builder(`tbl_department`).update(`department_head_id= ${data.department_head_id}`).condition(`WHERE id= ${dpt.id}`).build();
-        //     Global.audit(audit);
-        // }
-
-        // if(Global.compare(dpt.description, data.description)) {
-        //     audit.series_no = Global.randomizer(7);
-        //     audit.field = "description";
-        //     audit.previous = dpt.description !== null ? (dpt.description).toUpperCase() : null;
-        //     audit.current = data.description !== '' ? (data.description).toUpperCase() : null;
-
-        //     await new Builder(`tbl_department`).update(`description= ${data.description !== '' ? `'${(data.description).toUpperCase()}'` : null}`).condition(`WHERE id= ${dpt.id}`).build();
-        //     Global.audit(audit);
-        // }
-
-        // if(Global.compare(dpt.status, data.status ? 1 : 0)) {
-        //     let _status = data.status === true || data.status === 'true' ? 1 : 0;
-        //     audit.series_no = Global.randomizer(7);
-        //     audit.field = "status";
-        //     audit.previous = dpt.status;
-        //     audit.current = _status;
-
-        //     await new Builder(`tbl_department`).update(`status= ${_status}`).condition(`WHERE id= ${dpt.id}`).build();
-        //     Global.audit(audit);
-        // }
-
-        // await new Builder(`tbl_department`).update(`updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${dpt.id}`).build();
-        // return { result: 'success', message: 'Successfully updated!' }
+            _audit.forEach(data => Global.audit(data));
+            return { result: 'success', message: 'Successfully updated!' }
+        }
+        else { return { result: 'error', error: _errors } }
     }
 
     upload = async (data) => {
