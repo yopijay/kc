@@ -40,19 +40,19 @@ export const Navs = () => ([
     {
         title: 'Maintenance', nav: [
             { path: '/maintenance/company', label: 'Company', name: 'company', component: <Company /> },
-            // { path: '/maintenance/department', label: 'Department', name: 'department', component: <Department /> },
-            // { path: '/maintenance/position', label: 'Position', name: 'position', component: <Position /> },
-            // { path: '/maintenance/category', label: 'Category', name: 'category', component: <Category /> },
-            // { path: '/maintenance/sub-category', label: 'Sub-category', name: 'sub-category', component: <SubCategory /> },
-            // { path: '/maintenance/customer', label: 'Customer', name: 'customer', component: 'Customer' },
+            { path: '/maintenance/department', label: 'Department', name: 'department', component: <Department /> },
+            { path: '/maintenance/position', label: 'Position', name: 'position', component: <Position /> },
+            { path: '/maintenance/category', label: 'Category', name: 'category', component: <Category /> },
+            { path: '/maintenance/sub-category', label: 'Sub-category', name: 'sub-category', component: <SubCategory /> },
+            { path: '/maintenance/customer', label: 'Customer', name: 'customer', component: 'Customer' },
         ]
     },
     {
         title: 'Services', nav: [
-            // { path: '/services/request', label: 'Request', name: 'service_request', component: <ServiceRequest /> },
-            // { path: '/services/evaluation', label: 'Evaluation', name: 'service_evaluation', component: <ServiceEvaluation /> },
-            // { path: '/services/dispatch', label: 'Dispatch', name: 'service_dispatch', component: <ServiceDispatch /> },
-            // { path: '/services/reports', label: 'Reports', name: 'service_reports', component: <ServiceReport /> },
+            { path: '/services/request', label: 'Request', name: 'service_request', component: <ServiceRequest /> },
+            { path: '/services/evaluation', label: 'Evaluation', name: 'service_evaluation', component: <ServiceEvaluation /> },
+            { path: '/services/dispatch', label: 'Dispatch', name: 'service_dispatch', component: <ServiceDispatch /> },
+            { path: '/services/reports', label: 'Reports', name: 'service_reports', component: <ServiceReport /> },
         ]
     },
     {
@@ -62,8 +62,8 @@ export const Navs = () => ([
     },
     {
         title: 'Assets', nav: [
-            // { path: '/assets/asset-registration', label: 'Asset Registration', name: 'asset-registration', component: <AssetRegistration /> },
-            // { path: '/assets/asset-issuance', label: 'Asset Issuance', name: 'asset-issuance', component: <AssetIssuance /> },
+            { path: '/assets/asset-registration', label: 'Asset Registration', name: 'asset-registration', component: <AssetRegistration /> },
+            { path: '/assets/asset-issuance', label: 'Asset Issuance', name: 'asset-issuance', component: <AssetIssuance /> },
         ]
     },
     {
