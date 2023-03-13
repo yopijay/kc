@@ -28,8 +28,8 @@ const Index = () => {
     const { register, getValues, setValue } = useContext(FormCntxt);
     const { message, setMessage, errors, setErrors } = useContext(GlobalCntx);
     const { data } = useContext(ProfileCntx);
-    const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => { console.log(data) } });
-    const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: (data) => { console.log(data)} });
+    const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => { setList(data) } });
+    const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: (data) => { setList(data)} });
 
     const { mutate: original } = usePost({fetch: excel, options: { refetchOnWindowFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Company', `${name} (Admin's copy)`) });
     const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Company', `${name}`) });
@@ -49,9 +49,10 @@ const Index = () => {
 
     useEffect(() => {
         register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
-        console.log(Object.keys(getValues()));
-        console.log(getValues());
-        if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_company', data: getValues() }); } }, [ register, record, getValues ]);
+        // console.log(Object.keys(getValues()));
+        // console.log(getValues());
+        // if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_company', data: getValues() }); } 
+        record({ table: 'tbl_company', data: getValues() }); }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
