@@ -78,22 +78,21 @@ class Users {
     }
 
     list = async (data) => {
-        return data;
-        // return (await new Builder(`tbl_users AS usr`)
-        //                 .select(`usr.id, usr.email, usr.status, emp.employee_no, cmp.name AS company, dpt.name AS department, emp.fname, emp.lname, emp.date_hired`)
-        //                 .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
-        //                 .join({ table: `tbl_company AS cmp`, condition: `emp.company_id = cmp.id`, type: `LEFT` })
-        //                 .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
-        //                 .condition(`${data.company_id !== 'all' || data.searchtxt !== '' ? `WHERE `: ''}
-        //                                     ${data.company_id !== 'all' ? `emp.company_id= ${data.company_id}` : ''}
-        //                                     ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
-        //                                     ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
-        //                                     OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}`)
-        //                 .except(`WHERE usr.id= ${atob(data.id)} 
-        //                                 ORDER BY ${data.orderby === 'date_hired' ? `9 ${(data.sort).toUpperCase()}, 8 ${(data.sort).toUpperCase()}` : 
-        //                                                         data.orderby === 'employee_no' ? `4 ${(data.sort).toUpperCase()}` : 
-        //                                                         data.orderby === 'lname' ? `8 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
-        //                 .build()).rows;
+        return (await new Builder(`tbl_users AS usr`)
+                        .select(`usr.id, usr.email, usr.status, emp.employee_no, cmp.name AS company, dpt.name AS department, emp.fname, emp.lname, emp.date_hired`)
+                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
+                        .join({ table: `tbl_company AS cmp`, condition: `emp.company_id = cmp.id`, type: `LEFT` })
+                        .join({ table: `tbl_department AS dpt`, condition: `emp.department_id = dpt.id`, type: `LEFT` })
+                        .condition(`${data.company_id !== 'all' || data.searchtxt !== '' ? `WHERE `: ''}
+                                            ${data.company_id !== 'all' ? `emp.company_id= ${data.company_id}` : ''}
+                                            ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
+                                            ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                            OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}`)
+                        .except(`WHERE usr.id= ${data.id} 
+                                        ORDER BY ${data.orderby === 'date_hired' ? `9 ${(data.sort).toUpperCase()}, 8 ${(data.sort).toUpperCase()}` : 
+                                                                data.orderby === 'employee_no' ? `4 ${(data.sort).toUpperCase()}` : 
+                                                                data.orderby === 'lname' ? `8 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
+                        .build()).rows;
     }
 
     excel = async (type, data) => {
@@ -339,21 +338,17 @@ class Users {
         
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_users`)
-                .update(`email= ${data.email !== '' && data.email !== null ? `'${data.email}'` : null}, 
-                                contact_no= ${data.contact_no !== '' && data.contact_no !== null ? `'${data.contact_no}'` : null}, 
+                .update(`email= ${data.email !== '' && data.email !== null ? `'${data.email}'` : null}, contact_no= ${data.contact_no !== '' && data.contact_no !== null ? `'${data.contact_no}'` : null}, 
                                 user_level= '${data.user_level}', updated_by= ${atob(data.updated_by)}, date_updated= '${date}'`)
                 .condition(`WHERE id= ${usr.id}`)
                 .build();
 
             await new Builder(`tbl_employee`)
-                .update(`employee_no= ${data.employee_no !== '' && data.employee !== null ? `'${data.employee_no}'` : null}, 
-                                rfid= ${data.rfid !== '' && data.rfid !== null ? `'${data.rfid}'` : null},
-                                company_id= ${data.company_id}, department_id= ${data.department_id}, position_id= ${data.position_id},
-                                fname= '${(data.fname).toUpperCase()}', mname= ${data.mname !== '' || data.mname !== null ? `'${(data.mname).toUpperCase()}'` : null},
-                                lname= '${(data.lname).toUpperCase()}', branch= '${data.branch}', employment_status= '${data.employment_status}',
-                                gender= '${data.gender}', civil_status= '${data.civil_status}', 
-                                address= ${data.address !== '' && data.address !== null ? `'${(data.address).toUpperCase()}'` : null},
-                                birthdate= '${data.birthdate}', date_hired= '${data.date_hired}'`)
+                .update(`employee_no= ${data.employee_no !== '' && data.employee !== null ? `'${data.employee_no}'` : null}, rfid= ${data.rfid !== '' && data.rfid !== null ? `'${data.rfid}'` : null},
+                                company_id= ${data.company_id}, department_id= ${data.department_id}, position_id= ${data.position_id}, fname= '${(data.fname).toUpperCase()}', 
+                                mname= ${data.mname !== '' || data.mname !== null ? `'${(data.mname).toUpperCase()}'` : null}, lname= '${(data.lname).toUpperCase()}', branch= '${data.branch}', 
+                                employment_status= '${data.employment_status}', gender= '${data.gender}', civil_status= '${data.civil_status}', 
+                                address= ${data.address !== '' && data.address !== null ? `'${(data.address).toUpperCase()}'` : null}, birthdate= '${data.birthdate}', date_hired= '${data.date_hired}'`)
                 .condition(`WHERE user_id= ${usr.id}`)
                 .build();
 

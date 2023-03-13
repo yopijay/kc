@@ -26,8 +26,8 @@ const Index = () => {
     const { register, getValues, setValue } = useContext(FormCntxt);
     const { message, setMessage, errors, setErrors } = useContext(GlobalCntx);
     const { data } = useContext(ProfileCntx);
-    const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => console.log(data) });
-    const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => console.log(data) });
+    const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
+    const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => setList(data) });
 
     const { mutate: original } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Users', `${name} (Admin's copy)`) });
     const { mutate: formatted } = usePost({ fetch: excel, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => exporttoexcel(data, 'Users', `${name}`) });
@@ -46,8 +46,15 @@ const Index = () => {
         });
 
     useEffect(() => {
-        register('id', { value: atob(localStorage.getItem('token')) }); register('orderby', { value: 'date_hired' }); register('sort', { value: 'desc' }); register('company_id', { value: 'all' });
-        record({ table: 'tbl_users', data: getValues() }); }, [ register, record, getValues ]);
+        register('id'); register('orderby'); register('sort'); register('company_id');
+        let data = getValues();
+        data['id'] = atob(localStorage.getItem('token'));
+        data['orderby'] = 'date_hired';
+        data['sort'] = 'desc';
+        data['company_id'] = 'all';
+        data['searchtxt'] = '';
+
+        record({ table: 'tbl_users', data: data }); }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
