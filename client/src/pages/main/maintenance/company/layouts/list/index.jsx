@@ -49,6 +49,7 @@ const Index = () => {
 
     useEffect(() => {
         register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
+        console.log(Object.keys(getValues()).length > 0);
         if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_company', data: getValues() }); } }, [ register, record, getValues ]);
 
     return (
