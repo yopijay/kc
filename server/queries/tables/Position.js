@@ -23,8 +23,8 @@ class Position {
             if(_dpt.length > 0) {
                 for(let __count = 0; __count < _dpt.length; __count++) {
                     _total += parseInt((await new Builder(`tbl_position`).select(`COUNT(*)`)
-                                                                        .condition(`WHERE company_id= ${_cmp[_count].id} AND department_id= ${_dpt[__count].id} AND status= 1`)
-                                                                        .build()).rows[0].count);
+                                                        .condition(`WHERE company_id= ${_cmp[_count].id} AND department_id= ${_dpt[__count].id} AND status= 1`)
+                                                        .build()).rows[0].count);
                 }
             }
 

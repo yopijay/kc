@@ -9,9 +9,9 @@ class Category {
     dashboard = async () => {
         let summary = [];
         let _count = (await new Builder(`tbl_category`)
-                                                .select(`MAX(id) as id, module, MAX(date_created) as date_created`)
-                                                .condition(`WHERE status= 1 GROUP BY module ORDER BY date_created ASC LIMIT 3`)
-                                                .build()).rows;
+                                .select(`MAX(id) as id, module, MAX(date_created) as date_created`)
+                                .condition(`WHERE status= 1 GROUP BY module ORDER BY date_created ASC LIMIT 3`)
+                                .build()).rows;
         for(let count = 0; count < _count.length; count++) {
             summary.push({ name: _count[count].module,
                                         count: (await new Builder(`tbl_category`).select(`COUNT(*)`).condition(`WHERE module= '${_count[count].module}' AND status = 1`).build()).rows[0].count });
@@ -25,43 +25,45 @@ class Category {
 
     list = async (data) => {
         return (await new Builder(`tbl_category AS ctgy`)
-                                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.tag, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
-                                                        ctgy.date_created`)
-                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = ctgy.created_by`, type: 'LEFT' })
-                                        .condition(`${data.searchtxt !== '' ? `WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
-                                                            ORDER BY ctgy.${data.orderby} ${(data.sort).toUpperCase()}`)
-                                        .build()).rows;
+                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.tag, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
+                                        ctgy.date_created`)
+                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = ctgy.created_by`, type: 'LEFT' })
+                        .condition(`${data.searchtxt !== undefined ? 
+                                                data.searchtxt !== '' ? `WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' : ''} 
+                                            ORDER BY ctgy.${data.orderby !== undefined ? data.orderby !== '' ? data.orderby : 'date_created' : 'date_created'} 
+                                            ${data.sort !== undefined ? data.sort !== '' ? (data.sort).toUpperCase() : 'DESC' : 'DESC'}`)
+                        .build()).rows;
     }
     
     excel = async (type, data) => {
         switch(type) {
             case 'formatted':
                 return (await new Builder(`tbl_category AS ctgy`)
-                                                .select(`ctgy.series_no AS "Series No.", ctgy.module AS "Module", ctgy.tag AS "Tag", ctgy.name AS "Name", 
-                                                                CASE WHEN ctgy.status =1 THEN 'Active' ELSE 'Inactive' END AS "Status",
-                                                                CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", ctgy.date_created AS "Date created", 
-                                                                CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", ctgy.date_updated AS "Date updated",
-                                                                CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", ctgy.date_deleted AS "Date deleted", 
-                                                                CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", ctgy.date_imported AS "Date imported"`)
-                                                .join({ table: `tbl_employee AS cb`, condition: `ctgy.created_by = cb.user_id`, type: `LEFT` })
-                                                .join({ table: `tbl_employee AS ub`, condition: `ctgy.updated_by = ub.user_id`, type: `LEFT` })
-                                                .join({ table: `tbl_employee AS db`, condition: `ctgy.deleted_by = db.user_id`, type: `LEFT` })
-                                                .join({ table: `tbl_employee AS ib`, condition: `ctgy.imported_by = ib.user_id`, type: `LEFT` })
-                                                .condition(`${data.searchtxt !== '' ? `WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
-                                                                    ORDER BY ctgy.${data.orderby} ${(data.sort).toUpperCase()}`)
-                                                .build()).rows;
+                                .select(`ctgy.series_no AS "Series No.", ctgy.module AS "Module", ctgy.tag AS "Tag", ctgy.name AS "Name", 
+                                                CASE WHEN ctgy.status =1 THEN 'Active' ELSE 'Inactive' END AS "Status",
+                                                CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", ctgy.date_created AS "Date created", 
+                                                CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", ctgy.date_updated AS "Date updated",
+                                                CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", ctgy.date_deleted AS "Date deleted", 
+                                                CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", ctgy.date_imported AS "Date imported"`)
+                                .join({ table: `tbl_employee AS cb`, condition: `ctgy.created_by = cb.user_id`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS ub`, condition: `ctgy.updated_by = ub.user_id`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS db`, condition: `ctgy.deleted_by = db.user_id`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS ib`, condition: `ctgy.imported_by = ib.user_id`, type: `LEFT` })
+                                .condition(`${data.searchtxt !== '' ? `WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
+                                                    ORDER BY ctgy.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                .build()).rows;
             default: return (await new Builder(`tbl_category`).select().condition(`ORDER by ${data.orderby} ${(data.sort).toUpperCase()}`).build()).rows;
         }
     }
 
     search = async (data) => {
         return (await new Builder(`tbl_category AS ctgy`)
-                                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.tag, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
-                                                        ctgy.date_created`)
-                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = ctgy.created_by`, type: 'LEFT' })
-                                        .condition(`WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                                                            ORDER BY ctgy.${data.orderby} ${(data.sort).toUpperCase()}`)
-                                        .build()).rows;
+                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.tag, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
+                                        ctgy.date_created`)
+                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = ctgy.created_by`, type: 'LEFT' })
+                        .condition(`WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                            ORDER BY ctgy.${data.orderby} ${(data.sort).toUpperCase()}`)
+                        .build()).rows;
     }
 
     save = async (data) => {
@@ -82,11 +84,11 @@ class Category {
 
         if(!(errors.length > 0)) {
             let ctgy = (await new Builder(`tbl_category`)
-                                                .insert({ columns: `series_no, module, name, tag, status, created_by, date_created`, 
-                                                                values: `'${(data.series_no).toUpperCase()}', '${data.module}', '${(data.name).toUpperCase()}', '${(data.tag).toUpperCase()}',
-                                                                                ${data.status ? 1 : 0}, ${data.created_by}, '${date}'` })
-                                                .condition(`RETURNING id`)
-                                                .build()).rows[0];
+                                    .insert({ columns: `series_no, module, name, tag, status, created_by, date_created`, 
+                                                    values: `'${(data.series_no).toUpperCase()}', '${data.module}', '${(data.name).toUpperCase()}', '${(data.tag).toUpperCase()}',
+                                                                    ${data.status ? 1 : 0}, ${data.created_by}, '${date}'` })
+                                    .condition(`RETURNING id`)
+                                    .build()).rows[0];
             
             audit.series_no = Global.randomizer(7);
             audit.field = 'all';
@@ -138,10 +140,11 @@ class Category {
 
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_category`)
-                                .update(`module= '${data.module}', name= '${(data.name).toUpperCase()}', tag= '${(data.tag).toUpperCase()}', 
-                                                status= ${data.status ? 1: 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
-                                .condition(`WHERE id= ${ctgy.id}`)
-                                .build();
+                .update(`module= '${data.module}', name= '${(data.name).toUpperCase()}', tag= '${(data.tag).toUpperCase()}', 
+                                status= ${data.status ? 1: 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
+                .condition(`WHERE id= ${ctgy.id}`)
+                .build();
+
             _audit.forEach(data => Global.audit(data));
             return { result: 'success', message: 'Successfully updated!' }
         }
@@ -149,7 +152,7 @@ class Category {
     }
 
     upload = async (data) => {
-        return [];
+        return data;
     }
 
     dropdown = async (data) => {
