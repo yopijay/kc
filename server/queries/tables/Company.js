@@ -22,7 +22,7 @@ class Company {
     }
 
     list = async (data) => {
-        return data;
+        return data.searchtxt;
         // return (await new Builder(`tbl_company AS cmp`)
         //                                 .select(`cmp.id, cmp.series_no, cmp.name, cmp.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, cmp.date_created, CONCAT(owner.lname, ', ', 
         //                                             owner.fname, ' ', owner.mname) AS owner_name`)
