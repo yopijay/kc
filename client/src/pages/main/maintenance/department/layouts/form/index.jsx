@@ -41,16 +41,14 @@ const Index = () => {
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
                         let _name = Object.keys(data[0])[count]; 
                         setValue(_name, data[0][_name]); 
-                    } 
+                    }
             } 
         });
 
     const { mutate: saving } = 
         usePost({ fetch: save, 
             onSuccess: (data) => {
-                if(data.result === 'error') { 
-                    (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); 
-                }
+                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { successToast(data.message, 3000, navigate('/maintenance/department', { replace: true })); } 
             } 
         });
@@ -58,9 +56,7 @@ const Index = () => {
     const { mutate: updating } = 
         usePost({ fetch: update, 
             onSuccess: (data) => {
-                if(data.result === 'error') { 
-                    (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); 
-                }
+                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { successToast(data.message, 3000, navigate('/maintenance/department', { replace: true })); } 
             } 
         });
@@ -78,7 +74,7 @@ const Index = () => {
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
-                            data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token');
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
 
                             if(data.company_id !== undefined && data.company_id !== 0 && data.company_id !== null) {
                                 if(data.department_head_id !== undefined && data.department_head_id !== 0 && data.department_head_id !== null) {

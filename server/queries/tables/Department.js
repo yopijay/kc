@@ -33,8 +33,11 @@ class Department {
                                         .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
                                         .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
                                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
-                                        .condition(`${data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                                                            OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} ORDER BY dpt.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                        .condition(`${data.searchtxt !== undefined ? 
+                                                                data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                                                                        OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' : ''}
+                                                                ORDER BY dpt.${data.orderby !== undefined ? data.orderby !== '' ? data.orderby : 'date_created' : 'date_created'}
+                                                                ${data.sort !== undefined ? data.sort !== '' ? (data.sort).toUpperCase() : 'DESC' : 'DESC'}`)
                                         .build()).rows;
     }
 
@@ -103,67 +106,67 @@ class Department {
         let dpt = (await new Builder(`tbl_department`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
         let date = Global.date(new Date());
 
-        audit.item_id = dpt.id;
-        audit.action = "update";
-        audit.user_id = data.updated_by;
-        audit.date = date;
+        // audit.item_id = dpt.id;
+        // audit.action = "update";
+        // audit.user_id = data.updated_by;
+        // audit.date = date;
 
-        if(Global.compare(dpt.name, data.name)) {
-            if(!(await new Builder(`tbl_department`).select().condition(`WHERE company_id= ${data.company_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
-                audit.series_no = Global.randomizer(7);
-                audit.field = "name";
-                audit.previous = (dpt.name).toUpperCase();
-                audit.current = (data.name).toUpperCase();
+        // if(Global.compare(dpt.name, data.name)) {
+        //     if(!(await new Builder(`tbl_department`).select().condition(`WHERE company_id= ${data.company_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+        //         audit.series_no = Global.randomizer(7);
+        //         audit.field = "name";
+        //         audit.previous = (dpt.name).toUpperCase();
+        //         audit.current = (data.name).toUpperCase();
 
-                await new Builder(`tbl_department`).update(`name= '${(data.name).toUpperCase()}'`).condition(`WHERE id= ${dpt.id}`).build();
-                Global.audit(audit);
-            }
-            else { return { result: 'error', error: [{ name: 'name', message: 'Department already exist in this company!' }] } }
-        }
+        //         await new Builder(`tbl_department`).update(`name= '${(data.name).toUpperCase()}'`).condition(`WHERE id= ${dpt.id}`).build();
+        //         Global.audit(audit);
+        //     }
+        //     else { return { result: 'error', error: [{ name: 'name', message: 'Department already exist in this company!' }] } }
+        // }
 
-        if(Global.compare(dpt.company_id, data.company_id)) {
-            audit.series_no = Global.randomizer(7);
-            audit.field = "company_id";
-            audit.previous = dpt.company_id;
-            audit.current = data.company_id;
+        // if(Global.compare(dpt.company_id, data.company_id)) {
+        //     audit.series_no = Global.randomizer(7);
+        //     audit.field = "company_id";
+        //     audit.previous = dpt.company_id;
+        //     audit.current = data.company_id;
 
-            await new Builder(`tbl_department`).update(`company_id= ${data.company_id}`).condition(`WHERE id= ${dpt.id}`).build();
-            Global.audit(audit);
-        }
+        //     await new Builder(`tbl_department`).update(`company_id= ${data.company_id}`).condition(`WHERE id= ${dpt.id}`).build();
+        //     Global.audit(audit);
+        // }
 
-        if(Global.compare(dpt.department_head_id, data.department_head_id)) {
-            audit.series_no = Global.randomizer(7);
-            audit.field = "department_head_id";
-            audit.previous = dpt.department_head_id;
-            audit.current = data.department_head_id;
+        // if(Global.compare(dpt.department_head_id, data.department_head_id)) {
+        //     audit.series_no = Global.randomizer(7);
+        //     audit.field = "department_head_id";
+        //     audit.previous = dpt.department_head_id;
+        //     audit.current = data.department_head_id;
 
-            await new Builder(`tbl_department`).update(`department_head_id= ${data.department_head_id}`).condition(`WHERE id= ${dpt.id}`).build();
-            Global.audit(audit);
-        }
+        //     await new Builder(`tbl_department`).update(`department_head_id= ${data.department_head_id}`).condition(`WHERE id= ${dpt.id}`).build();
+        //     Global.audit(audit);
+        // }
 
-        if(Global.compare(dpt.description, data.description)) {
-            audit.series_no = Global.randomizer(7);
-            audit.field = "description";
-            audit.previous = dpt.description !== null ? (dpt.description).toUpperCase() : null;
-            audit.current = data.description !== '' ? (data.description).toUpperCase() : null;
+        // if(Global.compare(dpt.description, data.description)) {
+        //     audit.series_no = Global.randomizer(7);
+        //     audit.field = "description";
+        //     audit.previous = dpt.description !== null ? (dpt.description).toUpperCase() : null;
+        //     audit.current = data.description !== '' ? (data.description).toUpperCase() : null;
 
-            await new Builder(`tbl_department`).update(`description= ${data.description !== '' ? `'${(data.description).toUpperCase()}'` : null}`).condition(`WHERE id= ${dpt.id}`).build();
-            Global.audit(audit);
-        }
+        //     await new Builder(`tbl_department`).update(`description= ${data.description !== '' ? `'${(data.description).toUpperCase()}'` : null}`).condition(`WHERE id= ${dpt.id}`).build();
+        //     Global.audit(audit);
+        // }
 
-        if(Global.compare(dpt.status, data.status ? 1 : 0)) {
-            let _status = data.status === true || data.status === 'true' ? 1 : 0;
-            audit.series_no = Global.randomizer(7);
-            audit.field = "status";
-            audit.previous = dpt.status;
-            audit.current = _status;
+        // if(Global.compare(dpt.status, data.status ? 1 : 0)) {
+        //     let _status = data.status === true || data.status === 'true' ? 1 : 0;
+        //     audit.series_no = Global.randomizer(7);
+        //     audit.field = "status";
+        //     audit.previous = dpt.status;
+        //     audit.current = _status;
 
-            await new Builder(`tbl_department`).update(`status= ${_status}`).condition(`WHERE id= ${dpt.id}`).build();
-            Global.audit(audit);
-        }
+        //     await new Builder(`tbl_department`).update(`status= ${_status}`).condition(`WHERE id= ${dpt.id}`).build();
+        //     Global.audit(audit);
+        // }
 
-        await new Builder(`tbl_department`).update(`updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${dpt.id}`).build();
-        return { result: 'success', message: 'Successfully updated!' }
+        // await new Builder(`tbl_department`).update(`updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${dpt.id}`).build();
+        // return { result: 'success', message: 'Successfully updated!' }
     }
 
     upload = async (data) => {
