@@ -28,78 +28,85 @@ class Department {
 
     list = async (data) => {
         return (await new Builder(`tbl_department AS dpt`)
-                                        .select(`dpt.id, dpt.series_no, cmp.name AS company, dpt.name, dpt.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, dpt.date_created, 
-                                                    CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS head_name`)
-                                        .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
-                                        .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
-                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
-                                        .condition(`${data.searchtxt !== undefined ? 
-                                                                data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%'
-                                                                                                        OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' : ''}
-                                                                ORDER BY dpt.${data.orderby !== undefined ? data.orderby !== '' ? data.orderby : 'date_created' : 'date_created'}
-                                                                ${data.sort !== undefined ? data.sort !== '' ? (data.sort).toUpperCase() : 'DESC' : 'DESC'}`)
-                                        .build()).rows;
+                        .select(`dpt.id, dpt.series_no, cmp.name AS company, dpt.name, dpt.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, dpt.date_created, 
+                                    CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS head_name`)
+                        .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
+                        .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
+                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
+                        .condition(`${data.searchtxt !== undefined ? 
+                                                data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                                                        OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' : ''}
+                                                ORDER BY dpt.${data.orderby !== undefined ? data.orderby !== '' ? data.orderby : 'date_created' : 'date_created'}
+                                                ${data.sort !== undefined ? data.sort !== '' ? (data.sort).toUpperCase() : 'DESC' : 'DESC'}`)
+                        .build()).rows;
     }
 
     excel = async (type, data) => {
         switch(type) {
             case 'formatted':
                 return (await new Builder(`tbl_department AS dpt`)
-                                                .select(`dpt.series_no AS "Series No.", cmp.name AS "Company", CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS "Department head", 
-                                                            dpt.name AS "Department", dpt.description AS "Description", CASE WHEN dpt.status =1 THEN 'Active' ELSE 'Inactive' END AS "Status", 
-                                                            CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", dpt.date_created AS "Date created", 
-                                                            CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", dpt.date_updated AS "Date updated",
-                                                            CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", dpt.date_deleted AS "Date deleted", 
-                                                            CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", dpt.date_imported AS "Date imported"`)
-                                                .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: `LEFT` })
-                                                .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
-                                                .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: `LEFT` })
-                                                .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = dpt.updated_by`, type: `LEFT` })
-                                                .join({ table: `tbl_employee AS db`, condition: `db.user_id = dpt.deleted_by`, type: `LEFT` })
-                                                .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = dpt.imported_by`, type: `LEFT` })
-                                                .condition(`${data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                                                                        OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} ORDER BY dpt.${data.orderby} ${(data.sort).toUpperCase()}`)
-                                                .build()).rows;
+                                .select(`dpt.series_no AS "Series No.", cmp.name AS "Company", CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS "Department head", 
+                                            dpt.name AS "Department", dpt.description AS "Description", CASE WHEN dpt.status =1 THEN 'Active' ELSE 'Inactive' END AS "Status", 
+                                            CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS "Created by", dpt.date_created AS "Date created", 
+                                            CONCAT(ub.lname, ', ', ub.fname, ' ', ub.mname) AS "Updated by", dpt.date_updated AS "Date updated",
+                                            CONCAT(db.lname, ', ', db.fname, ' ', db.mname) AS "Deleted by", dpt.date_deleted AS "Date deleted", 
+                                            CONCAT(ib.lname, ', ', ib.fname, ' ', ib.mname) AS "Imported by", dpt.date_imported AS "Date imported"`)
+                                .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: `LEFT` })
+                                .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
+                                .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS ub`, condition: `ub.user_id = dpt.updated_by`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS db`, condition: `db.user_id = dpt.deleted_by`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS ib`, condition: `ib.user_id = dpt.imported_by`, type: `LEFT` })
+                                .condition(`${data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                        OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} ORDER BY dpt.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                .build()).rows;
             default: return (await new Builder(`tbl_department`).select().condition(`ORDER by ${data.orderby} ${(data.sort).toUpperCase()}`).build()).rows;
         }
     }
 
     search = async (data) => {
         return (await new Builder(`tbl_department AS dpt`)
-                                        .select(`dpt.id, dpt.series_no, cmp.name AS company, dpt.name, dpt.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, dpt.date_created, 
-                                                    CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS head_name`)
-                                        .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
-                                        .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
-                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
-                                        .condition(`${data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                                                                OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} ORDER BY dpt.${data.orderby} ${(data.sort).toUpperCase()}`)
-                                        .build()).rows;
+                        .select(`dpt.id, dpt.series_no, cmp.name AS company, dpt.name, dpt.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, dpt.date_created, 
+                                    CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS head_name`)
+                        .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
+                        .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
+                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
+                        .condition(`${data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} ORDER BY dpt.${data.orderby} ${(data.sort).toUpperCase()}`)
+                        .build()).rows;
     }
 
     save = async (data) => {
         let date = Global.date(new Date());
-        if(!(await new Builder(`tbl_department`).select().condition(`WHERE series_no= '${(data.series_no).toUpperCase()}'`).build()).rowCount > 0) {
-            if(!(await new Builder(`tbl_department`).select().condition(`WHERE company_id= ${data.company_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
-                let dpt = (await new Builder(`tbl_department`)
-                                                    .insert({ columns: `series_no, company_id, department_head_id, name, description, status, created_by, date_created`,
-                                                                    values: `'${(data.series_no).toUpperCase()}', ${data.company_id}, ${data.department_head_id}, '${(data.name).toUpperCase()}', 
-                                                                                    ${data.description !== '' ? `'${(data.address).toUpperCase()}'` : null}, ${data.status ? 1 : 0}, ${data.created_by}, '${date}'` })
-                                                    .condition(`RETURNING id`)
-                                                    .build()).rows[0];
+        let errors = [];
 
-                audit.series_no = Global.randomizer(7);
-                audit.field = 'all';
-                audit.item_id = dpt.id;
-                audit.action = 'create';
-                audit.user_id = data.created_by;
-                audit.date = date;
-
-                Global.audit(audit);
-                return { result: 'success', message: 'Successfully saved!' }
-            }
-            else { return { result: 'error', error: [{ name: 'name', message: 'Department already exist in this company!' }] } }
+        if((await new Builder(`tbl_department`).select().condition(`WHERE series_no= '${(data.series_no).toUpperCase()}'`).build()).rowCount > 0) {
+            errors.push({ name: 'series_no', message: 'Series number already used!' });
         }
-        else { return { result: 'error', error: [{ name: 'series_no', message: 'Series no already used!' }] } }
+
+        if((await new Builder(`tbl_department`).select().condition(`WHERE company_id= ${data.company_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
+            errors.push({ name: 'name', message: 'Department already exist in this company' });
+        }
+
+        if(!(errors.length > 0)) {
+            let dpt = (await new Builder(`tbl_department`)
+                                .insert({ columns: `series_no, company_id, department_head_id, name, description, status, created_by, date_created`,
+                                                values: `'${(data.series_no).toUpperCase()}', ${data.company_id}, ${data.department_head_id}, '${(data.name).toUpperCase()}', 
+                                                                ${data.description !== '' ? `'${(data.address).toUpperCase()}'` : null}, ${data.status ? 1 : 0}, ${data.created_by}, '${date}'` })
+                                .condition(`RETURNING id`)
+                                .build()).rows[0];
+
+            audit.series_no = Global.randomizer(7);
+            audit.field = 'all';
+            audit.item_id = dpt.id;
+            audit.action = 'create';
+            audit.user_id = data.created_by;
+            audit.date = date;
+
+            Global.audit(audit);
+            return { result: 'success', message: 'Successfully saved!' }
+        }
+        else { return { result: 'error', error: errors } }
     }
 
     update = async (data) => {
@@ -154,64 +161,65 @@ class Department {
     }
 
     upload = async (data) => {
-        let file = data.json;
-        let date = Global.date(new Date());
-        let _errors = [];
-        let _totalcount = 0;
-        let _successcount = 0;
-        let _errorcount = 0;
+        return data;
+        // let file = data.json;
+        // let date = Global.date(new Date());
+        // let _errors = [];
+        // let _totalcount = 0;
+        // let _successcount = 0;
+        // let _errorcount = 0;
 
-        for(let count = 0; count < file.length; count++) {
-            let _count = (await new Builder(`tbl_department`).select(`COUNT(*)`).build()).rows[0].count;
-            let series_no = `DPT-${('0000000' + (parseInt(_count) + 1)).substr(('0000000' + (parseInt(_count) + 1)).length - 7)}`;
-            let _itemerror = [];
+        // for(let count = 0; count < file.length; count++) {
+        //     let _count = (await new Builder(`tbl_department`).select(`COUNT(*)`).build()).rows[0].count;
+        //     let series_no = `DPT-${('0000000' + (parseInt(_count) + 1)).substr(('0000000' + (parseInt(_count) + 1)).length - 7)}`;
+        //     let _itemerror = [];
             
-            if(file[count].name !== undefined) {
-                if(file[count].company !== undefined) {
-                    if(!((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].company).toUpperCase()}'`).build()).rowCount > 0)) {
-                        _itemerror.push('company doesn`t exist!');
-                    }
-                }
-            }
-            else { _itemerror.push('name must not be empty!'); }
+        //     if(file[count].name !== undefined) {
+        //         if(file[count].company !== undefined) {
+        //             if(!((await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].company).toUpperCase()}'`).build()).rowCount > 0)) {
+        //                 _itemerror.push('company doesn`t exist!');
+        //             }
+        //         }
+        //     }
+        //     else { _itemerror.push('name must not be empty!'); }
 
-            if(_itemerror.length > 0) {
-                _errorcount++;
-                _errors.push({ row: count + 1, errors: _errors });
-            }
-            else {
-                _successcount++;
-                let cmp = file[count].company !== undefined ?
-                                    (await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].company).toUpperCase()}'`).build()).rows[0].id : null;
+        //     if(_itemerror.length > 0) {
+        //         _errorcount++;
+        //         _errors.push({ row: count + 1, errors: _errors });
+        //     }
+        //     else {
+        //         _successcount++;
+        //         let cmp = file[count].company !== undefined ?
+        //                             (await new Builder(`tbl_company`).select().condition(`WHERE name= '${(file[count].company).toUpperCase()}'`).build()).rows[0].id : null;
 
-                let dpt = (await new Builder(`tbl_department`)
-                                                    .insert({ columns: `series_no, company_id, department_head_id, name, description, status, 
-                                                                                    created_by, imported_by, date_created, date_imported`, 
-                                                                    values: `'${series_no.toUpperCase()}', ${cmp}, 1, '${(file[count].name).toUpperCase()}', null, 1, ${data.id}, ${data.id},
-                                                                                    CURRENT_TIMESTAMP, '${date}'` })
-                                                    .condition(`RETURNING id`)
-                                                    .build()).rows[0];
+        //         let dpt = (await new Builder(`tbl_department`)
+        //                             .insert({ columns: `series_no, company_id, department_head_id, name, description, status, 
+        //                                                             created_by, imported_by, date_created, date_imported`, 
+        //                                             values: `'${series_no.toUpperCase()}', ${cmp}, 1, '${(file[count].name).toUpperCase()}', null, 1, ${data.id}, ${data.id},
+        //                                                             CURRENT_TIMESTAMP, '${date}'` })
+        //                             .condition(`RETURNING id`)
+        //                             .build()).rows[0];
 
-                Global.audit({ series_no: Global.randomizer(7), table_name: 'tbl_department', item_id: dpt.id, field: 'all', previous: null, current: null, action: 'create-import', user_id: data.id, date: date });
-            }
-        }
+        //         Global.audit({ series_no: Global.randomizer(7), table_name: 'tbl_department', item_id: dpt.id, field: 'all', previous: null, current: null, action: 'create-import', user_id: data.id, date: date });
+        //     }
+        // }
 
-        let list = (await new Builder(`tbl_department AS dpt`)
-                                            .select(`dpt.id, dpt.series_no, cmp.name AS company, dpt.name, dpt.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, dpt.date_created, 
-                                                        CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS head_name`)
-                                            .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
-                                            .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
-                                            .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
-                                            .condition(`ORDER BY dpt.date_created DESC`)
-                                            .build()).rows;
+        // let list = (await new Builder(`tbl_department AS dpt`)
+        //                     .select(`dpt.id, dpt.series_no, cmp.name AS company, dpt.name, dpt.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, dpt.date_created, 
+        //                                 CONCAT(head.lname, ', ', head.fname, ' ', head.mname) AS head_name`)
+        //                     .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
+        //                     .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
+        //                     .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
+        //                     .condition(`ORDER BY dpt.date_created DESC`)
+        //                     .build()).rows;
 
-        return {
-            total: _totalcount,
-            success: _successcount,
-            fail: _errorcount,
-            errors: _errors,
-            list: list
-        }
+        // return {
+        //     total: _totalcount,
+        //     success: _successcount,
+        //     fail: _errorcount,
+        //     errors: _errors,
+        //     list: list
+        // }
     }
 }
 

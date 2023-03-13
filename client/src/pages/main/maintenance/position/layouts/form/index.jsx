@@ -73,7 +73,7 @@ const Index = () => {
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
-                            data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token');
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
 
                             if(data.company_id !== undefined && data.company_id !== 0 && data.company_id !== null) {
                                 if(data.department_id !== undefined && data.department_id !== 0 && data.department_id !== null) {
