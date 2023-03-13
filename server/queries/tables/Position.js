@@ -52,7 +52,7 @@ class Position {
                         .build()).rows;
     }
 
-    excel = async (type) => {
+    excel = async (type, data) => {
         switch(type) {
             case 'formatted':
                 return (await new Builder(`tbl_position AS pst`)
