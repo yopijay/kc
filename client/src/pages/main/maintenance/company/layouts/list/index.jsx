@@ -47,7 +47,7 @@ const Index = () => {
             } 
         });
 
-        useEffect(() => { console.log('testing') }, [] );
+        useEffect(() => { console.log(getValues()); }, [ getValues ] );
 
     // useEffect(() => {
     //     register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
