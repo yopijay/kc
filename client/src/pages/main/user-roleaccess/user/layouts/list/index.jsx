@@ -46,8 +46,8 @@ const Index = () => {
         });
 
     useEffect(() => {
-        register('id', { value: localStorage.getItem('token') }); register('orderby', { value: 'date_hired' }); register('sort', { value: 'desc' }); register('company_id', { value: 'all' });
-        if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_users', data: getValues() }); } }, [ register, record, getValues ]);
+        register('id', { value: atob(localStorage.getItem('token')) }); register('orderby', { value: 'date_hired' }); register('sort', { value: 'desc' }); register('company_id', { value: 'all' });
+        record({ table: 'tbl_users', data: getValues() }); }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
