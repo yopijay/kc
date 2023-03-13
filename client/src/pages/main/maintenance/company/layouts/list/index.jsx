@@ -47,12 +47,14 @@ const Index = () => {
             } 
         });
 
-    useEffect(() => {
-        register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
-        // console.log(Object.keys(getValues()));
-        // console.log(getValues());
-        // if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_company', data: getValues() }); } 
-        record({ table: 'tbl_company', data: getValues() }); }, [ register, record, getValues ]);
+        useEffect(() => { console.log('testing') }, [] );
+
+    // useEffect(() => {
+    //     register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
+    //     console.log(Object.keys(getValues()));
+    //     console.log(getValues());
+    //     if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_company', data: getValues() }); } 
+    //     record({ table: 'tbl_company', data: getValues() }); }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>

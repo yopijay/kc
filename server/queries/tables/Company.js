@@ -22,16 +22,17 @@ class Company {
     }
 
     list = async (data) => {
-        return (await new Builder(`tbl_company AS cmp`)
-                                        .select(`cmp.id, cmp.series_no, cmp.name, cmp.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, cmp.date_created, CONCAT(owner.lname, ', ', 
-                                                    owner.fname, ' ', owner.mname) AS owner_name`)
-                                        .join({ table: `tbl_employee AS owner`, condition: `owner.user_id = cmp.owner_id`, type: 'LEFT' })
-                                        .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = cmp.created_by`})
-                                        .condition(`${data.searchtxt !== '' || data.searchtxt !== undefined ? 
-                                                                `WHERE cmp.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' }
-                                                            ORDER BY cmp.${data.orderby !== '' || data.orderby !== undefined ? data.orderby : 'date_created'} 
-                                                            ${data.sort !== '' || data.sort !== undefined ? (data.sort).toUpperCase() : 'DESC'}`)
-                                        .build()).rows;
+        return data;
+        // return (await new Builder(`tbl_company AS cmp`)
+        //                                 .select(`cmp.id, cmp.series_no, cmp.name, cmp.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, cmp.date_created, CONCAT(owner.lname, ', ', 
+        //                                             owner.fname, ' ', owner.mname) AS owner_name`)
+        //                                 .join({ table: `tbl_employee AS owner`, condition: `owner.user_id = cmp.owner_id`, type: 'LEFT' })
+        //                                 .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = cmp.created_by`})
+        //                                 .condition(`${data.searchtxt !== '' || data.searchtxt !== undefined ? 
+        //                                                         `WHERE cmp.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' }
+        //                                                     ORDER BY cmp.${data.orderby !== '' || data.orderby !== undefined ? data.orderby : 'date_created'} 
+        //                                                     ${data.sort !== '' || data.sort !== undefined ? (data.sort).toUpperCase() : 'DESC'}`)
+        //                                 .build()).rows;
     }
 
     excel = async (type, data) => {
