@@ -47,7 +47,15 @@ const Index = () => {
             }    
         });
 
-    useEffect(() => { register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' }); record({ table: 'tbl_position', data: getValues() }); }, [ register, record, getValues ]);
+    useEffect(() => { 
+        register('orderby'); register('sort'); 
+        let data = getValues();
+        data['orderby'] = 'date_created';
+        data['sort'] = 'desc';
+        data['searchtxt'] = '';
+
+        record({ table: 'tbl_position', data: data }); 
+    }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>

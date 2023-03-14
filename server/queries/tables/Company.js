@@ -27,10 +27,9 @@ class Company {
                                     owner.fname, ' ', owner.mname) AS owner_name`)
                         .join({ table: `tbl_employee AS owner`, condition: `owner.user_id = cmp.owner_id`, type: 'LEFT' })
                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = cmp.created_by`})
-                        .condition(`${data.searchtxt !== undefined ? 
-                                                data.searchtxt !== '' ? `WHERE cmp.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' : ''}
-                                                ORDER BY cmp.${data.orderby !== undefined ? data.orderby !== '' ? data.orderby : 'date_created' : 'date_created'}
-                                                ${data.sort !== undefined ? data.sort !== '' ? (data.sort).toUpperCase() : 'DESC' : 'DESC'}`)
+                        .condition(`${data.searchtxt !== '' ? 
+                                                `WHERE cmp.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''}
+                                                ORDER BY cmp.${data.orderby} ${(data.sort).toUpperCase()}`)
                         .build()).rows;
     }
 

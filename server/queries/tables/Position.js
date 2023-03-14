@@ -44,11 +44,10 @@ class Position {
                         .join({ table: `tbl_company AS cmp`, condition: `pst.company_id = cmp.id`, type: `LEFT` })
                         .join({ table: `tbl_department AS dpt`, condition: `pst.department_id = dpt.id`, type: `LEFT` })
                         .join({ table: `tbl_employee AS cb`, condition: `dpt.created_by = cb.user_id`, type: `LEFT`})
-                        .condition(`${data.searchtxt !== undefined ? 
-                                                data.searchtxt !== '' ? `WHERE pst.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR pst.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                                                                                        OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' : ''} 
-                                            ORDER BY pst.${data.orderby !== undefined ? data.orderby !== '' ? data.orderby : 'date_created' : 'date_created'} 
-                                            ${data.sort !== undefined ? data.sort !== '' ? (data.sort).toUpperCase() : 'DESC' : 'DESC'}`)
+                        .condition(`${data.searchtxt !== '' ? 
+                                                `WHERE pst.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR pst.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                    OR cmp.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
+                                                ORDER BY pst.${data.orderby} ${(data.sort).toUpperCase()}`)
                         .build()).rows;
     }
 

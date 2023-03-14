@@ -33,11 +33,9 @@ class Department {
                         .join({ table: `tbl_employee AS head`, condition: `head.user_id = dpt.department_head_id`, type: 'LEFT' })
                         .join({ table: `tbl_company AS cmp`, condition: `dpt.company_id = cmp.id`, type: 'LEFT' })
                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = dpt.created_by`, type: 'LEFT' })
-                        .condition(`${data.searchtxt !== undefined ? 
-                                                data.searchtxt !== '' ? `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%'
-                                                                                        OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' : ''}
-                                                ORDER BY dpt.${data.orderby !== undefined ? data.orderby !== '' ? data.orderby : 'date_created' : 'date_created'}
-                                                ${data.sort !== undefined ? data.sort !== '' ? (data.sort).toUpperCase() : 'DESC' : 'DESC'}`)
+                        .condition(`${data.searchtxt !== '' ? 
+                                                `WHERE dpt.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR dpt.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''}
+                                                ORDER BY dpt.${data.orderby} ${(data.sort).toUpperCase()}`)
                         .build()).rows;
     }
 

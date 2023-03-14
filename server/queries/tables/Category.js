@@ -25,13 +25,11 @@ class Category {
 
     list = async (data) => {
         return (await new Builder(`tbl_category AS ctgy`)
-                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.tag, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by,
-                                        ctgy.date_created`)
+                        .select(`ctgy.id, ctgy.series_no, ctgy.module, ctgy.tag, ctgy.name, ctgy.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, ctgy.date_created`)
                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = ctgy.created_by`, type: 'LEFT' })
-                        .condition(`${data.searchtxt !== undefined ? 
-                                                data.searchtxt !== '' ? `WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' : ''} 
-                                            ORDER BY ctgy.${data.orderby !== undefined ? data.orderby !== '' ? data.orderby : 'date_created' : 'date_created'} 
-                                            ${data.sort !== undefined ? data.sort !== '' ? (data.sort).toUpperCase() : 'DESC' : 'DESC'}`)
+                        .condition(`${data.searchtxt !== '' ? 
+                                                `WHERE ctgy.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctgy.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
+                                                ORDER BY ctgy.${data.orderby} ${(data.sort).toUpperCase()}`)
                         .build()).rows;
     }
     

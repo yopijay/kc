@@ -34,11 +34,10 @@ class SubCategory {
                                                         CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, sc.date_created`)
                                         .join({ table: `tbl_category AS ctg`, condition: `sc.category_id = ctg.id`, type: `LEFT` })
                                         .join({ table: `tbl_employee AS cb`, condition: `sc.created_by = cb.user_id`, type: `LEFT` })
-                                        .condition(`${data.searchtxt !== undefined ? 
-                                                                data.searchtxt !== '' ? `WHERE sc.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR sc.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                                                                                                        OR ctg.module LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctg.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' : ''} 
-                                                            ORDER BY sc.${data.orderby !== undefined ? data.orderby !== '' ? data.orderby : 'date_created' : 'date_created' } 
-                                                            ${data.sort !== undefined ? data.sort !== '' ? (data.sort).toUpperCase() : 'DESC' : 'DESC'}`)
+                                        .condition(`${data.searchtxt !== '' ? 
+                                                                `WHERE sc.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR sc.name LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                OR ctg.module LIKE '%${(data.searchtxt).toUpperCase()}%' OR ctg.name LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''} 
+                                                            ORDER BY sc.${data.orderby} ${(data.sort).toUpperCase()}`)
                                         .build()).rows;
     }
 
