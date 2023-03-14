@@ -48,8 +48,15 @@ const Index = () => {
         });
 
     useEffect(() => {
-        register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' }); register('sub_category_id', { value: 'all' }); register('sub_category_name', { value: 'all' });
-        if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_assets', data: getValues() }); } }, [ register, record, getValues ]);
+        register('orderby'); register('sort'); register('sub_category_id', { value: 'all' }); register('sub_category_name', { value: 'all' });
+        let data = getValues();
+        data['orderby'] = 'date_created';
+        data['sort'] = 'desc';
+        data['sub_category_id'] = 'all';
+        data['searchtxt'] = '';
+
+        record({ table: 'tbl_assets', data: data }); 
+    }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>

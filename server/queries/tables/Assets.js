@@ -17,7 +17,6 @@ const NetworkingEquipment = require("./assets/technology/NetworkingEquipment");
 const Harddrive = require("./assets/technology/Harddrive");
 const Phone = require("./assets/technology/Phone");
 
-const audit = { series_no: '', table_name: 'tbl_assets',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class Assets {
     series = async () => { return (await new Builder(`tbl_assets`).select(`COUNT(*)`).build()).rows; }
 

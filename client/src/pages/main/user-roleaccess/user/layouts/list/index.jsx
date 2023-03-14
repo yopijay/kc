@@ -54,7 +54,8 @@ const Index = () => {
         data['company_id'] = 'all';
         data['searchtxt'] = '';
 
-        record({ table: 'tbl_users', data: data }); }, [ register, record, getValues ]);
+        record({ table: 'tbl_users', data: data });
+    }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>

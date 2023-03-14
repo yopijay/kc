@@ -80,7 +80,7 @@ const Index = () => {
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
-                            data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token');
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
 
                             if(type === 'new') { saving({ table: 'tbl_assets', data: data }); }
                             else { updating({ table: 'tbl_assets', data: data }); }
