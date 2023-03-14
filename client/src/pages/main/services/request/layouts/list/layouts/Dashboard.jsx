@@ -27,28 +27,34 @@ const Dashboard = () => {
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: '5px 0' }}>
-            {/* <Grid item xs= { 4 } sm= { 6 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
+            <Grid item xs= { 3 } sm= { 6 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.total < 10 ? '0' : ''}${count.total}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', color: '#C8C8C8', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>TOTAL</Typography>
+                    <Typography variant= "body1" sx= { label }>TOTAL</Typography>
                 </Stack>
-            </Grid> */}
-            {/* { !isFetching ? 
-                (count.summary).map((summ, index) => (
-                    <Grid item xs= { 4 } sm= { 3 } sx= {{ padding: '0 5px' }} key= { index}>
-                        <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                            <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${summ.count < 10 ? '0' : ''}${summ.count}` }</Typography>
-                            <Typography variant= "body1" sx= { label }>{ (summ.name).toUpperCase() }</Typography>
-                        </Stack>
-                    </Grid>
-                )) : 
-                <Grid item xs= { 4 } sm= { 3 } sx= {{ padding: '0 5px' }}>
-                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} />
-                        <Skeleton variant= "text" sx= { label } />
-                    </Stack>
-                </Grid> } */}
+            </Grid>
+            <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
+                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.approved < 10 ? '0' : ''}${count.approved}` }</Typography> : 
+                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
+                    <Typography variant= "body1" sx= { label }>APPROVED</Typography>
+                </Stack>
+            </Grid>
+            <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
+                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.pending < 10 ? '0' : ''}${count.pending}` }</Typography> : 
+                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
+                    <Typography variant= "body1" sx= { label }>PENDING</Typography>
+                </Stack>
+            </Grid>
+            <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
+                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.cancelled < 10 ? '0' : ''}${count.cancelled}` }</Typography> : 
+                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
+                    <Typography variant= "body1" sx= { label }>CANCELLED</Typography>
+                </Stack>
+            </Grid>
         </Grid>
     );
 }

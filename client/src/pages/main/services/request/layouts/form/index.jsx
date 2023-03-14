@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
-import { errorToast, successToast, useGet, usePost } from "core/function/global"; // Function
+import { successToast, useGet, usePost } from "core/function/global"; // Function
 import { save, specific, update } from "core/api"; // API
 import { theme } from "core/theme/form.theme"; // Theme
 

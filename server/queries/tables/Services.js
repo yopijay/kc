@@ -6,7 +6,12 @@ class Services {
     series = async () => { return (await new Builder(`tbl_services`).select(`COUNT(*)`).build()).rows; }
     
     dashboard = async () => {
-        return [];
+        return {
+            total: (await new Builder(`tbl_services`).select().build()).rowCount,
+            pending: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'pending'`).build()).rowCount,
+            approved: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'approved'`).build()).rowCount,
+            cancelled: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'cancelled'`).build()).rowCount
+        }
     }
 
     list = async (data) => {
