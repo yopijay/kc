@@ -7,7 +7,7 @@ class Users {
         return (await new Builder(`tbl_users AS usr`)
                         .select()
                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
-                        .condition(`WHERE usr.id= ${atob(id)}`)
+                        .condition(`WHERE usr.id= ${id}`)
                         .build()).rows;
     }
 
