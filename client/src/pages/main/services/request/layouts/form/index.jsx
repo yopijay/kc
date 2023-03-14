@@ -89,11 +89,8 @@ const Index = () => {
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
                             
-                            if(!((data.requests).lenth > 0)) { errorToast('Request must not be empty!', 3000); }
-                            else {
-                                if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
-                                else { updating({ table: 'tbl_services', data: data }); }
-                            }
+                            if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
+                            else { updating({ table: 'tbl_services', data: data }); }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }
