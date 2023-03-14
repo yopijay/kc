@@ -48,7 +48,7 @@ const Index = () => {
         });
 
         useEffect(() => { 
-            register('orderby'); register('sort');
+            register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
             let data = getValues();
             data['orderby'] = 'date_created';
             data['sort'] = 'desc';

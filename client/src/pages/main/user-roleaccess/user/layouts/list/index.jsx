@@ -46,7 +46,7 @@ const Index = () => {
         });
 
     useEffect(() => {
-        register('id'); register('orderby'); register('sort'); register('company_id', { value: 'all' });
+        register('id', { value: atob(localStorage.getItem('token')) }); register('orderby', { value: 'date_hired' }); register('sort', { value: 'desc' }); register('company_id', { value: 'all' });
         let data = getValues();
         data['id'] = atob(localStorage.getItem('token'));
         data['orderby'] = 'date_hired';
