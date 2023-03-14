@@ -26,6 +26,8 @@ MAXVALUE 2147483647
 START 1
 CACHE 1;
 
+SELECT setval('"public"."tbl_services_sales_id_seq"', 1, true);
+
 
 -- ----------------------------
 -- Table structure for tbl_services_sales

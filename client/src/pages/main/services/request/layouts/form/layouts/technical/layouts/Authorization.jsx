@@ -13,7 +13,7 @@ const Authorization = ({ fetching }) => {
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ marginTop: '20px' }}>
             <Grid item xs= { 12 }><Typography sx= {{ fontWeight: 'bold', textTransform: 'uppercase' }}>{ `Authorizatoin Form (Servicing)` }</Typography></Grid>
-            <Grid item xs= { 6 } sm= { 4 }>
+            <Grid item xs= { 8 } sm= { 6 } md= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -24,7 +24,7 @@ const Authorization = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 4 }>
+            <Grid item xs= { 8 } sm= { 6 } md= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -35,7 +35,7 @@ const Authorization = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 4 }>
+            <Grid item xs= { 8 } sm= { 6 } md= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -46,7 +46,7 @@ const Authorization = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 4 }>
+            <Grid item xs= { 8 } sm= { 6 } md= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -57,7 +57,7 @@ const Authorization = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 4 }>
+            <Grid item xs= { 8 } sm= { 6 } md= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>

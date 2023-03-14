@@ -50,6 +50,19 @@ export const infoToast = (message, duration = 3000, navigate) => {
     });
 }
 
+export const errorToast = (message, duration = 3000, navigate) => {
+    return toast.error(message, {
+        position: 'bottom-left',
+        autoClose: duration,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        onClose: () => navigate
+    });
+}
+
 export const exporttoexcel = (json, sheet_name, file_name) => {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(json);

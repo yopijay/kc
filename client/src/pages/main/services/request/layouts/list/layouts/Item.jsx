@@ -1,33 +1,12 @@
 // Libraries
-import { Box, Stack, Typography } from "@mui/material";
+import { Chip, Grid, Stack, Typography } from "@mui/material";
 import { useContext } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 // Core
 import { ListCntxt } from "core/context/List"; // Context
+import { Link } from "react-router-dom";
 
 // Custom styles
-const icons = {
-    color: 'rgb(99, 115, 129)', 
-    padding: '3px', 
-    lineHeight: 0, 
-    transition: 'transform .2s', 
-    '&:hover': { 
-        transform: 'scale(1.1)', 
-        transition: 'transform .2s' 
-    }
-}
-
-const item = {
-    backgroundColor: '#FFFFFF', 
-    padding: '10px 20px', 
-    border: 'solid 1px #F3F3F3', 
-    borderRadius: '10px',
-    overflow: 'hidden'
-}
-
 const txt = {
     whiteSpace: 'nowrap', 
     overflow: 'hidden', 
@@ -35,37 +14,59 @@ const txt = {
     width: '100%'
 }
 
+const container = {
+    width: '100%', 
+    padding: '15px 18px',
+    backgroundColor: '#FFFFFF',
+    boxShadow: 1,
+    borderRadius: '8px',
+    overflow: 'hidden',
+    transition: 'all 0.2s ease-in-out',
+    textDecoration: 'none',
+    color: '#444444',
+    '&:hover': { backgroundColor: '#F1F1F1' }
+}
+
 const Item = () => {
     const { list } = useContext(ListCntxt);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 2 } sx= {{ padding: '0 0 40px 0', overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>
-            { list.length > 0 ?
+            <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start">
+                { list.length > 0 ? 
                     list?.map((data, index) => (
-                        <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= { item } spacing= { 2 }>
-                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
-                                <Typography variant= "body1" sx= {{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{ data.name }</Typography>
-                                <Typography variant= "caption" sx= { txt }>{ (data.module)?.toUpperCase() } - { (data.tag)?.toUpperCase() }</Typography>
-                                <Typography variant= "body2" sx= { txt }>#{ data.series_no }</Typography>
-                                <Typography variant= "body2" sx= { txt }>{ data.date_created }</Typography>
-                            </Stack>
-                            <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
-                                { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
-                                    <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
-                                <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
-                                    <Typography sx= { icons } component= { Link } to= { `/services/request/form/update/${data.id}` }>
-                                        <FontAwesomeIcon icon= { faPencil } size= "lg" />
-                                    </Typography>
-                                    <Typography sx= { icons } component= { Link } to= { `/services/request/form/view/${data.id}` }>
-                                        <FontAwesomeIcon icon= { faEye } size= "lg" />
-                                    </Typography>
+                        <Grid item xs= { 12 } sm= { 6 } key= { index } sx= {{ padding: '10px 8px' }}>
+                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= { container } spacing= { 1 } 
+                                component= { Link } to= { `/services/request/form/update/${data.id}` }>
+                                <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
+                                    <Typography variant= "body2" sx= { txt }>Service Request No.: <b>{ data.service_request_no }</b></Typography>
+                                </Stack>
+                                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                                    <Typography sx= { txt } style= {{ fontWeight: 'bold' }}>{ data.customer }</Typography>
+                                    <Typography sx= { txt }>{ data.project }</Typography>
+                                    <Typography sx= { txt }>SO No.: <b>{ data.so_no }</b></Typography>
+                                </Stack>
+                                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
+                                    <Typography variant= "caption">Date requested: <b>{ data.date_requested }</b></Typography>
+                                    <Typography variant= "caption">Date prepared: <b>{ data.date_prepared }</b></Typography>
+                                    <Typography variant= "caption">Date needed: <b>{ data.date_needed }</b></Typography>
+                                </Stack>
+                                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
+                                    { data.status === 'approved' ? 
+                                        <Chip variant= "default" size= "small" label= "Reject" sx= {{ backgroundColor: '#e84118', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
+                                        data.status === 'cancelled' ? 
+                                            <Chip variant= "default" size= "small" label= "Approved" sx= {{ backgroundColor: '#4cd137', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
+                                            <Chip variant= "default" size= "small" label= "Pending" sx= {{ backgroundColor: '#fda92d', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> }
                                 </Stack>
                             </Stack>
-                        </Stack>
+                        </Grid>
                     )) :
-                    <Stack direction= "row" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#FFFFFF', padding: '10px', border: 'solid 1px #F3F3F3', borderRadius: '10px' }}>
-                        <Typography>No record/s found!</Typography>
-                    </Stack> }
+                    <Grid item xs= { 12 }>
+                        <Stack direction= "row" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#FFFFFF', padding: '10px', border: 'solid 1px #F3F3F3', borderRadius: '10px' }}>
+                            <Typography>No record/s found!</Typography>
+                        </Stack>
+                    </Grid> }
+            </Grid>
         </Stack>
     );
 }

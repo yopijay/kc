@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
-import { successToast, useGet, usePost } from "core/function/global"; // Function
+import { errorToast, successToast, useGet, usePost } from "core/function/global"; // Function
 import { save, specific, update } from "core/api"; // API
 import { theme } from "core/theme/form.theme"; // Theme
 
@@ -40,7 +40,7 @@ const Index = () => {
     const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
     const { isFetching, refetch } =  
         useGet({ key: ['srvc_specific'], fetch: specific({ table: 'tbl_services', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
-            onSuccess: (data) => { 
+            onSuccess: (data) => {
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
                         let _name = Object.keys(data[0])[count]; setValue(_name, data[0][_name]); 
@@ -87,10 +87,13 @@ const Index = () => {
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
-                            data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token');
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
                             
-                            if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
-                            else { updating({ table: 'tbl_services', data: data }); }
+                            if(!((data.requests).lenth > 0)) { errorToast('Request must not be empty!', 3000); }
+                            else {
+                                if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
+                                else { updating({ table: 'tbl_services', data: data }); }
+                            }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }

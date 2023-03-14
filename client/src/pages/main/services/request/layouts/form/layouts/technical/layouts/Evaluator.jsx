@@ -4,7 +4,8 @@ import { useContext } from "react";
 import { input } from "../../../index.style";
 
 const Evaluator = ({ fetching }) => {
-    const { register } = useContext(FormCntxt);
+    const { register, errors } = useContext(FormCntxt);
+
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ marginTop: '10px' }}>
             <Grid item xs= { 12 } sm= { 6 }>
@@ -13,6 +14,7 @@ const Evaluator = ({ fetching }) => {
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('evaluated_by') } name= "evaluated_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
                     <Typography variant= "body2" gutterBottom>Evaluated by</Typography>
+                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.evaluated_by?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 6 }>

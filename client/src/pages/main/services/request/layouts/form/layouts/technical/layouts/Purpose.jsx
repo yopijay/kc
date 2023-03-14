@@ -14,7 +14,7 @@ const Purpose = ({ fetching }) => {
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ marginTop: '20px' }}>
             <Grid item xs= { 12 }><Typography sx= {{ fontWeight: 'bold', textTransform: 'uppercase' }}>Purpose</Typography></Grid>
-            <Grid item xs= { 6 } sm= { 4 } md= { 3 }>
+            <Grid item xs= { 8 } sm= { 4 } md= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -25,7 +25,7 @@ const Purpose = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 4 } md= { 3 }>
+            <Grid item xs= { 8 } sm= { 4 } md= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -36,7 +36,7 @@ const Purpose = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 4 } md= { 3 }>
+            <Grid item xs= { 8 } sm= { 4 } md= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -47,7 +47,7 @@ const Purpose = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 4 } md= { 3 }>
+            <Grid item xs= { 8 } sm= { 4 } md= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -58,7 +58,7 @@ const Purpose = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 4 } md= { 3 }>
+            <Grid item xs= { 8 } sm= { 4 } md= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -69,7 +69,7 @@ const Purpose = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 4 } md= { 3 }>
+            <Grid item xs= { 8 } sm= { 4 } md= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>

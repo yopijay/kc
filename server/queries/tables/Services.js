@@ -10,11 +10,24 @@ class Services {
     }
 
     list = async (data) => {
-        return [];
+        return (await new Builder(`tbl_services AS srvc`)
+                        .select(`srvc.id, srvc.series_no, srvc.service_request_no, srvc.date_prepared, srvc.date_requested, srvc.status, sales.so_no, sales.customer, sales.project, sales.date_needed`)
+                        .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
+                        .condition(`${data.searchtxt !== '' ? 
+                                                `WHERE srvc.service_request_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR sales.customer LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                    OR sales.project LIKE '%${(data.searchtxt).toUpperCase()}%' OR sales.so_no LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''}
+                                                ORDER BY ${data.orderby} ${(data.sort).toUpperCase()}`)
+                        .build()).rows;
     }
 
     search = async (data) => {
-        return [];
+        return (await new Builder(`tbl_services AS srvc`)
+                        .select(`srvc.id, srvc.series_no, srvc.service_request_no, srvc.date_prepared, srvc.date_requested, srvc.status, sales.so_no, sales.customer, sales.project, sales.date_needed`)
+                        .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
+                        .condition(`WHERE srvc.service_request_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR sales.customer LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                OR sales.project LIKE '%${(data.searchtxt).toUpperCase()}%' OR sales.so_no LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                ORDER BY ${data.orderby} ${(data.sort).toUpperCase()}`)
+                        .build()).rows;
     }
 
     excel = async (type, data) => {
@@ -26,7 +39,27 @@ class Services {
     }
 
     specific = async (id) => {
-        return [];
+        let data = [];
+        if(id !== 'null') {
+            data = (await new Builder(`tbl_services AS srvc`)
+                            .select(`srvc.*, sales.so_no, sales.po_no, sales.customer, sales.project, sales.service_location, sales.contact_person, sales.position, 
+                                            sales.requested_by, sales.requested_by_signature, sales.noted_by_sup, sales.noted_by_sup_signature, sales.date_needed, 
+                                            sales.time_expected, sales.warranty, sales.up_to, sales.for_billing, sales.contact_number, technical.evaluated_by, technical.evaluated_by_signature,
+                                            technical.eval_noted_by_sup, technical.eval_noted_by_sup_signature, technical.deliveries_to_customer, technical.tools_equipment,
+                                            technical.manpower, technical.consumables, technical.others, technical.regular_delivery, technical.to_be_rented, technical.for_rectification,
+                                            technical.supplemental_manning, technical.other_purpose, technical.prepared_by, technical.prepared_by_signature, technical.noted_by,
+                                            technical.noted_by_signature, technical.authorized_by, technical.authorized_by_signature, technical.approved_by, technical.approved_by_signature,
+                                            technical.released_by, technical.released_by_signature, technical.received_by, technical.received_by_signature`)
+                            .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
+                            .join({ table: `tbl_services_technical AS technical`, condition: `technical.service_id = srvc.id`, type: `LEFT` })
+                            .condition(`WHERE srvc.id= ${id}`)
+                            .build()).rows;
+            
+            data[0]['requests'] = (await new Builder(`tbl_services_requests`).select().condition(`WHERE service_id= ${id}`).build()).rows;
+            data[0]['items'] = (await new Builder(`tbl_services_items`).select().condition(`WHERE service_id= ${id}`).build()).rows;
+        }
+
+        return data;
     }
 
     save = async (data) => {
@@ -37,7 +70,7 @@ class Services {
         let service = (await new Builder(`tbl_services`)
                                                 .insert({ columns: `series_no, service_request_no, date_prepared, date_requested, status, created_by, date_created`, 
                                                                 values: `'${(data.series_no).toUpperCase()}', '${data.service_request_no}', '${data.date_prepared}', '${data.date_requested}',
-                                                                                'pending', ${atob(data.created_by)}, '${date}'` })
+                                                                                'pending', ${data.created_by}, '${date}'` })
                                                 .condition(`RETURNING id`)
                                                 .build()).rows[0];
         
@@ -50,15 +83,15 @@ class Services {
                                             ${data.requested_by !== '' ? `'${date}'` : null}, ${data.noted_by_sup !== '' ? `'${(data.noted_by_sup).toUpperCase()}'` : null}, null, 
                                             ${data.noted_by_sup !== '' ? `'${date}'` : null}, '${data.date_needed}', ${data.time_expected !== '' ? `'${(data.time_expected).toUpperCase()}'` : null},
                                             ${data.warranty !== '' ? `'${(data.warranty).toUpperCase()}'` : null}, ${data.up_to !== '' ? `'${(data.up_to).toUpperCase()}'` : null},
-                                            '${data.for_billing}', ${data.contact_no !== '' ? `'${data.contact_no}'` : null}` })
+                                            '${data.for_billing}', ${data.contact_number !== '' ? `'${data.contact_number}'` : null}` })
             .build();
 
         await new Builder(`tbl_services_technical`)
             .insert({ columns: `service_id, evaluated_by, evaluated_by_signature, evaluated_by_date, eval_noted_by_sup, eval_noted_by_sup_signature, eval_noted_by_sup_date,
-                                            deliveries_to_customer, tools_equipment, manpower, consumables, others, regular_delivery, to_be_rented, for_completion, for_rectification, supplemental_manning,
-                                            other_purpose, prepared_by, prepared_by_signature, prepared_by_date, noted_by, noted_by_signature, noted_by_date, authorized_by,
-                                            authorized_by_signature, authorized_by_date, approved_by, approved_by_signature, approved_by_date, released_by, released_by_signature,
-                                            released_by_date, received_by, received_by_signature, received_by_date`, 
+                                            deliveries_to_customer, tools_equipment, manpower, consumables, others, regular_delivery, to_be_rented, for_completion, for_rectification, 
+                                            supplemental_manning, other_purpose, prepared_by, prepared_by_signature, prepared_by_date, noted_by, noted_by_signature, noted_by_date, 
+                                            authorized_by, authorized_by_signature, authorized_by_date, approved_by, approved_by_signature, approved_by_date, released_by, 
+                                            released_by_signature, released_by_date, received_by, received_by_signature, received_by_date`, 
                             values: `${service.id}, ${data.evaluated_by !== '' ? `'${(data.evaluated_by).toUpperCase()}'` : null}, null, ${data.evaluated_by !== '' ? `'${date}'` : null},
                                             ${data.eval_noted_by_sup !== '' ? `'${(data.eval_noted_by_sup).toUpperCase()}'` : null}, null, ${data.eval_noted_by_sup !== '' ? `'${date}'` : null},
                                             ${data.deliveries_to_customer ? 1 : 0}, ${data.tools_equipment ? 1 : 0}, ${data.manpower ? 1 : 0}, ${data.consumables ? 1 : 0}, ${data.others ? 1 : 0},
@@ -71,27 +104,35 @@ class Services {
                                             ${data.received_by !== '' ? `'${(data.received_by).toUpperCase()}'` : null}, null, ${data.received_by !== '' ? `'${date}'` : null}` })
             .build();
             
-            if(requests.length > 0) {
-                for(let count = 0; count < requests.length; count++) {
-                    await new Builder(`tbl_services_requests`)
-                        .insert({ columns: `service_id, request, personnel, date_from, date_to, time_from, time_to, status`, 
-                                        values: `${service.id}, '${(requests[count].request).toUpperCase()}', '${(requests[count].personnel).toUpperCase()}', '${requests[count].date_from}',
-                                                        '${requests[count].date_to}', ${requests[count].time_from !== '' ? `'${(requests[count].time_from).toUpperCase()}'` : null},
-                                                        ${requests[count].time_to !== '' ? `'${(requests[count].time_to).toUpperCase()}'` : null}, 'active'` })
-                        .build();
-                }
+        if(requests.length > 0) {
+            for(let count = 0; count < requests.length; count++) {
+                await new Builder(`tbl_services_requests`)
+                    .insert({ columns: `service_id, request, personnel, date_from, date_to, time_from, time_to, status`, 
+                                    values: `${service.id}, '${(requests[count].request).toUpperCase()}', '${(requests[count].personnel).toUpperCase()}', '${requests[count].date_from}',
+                                                    '${requests[count].date_to}', ${requests[count].time_from !== '' ? `'${(requests[count].time_from).toUpperCase()}'` : null},
+                                                    ${requests[count].time_to !== '' ? `'${(requests[count].time_to).toUpperCase()}'` : null}, 'active'` })
+                    .build();
             }
+        }
 
-            if(items.length > 0) {
-                for(let count = 0; count < items.length; count++) {
-                    await new Builder(`tbl_services_items`)
-                        .insert({ column: `service_id, item, qty, unit, description, status`, 
-                                        values: `${service.id}, '${(items[count].item).toUpperCase()}', '${(items[count].qty).toUpperCase()}', 
-                                                        ${items[count].description !== '' ? `'${(items[count].description).toUpperCase()}'` : null}, 'active` })
-                        .build();
-                }
+        if(items.length > 0) {
+            for(let count = 0; count < items.length; count++) {
+                await new Builder(`tbl_services_items`)
+                    .insert({ column: `service_id, item, qty, unit, description, status`, 
+                                    values: `${service.id}, '${(items[count].item).toUpperCase()}', '${(items[count].qty).toUpperCase()}', 
+                                                    ${items[count].description !== '' ? `'${(items[count].description).toUpperCase()}'` : null}, 'active` })
+                    .build();
             }
-        
+        }
+            
+        audit.series_no = Global.randomizer(7);
+        audit.field = 'all';
+        audit.item_id = service.id;
+        audit.action = 'create';
+        audit.user_id = data.created_by;
+        audit.date = date;
+
+        Global.audit(audit);
         return { result: 'success', message: 'Successfully saved!' };
     }
 

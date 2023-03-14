@@ -48,8 +48,14 @@ const Index = () => {
         });
 
     useEffect(() => {
-        register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
-        if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_services', data: getValues() }); } }, [ register, record, getValues ]);
+        register('orderby', { value: 'srvc.date_requested' }); register('sort', { value: 'desc' });
+        let data = getValues();
+        data['orderby'] = 'srvc.date_requested';
+        data['sort'] = 'desc';
+        data['searchtxt'] = '';
+
+        record({ table: 'tbl_services', data: data });
+    }, [ register, record, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
