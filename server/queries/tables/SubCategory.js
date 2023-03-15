@@ -173,9 +173,9 @@ class SubCategory {
         let ctgy = (await new Builder(`tbl_category`).select('id').condition(`WHERE module= '${data.module}'`).build()).rows;
         let condition = '';
 
-        ctgy.forEach((data, index) => condition += `${index !== 0 ? 'OR ' : ''}category_id= ${data.id}`);
-        
-        return [{ id: 'all', name: 'ALL' }].concat((await new Builder(`tbl_sub_category`).select(`id, name`).condition(`WHERE ${condition}AND status= 1 ORDER BY name ASC`).build()).rows);
+        ctgy.forEach((data, index) => condition += `${index !== 0 ? ' OR ' : ''}category_id= ${data.id}`);
+        console.log(new Builder(`tbl_sub_category`).select(`id, name`).condition(`WHERE ${condition}AND status= 1 ORDER BY name ASC`).test());
+        return [{ id: 'all', name: 'ALL' }].concat((await new Builder(`tbl_sub_category`).select(`id, name`).condition(`WHERE ${condition} AND status= 1 ORDER BY name ASC`).build()).rows);
     }
 }
 
