@@ -10,7 +10,7 @@ import Evaluator from "./layouts/Evaluator";
 import Authorization from "./layouts/Authorization";
 import Purpose from "./layouts/Purpose";
 import Items from "./layouts/Items";
-import Signature from "./layouts/SIgnature";
+import Signature from "./layouts/Signature";
 
 const Index = ({ fetching }) => {
     const { register } = useContext(FormCntxt);
