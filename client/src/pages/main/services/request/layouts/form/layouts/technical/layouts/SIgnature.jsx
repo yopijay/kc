@@ -1,6 +1,10 @@
 // Libraries
-import { Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
-import { useContext } from "react";
+import { Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { useContext, useEffect, useRef } from "react";
+import SignaturePad from "react-signature-canvas";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEraser } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
@@ -9,13 +13,38 @@ import { FormCntxt } from "core/context/Form"; // Context
 import { input } from "../../../index.style"; // Styles
 
 const Signature = ({ fetching }) => {
-    const { register, errors } = useContext(FormCntxt);
+    const { type } = useParams();
+    const { register, errors, setValue, getValues } = useContext(FormCntxt);
+    let _pb = useRef();
+    let _nb = useRef();
+    let _rlb = useRef();
+    let _ab = useRef();
+    let _apb = useRef();
+    let _rcb = useRef();
+
+    useEffect(() => {
+        if(!fetching) {
+            if(type === 'update') {
+                _pb.current.fromDataURL(getValues().prepared_by_signature);
+                _nb.current.fromDataURL(getValues().noted_by_signature);
+                _rlb.current.fromDataURL(getValues().released_by_signature);
+                _ab.current.fromDataURL(getValues().authorized_by_signature);
+                _apb.current.fromDataURL(getValues().approved_by_signature);
+                _rcb.current.fromDataURL(getValues().received_by_signature);
+            }
+        }
+    }, [ fetching, type, getValues ]);
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ marginTop: '10px' }}>
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Box sx= {{ width: '100%', height: '120px', backgroundColor: '#F2F2F2', borderRadius: '10px' }} />
+                    <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
+                        <SignaturePad ref= { _pb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('prepared_by_signature', e.target.toDataURL()) } />
+                    </Stack>
+                    <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _pb.current.clear() } />
+                    </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('prepared_by') } name= "prepared_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
                     <Typography variant= "body2" gutterBottom>Prepared by</Typography>
@@ -23,7 +52,12 @@ const Signature = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Box sx= {{ width: '100%', height: '120px', backgroundColor: '#F2F2F2', borderRadius: '10px' }} />
+                    <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
+                        <SignaturePad ref= { _nb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('noted_by_signature', e.target.toDataURL()) } />
+                    </Stack>
+                    <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _nb.current.clear() } />
+                    </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('noted_by') } name= "noted_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
                     <Typography variant= "body2" gutterBottom>Noted by</Typography>
@@ -33,7 +67,12 @@ const Signature = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Box sx= {{ width: '100%', height: '120px', backgroundColor: '#F2F2F2', borderRadius: '10px' }} />
+                    <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
+                        <SignaturePad ref= { _rlb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('released_by_signature', e.target.toDataURL()) } />
+                    </Stack>
+                    <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _rlb.current.clear() } />
+                    </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('released_by') } name= "released_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
                     <Typography variant= "body2" gutterBottom>Released by</Typography>
@@ -41,7 +80,12 @@ const Signature = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Box sx= {{ width: '100%', height: '120px', backgroundColor: '#F2F2F2', borderRadius: '10px' }} />
+                    <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
+                        <SignaturePad ref= { _ab } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('authorized_by_signature', e.target.toDataURL()) } />
+                    </Stack>
+                    <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _ab.current.clear() } />
+                    </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('authorized_by') } name= "authorized_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
                     <Typography variant= "body2" gutterBottom>Authorized by</Typography>
@@ -49,7 +93,12 @@ const Signature = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Box sx= {{ width: '100%', height: '120px', backgroundColor: '#F2F2F2', borderRadius: '10px' }} />
+                    <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
+                        <SignaturePad ref= { _apb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('authorized_by_signature', e.target.toDataURL()) } />
+                    </Stack>
+                    <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _apb.current.clear() } />
+                    </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('approved_by') } name= "approved_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
                     <Typography variant= "body2" gutterBottom>Approved by</Typography>
@@ -57,7 +106,12 @@ const Signature = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Box sx= {{ width: '100%', height: '120px', backgroundColor: '#F2F2F2', borderRadius: '10px' }} />
+                    <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
+                        <SignaturePad ref= { _rcb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('received_by_signature', e.target.toDataURL()) } />
+                    </Stack>
+                    <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _rcb.current.clear() } />
+                    </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('received_by') } name= "received_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
                     <Typography variant= "body2" gutterBottom>Received by</Typography>

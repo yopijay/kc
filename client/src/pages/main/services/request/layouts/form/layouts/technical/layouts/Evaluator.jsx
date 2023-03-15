@@ -1,16 +1,42 @@
-import { Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
-import { FormCntxt } from "core/context/Form";
-import { useContext } from "react";
-import { input } from "../../../index.style";
+// Libraries
+import { Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { useContext, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
+import SignaturePad from "react-signature-canvas";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEraser } from "@fortawesome/free-solid-svg-icons";
+
+// Core
+import { FormCntxt } from "core/context/Form"; // Context
+
+// Constants
+import { input } from "../../../index.style"; // Styles
 
 const Evaluator = ({ fetching }) => {
-    const { register, errors } = useContext(FormCntxt);
+    const { type } = useParams();
+    const { register, errors, setValue, getValues } = useContext(FormCntxt);
+    let _eb = useRef();
+    let _ebs = useRef();
+
+    useEffect(() => {
+        if(!fetching) {
+            if(type === 'update') {
+                _eb.current.fromDataURL(getValues().evaluated_by_signature);
+                _ebs.current.fromDataURL(getValues().eval_noted_by_sup_signature);
+            }
+        }
+    }, [ fetching, type, getValues ]);
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ marginTop: '10px' }}>
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Box sx= {{ width: '100%', height: '120px', backgroundColor: '#F2F2F2', borderRadius: '10px' }} />
+                    <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
+                        <SignaturePad ref= { _eb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('evaluated_by_signature', e.target.toDataURL()) } />
+                    </Stack>
+                    <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _eb.current.clear() } />
+                    </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('evaluated_by') } name= "evaluated_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
                     <Typography variant= "body2" gutterBottom>Evaluated by</Typography>
@@ -19,7 +45,12 @@ const Evaluator = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Box sx= {{ width: '100%', height: '120px', backgroundColor: '#F2F2F2', borderRadius: '10px' }} />
+                    <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
+                        <SignaturePad ref= { _ebs } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('eval_noted_by_sup_signature', e.target.toDataURL()) } />
+                    </Stack>
+                    <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _ebs.current.clear() } />
+                    </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('eval_noted_by_sup') } name= "eval_noted_by_sup" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
                     <Typography variant= "body2" gutterBottom>{ `Noted by (Immediate Superior)` }</Typography>
