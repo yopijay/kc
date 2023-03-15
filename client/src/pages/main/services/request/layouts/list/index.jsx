@@ -48,9 +48,9 @@ const Index = () => {
         });
 
     useEffect(() => {
-        register('orderby', { value: 'srvc.date_requested' }); register('sort', { value: 'desc' });
+        register('orderby', { value: 'srvc.service_request_no' }); register('sort', { value: 'desc' });
         let data = getValues();
-        data['orderby'] = 'srvc.date_requested';
+        data['orderby'] = 'srvc.service_request_no';
         data['sort'] = 'desc';
         data['searchtxt'] = '';
 

@@ -38,38 +38,43 @@ const ctgy = {
 
 const Sort = ({ refetch }) => {
     const { getValues, setValue } = useContext(FormCntxt);
-    const [ orderby, setOrderby ] = useState('date_requested');
+    const [ orderby, setOrderby ] = useState('service_request_no');
     const [ sort, setSort ] = useState('desc');
 
     return (
         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" spacing= { 1 }>
             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                 <Typography variant= "caption">Order by:</Typography>
-                { orderby === 'date_requested' ? 
+                { orderby === 'date_created' ? 
                     <Typography sx= { ctgy } 
                         onClick= { () => { 
                             setValue('orderby', 'srvc.date_prepared'); setOrderby('date_prepared');
-                            refetch({ table: 'tbl_services', data: getValues() }); } }>Date requested</Typography> : 
-                    orderby === 'date_prepared' ? 
+                            refetch({ table: 'tbl_services', data: getValues() }); } }>Date created</Typography> : 
+                    orderby === 'date_requested' ? 
                         <Typography sx= { ctgy } 
                             onClick= { () => { 
-                                setValue('orderby', 'sales.date_needed'); setOrderby('date_needed');
-                                refetch({ table: 'tbl_services', data: getValues() }); } }>Date prepared</Typography> : 
-                        orderby === 'date_needed' ? 
+                                setValue('orderby', 'srvc.date_prepared'); setOrderby('date_prepared');
+                                refetch({ table: 'tbl_services', data: getValues() }); } }>Date requested</Typography> : 
+                        orderby === 'date_prepared' ? 
                             <Typography sx= { ctgy } 
                                 onClick= { () => { 
-                                    setValue('orderby', 'sales.customer'); setOrderby('customer');
-                                    refetch({ table: 'tbl_services', data: getValues() }); } }>Date needed</Typography> : 
-                            orderby === 'customer' ? 
+                                    setValue('orderby', 'sales.date_needed'); setOrderby('date_needed');
+                                    refetch({ table: 'tbl_services', data: getValues() }); } }>Date prepared</Typography> : 
+                            orderby === 'date_needed' ? 
                                 <Typography sx= { ctgy } 
                                     onClick= { () => { 
-                                        setValue('orderby', 'srvc.service_request_no'); setOrderby('service_request_no');
-                                        refetch({ table: 'tbl_services', data: getValues() }); } }>Customer</Typography> :
-                                orderby === 'service_request_no' ? 
+                                        setValue('orderby', 'sales.customer'); setOrderby('customer');
+                                        refetch({ table: 'tbl_services', data: getValues() }); } }>Date needed</Typography> : 
+                                orderby === 'customer' ? 
                                     <Typography sx= { ctgy } 
                                         onClick= { () => { 
-                                            setValue('orderby', 'srvc.date_requested'); setOrderby('date_requested');
-                                            refetch({ table: 'tbl_services', data: getValues() }); } }>Service request no.</Typography> : '' }
+                                            setValue('orderby', 'srvc.service_request_no'); setOrderby('service_request_no');
+                                            refetch({ table: 'tbl_services', data: getValues() }); } }>Customer</Typography> :
+                                    orderby === 'service_request_no' ? 
+                                        <Typography sx= { ctgy } 
+                                            onClick= { () => { 
+                                                setValue('orderby', 'srvc.date_created'); setOrderby('date_created');
+                                                refetch({ table: 'tbl_services', data: getValues() }); } }>Service request no.</Typography> : '' }
             </Stack>
                 { sort === 'desc' ? 
                     <Typography sx= { asc }>

@@ -22,9 +22,7 @@ class Assets {
 
     assettag = async (data) => {
         return ((await new Builder(`tbl_assets`)
-                                        .select()
-                                        .condition(`WHERE category_id= ${data.category_id} AND sub_category_id= ${data.sub_category_id}`)
-                                        .build()).rowCount).toString();
+                        .select().condition(`WHERE category_id= ${data.category_id} AND sub_category_id= ${data.sub_category_id}`).build()).rowCount).toString();
     }
 
     dashboard = async () => {
