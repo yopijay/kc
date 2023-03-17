@@ -4,13 +4,13 @@ import { useContext, useEffect, useRef } from "react";
 import SignaturePad from "react-signature-canvas";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEraser } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
 
 // Constants
 import { input } from "../../../index.style"; // Styles
-import { useParams } from "react-router-dom";
 
 const Signature = ({ fetching }) => {
     const { type } = useParams();
@@ -32,7 +32,7 @@ const Signature = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _rb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('requested_by_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _rb } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('requested_by_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _rb.current.clear() } />
@@ -46,7 +46,7 @@ const Signature = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _nbs } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('noted_by_sup_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _nbs } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('noted_by_sup_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _nbs.current.clear() } />

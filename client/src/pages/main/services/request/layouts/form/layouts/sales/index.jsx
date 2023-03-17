@@ -9,7 +9,6 @@ import { FormCntxt } from "core/context/Form"; // Context
 import Customer from "./layouts/Customer";
 import Requests from "./layouts/Requests";
 import Other from "./layouts/Other";
-import Signature from "./layouts/Signature";
 
 const Index = ({ fetching }) => {
     const { register } = useContext(FormCntxt);
@@ -21,7 +20,6 @@ const Index = ({ fetching }) => {
             <Customer fetching= { fetching } />
             <Requests fetching= { fetching } />
             <Other fetching= { fetching } />
-            <Signature fetching= { fetching } />
         </Stack>
     );
 }
