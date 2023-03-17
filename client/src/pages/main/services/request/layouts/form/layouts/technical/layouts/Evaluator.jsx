@@ -32,7 +32,7 @@ const Evaluator = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _eb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('evaluated_by_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _eb } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('evaluated_by_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _eb.current.clear() } />
@@ -46,7 +46,7 @@ const Evaluator = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _ebs } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('eval_noted_by_sup_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _ebs } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('eval_noted_by_sup_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _ebs.current.clear() } />

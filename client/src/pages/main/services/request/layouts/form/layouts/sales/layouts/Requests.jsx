@@ -105,14 +105,16 @@ const Requests = ({ fetching }) => {
                                                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                                                                 <Typography variant= "body2" gutterBottom>From</Typography>
                                                                 { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                                    <TextField { ...register('time_from') } name= "time_from" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                                    <TextField { ...register(`requests.${index}.time_from`) } name= { `requests.${index}.time_from` } variant= "standard" 
+                                                                        InputProps= {{ disableUnderline: true }} sx= { input } /> }
                                                             </Stack>
                                                         </Grid>
                                                         <Grid item xs= { 6 }>
                                                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                                                                 <Typography variant= "body2" gutterBottom>To</Typography>
                                                                 { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                                    <TextField { ...register('time_to') } name= "time_to" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                                    <TextField { ...register(`requests.${index}.time_to`) } name= { `requests.${index}.time_to` } variant= "standard" 
+                                                                        InputProps= {{ disableUnderline: true }} sx= { input } /> }
                                                             </Stack>
                                                         </Grid>
                                                     </Grid>

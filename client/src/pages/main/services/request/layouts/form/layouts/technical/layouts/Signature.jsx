@@ -40,7 +40,7 @@ const Signature = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _pb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('prepared_by_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _pb } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('prepared_by_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _pb.current.clear() } />
@@ -53,7 +53,7 @@ const Signature = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _nb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('noted_by_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _nb } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('noted_by_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _nb.current.clear() } />
@@ -68,7 +68,7 @@ const Signature = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _rlb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('released_by_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _rlb } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('released_by_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _rlb.current.clear() } />
@@ -81,7 +81,7 @@ const Signature = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _ab } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('authorized_by_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _ab } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('authorized_by_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _ab.current.clear() } />
@@ -94,7 +94,7 @@ const Signature = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 3 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _apb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('authorized_by_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _apb } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('authorized_by_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _apb.current.clear() } />
@@ -107,7 +107,7 @@ const Signature = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _rcb } style= {{ width: '100%', height: '100%' }} onEnd= { e => setValue('received_by_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _rcb } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('received_by_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
                         <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _rcb.current.clear() } />
