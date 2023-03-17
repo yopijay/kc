@@ -53,9 +53,9 @@ const Item = () => {
                                 </Stack>
                                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                                     { data.status === 'approved' ? 
-                                        <Chip variant= "default" size= "small" label= "Reject" sx= {{ backgroundColor: '#e84118', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
+                                        <Chip variant= "default" size= "small" label= "Approved" sx= {{ backgroundColor: '#e84118', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
                                         data.status === 'cancelled' ? 
-                                            <Chip variant= "default" size= "small" label= "Approved" sx= {{ backgroundColor: '#4cd137', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
+                                            <Chip variant= "default" size= "small" label= "Reject" sx= {{ backgroundColor: '#4cd137', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
                                             <Chip variant= "default" size= "small" label= "Pending" sx= {{ backgroundColor: '#fda92d', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> }
                                 </Stack>
                             </Stack>
