@@ -210,21 +210,21 @@ class Services {
         for(let count = 0; count < (srvc[0].requests).length; count++) {
             (data.requests).find(({ id }) => {
                 console.log(id);
+                // if(id !== undefined) {
+                //     if((srvc[0].requests)[count].id === id) {
+                //         console.log('update');
+                //     }
+                //     else {
+                //         console.log('delete');
+                //     }
+                // }
+                // else { 
+                //     console.log('create');
+                // }
             });
         }
         // if((srvc[0].requests).filter(elem => (data.requests).find(({ id }) => elem.id === id)).length > 0) {
         // (srvc[0].requests).filter(elem => (data.requests).find(({ id }) => {
-        //     if(id !== undefined) {
-        //         if(elem.id === id) {
-        //             console.log('update');
-        //         }
-        //         else {
-        //             console.log('delete');
-        //         }
-        //     }
-        //     else { 
-        //         console.log('create');
-        //     }
         // }));
         // }
 
