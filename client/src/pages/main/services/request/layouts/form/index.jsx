@@ -18,7 +18,6 @@ import { validation as Validation } from './index.validation'; // Validation
 // Layouts
 import Header from "./layouts/Header";
 import Sales from "./layouts/sales";
-import Technical from "./layouts/technical";
 
 const input = {
     MuiInput: {
@@ -59,8 +58,9 @@ const Index = () => {
     const { mutate: updating } = 
         usePost({ fetch: update, 
             onSuccess: (data) => {
-                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
-                else { successToast(data.message, 3000, navigate('/services/request', { replace: true })); } 
+                console.log(data);
+                // if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
+                // else { successToast(data.message, 3000, navigate('/services/request', { replace: true })); } 
             } 
         });
 
@@ -78,7 +78,6 @@ const Index = () => {
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%' }} divider={ <Divider orientation="horizontal" flexItem /> } spacing= { 2 }>
                             <Header fetching= { isFetching } />
                             <Sales fetching= { isFetching } />
-                            <Technical fetching= { isFetching } />
                         </Stack>
                     </ThemeProvider>
                 </form>
@@ -88,6 +87,7 @@ const Index = () => {
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
+                            data['form'] = 'request';
                             
                             if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
                             else { updating({ table: 'tbl_services', data: data }); }
