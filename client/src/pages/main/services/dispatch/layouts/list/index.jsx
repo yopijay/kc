@@ -1,9 +1,8 @@
 // Libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisH, faFileArrowDown, faFileArrowUp, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisH, faFileArrowDown, faFileArrowUp, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Box, FormLabel, Stack, TextField, Typography } from "@mui/material";
 import { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 // Core
 import { ListCntxt } from "core/context/List"; // Context
@@ -20,7 +19,7 @@ import Dashboard from "./layouts/Dashboard";
 import Item from "./layouts/Item";
 
 // Constants
-import { btnexport, btnicon, btnimport, btntxt, search } from "./index.style"; // Styles
+import { btnexport, btnimport, search } from "./index.style"; // Styles
 
 const Index = () => {
     let name = `KC-EXPORT-SERVICE-REQUEST-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
@@ -48,12 +47,12 @@ const Index = () => {
         });
 
     useEffect(() => {
-        register('orderby', { value: 'srvc.service_request_no' }); register('sort', { value: 'desc' }); register('phase', { value: 'request' });
+        register('orderby', { value: 'srvc.service_request_no' }); register('sort', { value: 'desc' }); register('phase', { value: 'evaluation' });
         let data = getValues();
         data['orderby'] = 'srvc.service_request_no';
         data['sort'] = 'desc';
         data['searchtxt'] = '';
-        data['phase'] = 'request';
+        data['phase'] = 'evaluation';
 
         record({ table: 'tbl_services', data: data });
     }, [ register, record, getValues ]);
@@ -61,7 +60,7 @@ const Index = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Service Requests</Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Evaluation</Typography>
                 <Dashboard />
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "flex-start" spacing= { 1 }>
                     <form autoComplete= "off">
@@ -85,10 +84,6 @@ const Index = () => {
                                     formatted({ table: 'tbl_services', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
                                 <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
-                            <Typography component= { Link } to= "/services/request/form/new" sx= { btnicon }>
-                                <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
-                            </Typography>
-                            <Typography component= { Link } to= "/services/request/form/new" sx= { btntxt }>New Service</Typography>
                         </Stack>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                             <Typography variant= "body2" sx= {{ color: '#557153', textAlign: 'right' }}>{ message }</Typography>
