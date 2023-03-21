@@ -17,7 +17,7 @@ import { date, input } from "../index.style"; // Styles
 
 const Header = ({ fetching }) => {
     const { type } = useParams();
-    const { register, control, setValue, getValues } = useContext(FormCntxt);
+    const { register, control, setValue } = useContext(FormCntxt);
     useGet({ key: ['srvc_series'], fetch: series('tbl_services'), options: {}, 
         onSuccess: data => {
             let _month = `${((new Date()).getMonth() + 1) < 10 ? '0' : ''}${dayjs(new Date()).month() + 1}`;
@@ -52,8 +52,7 @@ const Header = ({ fetching }) => {
                                     render= { ({ field: { onChange, value } }) => (
                                         <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                             <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
-                                                disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } />
+                                                onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
                                         </LocalizationProvider> ) }>
                                 </Controller>
                             </Box> }
@@ -66,8 +65,7 @@ const Header = ({ fetching }) => {
                                     render= { ({ field: { onChange, value } }) => (
                                         <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                             <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
-                                                disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } />
+                                                onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
                                         </LocalizationProvider> ) }>
                                 </Controller>
                             </Box> }

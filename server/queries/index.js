@@ -159,6 +159,32 @@ const update = (table, data) => {
    });
 }
 
+const evaluate = async (table, type, data) => {
+    return new Promise(async resolve => {
+        switch(type) {
+            case 'approve': 
+                switch(table) {
+                    case 'tbl_services': resolve(await new Services().approve(data)); break;
+                }
+
+                break;
+            case 'declined': 
+                switch(table) {
+                    case 'tbl_services': resolve(await new Services().declined(data)); break;
+                }
+
+                break;
+            case 'dispatch':
+                switch(table) {
+                    case 'tbl_services': resolve(await new Services().dispatch(data)); break;
+                }
+
+                break;
+            default: 
+        }
+    });
+}
+
 const series = (table) => {
     return new Promise(async resolve => {
         switch(table) {
@@ -224,5 +250,6 @@ module.exports = {
     upload,
     assettag,
     filter,
-    component
+    component,
+    evaluate
 }
