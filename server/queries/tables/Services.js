@@ -94,50 +94,6 @@ class Services {
                                             ${data.up_to !== '' ? `'${(data.up_to).toUpperCase()}'` : null}, '${data.for_billing}', ${data.contact_number !== '' ? `'${data.contact_number}'` : null},
                                             '${requests}'` })
             .build();
-
-        // await new Builder(`tbl_services_technical`)
-        //     .insert({ columns: `service_id, evaluated_by, evaluated_by_signature, evaluated_by_date, eval_noted_by_sup, eval_noted_by_sup_signature, eval_noted_by_sup_date,
-        //                                     deliveries_to_customer, tools_equipment, manpower, consumables, others, regular_delivery, to_be_rented, for_completion, for_rectification, 
-        //                                     supplemental_manning, other_purpose, prepared_by, prepared_by_signature, prepared_by_date, noted_by, noted_by_signature, noted_by_date, 
-        //                                     authorized_by, authorized_by_signature, authorized_by_date, approved_by, approved_by_signature, approved_by_date, released_by, 
-        //                                     released_by_signature, released_by_date, received_by, received_by_signature, received_by_date`, 
-        //                     values: `${service.id}, ${data.evaluated_by !== '' ? `'${(data.evaluated_by).toUpperCase()}'` : null}, ${data.evaluated_by_signature !== '' ? `'${data.evaluated_by_signature}'` : null}, 
-        //                                     ${data.evaluated_by !== '' ? `'${date}'` : null}, ${data.eval_noted_by_sup !== '' ? `'${(data.eval_noted_by_sup).toUpperCase()}'` : null}, 
-        //                                     ${data.eval_noted_by_sup_signature !== '' ? `'${data.eval_noted_by_sup_signature}'` : null}, ${data.eval_noted_by_sup !== '' ? `'${date}'` : null},
-        //                                     ${data.deliveries_to_customer ? 1 : 0}, ${data.tools_equipment ? 1 : 0}, ${data.manpower ? 1 : 0}, ${data.consumables ? 1 : 0}, ${data.others ? 1 : 0},
-        //                                     ${data.regular_delivery ? 1 : 0}, ${data.to_be_rented ? 1 : 0}, ${data.for_completion ? 1 : 0}, ${data.for_rectification ? 1 : 0}, ${data.supplemantal_manning ? 1 : 0}, 
-        //                                     ${data.other_purpose ? 1 : 0}, ${data.prepared_by !== '' ? `'${(data.prepared_by).toUpperCase()}'` : null}, 
-        //                                     ${data.prepared_by_signature !== '' ? `'${data.prepared_by_signature}'` : null}, ${data.prepared_by !== '' ? `'${date}'` : null},
-        //                                     ${data.noted_by !== '' ? `'${(data.noted_by).toUpperCase()}'` : null}, ${data.noted_by_signature !== '' ? `'${data.noted_by_signature}'` : null}, 
-        //                                     ${data.noted_by !== '' ? `'${date}'` : null}, ${data.authorized_by !== '' ? `'${(data.authorized_by).toUpperCase()}'` : null}, 
-        //                                     ${data.authorized_by_signature !== '' ? `'${data.authorized_by_signature}'` : null}, ${data.authorized_by !== '' ? `'${date}'` : null},
-        //                                     ${data.approved_by !== '' ? `'${(data.approved_by).toUpperCase()}'` : null}, ${data.approved_by_signature !== '' ? `'${data.approved_by_signature}'` : null}, 
-        //                                     ${data.approved_by !== '' ? `'${date}'` : null}, ${data.released_by !== '' ? `'${(data.released_by).toUpperCase()}'` : null}, 
-        //                                     ${data.released_by_signature !== '' ? `'${data.released_by_signature}'` : null}, ${data.released_by !== '' ? `'${date}'` : null},
-        //                                     ${data.received_by !== '' ? `'${(data.received_by).toUpperCase()}'` : null}, ${data.received_by_signature !== '' ? `'${data.received_by_signature}'` : null}, 
-        //                                     ${data.received_by !== '' ? `'${date}'` : null}` })
-        //     .build();
-            
-        // if(requests.length > 0) {
-        //     for(let count = 0; count < requests.length; count++) {
-        //         await new Builder(`tbl_services_requests`)
-        //             .insert({ columns: `service_id, request, personnel, date_from, date_to, time_from, time_to, status`, 
-        //                             values: `${service.id}, '${(requests[count].request).toUpperCase()}', '${(requests[count].personnel).toUpperCase()}', '${requests[count].date_from}',
-        //                                             '${requests[count].date_to}', ${requests[count].time_from !== '' ? `'${(requests[count].time_from).toUpperCase()}'` : null},
-        //                                             ${requests[count].time_to !== '' ? `'${(requests[count].time_to).toUpperCase()}'` : null}, 'active'` })
-        //             .build();
-        //     }
-        // }
-
-        // if(items.length > 0) {
-        //     for(let count = 0; count < items.length; count++) {
-        //         await new Builder(`tbl_services_items`)
-        //             .insert({ column: `service_id, item, qty, unit, description, status`, 
-        //                             values: `${service.id}, '${(items[count].item).toUpperCase()}', '${(items[count].qty).toUpperCase()}', 
-        //                                             ${items[count].description !== '' ? `'${(items[count].description).toUpperCase()}'` : null}, 'active` })
-        //             .build();
-        //     }
-        // }
             
         audit.series_no = Global.randomizer(7);
         audit.field = 'all';
@@ -253,7 +209,7 @@ class Services {
                 .update(`so_no= ${data.so_no !== '' && data.so_no !== null ? `'${(data.so_no).toUpperCase()}'` : null}, 
                                 po_no= ${data.po_no !== '' && data.po_no !== null ? `'${(data.po_no).toUpperCase()}'` : null}, customer= '${(data.customer).toUpperCase()}', 
                                 project= '${(data.project).toUpperCase()}', service_location= '${(data.service_location).toUpperCase()}', contact_person= '${(data.contact_person).toUpperCase()}', 
-                                position= ${data.position !== '' && data.position !== null ? `'${(data.positon).toUpperCase()}'` : null}, date_needed= '${data.date_needed}', 
+                                position= ${data.position !== '' && data.position !== null ? `'${(data.position).toUpperCase()}'` : null}, date_needed= '${data.date_needed}', 
                                 time_expected= '${(data.time_expected).toUpperCase()}', warranty= ${data.warranty !== '' && data.warranty !== null ? `'${(data.warranty).toUpperCase()}'` : null}, 
                                 up_to= ${data.up_to !== '' && data.up_to !== null ? `'${(data.up_to).toUpperCase()}'` : null}, for_billing= '${data.for_billing}', 
                                 contact_number= ${data.contact_number !== '' && data.contact_number !== null ? `'${(data.contact_number).toUpperCase()}'` : null}, 
@@ -366,14 +322,9 @@ class Services {
                                     current: (data.requested_by).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
         }
 
-        if(Global.compare(srvc[0].requested_by_signature, data.requested_by_signature)) {
+        if(srvc[0].requested_by_signature !== data.requested_by_signature) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'requested_by_signature', previous: srvc[0].requested_by_signature, 
                                     current: data.requested_by_signature, action: 'update', user_id: data.updated_by, date: date });
-        }
-
-        if(Global.compare(srvc[0].requested_by_date, data.requested_by_date)) {
-            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'requested_by_date', previous: srvc[0].requested_by_date, 
-                                    current: data.requested_by_date, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(Global.compare(srvc[0].noted_by_sup, data.noted_by_sup)) {
@@ -381,14 +332,9 @@ class Services {
                                     current: (data.noted_by_sup).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
         }
 
-        if(Global.compare(srvc[0].noted_by_sup_signature, data.noted_by_sup_signature)) {
+        if(srvc[0].noted_by_sup_signature !== data.noted_by_sup_signature) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'noted_by_sup_signature', previous: srvc[0].noted_by_sup_signature, 
                                     current: data.noted_by_sup_signature, action: 'update', user_id: data.updated_by, date: date });
-        }
-
-        if(Global.compare(srvc[0].noted_by_sup_date, data.noted_by_sup_date)) {
-            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'noted_by_sup_date', previous: srvc[0].noted_by_sup_date, 
-                                    current: data.noted_by_sup_date, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(!(_errors.length > 0)) {
@@ -401,7 +347,7 @@ class Services {
                 .update(`so_no= ${data.so_no !== '' && data.so_no !== null ? `'${(data.so_no).toUpperCase()}'` : null}, 
                                 po_no= ${data.po_no !== '' && data.po_no !== null ? `'${(data.po_no).toUpperCase()}'` : null}, customer= '${(data.customer).toUpperCase()}', 
                                 project= '${(data.project).toUpperCase()}', service_location= '${(data.service_location).toUpperCase()}', contact_person= '${(data.contact_person).toUpperCase()}', 
-                                position= ${data.position !== '' && data.position !== null ? `'${(data.positon).toUpperCase()}'` : null}, date_needed= '${data.date_needed}', 
+                                position= ${data.position !== '' && data.position !== null ? `'${(data.position).toUpperCase()}'` : null}, date_needed= '${data.date_needed}', 
                                 time_expected= '${(data.time_expected).toUpperCase()}', warranty= ${data.warranty !== '' && data.warranty !== null ? `'${(data.warranty).toUpperCase()}'` : null}, 
                                 up_to= ${data.up_to !== '' && data.up_to !== null ? `'${(data.up_to).toUpperCase()}'` : null}, for_billing= '${data.for_billing}', 
                                 contact_number= ${data.contact_number !== '' && data.contact_number !== null ? `'${(data.contact_number).toUpperCase()}'` : null}, 
