@@ -27,7 +27,8 @@ const Other = ({ fetching }) => {
                                 render= { ({ field: { onChange, value } }) => (
                                     <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                         <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                            onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
+                                            onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
+                                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } />
                                     </LocalizationProvider> ) }>
                             </Controller>
                         </Box> }
@@ -37,7 +38,8 @@ const Other = ({ fetching }) => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography variant= "body2" gutterBottom>Time expected</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('time_expected') } name= "time_expected" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('time_expected') } name= "time_expected" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.time_expected?.message }</Typography>
                 </Stack>
             </Grid>
@@ -45,14 +47,16 @@ const Other = ({ fetching }) => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography variant= "body2" gutterBottom>Warranty</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('warranty') } name= "warranty" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('warranty') } name= "warranty" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
                 </Stack>
             </Grid>
             <Grid item xs= { 4 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography variant= "body2" gutterBottom>Up to</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('up_to') } name= "up_to" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('up_to') } name= "up_to" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
                 </Stack>
             </Grid>
             <Grid item xs= { 4 }>
@@ -66,6 +70,7 @@ const Other = ({ fetching }) => {
                                             noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                             renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
                                             onChange= { (e, item) => { onChange(item.id); } }
+                                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' }
                                             value= { billing.find(data => { return data.id === (getValues().for_billing !== undefined ? getValues().for_billing : value) }) } />
                                     ) } />
                         </Box> }

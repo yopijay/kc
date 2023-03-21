@@ -36,7 +36,7 @@ const input = {
 const Index = () => {
     const { type, id } = useParams();
     const navigate = useNavigate();
-    const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
+    const { setValidation, setValue, setError, handleSubmit, getValues } = useContext(FormCntxt);
     const { isFetching, refetch } =  
         useGet({ key: ['srvc_specific'], fetch: specific({ table: 'tbl_services', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
             onSuccess: (data) => {
@@ -82,7 +82,7 @@ const Index = () => {
                     </ThemeProvider>
                 </form>
             </Box>
-            { type !== 'view' ?
+            { type !== 'view' && !(getValues()?.status !== undefined && getValues()?.status === 'approved') ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
