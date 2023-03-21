@@ -37,7 +37,7 @@ const Item = () => {
                     list?.map((data, index) => (
                         <Grid item xs= { 12 } sm= { 6 } key= { index } sx= {{ padding: '10px 8px' }}>
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= { container } spacing= { 1 } 
-                                component= { Link } to= { `/services/request/form/update/${data.id}` }>
+                                component= { Link } to= { `/services/evaluation/form/update/${data.id}` }>
                                 <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                                     <Typography variant= "body2" sx= { txt }>Service Request No.: <b>{ data.service_request_no }</b></Typography>
                                 </Stack>
