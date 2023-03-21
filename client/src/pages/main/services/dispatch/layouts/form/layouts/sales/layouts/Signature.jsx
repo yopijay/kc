@@ -35,7 +35,7 @@ const Signature = ({ fetching }) => {
                         <SignaturePad ref= { _rb } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('requested_by_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _rb.current.clear() } />
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _rb.current.clear(); setValue('requested_by_signature', null); } } />
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('requested_by') } name= "requested_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
@@ -49,7 +49,7 @@ const Signature = ({ fetching }) => {
                         <SignaturePad ref= { _nbs } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('noted_by_sup_signature', e.target.toDataURL()) } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _nbs.current.clear() } />
+                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _nbs.current.clear(); setValue('noted_by_sup', null); } } />
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('noted_by_sup') } name= "noted_by_sup" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }

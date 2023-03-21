@@ -6,20 +6,20 @@ import { Route, Routes } from "react-router-dom";
 // Core
 import { ProfileCntx } from "core/context/Profile"; // Context
 import { useGet } from "core/function/global"; // Function
-import { component, profile } from "core/api"; // API
+import { profile } from "core/api"; // API
 import { LoaderScreen } from "core/loader/Screen"; // Loader
 import { Navs as components } from "core/constants/Navs"; // Constants
 
 // Layout
 import Navbar from 'pages/global/navbar';
 import Sidebar from 'pages/global/sidebar';
-import Module from 'pages/main/setup/module';
-import SubModule from 'pages/main/setup/sub-module';
+// import Module from 'pages/main/setup/module';
+// import SubModule from 'pages/main/setup/sub-module';
 
 const Index = () => {
     const { setData } = useContext(ProfileCntx);
     // const { data: layouts } = useGet({ key: ['component'], fetch: component(localStorage.getItem('token')), options: { refetchOnWindowFocus: false } });
-    const { data: prof, isFetching: prof_fetching } = 
+    const { isFetching: prof_fetching } = 
         useGet({ key: ['profile'], fetch: profile(atob(localStorage.getItem('token'))), options: { refetchOnWindowFocus: false }, onSuccess: (data) => setData(data[0]) });
 
         return (
