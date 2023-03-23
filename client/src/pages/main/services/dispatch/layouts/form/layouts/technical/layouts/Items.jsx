@@ -18,13 +18,14 @@ let defaults = {
 }
 
 const Items = ({ fetching }) => {
-    const { register, control, errors } = useContext(FormCntxt);
+    const { register, control, errors, getValues } = useContext(FormCntxt);
     const { fields, append, remove } = useFieldArray({ control, name: 'items' });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ margin: '30px 0 20px 0'}}>
             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ marginBottom: '20px' }}>
-                <Typography sx= { addrow } onClick= { () => append(defaults) }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
+                { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ? 
+                    <Typography sx= { addrow } onClick= { () => append(defaults) }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography> : ''}
             </Stack>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" divider= { <Divider orientation= "horizontal" flexItem /> }>
                 {
@@ -32,7 +33,8 @@ const Items = ({ fetching }) => {
                         fields.map((fld, index) => (
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" key= { index } sx= {{ margin: '15px 0' }}>
                                 <Stack direction= "row" justifyContent= "flex-end" alignItems= "center">
-                                    <Typography sx= { deleterow } onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } style= {{ color: '#FFFFFF' }} /></Typography>
+                                    { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ? 
+                                    <Typography sx= { deleterow } onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } style= {{ color: '#FFFFFF' }} /></Typography> : '' }
                                 </Stack>
                                 <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 }>
                                     <Grid item xs= { 4 } sm= { 3 }>
@@ -40,7 +42,8 @@ const Items = ({ fetching }) => {
                                             <Typography variant= "body2" gutterBottom>Item</Typography>
                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                 <TextField { ...register(`items.${index}.item`, { validate: value => value === '' }) } name= { `items.${index}.item` } 
-                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                                                    disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                                             <Typography variant= "body2" color= "error.dark" sx= {{ marginTop: '5px' }}>{ errors.items?.[index].item?.message }</Typography>
                                         </Stack>
                                     </Grid>
@@ -49,7 +52,8 @@ const Items = ({ fetching }) => {
                                             <Typography variant= "body2" gutterBottom>Qty</Typography>
                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                 <TextField { ...register(`items.${index}.qty`, { required: true }) } name= { `items.${index}.qty` } 
-                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                                                    disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                                             <Typography variant= "body2" color= "error.dark" sx= {{ marginTop: '5px' }}>{ errors.items?.[index].qty?.message }</Typography>
                                         </Stack>
                                     </Grid>
@@ -58,7 +62,8 @@ const Items = ({ fetching }) => {
                                             <Typography variant= "body2" gutterBottom>Unit</Typography>
                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                 <TextField { ...register(`items.${index}.unit`, { required: true }) } name= { `items.${index}.unit` } 
-                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                                                    disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                                             <Typography variant= "body2" color= "error.dark" sx= {{ marginTop: '5px' }}>{ errors.items?.[index].unit?.message }</Typography>
                                         </Stack>
                                     </Grid>
@@ -67,7 +72,8 @@ const Items = ({ fetching }) => {
                                             <Typography variant= "body2" gutterBottom>Description</Typography>
                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                 <TextField { ...register(`items.${index}.description`) } name= { `items.${index}.description` } 
-                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                                                    disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                                         </Stack>
                                     </Grid>
                                 </Grid>

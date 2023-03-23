@@ -44,10 +44,12 @@ const Signature = ({ fetching }) => {
                             onEnd= { e => { setValue('prepared_by_signature', e.target.toDataURL()); setError('prepared_by', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _pb.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ?
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _pb.current.clear(); setValue('prepared_by_signature', null); } } /> : '' }
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('prepared_by') } name= "prepared_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('prepared_by') } name= "prepared_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                     <Typography variant= "body2">Prepared by</Typography>
                     <Typography variant= "body2" color= "error.dark">{ errors.prepared_by?.message }</Typography>
                 </Stack>
@@ -59,10 +61,12 @@ const Signature = ({ fetching }) => {
                             onEnd= { e => { setValue('noted_by_signature', e.target.toDataURL()); setError('noted_by', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _nb.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ?
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _nb.current.clear(); setValue('noted_by_signature', null); } } /> : '' }
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('noted_by') } name= "noted_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('noted_by') } name= "noted_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                     <Typography variant= "body2">Noted by</Typography>
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.noted_by?.message }</Typography>
                 </Stack>
@@ -74,10 +78,12 @@ const Signature = ({ fetching }) => {
                             onEnd= { e => { setValue('released_by_signature', e.target.toDataURL()); setError('released_by', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _rlb.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ?
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _rlb.current.clear(); setValue('released_by_signature', null); } } /> : '' }
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('released_by') } name= "released_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('released_by') } name= "released_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                     <Typography variant= "body2">Released by</Typography>
                     <Typography variant= "body2" color= "error.dark">{ errors.released_by?.message }</Typography>
                 </Stack>
@@ -89,10 +95,12 @@ const Signature = ({ fetching }) => {
                             onEnd= { e => { setValue('authorized_by_signature', e.target.toDataURL()); setError('authorized_by', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _ab.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ?
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _ab.current.clear(); setValue('authorized_by_signature', null); } } /> : '' }
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('authorized_by') } name= "authorized_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('authorized_by') } name= "authorized_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                     <Typography variant= "body2">Authorized by</Typography>
                     <Typography variant= "body2" color= "error.dark">{ errors.authorized_by?.message }</Typography>
                 </Stack>
@@ -104,10 +112,12 @@ const Signature = ({ fetching }) => {
                             onEnd= { e => { setValue('authorized_by_signature', e.target.toDataURL()); setError('approved_by', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _apb.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ?
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _apb.current.clear(); setValue('authorized_by_signature', null); } } /> : '' }
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('approved_by') } name= "approved_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('approved_by') } name= "approved_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                     <Typography variant= "body2">Approved by</Typography>
                     <Typography variant= "body2" color= "error.dark">{ errors.approved_by?.message }</Typography>
                 </Stack>
@@ -119,10 +129,12 @@ const Signature = ({ fetching }) => {
                             onEnd= { e => { setValue('received_by_signature', e.target.toDataURL()); setError('received_by', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _rcb.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ?
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _rcb.current.clear(); setValue('received_by_signature', null); } } /> : '' }
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('received_by') } name= "received_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('received_by') } name= "received_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                     <Typography variant= "body2">Received by</Typography>
                     <Typography variant= "body2" color= "error.dark">{ errors.received_by?.message }</Typography>
                 </Stack>

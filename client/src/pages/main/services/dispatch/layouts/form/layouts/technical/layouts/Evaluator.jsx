@@ -36,10 +36,12 @@ const Evaluator = ({ fetching }) => {
                             onEnd= { e => { setValue('evaluated_by_signature', e.target.toDataURL()); setError('evaluated_by', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _eb.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ? 
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _eb.current.clear(); setValue('evaluated_by_signature', null); } } /> : ''}
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('evaluated_by') } name= "evaluated_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('evaluated_by') } name= "evaluated_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                     <Typography variant= "body2">Evaluated by</Typography>
                     <Typography variant= "body2" color= "error.dark">{ errors.evaluated_by?.message }</Typography>
                 </Stack>
@@ -51,10 +53,12 @@ const Evaluator = ({ fetching }) => {
                             onEnd= { e => { setValue('eval_noted_by_sup_signature', e.target.toDataURL()); setError('eval_noted_by_sup', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _ebs.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ?
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _ebs.current.clear(); setValue('eval_noted_by_sup_signature', null); } } /> : '' }
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('eval_noted_by_sup') } name= "eval_noted_by_sup" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                        <TextField { ...register('eval_noted_by_sup') } name= "eval_noted_by_sup" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
                     <Typography variant= "body2">{ `Noted by (Immediate Superior)` }</Typography>
                     <Typography variant= "body2" color= "error.dark">{ errors.eval_noted_by_sup?.message }</Typography>
                 </Stack>

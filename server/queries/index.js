@@ -180,6 +180,12 @@ const evaluate = async (table, type, data) => {
                 }
 
                 break;
+            case 'report':
+                switch(table) {
+                    case 'tbl_services': resolve(await new Services().report(data)); break;
+                }
+
+                break;
             default: 
         }
     });

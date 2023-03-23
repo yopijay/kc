@@ -37,7 +37,7 @@ const input = {
 const Index = () => {
     const { type, id } = useParams();
     const navigate = useNavigate();
-    const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
+    const { setValidation, setValue, setError, handleSubmit, getValues } = useContext(FormCntxt);
     const { isFetching, refetch } =  
         useGet({ key: ['srvc_specific'], fetch: specific({ table: 'tbl_services', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
             onSuccess: (data) => {
@@ -84,21 +84,23 @@ const Index = () => {
                     </ThemeProvider>
                 </form>
             </Box>
-            { type !== 'view' ?
+            { type !== 'view' && (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
-                <Grid item xs= { 12 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 5px 0 0'}}>
-                    <Box sx= { btnerror } onClick= { handleSubmit(data => {
-                        data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
-                        data['form'] = 'dispatch';
+                    <Grid item xs= { 4 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 5px 0 0'}}>
+                        <Box sx= { btnerror } onClick= { handleSubmit(data => {
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
+                            data['form'] = 'dispatch';
+                            data['status'] = 'closed';
 
-                        closed({ table: 'tbl_services', type: 'closed', data: data });
-                    }) }>Force closed</Box>
-                </Grid>
-                    <Grid item xs= { 12 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 0 0 5px' }}>
+                            closed({ table: 'tbl_services', type: 'closed', data: data });
+                        }) }>Close</Box>
+                    </Grid>
+                    <Grid item xs= { 4 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 5px' }}>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             let errors = [];
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
                             data['form'] = 'dispatch';
+                            data['status'] = 'dispatch'
                             
                             if(data.evaluated_by === null) { errors.push({ name: 'evaluated_by', message: 'This field is required!' }); }
                             if(data.noted_by === null) { errors.push({ name: 'noted_by', message: 'This field is required!' }); }
@@ -115,6 +117,26 @@ const Index = () => {
                             if(!(errors.length > 0)) { dispatching({ table: 'tbl_services', type: 'dispatch', data: data }); }
                             else { errors.forEach(err => setError(err.name, { message: err.message })); }
                         }) }>Dispatch</Box>
+                    </Grid>
+                    <Grid item xs= { 4 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 0 0 5px' }}>
+                        <Box sx= { btntxt } onClick= { handleSubmit(data => {
+                            let errors = [];
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
+                            data['form'] = 'dispatch';
+                            data['status'] = 'approved';
+                            
+                            if((data.evaluated_by !== null && data.evaluated_by !== '') && data.evaluated_by_signature === null) { errors.push({ name: 'evaluated_by', message: 'Please put your signature!' }); }
+                            if((data.eval_noted_by_sup !== null && data.eval_noted_by_sup !== '') && data.eval_noted_by_sup_signature === null) { errors.push({ name: 'eval_noted_by_sup', message: 'Please put your signature!' }); }
+                            if((data.prepared_by !== null && data.prepared_by !== '') && data.prepared_by_signature === null) { errors.push({ name: 'prepared_by', message: 'Please put your signature!' }); }
+                            if((data.noted_by !== null && data.noted_by !== '') && data.noted_by_signature === null) { errors.push({ name: 'noted_by', message: 'Please put your signature!' }); }
+                            if((data.released_by !== null && data.released_by !== '') && data.released_by_signature === null) { errors.push({ name: 'released_by', message: 'Please put your signature!' }); }
+                            if((data.authorized_by !== null && data.authorized_by !== '') && data.authorized_by_signature === null) { errors.push({ name: 'authorized_by', message: 'Please put your signature!' }); }
+                            if((data.approved_by !== null && data.approved_by !== '') && data.approved_by_signature === null) { errors.push({ name: 'approved_by', message: 'Please put your signature!' }); }
+                            if((data.received_by !== null && data.received_by !== '') && data.received_by_signature === null) { errors.push({ name: 'received_by', message: 'Please put your signature!' }); }
+
+                            if(!(errors.length > 0)) { dispatching({ table: 'tbl_services', type: 'dispatch', data: data }); }
+                            else { errors.forEach(err => setError(err.name, { message: err.message })); }
+                        }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }
         </Stack>

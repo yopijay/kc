@@ -7,17 +7,18 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
-import { errorToast, successToast, useGet, usePost } from "core/function/global"; // Function
-import { save, specific, update } from "core/api"; // API
+import { successToast, useGet, usePost } from "core/function/global"; // Function
+import { evaluate, specific } from "core/api"; // API
 import { theme } from "core/theme/form.theme"; // Theme
 
 // Constants
-import { btnicon, btntxt, card } from "./index.style"; // Styles
+import { btnerror, btnicon, btntxt, card } from "./index.style"; // Styles
 import { validation as Validation } from './index.validation'; // Validation
 
 // Layouts
 import Header from "./layouts/Header";
 import Sales from "./layouts/sales";
+import Implementation from "./layouts/implementation";
 
 const input = {
     MuiInput: {
@@ -36,7 +37,7 @@ const input = {
 const Index = () => {
     const { type, id } = useParams();
     const navigate = useNavigate();
-    const { setValidation, setValue, setError, handleSubmit, getValues } = useContext(FormCntxt);
+    const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
     const { isFetching, refetch } =  
         useGet({ key: ['srvc_specific'], fetch: specific({ table: 'tbl_services', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
             onSuccess: (data) => {
@@ -48,19 +49,20 @@ const Index = () => {
             }
         });
 
-    const { mutate: saving } = 
-        usePost({ fetch: save, 
+    const { mutate: reporting } = 
+        usePost({ fetch: evaluate, 
             onSuccess: (data) => {
-                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
-                else { successToast(data.message, 3000, navigate('/services/request', { replace: true })); } 
+                console.log(data);
+                // if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
+                // else { successToast(data.message, 3000, navigate('/services/reports', { replace: true })); } 
             } 
         });
 
-    const { mutate: updating } = 
-        usePost({ fetch: update, 
-            onSuccess: (data) => {
+    const { mutate: closed } = 
+        usePost({ fetch: evaluate,
+            onSuccess: data => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
-                else { successToast(data.message, 3000, navigate('/services/request', { replace: true })); } 
+                else { successToast(data.message, 3000, navigate('/services/reports', { replace: true })); } 
             } 
         });
 
@@ -69,8 +71,8 @@ const Index = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>{ type } Service request</Typography>
-                <Typography sx= { btnicon } component= { Link } to= "/services/request" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>{ type } Report</Typography>
+                <Typography sx= { btnicon } component= { Link } to= "/services/reports" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
             <Box sx= { card }>
                 <form autoComplete= "off">
@@ -78,36 +80,29 @@ const Index = () => {
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%' }} divider={ <Divider orientation="horizontal" flexItem /> } spacing= { 2 }>
                             <Header fetching= { isFetching } />
                             <Sales fetching= { isFetching } />
+                            <Implementation fetching= { isFetching } />
                         </Stack>
                     </ThemeProvider>
                 </form>
             </Box>
-            { type !== 'view' && !(getValues()?.status !== undefined && getValues()?.status !== 'saved' ) ?
+            { type !== 'view' ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
-                    <Grid item xs= { 6 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 5px 0 0' }}>
-                        <Box sx= { btntxt } onClick= { handleSubmit(data => {
+                    <Grid item xs= { 6 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 5px 0 0'}}>
+                        <Box sx= { btnerror } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
-                            data['form'] = 'request';
-                            data['status'] = 'posted';
-                            
-                            if((data.requests).length > 0) {
-                                if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
-                                else { updating({ table: 'tbl_services', data: data }); }
-                            }
-                            else { errorToast('Request list must not be empty!', 3000); }
-                        }) }>Post</Box>
+                            data['form'] = 'report';
+
+                            closed({ table: 'tbl_services', type: 'closed', data: data });
+                        }) }>Close</Box>
                     </Grid>
                     <Grid item xs= { 6 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 0 0 5px' }}>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
+                            let errors = [];
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
-                            data['form'] = 'request';
-                            data['status'] = 'saved';
-                            
-                            if((data.requests).length > 0) {
-                                if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
-                                else { updating({ table: 'tbl_services', data: data }); }
-                            }
-                            else { errorToast('Request list must not be empty!', 3000); }
+                            data['form'] = 'report';
+
+                            if(!(errors.length > 0)) { reporting({ table: 'tbl_services', type: 'report', data: data }); }
+                            else { errors.forEach(err => setError(err.name, { message: err.message })); }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }
