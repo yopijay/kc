@@ -53,12 +53,13 @@ const Item = () => {
                                 </Stack>
                                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                                     { data.status === 'approved' ? 
-                                        <Chip variant= "default" size= "small" label= "Approved" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
-                                        data.status === 'dispatch' ? 
-                                            <Chip variant= "default" size= "small" label= "Dispatch" sx= {{ backgroundColor: '#2065d1', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
-                                            data.status === 'cancelled' ? 
-                                                <Chip variant= "default" size= "small" label= "Reject" sx= {{ backgroundColor: '#4cd137', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
-                                                <Chip variant= "default" size= "small" label= "Pending" sx= {{ backgroundColor: '#fda92d', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> }
+                                        <Chip variant= "default" label= "Approved" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
+                                    { data.status === 'posted' ? 
+                                        <Chip variant= "default" label= "Pending" sx= {{ backgroundColor: '#fda92d', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
+                                    { data.status === 'dispatch' ? 
+                                        <Chip variant= "default" label= "Dispatch" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
+                                    { data.status === 'closed' ? 
+                                        <Chip variant= "default" label= "Closed" sx= {{ backgroundColor: '#e17055', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
                                 </Stack>
                             </Stack>
                         </Grid>

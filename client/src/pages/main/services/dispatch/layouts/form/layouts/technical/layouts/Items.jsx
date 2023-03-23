@@ -18,7 +18,7 @@ let defaults = {
 }
 
 const Items = ({ fetching }) => {
-    const { register, control } = useContext(FormCntxt);
+    const { register, control, errors } = useContext(FormCntxt);
     const { fields, append, remove } = useFieldArray({ control, name: 'items' });
 
     return (
@@ -39,24 +39,27 @@ const Items = ({ fetching }) => {
                                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                                             <Typography variant= "body2" gutterBottom>Item</Typography>
                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                <TextField { ...register(`items.${index}.item`) } name= { `items.${index}.item` } 
+                                                <TextField { ...register(`items.${index}.item`, { validate: value => value === '' }) } name= { `items.${index}.item` } 
                                                     variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                            <Typography variant= "body2" color= "error.dark" sx= {{ marginTop: '5px' }}>{ errors.items?.[index].item?.message }</Typography>
                                         </Stack>
                                     </Grid>
                                     <Grid item xs= { 2 }>
                                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                                             <Typography variant= "body2" gutterBottom>Qty</Typography>
                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                <TextField { ...register(`items.${index}.qty`) } name= { `items.${index}.qty` } 
+                                                <TextField { ...register(`items.${index}.qty`, { required: true }) } name= { `items.${index}.qty` } 
                                                     variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                            <Typography variant= "body2" color= "error.dark" sx= {{ marginTop: '5px' }}>{ errors.items?.[index].qty?.message }</Typography>
                                         </Stack>
                                     </Grid>
                                     <Grid item xs= { 2 }>
                                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                                             <Typography variant= "body2" gutterBottom>Unit</Typography>
                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                <TextField { ...register(`items.${index}.unit`) } name= { `items.${index}.unit` } 
+                                                <TextField { ...register(`items.${index}.unit`, { required: true }) } name= { `items.${index}.unit` } 
                                                     variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                            <Typography variant= "body2" color= "error.dark" sx= {{ marginTop: '5px' }}>{ errors.items?.[index].unit?.message }</Typography>
                                         </Stack>
                                     </Grid>
                                     <Grid item xs= { 4 } sm= { 5 }>

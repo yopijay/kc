@@ -82,12 +82,26 @@ const Index = () => {
                     </ThemeProvider>
                 </form>
             </Box>
-            { type !== 'view' && !(getValues()?.status !== undefined && getValues()?.status === 'approved') ?
+            { type !== 'view' && !(getValues()?.status !== undefined && getValues()?.status !== 'saved' ) ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
-                    <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
+                    <Grid item xs= { 12 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 5px 0 0' }}>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
                             data['form'] = 'request';
+                            data['status'] = 'posted';
+                            
+                            if((data.requests).length > 0) {
+                                if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
+                                else { updating({ table: 'tbl_services', data: data }); }
+                            }
+                            else { errorToast('Request list must not be empty!', 3000); }
+                        }) }>Post</Box>
+                    </Grid>
+                    <Grid item xs= { 12 } sm= { 3 } lg= { 2 } sx= {{ padding: '0 0 0 5px' }}>
+                        <Box sx= { btntxt } onClick= { handleSubmit(data => {
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
+                            data['form'] = 'request';
+                            data['status'] = 'saved';
                             
                             if((data.requests).length > 0) {
                                 if(type === 'new') { saving({ table: 'tbl_services', data: data }); }

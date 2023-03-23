@@ -34,6 +34,20 @@ export const btntxt = {
     '&:hover': { backgroundColor: '#1b405d' }
 }
 
+export const btnerror = { 
+    display: 'flex',
+    cursor: 'pointer',
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    backgroundColor: '#ff3030',
+    color: '#ffffff',
+    borderRadius: '7px',
+    padding: '7px 0',
+    transition: 'all 0.2s ease-in-out',
+    '&:hover': { backgroundColor: '#c30006' }
+}
+
 export const input = {
     border: 'solid 1px #ced6e0',
     padding: {

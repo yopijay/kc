@@ -52,7 +52,8 @@ const Header = ({ fetching }) => {
                                     render= { ({ field: { onChange, value } }) => (
                                         <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                             <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
+                                                onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
+                                                disabled= { true } />
                                         </LocalizationProvider> ) }>
                                 </Controller>
                             </Box> }
@@ -65,7 +66,8 @@ const Header = ({ fetching }) => {
                                     render= { ({ field: { onChange, value } }) => (
                                         <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                             <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
+                                                onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
+                                                disabled= { true } />
                                         </LocalizationProvider> ) }>
                                 </Controller>
                             </Box> }

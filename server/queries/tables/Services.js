@@ -5,12 +5,43 @@ const audit = { series_no: '', table_name: 'tbl_services',  item_id: 0, field: '
 class Services {
     series = async () => { return (await new Builder(`tbl_services`).select(`COUNT(*)`).build()).rows; }
     
-    dashboard = async () => {
-        return {
-            total: (await new Builder(`tbl_services`).select().build()).rowCount,
-            pending: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'saved'`).build()).rowCount,
-            approved: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'approved'`).build()).rowCount,
-            cancelled: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'cancelled'`).build()).rowCount
+    dashboard = async (data) => {
+        switch(data.type) {
+            case 'requests': 
+                return {
+                    total: (await new Builder(`tbl_services`).select().build()).rowCount,
+                    pending: (await new Builder(`tbl_services`).select().condition(`WHERE status = 'saved' OR status= 'posted'`).build()).rowCount,
+                    approved: (await new Builder(`tbl_services`).select().condition(`WHERE status != 'saved' AND status != 'posted' AND status != 'closed'`).build()).rowCount,
+                    closed: (await new Builder(`tbl_services`).select().condition(`WHERE status = 'closed'`).build()).rowCount
+                }
+            case 'evaluation': 
+                return {
+                    total: (await new Builder(`tbl_services`).select().condition(`WHERE status != 'saved'`).build()).rowCount,
+                    pending: (await new Builder(`tbl_services`).select().condition(`WHERE status = 'posted'`).build()).rowCount,
+                    approved: (await new Builder(`tbl_services`).select().condition(`WHERE status != 'posted' AND status != 'closed'`).build()).rowCount,
+                    closed: (await new Builder(`tbl_services`).select().condition(`WHERE status = 'closed'`).build()).rowCount
+                }
+            case 'dispatch': 
+                return {
+                    total: (await new Builder(`tbl_services AS srvc`)
+                                .select()
+                                .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
+                                .condition(`WHERE sales.requested_by_signature IS NOT NULL`).build()).rowCount,
+                    dispatched: (await new Builder(`tbl_services AS srvc`)
+                                            .select()
+                                            .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
+                                            .condition(`WHERE sales.requested_by_signature IS NOT NULL AND srvc.status = 'dispatch'`).build()).rowCount,
+                    pending: (await new Builder(`tbl_services AS srvc`)
+                                            .select()
+                                            .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
+                                            .condition(`WHERE sales.requested_by_signature IS NOT NULL AND srvc.status = 'approved'`).build()).rowCount,
+                    closed: (await new Builder(`tbl_services AS srvc`)
+                                            .select()
+                                            .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
+                                            .condition(`WHERE sales.requested_by_signature IS NOT NULL AND srvc.status = 'closed'`).build()).rowCount,
+                }
+            case 'report': return;
+            default: 
         }
     }
 
@@ -19,8 +50,9 @@ class Services {
                         .select(`srvc.id, srvc.series_no, srvc.service_request_no, srvc.date_prepared, srvc.date_requested, srvc.status, sales.so_no, sales.customer, sales.project, sales.date_needed`)
                         .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
                         .join({ table: `tbl_services_technical AS technical`, condition: `technical.service_id = srvc.id`, type: `LEFT` })
-                        .condition(`${data.searchtxt !== '' || (data.phase !== 'request' && data.phase !== 'evaluation') ? `WHERE`: ''}
-                                                ${data.phase === 'dispatch' ? ` sales.requested_by_signature IS NOT NULL` :
+                        .condition(`${data.searchtxt !== '' || (data.phase !== 'request') ? `WHERE`: ''}
+                                                ${data.phase === 'evaluation' ? ` srvc.status != 'saved'` : 
+                                                    data.phase === 'dispatch' ? ` sales.requested_by_signature IS NOT NULL` :
                                                     data.phase === 'report' ? ` technical.evaluated_by_signature IS NOT NULL AND technical.noted_by_signature IS NOT NULL 
                                                                                                     AND technical.received_by_signature IS NOT NULL` : ''}
                                                 ${data.searchtxt !== '' ? 
@@ -37,8 +69,9 @@ class Services {
                         .join({ table: `tbl_services_technical AS technical`, condition: `technical.service_id = srvc.id`, type: `LEFT` })
                         .condition(`WHERE (srvc.service_request_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR sales.customer LIKE '%${(data.searchtxt).toUpperCase()}%'
                                                 OR sales.project LIKE '%${(data.searchtxt).toUpperCase()}%' OR sales.so_no LIKE '%${(data.searchtxt).toUpperCase()}%')
-                                                ${data.phase === 'dispatch' ? ` sales.requested_by_signature IS NOT NULL` :
-                                                    data.phase === 'report' ? ` technical.evaluated_by_signature IS NOT NULL AND technical.noted_by_signature IS NOT NULL 
+                                                ${data.phase === 'evaluation' ? ` AND srvc.status != 'saved'` :
+                                                    data.phase === 'dispatch' ? ` AND sales.requested_by_signature IS NOT NULL` :
+                                                    data.phase === 'report' ? ` AND technical.evaluated_by_signature IS NOT NULL AND technical.noted_by_signature IS NOT NULL 
                                                                                                     AND technical.received_by_signature IS NOT NULL` : ''}
                                                 ORDER BY ${data.orderby} ${(data.sort).toUpperCase()}`)
                         .build()).rows;
@@ -80,7 +113,7 @@ class Services {
         let service = (await new Builder(`tbl_services`)
                                                 .insert({ columns: `series_no, service_request_no, date_prepared, date_requested, status, created_by, date_created`, 
                                                                 values: `'${(data.series_no).toUpperCase()}', '${data.service_request_no}', '${data.date_prepared}', '${data.date_requested}',
-                                                                                'saved', ${data.created_by}, '${date}'` })
+                                                                                '${data.status}', ${data.created_by}, '${date}'` })
                                                 .condition(`RETURNING id`)
                                                 .build()).rows[0];
         
@@ -91,10 +124,11 @@ class Services {
                                             '${(data.customer).toUpperCase()}', '${(data.project).toUpperCase()}', '${(data.service_location).toUpperCase()}', '${(data.contact_person).toUpperCase()}', 
                                             ${data.position !== '' ? `'${(data.position).toUpperCase()}'` : null}, '${data.date_needed}', 
                                             ${data.time_expected !== '' ? `'${(data.time_expected).toUpperCase()}'` : null}, ${data.warranty !== '' ? `'${(data.warranty).toUpperCase()}'` : null}, 
-                                            ${data.up_to !== '' ? `'${(data.up_to).toUpperCase()}'` : null}, '${data.for_billing}', ${data.contact_number !== '' ? `'${data.contact_number}'` : null},
-                                            '${requests}'` })
+                                            ${data.up_to !== '' ? `'${(data.up_to).toUpperCase()}'` : null}, '${data.for_billing}', ${data.contact_number !== '' ? `'${data.contact_number}'` : null}, '${requests}'` })
             .build();
-            
+
+        await new Builder(`tbl_services_technical`).insert({ columns: `service_id`, values: `${service.id}` }).build();
+        
         audit.series_no = Global.randomizer(7);
         audit.field = 'all';
         audit.item_id = service.id;
@@ -201,7 +235,7 @@ class Services {
 
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_services`)
-                .update(`date_prepared= '${data.date_prepared}', date_requested= '${data.date_requested}', updated_by= ${data.updated_by}, date_updated= '${date}'`)
+                .update(`date_prepared= '${data.date_prepared}', date_requested= '${data.date_requested}', status= '${data.status}', updated_by= ${data.updated_by}, date_updated= '${date}'`)
                 .condition(`WHERE id= ${data.id}`)
                 .build();
 
@@ -364,22 +398,212 @@ class Services {
         else { return { result: 'error', error: _errors } }
     }
 
-    declined = async (data) => {
+    closed = async (data) => {
         let date = Global.date(new Date());
-        let requests = JSON.stringify(data.requests);
-        let _audit = [];
-        let _errors = [];
 
-        return data;
+        await new Builder(`tbl_services`).update(`status= 'closed'`).condition(`WHERE id= ${data.id}`).build();
+        
+        audit.series_no = Global.randomizer(7);
+        audit.field = 'all';
+        audit.item_id = data.id;
+        audit.action = 'updated';
+        audit.user_id = data.updated_by;
+        audit.date = date;
+
+        Global.audit(audit);
+        return { result: 'success', message: 'Successfully closed!' }
     }
 
     dispatch = async (data) => {
         let date = Global.date(new Date());
-        let requests = JSON.stringify(data.requests);
+        let items = JSON.stringify(data.items);
         let _audit = [];
         let _errors = [];
+        
+        let srvc = (await new Builder(`tbl_services AS srvc`)
+                            .select(`srvc.*, tech.evaluated_by, tech.evaluated_by_signature, tech.evaluated_by_date, tech.eval_noted_by_sup, tech.eval_noted_by_sup_signature,
+                                            tech.eval_noted_by_sup_date, tech.deliveries_to_customer, tech.tools_equipment, tech.manpower, tech.consumables, tech.others,
+                                            tech.regular_delivery, tech.to_be_rented, tech.for_completion, tech.for_rectification, tech.supplemental_manning, tech.other_purpose,
+                                            tech.prepared_by, tech.prepared_by_signature, tech.prepared_by_date, tech.noted_by, tech.noted_by_signature, tech.noted_by_date,
+                                            tech.authorized_by, tech.authorized_by_signature, tech.authorized_by_date, tech.approved_by, tech.approved_by_signature, tech.approved_by_date,
+                                            tech.released_by, tech.released_by_signature, tech.released_by_date, tech.received_by, tech.received_by_signature, tech.received_by_date, tech.items`)
+                            .join({ table: `tbl_services_technical AS tech`, condition: `tech.service_id = srvc.id`, type: `LEFT` })
+                            .condition(`WHERE srvc.id= ${data.id}`)
+                            .build()).rows;
 
-        return data;
+        if(Global.compare(srvc[0].evaluated_by, data.evaluated_by)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'evaluated_by', previous: srvc[0].evaluated_by, 
+                                    current: (data.evaluated_by).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(srvc[0].evaluated_by_signature !== data.evaluated_by_signature) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'evaluated_by_signature', previous: srvc[0].evaluated_by_signature, 
+                                    current: data.evaluated_by_signature, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].eval_noted_by_sup, data.eval_noted_by_sup)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'eval_noted_by_sup', previous: srvc[0].eval_noted_by_sup, 
+                                    current: (data.eval_noted_by_sup).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(srvc[0].eval_noted_by_sup_signature !== data.eval_noted_by_sup_signature) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'eval_noted_by_sup_signature', previous: srvc[0].eval_noted_by_sup_signature, 
+                                    current: data.eval_noted_by_sup_signature, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].deliveries_to_customer, data.deliveries_to_customer ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'deliveries_to_customer', previous: srvc[0].deliveries_to_customer, 
+                                    current: data.deliveries_to_customer ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].tools_equipment, data.tools_equipment ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'tools_equipment', previous: srvc[0].tools_equipment, 
+                                    current: data.tools_equipment ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].manpower, data.manpower ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'manpower', previous: srvc[0].manpower, 
+                                    current: data.manpower ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].consumables, data.consumables ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'consumables', previous: srvc[0].consumables, 
+                                    current: data.consumables ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].others, data.others ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'others', previous: srvc[0].others, 
+                                    current: data.others ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].regular_delivery, data.regular_delivery ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'regular_delivery', previous: srvc[0].regular_delivery, 
+                                    current: data.regular_delivery ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].for_completion, data.for_completion ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'for_completion', previous: srvc[0].for_completion, 
+                                    current: data.for_completion ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].for_rectification, data.for_rectification ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'for_rectification', previous: srvc[0].for_rectification, 
+                                    current: data.for_rectification ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].supplemental_manning, data.supplemental_manning ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'supplemental_manning', previous: srvc[0].supplemental_manning, 
+                                    current: data.supplemental_manning ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].to_be_rented, data.to_be_rented ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'to_be_rented', previous: srvc[0].to_be_rented, 
+                                    current: data.to_be_rented ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].other_purpose, data.other_purpose ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'other_purpose', previous: srvc[0].other_purpose, 
+                                    current: data.other_purpose ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(data.items !== null) {
+            if(srvc[0].items !== items) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'items', previous: srvc[0].items, 
+                                        current: items, action: 'update', user_id: data.updated_by, date: date });
+            }
+        }
+
+        if(Global.compare(srvc[0].prepared_by, data.prepared_by)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'prepared_by', previous: srvc[0].prepared_by, 
+                                    current: (data.prepared_by).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(srvc[0].prepared_by_signature !== data.prepared_by_signature) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'prepared_by_signature', previous: srvc[0].prepared_by_signature, 
+                                    current: data.prepared_by_signature, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].noted_by, data.noted_by)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'noted_by', previous: srvc[0].noted_by, 
+                                    current: (data.noted_by).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(srvc[0].noted_by_signature !== data.noted_by_signature) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'noted_by_signature', previous: srvc[0].noted_by_signature, 
+                                    current: data.noted_by_signature, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].released_by, data.released_by)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'released_by', previous: srvc[0].released_by, 
+                                    current: (data.released_by).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(srvc[0].released_by_signature !== data.released_by_signature) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'released_by_signature', previous: srvc[0].released_by_signature, 
+                                    current: data.released_by_signature, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].authorized_by, data.authorized_by)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'authorized_by', previous: srvc[0].authorized_by, 
+                                    current: (data.authorized_by).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(srvc[0].authorized_by_signature !== data.authorized_by_signature) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'authorized_by_signature', previous: srvc[0].authorized_by_signature, 
+                                    current: data.authorized_by_signature, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].approved_by, data.approved_by)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'approved_by', previous: srvc[0].approved_by, 
+                                    current: (data.approved_by).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(srvc[0].approved_by_signature !== data.approved_by_signature) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'approved_by_signature', previous: srvc[0].approved_by_signature, 
+                                    current: data.approved_by_signature, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(Global.compare(srvc[0].received_by, data.received_by)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'received_by', previous: srvc[0].received_by, 
+                                    current: (data.received_by).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(srvc[0].received_by_signature !== data.received_by_signature) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'received_by_signature', previous: srvc[0].received_by_signature, 
+                                    current: data.received_by_signature, action: 'update', user_id: data.updated_by, date: date });
+        }
+
+        if(!(_errors.length > 0)) {
+            await new Builder(`tbl_services`).update(`status= 'dispatch', updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${data.id}`).build();
+            await new Builder(`tbl_services_technical`)
+                .update(`evaluated_by= '${(data.evaluated_by).toUpperCase()}', evaluated_by_signature= '${data.evaluated_by_signature}',
+                                evaluated_by_date= ${data.evaluated_by_signature !== null ? `'${date}'` : null},
+                                eval_noted_by_sup= ${data.eval_noted_by_sup !== null ? `'${(data.eval_noted_by_sup).toUpperCase()}'` : null},
+                                eval_noted_by_sup_signature= ${data.eval_noted_by_sup_signature !== null ? `'${data.eval_noted_by_sup_signature}'` : null},
+                                eval_noted_by_sup_date= ${data.eval_noted_by_sup_signature !== null ? `'${date}'` : null},
+                                deliveries_to_customer= ${data.deliveries_to_customer ? 1 : 0}, tools_equipment= ${data.tools_equipment ? 1 : 0}, manpower= ${data.manpower ? 1 : 0},
+                                consumables= ${data.consumables ? 1 : 0}, others= ${data.others ? 1 : 0}, regular_delivery= ${data.regular_delivery ? 1 : 0}, to_be_rented= ${data.to_be_rented ? 1 : 0},
+                                for_completion= ${data.for_completion ? 1 : 0}, for_rectification= ${data.for_rectification ? 1 : 0}, supplemental_manning= ${data.supplemental_manning ? 1 : 0},
+                                other_purpose= ${data.other_purpose ? 1 : 0}, prepared_by= ${data.prepared_by !== null ? `'${(data.prepared_by).toUpperCase()}'` : null},
+                                prepared_by_signature= ${data.prepared_by_signature !== null ? `'${data.prepared_by_signature}'` : null},
+                                prepared_by_date= ${data.prepared_by_signature !== null ? `'${date}'` : null},
+                                noted_by= '${(data.noted_by).toUpperCase()}', noted_by_signature= '${data.noted_by_signature}',
+                                noted_by_date= ${data.noted_by_signature !== null ? `'${date}'` : null}, authorized_by= ${data.authorized_by !== null ? `'${(data.authorized_by).toUpperCase()}'` : null},
+                                authorized_by_signature= ${data.authorized_by_signature !== null ? `'${data.authorized_by_signature}'` : null},
+                                authorized_by_date= ${data.authorized_by_signature !== null ? `'${date}'` : null}, approved_by= ${data.approved_by !== null ? `'${(data.approved_by).toUpperCase()}'` : null},
+                                approved_by_signature= ${data.approved_by_signature !== null ? `'${data.approved_by_signature}'` : null},
+                                approved_by_date= ${data.approved_by_signature !== null ? `'${date}'` : null}, released_by= ${data.released_by !== null ? `'${(data.released_by).toUpperCase()}'` : null},
+                                released_by_signature= ${data.released_by_signature !== null ? `'${data.released_by_signature}'` : null},
+                                released_by_date= ${data.released_by_signature !== null ? `'${date}'` : null}, received_by= ${data.received_by !== null ? `'${(data.received_by).toUpperCase()}'` : null},
+                                received_by_signature= ${data.received_by_signature !== null ? `'${data.received_by_signature}'` : null},
+                                received_by_date= ${data.received_by_signature !== null ? `'${date}'` : null}, items= ${data.items !== null ? `'${data.items}'` : null}`)
+                .condition(`WHERE service_id= ${data.id}`)
+                .build();
+
+            _audit.forEach(data => Global.audit(data));
+            return { result: 'success', message: 'Successfully updated!' }
+        }
+        else { return { result: 'error', error: _errors } }
     }
 }
 
