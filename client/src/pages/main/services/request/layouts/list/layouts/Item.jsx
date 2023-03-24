@@ -64,6 +64,8 @@ const Item = () => {
                                         <Chip variant= "default" label= "Dispatch" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
                                     { data.status === 'closed' ? 
                                         <Chip variant= "default" label= "Closed" sx= {{ backgroundColor: '#e17055', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
+                                    { data.status === 'done' ? 
+                                        <Chip variant= "default" label= "Done" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
                                 </Stack>
                             </Stack>
                         </Grid>

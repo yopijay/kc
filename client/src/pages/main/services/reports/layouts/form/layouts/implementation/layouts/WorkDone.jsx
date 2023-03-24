@@ -22,28 +22,31 @@ let defaults = {
 }
 
 const WorkDone = ({ fetching }) => {
-    const { register, control } = useContext(FormCntxt);
+    const { register, control, getValues } = useContext(FormCntxt);
     const { fields, append, remove } = useFieldArray({ control, name: 'work_done' });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ margin: '30px 0 40px 0' }}>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= {{ marginBottom: '20px' }}>
                 <Typography sx= {{ fontWeight: 'bold' }}>Work Done</Typography>
-                <Typography sx= { addrow } onClick= { () => append(defaults) }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography> 
+                { getValues()?.status !== undefined && getValues()?.status !== 'done' ? 
+                    <Typography sx= { addrow } onClick= { () => append(defaults) }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography> : ''}
             </Stack>
             {
                 fields.length > 0 ?
                     fields.map((fld, index) => (
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" key= { index } sx= {{ margin: '15px 0' }}>
                             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center">
-                                <Typography sx= { deleterow } onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } style= {{ color: '#FFFFFF' }} /></Typography>
+                                { getValues()?.status !== undefined && getValues()?.status !== 'done' ?
+                                    <Typography sx= { deleterow } onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } style= {{ color: '#FFFFFF' }} /></Typography> : ''}
                             </Stack>
                             <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-end" spacing= { 1 }>
                                 <Grid item xs= { 12 } sm= { 6 }>
                                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                                         <Typography variant= "body2" gutterBottom>Particulars</Typography>
                                             { fetching ? <Skeleton variant= "rectangular" height= "100px" sx= {{ borderRadius: '5px' }} /> : 
-                                                <TextareaAutosize name= { `work_done.${index}.particulars` } { ...register(`work_done.${index}.particulars`) } minRows= { 4 } maxRows= { 4 } style= { textarea } /> }
+                                                <TextareaAutosize name= { `work_done.${index}.particulars` } { ...register(`work_done.${index}.particulars`) } minRows= { 4 } maxRows= { 4 } style= { textarea }
+                                                    disabled= { !(getValues()?.status !== undefined && getValues()?.status !== 'done') } /> }
                                     </Stack>
                                 </Grid>
                                 <Grid item xs= { 12 } sm= { 6 }>
@@ -62,7 +65,8 @@ const WorkDone = ({ fetching }) => {
                                                                         render= { ({ field: { onChange, value } }) => (
                                                                             <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                                                                 <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                                                    onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
+                                                                                    onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
+                                                                                    disabled= { !(getValues()?.status !== undefined && getValues()?.status !== 'done') } />
                                                                             </LocalizationProvider> ) }>
                                                                     </Controller>
                                                                 </Box> }
@@ -78,7 +82,8 @@ const WorkDone = ({ fetching }) => {
                                                                         render= { ({ field: { onChange, value } }) => (
                                                                             <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                                                                 <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                                                    onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
+                                                                                    onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
+                                                                                    disabled= { !(getValues()?.status !== undefined && getValues()?.status !== 'done') } />
                                                                             </LocalizationProvider> ) }>
                                                                     </Controller>
                                                                 </Box> }
@@ -96,7 +101,8 @@ const WorkDone = ({ fetching }) => {
                                                             <Typography variant= "body2" gutterBottom>From</Typography>
                                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                                 <TextField { ...register(`work_done.${index}.time_from`) } name= { `work_done.${index}.time_from` } variant= "standard" 
-                                                                    InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                                    InputProps= {{ disableUnderline: true }} sx= { input }
+                                                                    disabled= { !(getValues()?.status !== undefined && getValues()?.status !== 'done') } /> }
                                                         </Stack>
                                                     </Grid>
                                                     <Grid item xs= { 6 }>
@@ -104,7 +110,8 @@ const WorkDone = ({ fetching }) => {
                                                             <Typography variant= "body2" gutterBottom>To</Typography>
                                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                                 <TextField { ...register(`work_done.${index}.time_to`) } name= { `work_done.${index}.time_to` } variant= "standard" 
-                                                                    InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                                    InputProps= {{ disableUnderline: true }} sx= { input }
+                                                                    disabled= { !(getValues()?.status !== undefined && getValues()?.status !== 'done') } /> }
                                                         </Stack>
                                                     </Grid>
                                                 </Grid>

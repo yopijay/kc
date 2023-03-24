@@ -30,7 +30,7 @@ class Services {
                     dispatched: (await new Builder(`tbl_services AS srvc`)
                                             .select()
                                             .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
-                                            .condition(`WHERE sales.requested_by_signature IS NOT NULL AND srvc.status = 'dispatch'`).build()).rowCount,
+                                            .condition(`WHERE sales.requested_by_signature IS NOT NULL AND srvc.status = 'dispatch' OR srvc.status = 'done'`).build()).rowCount,
                     pending: (await new Builder(`tbl_services AS srvc`)
                                             .select()
                                             .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
@@ -49,7 +49,13 @@ class Services {
                                                         AND technical.received_by_signature IS NOT NULL AND srvc.status != 'saved' AND srvc.status != 'posted' AND srvc.status != 'approved'`)
                                 .build()).rowCount,
                     done: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'done'`).build()).rowCount,
-                    ongoing: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'dispatch'`).build()).rowCount
+                    ongoing: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'dispatch'`).build()).rowCount,
+                    closed: (await new Builder(`tbl_services AS srvc`)
+                                    .select()
+                                    .join({ table: `tbl_services_technical AS technical`, condition: `technical.service_id = srvc.id`, type: `LEFT` })
+                                    .condition(`WHERE technical.evaluated_by_signature IS NOT NULL AND technical.noted_by_signature IS NOT NULL 
+                                                            AND technical.received_by_signature IS NOT NULL AND srvc.status = 'closed'`)
+                                    .build()).rowCount
                 }
             default: 
         }
@@ -636,6 +642,12 @@ class Services {
         let sub_contractors = JSON.stringify(data.sub_contractors);
         let _audit = [];
         let _errors = [];
+        
+        let srvc = (await new Builder(`tbl_services AS srvc`)
+                            .select(`srvc.*, report.work_done, report.personnel_deployed, report.sub_contractors, recommendation, recommendation_signature, comments, comments_signature`)
+                            .join({ table: `tbl_services_report AS report`, condition: `report.service_id = srvc.id`, type: `LEFT` })
+                            .condition(`WHERE srvc.id= ${data.id}`)
+                            .build()).rows;
 
         if(srvc[0].work_done !== work_done) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'work_done', previous: srvc[0].work_done, 
@@ -673,6 +685,26 @@ class Services {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_services', item_id: srvc[0].id, field: 'comments_signature', previous: srvc[0].comments_signature, 
                                     current: data.comments_signature, action: 'update', user_id: data.updated_by, date: date });
         }
+        
+        if(!(_errors.length > 0)) {
+            await new Builder(`tbl_services`).update(`status='${data.status}', updated_by= ${data.updated_by}, date_updated= '${date}'`).condition(`WHERE id= ${data.id}`).build();
+            await new Builder(`tbl_services_report`)
+                .update(`work_done= ${data.work_done !== null && (data.work_done).length > 0 ? `'${work_done}'` : null}, 
+                                personnel_deployed= ${data.personnel_deployed !== null && (data.personnel_deployed).length > 0 ? `'${personnel_deployed}'` : null},
+                                sub_contractors= ${data.sub_contractors !== null && (data.sub_contractors).length > 0 ? `'${sub_contractors}'` : null},
+                                recommendation= ${data.recommendation !== null && data.recommendation !== '' ? `'${(data.recommendation).toUpperCase()}'` : null},
+                                recommendation_signature= ${data.recommendation_signature !== null && data.recommendation_signature !== '' ? `'${data.recommendation_signature}'` : null },
+                                recommendation_date= ${data.recommendation_signature !== null && data.recommendation_signature !== '' ? `'${date}'` : null},
+                                comments= ${data.comments !== null && data.comments !== '' ? `'${(data.comments).toUpperCase()}'` : null},
+                                comments_signature= ${data.comments_signature !== null && data.comments_signature !== '' ? `'${data.comments_signature}'` : null },
+                                comments_date= ${data.comments_signature !== null && data.comments_signature !== '' ? `'${date}'` : null}`)
+                .condition(`WHERE service_id= ${data.id}`)
+                .build();
+
+            _audit.forEach(data => Global.audit(data));
+            return { result: 'success', message: 'Successfully updated!' }
+        }
+        else { return { result: 'error', error: _errors } }
 
         return data;
     }

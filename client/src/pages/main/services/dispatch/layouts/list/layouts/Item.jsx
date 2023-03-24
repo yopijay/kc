@@ -54,6 +54,8 @@ const Item = () => {
                                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                                     { data.status === 'dispatch' ? 
                                         <Chip variant= "default" label= "Dispathed" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
+                                    { data.status === 'done' ? 
+                                        <Chip variant= "default" label= "Done" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
                                     { data.status === 'approved' ? 
                                         <Chip variant= "default" label= "Pending" sx= {{ backgroundColor: '#fda92d', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
                                     { data.status === 'closed' ? 
