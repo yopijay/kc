@@ -100,11 +100,10 @@ const Index = () => {
                             let errors = [];
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
                             data['form'] = 'dispatch';
-                            data['status'] = 'dispatch'
                             
-                            if(data.evaluated_by === null) { errors.push({ name: 'evaluated_by', message: 'This field is required!' }); }
-                            if(data.noted_by === null) { errors.push({ name: 'noted_by', message: 'This field is required!' }); }
-                            if(data.received_by === null) { errors.push({ name: 'received_by', message: 'This field is required!' }); }
+                            if(data.evaluated_by === null || data.evaluated_by === '') { errors.push({ name: 'evaluated_by', message: 'This field is required!' }); }
+                            if(data.noted_by === null || data.noted_by === '') { errors.push({ name: 'noted_by', message: 'This field is required!' }); }
+                            if(data.received_by === null || data.received_by === '') { errors.push({ name: 'received_by', message: 'This field is required!' }); }
                             if((data.evaluated_by !== null && data.evaluated_by !== '') && data.evaluated_by_signature === null) { errors.push({ name: 'evaluated_by', message: 'Please put your signature!' }); }
                             if((data.eval_noted_by_sup !== null && data.eval_noted_by_sup !== '') && data.eval_noted_by_sup_signature === null) { errors.push({ name: 'eval_noted_by_sup', message: 'Please put your signature!' }); }
                             if((data.prepared_by !== null && data.prepared_by !== '') && data.prepared_by_signature === null) { errors.push({ name: 'prepared_by', message: 'Please put your signature!' }); }
@@ -114,7 +113,7 @@ const Index = () => {
                             if((data.approved_by !== null && data.approved_by !== '') && data.approved_by_signature === null) { errors.push({ name: 'approved_by', message: 'Please put your signature!' }); }
                             if((data.received_by !== null && data.received_by !== '') && data.received_by_signature === null) { errors.push({ name: 'received_by', message: 'Please put your signature!' }); }
 
-                            if(!(errors.length > 0)) { dispatching({ table: 'tbl_services', type: 'dispatch', data: data }); }
+                            if(!(errors.length > 0)) { data['status'] = 'dispatch'; dispatching({ table: 'tbl_services', type: 'dispatch', data: data }); }
                             else { errors.forEach(err => setError(err.name, { message: err.message })); }
                         }) }>Dispatch</Box>
                     </Grid>

@@ -102,7 +102,6 @@ const Index = () => {
                             let errors = [];
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
                             data['form'] = 'report';
-                            data['status'] = 'done';
 
                             if(data.recommendation === null) { errors.push({ name: 'recommendation', message: 'This field is required!' }); }
                             if((data.recommendation !== null && data.recommendation !== '') && data.recommendation_signature === null) { errors.push({ name: 'recommendation', message: 'Please put your signature!' }); }
@@ -111,6 +110,7 @@ const Index = () => {
                             if(!(errors.length > 0)) {
                                 if(data.work_done !== null && (data.work_done).length > 0) {
                                     if(data.personnel_deployed !== null && (data.personnel_deployed).length > 0) {
+                                        data['status'] = 'done';
                                         reporting({ table: 'tbl_services', type: 'report', data: data });
                                     }
                                     else { errorToast('Service personnel deployed must not be empty!', 3000); }
