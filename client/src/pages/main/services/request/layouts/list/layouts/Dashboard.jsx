@@ -1,8 +1,9 @@
 // Libraries
 import { Grid, Skeleton, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 // Core
-import { useGet } from "core/function/global"; // Function
+import { usePost } from "core/function/global"; // Function
 import { dashboard } from "core/api"; // Core
 
 // Custom styles
@@ -19,40 +20,44 @@ const label = {
     width: '100%', 
     whiteSpace: 'nowrap', 
     overflow: 'hidden', 
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
+    textTransform: 'uppercase'
 }
 
 const Dashboard = () => {
-    const { data: count, isFetching } = useGet({ key: ['srvc_dashboard'], fetch: dashboard('tbl_services') });
+    let [ count, setCount ] = useState({});
+    const { mutate: dash, isLoading } = usePost({ fetch: dashboard, onSuccess: data => setCount(data) });
+
+    useEffect(() => { dash({ table: 'tbl_services', data: { type: 'requests' } }); }, [ dash ]);
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: '5px 0' }}>
             <Grid item xs= { 3 } sm= { 6 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.total < 10 ? '0' : ''}${count.total}` }</Typography> : 
+                    { !isLoading ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.total < 10 ? '0' : ''}${count.total}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>TOTAL</Typography>
+                    <Typography variant= "body1" sx= { label }>Total</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.approved < 10 ? '0' : ''}${count.approved}` }</Typography> : 
+                    { !isLoading ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.approved < 10 ? '0' : ''}${count.approved}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>APPROVED</Typography>
+                    <Typography variant= "body1" sx= { label }>Approved</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.pending < 10 ? '0' : ''}${count.pending}` }</Typography> : 
+                    { !isLoading ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.pending < 10 ? '0' : ''}${count.pending}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>PENDING</Typography>
+                    <Typography variant= "body1" sx= { label }>Pending</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isFetching ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.cancelled < 10 ? '0' : ''}${count.cancelled}` }</Typography> : 
+                    { !isLoading ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.closed < 10 ? '0' : ''}${count.closed}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>CANCELLED</Typography>
+                    <Typography variant= "body1" sx= { label }>Closed</Typography>
                 </Stack>
             </Grid>
         </Grid>
