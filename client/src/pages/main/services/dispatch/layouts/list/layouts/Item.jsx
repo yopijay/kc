@@ -37,7 +37,7 @@ const Item = () => {
                     list?.map((data, index) => (
                         <Grid item xs= { 12 } sm= { 6 } key= { index } sx= {{ padding: '10px 8px' }}>
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= { container } spacing= { 1 } 
-                                component= { Link } to= { `/services/evaluation/form/update/${data.id}` }>
+                                component= { Link } to= { `/services/dispatch/form/update/${data.id}` }>
                                 <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                                     <Typography variant= "body2" sx= { txt }>Service Request No.: <b>{ data.service_request_no }</b></Typography>
                                 </Stack>
@@ -52,13 +52,14 @@ const Item = () => {
                                     <Typography variant= "caption">Date needed: <b>{ data.date_needed }</b></Typography>
                                 </Stack>
                                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
+                                    { data.status === 'dispatch' ? 
+                                        <Chip variant= "default" label= "Dispathed" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
+                                    { data.status === 'done' ? 
+                                        <Chip variant= "default" label= "Done" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
                                     { data.status === 'approved' ? 
-                                        <Chip variant= "default" size= "small" label= "Approved" sx= {{ backgroundColor: '#00ab55', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
-                                        data.status === 'dispatch' ? 
-                                            <Chip variant= "default" size= "small" label= "Dispatch" sx= {{ backgroundColor: '#2065d1', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
-                                            data.status === 'cancelled' ? 
-                                                <Chip variant= "default" size= "small" label= "Reject" sx= {{ backgroundColor: '#4cd137', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> :
-                                                <Chip variant= "default" size= "small" label= "Pending" sx= {{ backgroundColor: '#fda92d', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> }
+                                        <Chip variant= "default" label= "Pending" sx= {{ backgroundColor: '#fda92d', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
+                                    { data.status === 'closed' ? 
+                                        <Chip variant= "default" label= "Closed" sx= {{ backgroundColor: '#e17055', color: '#FFFFFF', textTransform: 'uppercase', fontWeight: 'bold' }} /> : ''}
                                 </Stack>
                             </Stack>
                         </Grid>

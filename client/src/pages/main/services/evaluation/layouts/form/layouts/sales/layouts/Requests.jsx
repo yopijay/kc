@@ -23,13 +23,14 @@ let defaults = {
 }
 
 const Requests = ({ fetching }) => {
-    const { register, control } = useContext(FormCntxt);
+    const { register, control, getValues } = useContext(FormCntxt);
     const { fields, append, remove } = useFieldArray({ control, name: 'requests' });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ margin: '30px 0 40px 0'}}>
             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ marginBottom: '20px' }}>
-                <Typography sx= { addrow } onClick= { () => append(defaults) }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography>
+                { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved')) ?
+                    <Typography sx= { addrow } onClick= { () => append(defaults) }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography> : ''}
             </Stack>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" divider={ <Divider orientation="horizontal" flexItem /> }>
                 {
@@ -37,7 +38,8 @@ const Requests = ({ fetching }) => {
                         fields.map((fld, index) => (
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" key= { index } sx= {{ margin: '15px 0' }}>
                                 <Stack direction= "row" justifyContent= "flex-end" alignItems= "center">
-                                    <Typography sx= { deleterow } onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } style= {{ color: '#FFFFFF' }} /></Typography>
+                                    { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved')) ?
+                                        <Typography sx= { deleterow } onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } style= {{ color: '#FFFFFF' }} /></Typography> : ''}
                                 </Stack>
                                 <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-end" spacing= { 1 }>
                                     <Grid item xs= { 6 } sm= { 3 }>
@@ -45,7 +47,8 @@ const Requests = ({ fetching }) => {
                                             <Typography variant= "body2" gutterBottom>Nature of Request / Complaint</Typography>
                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                 <TextField { ...register(`requests.${index}.request`) } name= { `requests.${index}.request` } 
-                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                                                    disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved')) } /> }
                                         </Stack>
                                     </Grid>
                                     <Grid item xs= { 6 } sm= { 3 }>
@@ -53,7 +56,8 @@ const Requests = ({ fetching }) => {
                                             <Typography variant= "body2" gutterBottom>Service Personnel</Typography>
                                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                 <TextField { ...register(`requests.${index}.personnel`) } name= { `requests.${index}.personnel` } 
-                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                                                    disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved')) } /> }
                                         </Stack>
                                     </Grid>
                                     <Grid item xs= { 12 } sm= { 6 }>
@@ -72,7 +76,8 @@ const Requests = ({ fetching }) => {
                                                                             render= { ({ field: { onChange, value } }) => (
                                                                                 <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                                                                     <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                                                        onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
+                                                                                        onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
+                                                                                        disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved')) } />
                                                                                 </LocalizationProvider> ) }>
                                                                         </Controller>
                                                                     </Box> }
@@ -88,7 +93,8 @@ const Requests = ({ fetching }) => {
                                                                             render= { ({ field: { onChange, value } }) => (
                                                                                 <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                                                                     <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                                                        onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
+                                                                                        onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
+                                                                                        disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved')) } />
                                                                                 </LocalizationProvider> ) }>
                                                                         </Controller>
                                                                     </Box> }
@@ -106,7 +112,8 @@ const Requests = ({ fetching }) => {
                                                                 <Typography variant= "body2" gutterBottom>From</Typography>
                                                                 { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                                     <TextField { ...register(`requests.${index}.time_from`) } name= { `requests.${index}.time_from` } variant= "standard" 
-                                                                        InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                                        InputProps= {{ disableUnderline: true }} sx= { input }
+                                                                        disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved')) } /> }
                                                             </Stack>
                                                         </Grid>
                                                         <Grid item xs= { 6 }>
@@ -114,7 +121,8 @@ const Requests = ({ fetching }) => {
                                                                 <Typography variant= "body2" gutterBottom>To</Typography>
                                                                 { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                                                     <TextField { ...register(`requests.${index}.time_to`) } name= { `requests.${index}.time_to` } variant= "standard" 
-                                                                        InputProps= {{ disableUnderline: true }} sx= { input } /> }
+                                                                        InputProps= {{ disableUnderline: true }} sx= { input }
+                                                                        disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved')) } /> }
                                                             </Stack>
                                                         </Grid>
                                                     </Grid>

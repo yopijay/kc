@@ -5,6 +5,8 @@ export const validation = () => (
         project: Yup.string().required('This field is requried!'),
         service_location: Yup.string().required('This field is required!'),
         contact_person: Yup.string().required('This field is required!'),
-        time_expected: Yup.string().required('This field is required!')
+        time_expected: Yup.string().required('This field is required!'),
+        requested_by: Yup.string().required('This field is required!').nullable(),
+        noted_by_sup: Yup.string().required('This field is required!').nullable()
     }) 
 );
