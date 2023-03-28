@@ -53,7 +53,7 @@ const Header = ({ fetching }) => {
                                         <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                             <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
                                                 onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
-                                                disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } />
+                                                disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } />
                                         </LocalizationProvider> ) }>
                                 </Controller>
                             </Box> }
@@ -67,7 +67,7 @@ const Header = ({ fetching }) => {
                                         <LocalizationProvider dateAdapter= { AdapterDayjs }>
                                             <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
                                                 onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
-                                                disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } />
+                                                disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } />
                                         </LocalizationProvider> ) }>
                                 </Controller>
                             </Box> }

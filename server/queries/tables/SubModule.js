@@ -90,7 +90,7 @@ class SubModule {
             let sm = (await new Builder(`tbl_sub_module`)
                                                 .insert({ columns: `series_no, module_id, name, path, is_maintenance, status, created_by, date_created`, 
                                                                 values: `'${(data.series_no).toUpperCase()}', ${data.module_id}, '${(data.name).toUpperCase()}', '${data.path}',
-                                                                                ${data.is_maintenance ? 1 : 0}, ${data.status ? 1 : 0}, ${atob(data.created_by)}, '${date}'` })
+                                                                                ${data.is_maintenance ? 1 : 0}, ${data.status ? 1 : 0}, data.created_by}, '${date}'` })
                                                 .condition(`RETURNING id`)
                                                 .build()).rows[0];
             
@@ -147,7 +147,7 @@ class SubModule {
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_sub_module`)
                                 .update(`module_id= ${data.module_id}, name= '${(data.name).toUpperCase()}', path= '${data.path}', is_maintenance= ${data.is_maintenance ? 1 : 0},
-                                                status= ${data.status ? 1 : 0}, updated_by= ${atob(data.updated_by)}, date_updated= '${date}'`)
+                                                status= ${data.status ? 1 : 0}, updated_by= data.updated_by}, date_updated= '${date}'`)
                                 .condition(`WHERE id= ${data.id}`)
                                 .build();
             
