@@ -47,12 +47,12 @@ const Index = () => {
         });
 
     useEffect(() => {
-        register('orderby', { value: 'srvc.service_request_no' }); register('sort', { value: 'desc' }); register('phase', { value: 'evaluation' });
+        register('orderby', { value: 'srvc.service_request_no' }); register('sort', { value: 'desc' }); register('phase', { value: 'dispatch' });
         let data = getValues();
         data['orderby'] = 'srvc.service_request_no';
         data['sort'] = 'desc';
         data['searchtxt'] = '';
-        data['phase'] = 'evaluation';
+        data['phase'] = 'dispatch';
 
         record({ table: 'tbl_services', data: data });
     }, [ register, record, getValues ]);
@@ -60,7 +60,7 @@ const Index = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Evaluation</Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Dispatch</Typography>
                 <Dashboard />
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "flex-start" spacing= { 1 }>
                     <form autoComplete= "off">

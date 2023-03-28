@@ -45,7 +45,7 @@ class Mdl {
         if(!(errors.length > 0)) {
             let mdl = (await new Builder(`tbl_module`)
                                                 .insert({ columns: `series_no, name, status, created_by, date_created`, 
-                                                                values: `'${Global.randomizer(7)}', '${(data.name).toUpperCase()}', ${data.status ? 1 : 0}, ${atob(data.created_by)}, '${date}'` })
+                                                                values: `'${Global.randomizer(7)}', '${(data.name).toUpperCase()}', ${data.status ? 1 : 0}, data.created_by}, '${date}'` })
                                                 .condition(`RETURNING id`)
                                                 .build()).rows[0];
 
@@ -76,14 +76,14 @@ class Mdl {
             else { _errors.push({ name: 'name', message: 'Module already used!' }); }
         }
 
-        if(Global.compare(mdl.statu, data.status ? 1 : 0)) {
+        if(Global.compare(mdl.status, data.status ? 1 : 0)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_module', item_id: mdl.id,
                                     field: 'status', previous: mdl.status, current: data.status ? 1 : 0, action: 'update', user_id: atob(data.updated_by), date: date });
         }
 
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_module`)
-                                .update(`name= '${(data.name).toUpperCase()}', status= ${data.status ? 1 : 0}, updated_by= ${atob(data.updated_by)}, date_updated= '${date}'`)
+                                .update(`name= '${(data.name).toUpperCase()}', status= ${data.status ? 1 : 0}, updated_by= data.updated_by}, date_updated= '${date}'`)
                                 .condition(`WHERE id= ${mdl.id}`)
                                 .build();
             
