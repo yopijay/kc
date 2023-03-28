@@ -18,7 +18,7 @@ const Customer = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Customer</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('customer') } name= "customer" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.customer?.message }</Typography>
                 </Stack>
             </Grid>
@@ -27,7 +27,7 @@ const Customer = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Project</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('project') } name= "project" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.project?.message }</Typography>
                 </Stack>
             </Grid>
@@ -36,7 +36,7 @@ const Customer = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">SO No.</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('so_no') } name= "so_no" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.so_no?.message }</Typography>
                 </Stack>
             </Grid>
@@ -45,7 +45,7 @@ const Customer = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Service location</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('service_location') } name= "service_location" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.service_location?.message }</Typography>
                 </Stack>
             </Grid>
@@ -54,7 +54,7 @@ const Customer = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">PO No.</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('po_no') } name= "po_no" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }>
@@ -62,7 +62,7 @@ const Customer = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Contact Person</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('contact_person') } name= "contact_person" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.contact_person?.message }</Typography>
                 </Stack>
             </Grid>
@@ -71,7 +71,7 @@ const Customer = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Position</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('position') } name= "position" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 6 }>
@@ -79,7 +79,7 @@ const Customer = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Contact number</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('contact_number') } name= "contact_number" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                            disabled= { getValues()?.status !== undefined && getValues()?.status === 'approved' } /> }
+                            disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
                 </Stack>
             </Grid>
         </Grid>

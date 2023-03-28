@@ -14,7 +14,7 @@ import { input } from "../../../index.style"; // Styles
 
 const Evaluator = ({ fetching }) => {
     const { type } = useParams();
-    const { register, errors, setValue, getValues } = useContext(FormCntxt);
+    const { register, errors, setValue, getValues, setError } = useContext(FormCntxt);
     let _eb = useRef();
     let _ebs = useRef();
 
@@ -32,28 +32,35 @@ const Evaluator = ({ fetching }) => {
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _eb } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('evaluated_by_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _eb } canvasProps= {{ width: 'auto', height: '100%' }} 
+                            onEnd= { e => { setValue('evaluated_by_signature', e.target.toDataURL()); setError('evaluated_by', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _eb.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ? 
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _eb.current.clear(); setValue('evaluated_by_signature', null); } } /> : ''}
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('evaluated_by') } name= "evaluated_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
-                    <Typography variant= "body2" gutterBottom>Evaluated by</Typography>
-                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.evaluated_by?.message }</Typography>
+                        <TextField { ...register('evaluated_by') } name= "evaluated_by" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
+                    <Typography variant= "body2">Evaluated by</Typography>
+                    <Typography variant= "body2" color= "error.dark">{ errors.evaluated_by?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ backgroundColor: '#F2F2F2', width: '100%', height: '120px', overflow: 'hidden' }}>
-                        <SignaturePad ref= { _ebs } canvasProps= {{ width: 'auto', height: '100%' }} onEnd= { e => setValue('eval_noted_by_sup_signature', e.target.toDataURL()) } />
+                        <SignaturePad ref= { _ebs } canvasProps= {{ width: 'auto', height: '100%' }} 
+                            onEnd= { e => { setValue('eval_noted_by_sup_signature', e.target.toDataURL()); setError('eval_noted_by_sup', { message: '' }); } } />
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ width: '100%' }}>
-                        <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => _ebs.current.clear() } />
+                        { (getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) ?
+                            <FontAwesomeIcon icon= { faEraser } color= "#818181" size= "lg" onClick= { () => { _ebs.current.clear(); setValue('eval_noted_by_sup_signature', null); } } /> : '' }
                     </Stack>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                        <TextField { ...register('eval_noted_by_sup') } name= "eval_noted_by_sup" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } /> }
-                    <Typography variant= "body2" gutterBottom>{ `Noted by (Immediate Superior)` }</Typography>
+                        <TextField { ...register('eval_noted_by_sup') } name= "eval_noted_by_sup" variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
+                            disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) } /> }
+                    <Typography variant= "body2">{ `Noted by (Immediate Superior)` }</Typography>
+                    <Typography variant= "body2" color= "error.dark">{ errors.eval_noted_by_sup?.message }</Typography>
                 </Stack>
             </Grid>
         </Grid>

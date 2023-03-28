@@ -35,7 +35,7 @@ const filter = (table, data) => {
     });
 }
 
-const dashboard = (table) => {
+const dashboard = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().dashboard()); break;
@@ -45,7 +45,7 @@ const dashboard = (table) => {
             case 'tbl_category': resolve(await new Category().dashboard()); break;
             case 'tbl_assets': resolve(await new Assets().dashboard()); break;
             case 'tbl_sub_category': resolve(await new SubCategory().dashboard()); break;
-            case 'tbl_services': resolve(await new Services().dashboard()); break;
+            case 'tbl_services': resolve(await new Services().dashboard(data)); break;
         }
     });
 }
@@ -168,15 +168,21 @@ const evaluate = async (table, type, data) => {
                 }
 
                 break;
-            case 'declined': 
+            case 'closed': 
                 switch(table) {
-                    case 'tbl_services': resolve(await new Services().declined(data)); break;
+                    case 'tbl_services': resolve(await new Services().closed(data)); break;
                 }
 
                 break;
             case 'dispatch':
                 switch(table) {
                     case 'tbl_services': resolve(await new Services().dispatch(data)); break;
+                }
+
+                break;
+            case 'report':
+                switch(table) {
+                    case 'tbl_services': resolve(await new Services().report(data)); break;
                 }
 
                 break;

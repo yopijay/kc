@@ -19,6 +19,7 @@ const Authorization = ({ fetching }) => {
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                             <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "deliveries_to_customer" 
                                 { ...register('deliveries_to_customer', { onChange: () => setDeliveries(!deliveries) }) } 
+                                disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) }
                                 checked= { getValues().deliveries_to_customer !== undefined ? getValues().deliveries_to_customer > 0 ? true : false : deliveries } />
                             <Typography gutterBottom sx= {{ marginTop: '7px' }}>Deliveries to Customer*</Typography>
                         </Box> }
@@ -30,6 +31,7 @@ const Authorization = ({ fetching }) => {
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                             <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "tools_equipment" 
                                 { ...register('tools_equipment', { onChange: () => setToolsEquipment(!toolsequipment) }) } 
+                                disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) }
                                 checked= { getValues().tools_equipment !== undefined ? getValues().tools_equipment > 0 ? true : false : toolsequipment } />
                             <Typography gutterBottom sx= {{ marginTop: '7px' }}>Tools/Equipment**</Typography>
                         </Box> }
@@ -41,6 +43,7 @@ const Authorization = ({ fetching }) => {
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                             <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "manpower" 
                                 { ...register('manpower', { onChange: () => setManpower(!manpower) }) } 
+                                disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) }
                                 checked= { getValues().manpower !== undefined ? getValues().manpower > 0 ? true : false : manpower } />
                             <Typography gutterBottom sx= {{ marginTop: '7px' }}>Manpower**</Typography>
                         </Box> }
@@ -52,6 +55,7 @@ const Authorization = ({ fetching }) => {
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                             <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "consumables" 
                                 { ...register('consumables', { onChange: () => setConsumables(!consumables) }) } 
+                                disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) }
                                 checked= { getValues().consumables !== undefined ? getValues().consumables > 0 ? true : false : consumables } />
                             <Typography gutterBottom sx= {{ marginTop: '7px' }}>Consumables**</Typography>
                         </Box> }
@@ -63,6 +67,7 @@ const Authorization = ({ fetching }) => {
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                             <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "others" 
                                 { ...register('others', { onChange: () => setOthers(!others) }) } 
+                                disabled= { !(getValues()?.status !== undefined && (getValues()?.status === 'posted' || getValues()?.status === 'saved' || getValues()?.status === 'approved')) }
                                 checked= { getValues().others !== undefined ? getValues().others > 0 ? true : false : others } />
                             <Typography gutterBottom sx= {{ marginTop: '7px' }}>Others</Typography>
                         </Box> }
