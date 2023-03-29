@@ -625,7 +625,7 @@ class Services {
                                 received_by= ${data.received_by !== null ? `'${(data.received_by).toUpperCase()}'` : null},
                                 received_by_signature= ${data.received_by_signature !== null ? `'${data.received_by_signature}'` : null},
                                 received_by_date= ${data.received_by_signature !== null ? `'${date}'` : null}, 
-                                items= ${data.items !== null ? `'${data.items}'` : null}`)
+                                items= ${data.items !== null ? `'${items}'` : null}`)
                 .condition(`WHERE service_id= ${data.id}`)
                 .build();
 
