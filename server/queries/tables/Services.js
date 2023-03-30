@@ -42,15 +42,8 @@ class Services {
                 }
             case 'report':
                 return {
-                    total: (await new Builder(`tbl_services AS srvc`)
-                                .select()
-                                .join({ table: `tbl_services_technical AS technical`, condition: `technical.service_id = srvc.id`, type: `LEFT` })
-                                .condition(`WHERE technical.evaluated_by_signature IS NOT NULL AND technical.noted_by_signature IS NOT NULL 
-                                                        AND technical.received_by_signature IS NOT NULL AND srvc.status != 'saved' AND srvc.status != 'posted' AND srvc.status != 'approved'`)
-                                .build()).rowCount,
-                    done: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'done'`).build()).rowCount,
                     ongoing: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'dispatch'`).build()).rowCount,
-                    closed: (await new Builder(`tbl_services AS srvc`)
+                    cancelled: (await new Builder(`tbl_services AS srvc`)
                                     .select()
                                     .join({ table: `tbl_services_technical AS technical`, condition: `technical.service_id = srvc.id`, type: `LEFT` })
                                     .condition(`WHERE technical.evaluated_by_signature IS NOT NULL AND technical.noted_by_signature IS NOT NULL 
@@ -69,9 +62,7 @@ class Services {
                         .condition(`${data.searchtxt !== '' || (data.phase !== 'request') ? `WHERE`: ''}
                                                 ${data.phase === 'evaluation' ? ` srvc.status != 'saved'` : 
                                                     data.phase === 'dispatch' ? ` sales.requested_by_signature IS NOT NULL AND srvc.status != 'saved' AND srvc.status != 'posted'` :
-                                                    data.phase === 'report' ? ` technical.evaluated_by_signature IS NOT NULL AND technical.noted_by_signature IS NOT NULL 
-                                                                                                    AND technical.received_by_signature IS NOT NULL AND srvc.status != 'saved' AND srvc.status != 'posted'
-                                                                                                    AND srvc.status != 'approved'` : ''}
+                                                    data.phase === 'report' ? ` srvc.status = 'dispatch'` : ''}
                                                 ${data.searchtxt !== '' ? 
                                                     ` AND (srvc.service_request_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR sales.customer LIKE '%${(data.searchtxt).toUpperCase()}%'
                                                         OR sales.project LIKE '%${(data.searchtxt).toUpperCase()}%' OR sales.so_no LIKE '%${(data.searchtxt).toUpperCase()}%') ` : ''}
