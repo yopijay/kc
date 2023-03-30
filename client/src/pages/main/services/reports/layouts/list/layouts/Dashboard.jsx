@@ -32,32 +32,18 @@ const Dashboard = () => {
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: '5px 0' }}>
-            <Grid item xs= { 3 } sm= { 6 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isLoading ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.total < 10 ? '0' : ''}${count.total}` }</Typography> : 
-                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>Total</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isLoading ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.done < 10 ? '0' : ''}${count.done}` }</Typography> : 
-                        <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>Done</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
+            <Grid item xs= { 6 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
                     { !isLoading ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.ongoing < 10 ? '0' : ''}${count.ongoing}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
                     <Typography variant= "body1" sx= { label }>On Going</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 3 } sm= { 2 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
+            <Grid item xs= { 6 } sx= {{ padding: { xs: '0 5px 0 0' } }}>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { card }>
-                    { !isLoading ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.closed < 10 ? '0' : ''}${count.closed}` }</Typography> : 
+                    { !isLoading ? <Typography variant= "h5" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ `${count.cancelled < 10 ? '0' : ''}${count.cancelled}` }</Typography> : 
                         <Skeleton variant= "text" sx= {{ width: '50px', fontSize: '1rem' }} /> }
-                    <Typography variant= "body1" sx= { label }>Closed</Typography>
+                    <Typography variant= "body1" sx= { label }>Cancelled</Typography>
                 </Stack>
             </Grid>
         </Grid>
