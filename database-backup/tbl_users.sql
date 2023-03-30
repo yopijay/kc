@@ -12,21 +12,8 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 01/03/2023 13:17:49
+ Date: 30/03/2023 16:46:32
 */
-
-
--- ----------------------------
--- Table sequence for tbl_users
--- ----------------------------
-CREATE SEQUENCE "public"."tbl_users_id_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
-SELECT setval('"public"."tbl_users_id_seq"', 495, true);
 
 
 -- ----------------------------
@@ -295,7 +282,6 @@ INSERT INTO "public"."tbl_users" VALUES (236, 'USR-0000235', 'norielpunk06@gmail
 INSERT INTO "public"."tbl_users" VALUES (237, 'USR-0000236', 'ronaldallanmaintech2015@yahoo.com', NULL, '9194119062', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-09 13:52:05+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (238, 'USR-0000237', 'nelsondelrosariojr69@gmail.com', NULL, '9514211037', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-09 13:52:35+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (239, 'USR-0000238', 'joyceambojia05@gmail.com', NULL, '9278050506', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-09 13:53:11+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_users" VALUES (240, 'USR-0000239', 'arjayzamora2552@gmail.com', NULL, '9516337076', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-09 13:53:47+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (241, 'USR-0000240', 'Rrheinald18@yahoo.com', NULL, '9265055325', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-09 13:54:17+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (242, 'USR-0000241', 'sayamramuel11@gmail.com', NULL, '9284243643', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-09 13:54:50+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (243, 'USR-0000242', 'jesrill.dacles@gmail.com', NULL, '9319845154', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-09 13:55:26+08', NULL, NULL, NULL);
@@ -340,7 +326,6 @@ INSERT INTO "public"."tbl_users" VALUES (280, 'USR-0000279', 'fernandezjanrey23@
 INSERT INTO "public"."tbl_users" VALUES (281, 'USR-0000280', 'sagumarman31@gmail.com', NULL, '9675806019', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-09 16:34:28+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (282, 'USR-0000281', 'glennberth@gmail.com', NULL, '9637768825', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-09 16:35:05+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (283, 'USR-0000282', 'joemarvisca5@gmail.com', NULL, '9291192691', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-10 09:36:24+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_users" VALUES (1, '0000000', 'superadmin@kcic.com.ph', 'QFN1cGVyYWRtaW4wMDAw', '00000000000', 1, 1, 'superadmin', 1, 1, 1, NULL, NULL, NULL, '2022-12-21 11:13:47.452153+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (284, 'USR-0000283', 'jamesdaryl18b@gmail.com', NULL, '9512250959', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-27 15:06:52+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (285, 'USR-0000284', 'j_sauret@yahoo.com', NULL, '9635999990', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-27 15:07:37+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (286, 'USR-0000285', 'Lancolozed@Gmail.Com', NULL, '9122024971', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-27 15:08:09+08', NULL, NULL, NULL);
@@ -553,6 +538,8 @@ INSERT INTO "public"."tbl_users" VALUES (492, 'USR-0000491', 'Rolynar.rapole.ge2
 INSERT INTO "public"."tbl_users" VALUES (493, 'USR-0000492', 'Remandosalgon@gmail.com', NULL, '9952137996', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-28 13:09:37+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (494, 'USR-0000493', 'jamikszsebil@gmail.com', NULL, '9323564886', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-28 13:10:12+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (495, 'USR-0000494', NULL, NULL, '9501105053', 0, 0, 'user', 0, 1, 1, NULL, NULL, NULL, '2023-02-28 13:10:46+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_users" VALUES (1, '0000000', 'superadmin@kcic.com.ph', 'QFN1cGVyYWRtaW4wMDAw', '00000000000', 1, 1, 'superadmin', 1, 1, 1, NULL, NULL, NULL, '2022-12-21 11:13:47.452153+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_users" VALUES (240, 'USR-0000239', 'arjayzamora2552@gmail.com', NULL, '9516337076', 0, 0, 'user', 0, 1, 1, 1, NULL, NULL, '2023-02-09 13:53:47+08', '2023-03-14 08:19:09+08', NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_users

@@ -12,21 +12,8 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 01/03/2023 13:16:21
+ Date: 30/03/2023 16:44:21
 */
-
-
--- ----------------------------
--- Table sequence for tbl_assign_asset
--- ----------------------------
-CREATE SEQUENCE "public"."tbl_assign_asset_id_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
-SELECT setval('"public"."tbl_assign_asset_id_seq"', 12, true);
 
 
 -- ----------------------------
@@ -69,6 +56,9 @@ INSERT INTO "public"."tbl_assign_asset" VALUES (8, 'ISSUANCE-0000008', 2, 22, 4,
 INSERT INTO "public"."tbl_assign_asset" VALUES (9, 'ISSUANCE-0000009', 2, 22, 3, 13, 2, 353, NULL, 1, 1, NULL, NULL, NULL, '2023-02-27 17:02:06+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_assign_asset" VALUES (10, 'ISSUANCE-0000010', 2, 22, 3, 14, 5, 353, NULL, 1, 1, NULL, NULL, NULL, '2023-02-27 17:02:24+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_assign_asset" VALUES (11, 'ISSUANCE-0000011', 2, 39, 4, 21, 28, 341, NULL, 1, 1, NULL, NULL, NULL, '2023-03-01 11:35:03+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assign_asset" VALUES (12, 'ISSUANCE-0000012', 2, 22, 4, 19, 29, 353, NULL, 1, 1, NULL, NULL, NULL, '2023-03-01 14:11:03+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assign_asset" VALUES (13, 'ISSUANCE-0000013', 1, 4, 4, 21, 30, 12, NULL, 1, 1, NULL, NULL, NULL, '2023-03-02 16:04:57+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assign_asset" VALUES (14, 'ISSUANCE-0000014', 1, 6, 4, 21, 31, 10, NULL, 1, 1, NULL, NULL, NULL, '2023-03-06 10:21:00+08', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_assign_asset

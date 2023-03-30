@@ -12,21 +12,8 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 01/03/2023 13:17:07
+ Date: 30/03/2023 16:44:44
 */
-
-
--- ----------------------------
--- Table sequence for tbl_employee
--- ----------------------------
-CREATE SEQUENCE "public"."tbl_employee_id_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
-SELECT setval('"public"."tbl_employee_id_seq"', 495, true);
 
 
 -- ----------------------------
@@ -299,7 +286,6 @@ INSERT INTO "public"."tbl_employee" VALUES (236, 236, '20100193', NULL, 2, 27, 8
 INSERT INTO "public"."tbl_employee" VALUES (237, 237, '20100214', NULL, 2, 27, 84, 'RONALD ALLAN', 'AQUINO', 'PADUA', 'cavite', 'regular', 'male', 'single', 'MAGUYAM SILANG CAVITE', '0', '0', '2023-2-9', '2023-2-9', NULL);
 INSERT INTO "public"."tbl_employee" VALUES (238, 238, '20600228', NULL, 2, 27, 84, 'NELSON', 'PLETE', 'DEL ROSARIO', 'cavite', 'agency', 'male', 'single', '357 AGUAVILLE COMPUND, MAGUYAM, SILANG, CAVITE', '0', '0', '2023-2-9', '2023-2-9', NULL);
 INSERT INTO "public"."tbl_employee" VALUES (239, 239, '21100264', NULL, 2, 27, 86, 'ELENE JOYCE', 'CREENCIA', 'AMBOJIA', 'cavite', 'regular', 'male', 'single', '66 J.P. RIZAL ST. BIGA 1, SILANG, CAVITE 4118', '0', '0', '2023-2-9', '2023-2-9', NULL);
-INSERT INTO "public"."tbl_employee" VALUES (240, 240, '21600280', NULL, 2, 27, 84, 'ARJAY', 'PINTOR', 'ZAMORA', 'cavite', 'agency', 'male', 'single', '001 SITIO GITNA MAGUYAM SILANG CAVITE', '0', '0', '2023-2-9', '2023-2-9', NULL);
 INSERT INTO "public"."tbl_employee" VALUES (241, 241, '21100304', NULL, 2, 27, 83, 'RHEINALD', 'GARCIA', 'RAMIREZ', 'cavite', 'regular', 'male', 'single', 'BLOCK 12 LOT 32 MAGNAGON SPRING HOMES BRGY. MAGUYAM SILANG CAVITE', '0', '0', '2023-2-9', '2023-2-9', NULL);
 INSERT INTO "public"."tbl_employee" VALUES (242, 242, '21600305', NULL, 2, 27, 84, 'RAMUEL', 'MOLIGRO', 'SAYAM', 'cavite', 'agency', 'male', 'single', 'BLK 7 LOT 26 SIKAPVILLE SABUTAN SILANG CAVITE', '0', '0', '2023-2-9', '2023-2-9', NULL);
 INSERT INTO "public"."tbl_employee" VALUES (243, 243, '22100400', NULL, 2, 27, 84, 'JESIL JIM', 'ASICO', 'DACLES', 'cavite', 'regular', 'male', 'single', '#577 KALAYA HAMIS, ZONE 5, DUGCAL, CAMALIGAN, CAMARINES SUR', '0', '0', '1999-6-10', '2023-2-9', NULL);
@@ -556,6 +542,7 @@ INSERT INTO "public"."tbl_employee" VALUES (492, 492, '19100149', NULL, 2, 38, 1
 INSERT INTO "public"."tbl_employee" VALUES (493, 493, '19100150', NULL, 2, 38, 139, 'REMANDO', 'HIMONGALA', 'SALGON', 'sto_domingo', 'regular', 'male', 'married', '7 JP RIZAL ST., ARTY SUBD. BRGY. KARUHATAN VALENZUELA CITY', '0', '0', '1986-9-2', '2019-2-28', NULL);
 INSERT INTO "public"."tbl_employee" VALUES (494, 494, '19100151', NULL, 2, 38, 147, 'JOHN ANGELO', 'RED', 'SEBIL', 'sto_domingo', 'regular', 'male', 'married', '43 KABULUSAN II CALOOCAN CITY', '0', '0', '1992-2-6', '2019-2-28', NULL);
 INSERT INTO "public"."tbl_employee" VALUES (495, 495, '22100411', NULL, 2, 38, 137, 'JAYSON', 'JALIMAO', 'CARO', 'sto_domingo', 'regular', 'male', 'single', 'BRGY. MAGUYAM, SILANG CAVITE', '0', '0', '1992-6-27', '2022-2-28', NULL);
+INSERT INTO "public"."tbl_employee" VALUES (240, 240, '21600280', NULL, 2, 27, 84, 'ARJAY', 'PINTOR', 'ZAMORA', 'cavite', 'agency', 'male', 'single', '001 SITIO GITNA MAGUYAM SILANG CAVITE', '0', '0', '2023-2-9', '2023-2-9', NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_employee

@@ -12,21 +12,8 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 01/03/2023 13:17:15
+ Date: 30/03/2023 16:44:54
 */
-
-
--- ----------------------------
--- Table sequence for tbl_position
--- ----------------------------
-CREATE SEQUENCE "public"."tbl_position_id_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
-SELECT setval('"public"."tbl_position_id_seq"', 150, true);
 
 
 -- ----------------------------
@@ -203,7 +190,7 @@ INSERT INTO "public"."tbl_position" VALUES (147, 'PST-0000146', 2, 38, 'WAREHOUS
 INSERT INTO "public"."tbl_position" VALUES (148, 'PST-0000147', 1, 6, 'SALES MANAGER', NULL, 1, 1, NULL, NULL, NULL, '2023-02-02 13:44:12+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_position" VALUES (91, 'PST-0000090', 2, 28, 'PRODUCTION ENGINEER', NULL, 1, 1, 1, NULL, NULL, '2023-01-30 08:41:48+08', '2023-02-09 14:10:40+08', NULL, NULL);
 INSERT INTO "public"."tbl_position" VALUES (149, 'PST-0000148', 2, 31, 'PRODUCTION ENCODER', NULL, 1, 1, NULL, NULL, NULL, '2023-02-27 15:26:13+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_position" VALUES (150, 'PST-0000149', 2, 38, 'PPIC ASSISTANT', NULL, 1, 1, NULL, NULL, NULL, '2023-02-27 15:55:04+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_position" VALUES (150, 'PST-0000149', 2, 38, 'PPIC ASSISTANT', NULL, 1, 1, 1, NULL, NULL, '2023-02-27 15:55:04+08', '2023-03-13 15:18:05+08', NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_position

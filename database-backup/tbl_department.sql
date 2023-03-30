@@ -12,21 +12,8 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 01/03/2023 13:16:59
+ Date: 30/03/2023 16:44:39
 */
-
-
--- ----------------------------
--- Table sequence for tbl_department
--- ----------------------------
-CREATE SEQUENCE "public"."tbl_depertment_id_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
-SELECT setval('"public"."tbl_depertment_id_seq"', 39, true);
 
 
 -- ----------------------------
@@ -76,7 +63,6 @@ INSERT INTO "public"."tbl_department" VALUES (18, 'DPT-0000018', 2, 1, 'ENGINEER
 INSERT INTO "public"."tbl_department" VALUES (19, 'DPT-0000019', 2, 1, 'ENGINEERING - PROGRAMMING', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:11:06+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (20, 'DPT-0000020', 2, 1, 'HUMAN RESOURCE - PAYROLL', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:11:19+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (21, 'DPT-0000021', 2, 1, 'HUMAN RESOURCE - RECRUITMENT', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:11:33+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_department" VALUES (22, 'DPT-0000022', 2, 1, 'IT/MIS', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:12:15+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (23, 'DPT-0000023', 2, 1, 'LOGISTICS', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:12:24+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (24, 'DPT-0000024', 2, 1, 'MANAGEMENT', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:12:33+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (25, 'DPT-0000025', 2, 1, 'MARKETING', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:12:40+08', NULL, NULL, NULL);
@@ -91,9 +77,10 @@ INSERT INTO "public"."tbl_department" VALUES (33, 'DPT-0000033', 2, 1, 'QUALITY 
 INSERT INTO "public"."tbl_department" VALUES (34, 'DPT-0000034', 2, 1, 'SALES - CDD', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:14:27+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (35, 'DPT-0000035', 2, 1, 'SALES - PSD', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:14:34+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (36, 'DPT-0000036', 2, 1, 'SALES - WHOLESALE', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:14:45+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_department" VALUES (37, 'DPT-0000037', 2, 1, 'TECHINCAL', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:14:53+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (38, 'DPT-0000038', 2, 1, 'WAREHOUSE', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 13:14:59+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_department" VALUES (39, 'DPT-0000039', 2, 1, 'ACCOUNTING - FINANCE', NULL, 1, 1, NULL, NULL, NULL, '2023-01-27 16:15:09+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_department" VALUES (22, 'DPT-0000022', 2, 348, 'IT/MIS', NULL, 1, 1, 1, NULL, NULL, '2023-01-27 13:12:15+08', '2023-03-13 13:55:52+08', NULL, NULL);
+INSERT INTO "public"."tbl_department" VALUES (37, 'DPT-0000037', 2, 471, 'TECHNICAL', NULL, 1, 1, 1, NULL, NULL, '2023-01-27 13:14:53+08', '2023-03-13 13:56:18+08', NULL, NULL);
+INSERT INTO "public"."tbl_department" VALUES (39, 'DPT-0000039', 2, 1, 'ACCOUNTING - FINANCE', NULL, 1, 1, 1, NULL, NULL, '2023-01-27 16:15:09+08', '2023-03-13 14:53:19+08', NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_department

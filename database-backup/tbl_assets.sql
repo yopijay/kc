@@ -12,21 +12,8 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 01/03/2023 13:16:03
+ Date: 30/03/2023 16:44:07
 */
-
-
--- ----------------------------
--- Table sequence for tbl_assets
--- ----------------------------
-CREATE SEQUENCE "public"."tbl_assets_id_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
-SELECT setval('"public"."tbl_assets_id_seq"', 29, true);
 
 
 -- ----------------------------
@@ -83,6 +70,10 @@ INSERT INTO "public"."tbl_assets" VALUES (18, 'QIM-0000018', 4, 22, 'ASSTS-TECH-
 INSERT INTO "public"."tbl_assets" VALUES (2, 'QIM-0000002', 3, 13, 'ASSTS-FURN-DSK-0000002', 1, 1, 1, NULL, NULL, NULL, '2023-02-15 09:18:49+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_assets" VALUES (5, 'QIM-0000005', 3, 14, 'ASSTS-FURN-CHR-0000002', 1, 1, 1, 1, NULL, NULL, '2023-02-15 14:28:37+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_assets" VALUES (28, 'QIM-0000028', 4, 21, 'ASSTS-TECH-PRTR-0000003', 1, 1, 1, NULL, NULL, NULL, '2023-03-01 11:33:14+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assets" VALUES (29, 'QIM-0000029', 4, 19, 'ASSTS-TECH-MSE-0000002', 1, 1, 1, NULL, NULL, NULL, '2023-03-01 14:10:18+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assets" VALUES (30, 'QIM-0000030', 4, 21, 'ASSTS-TECH-PRTR-0000004', 1, 1, 1, NULL, NULL, NULL, '2023-03-02 16:04:13+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assets" VALUES (31, 'QIM-0000031', 4, 21, 'ASSTS-TECH-PRTR-0000005', 1, 1, 1, 1, NULL, NULL, '2023-03-06 10:19:28+08', '2023-03-14 08:50:50+08', NULL, NULL);
+INSERT INTO "public"."tbl_assets" VALUES (32, 'QIM-0000032', 4, 21, 'ASSTS-TECH-PRTR-0000006', 0, 1, 1, NULL, NULL, NULL, '2023-03-28 14:09:42+08', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_assets

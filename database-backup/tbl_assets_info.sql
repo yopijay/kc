@@ -12,21 +12,8 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 01/03/2023 13:16:13
+ Date: 30/03/2023 16:44:15
 */
-
-
--- ----------------------------
--- Table sequence for tbl_assets_info
--- ----------------------------
-CREATE SEQUENCE "public"."tbl_assets_info_id_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
-SELECT setval('"public"."tbl_assets_info_id_seq"', 29, true);
 
 
 -- ----------------------------
@@ -108,6 +95,10 @@ INSERT INTO "public"."tbl_assets_info" VALUES (24, 24, 'SEAGATE', 'BLACK', NULL,
 INSERT INTO "public"."tbl_assets_info" VALUES (25, 25, 'YEALINK', 'BLACK', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2119519091518404', 'SIP-T19P E2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-2-17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 667);
 INSERT INTO "public"."tbl_assets_info" VALUES (27, 27, 'EPSON', 'BLACK', NULL, '375 X 347 X 179 MM', NULL, NULL, NULL, NULL, NULL, NULL, 'X93P014607', 'L3110', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2020-8-4', NULL, 'usb', NULL, NULL, NULL, 'inkjet', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO "public"."tbl_assets_info" VALUES (28, 28, 'EPSON', 'BLACK', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'VGFK187882', 'L360', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-3-1', NULL, 'usb', NULL, NULL, NULL, 'inkjet', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assets_info" VALUES (29, 29, 'DELL', 'BLACK ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CN-049PR0-CH400-973-079P-A00', 'MS116', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-3-1', NULL, 'usb', 'right-handed', 1000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assets_info" VALUES (30, 30, 'EPSON', 'BLACK', NULL, '375 X 347 X 179 MM', NULL, NULL, NULL, NULL, NULL, NULL, 'XAGM049000', 'ECOTANK L3210', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2023-3-2', NULL, 'usb', NULL, NULL, NULL, 'inkjet', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assets_info" VALUES (31, 31, 'EPSON', 'BLACK', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, 'VGFK338306', 'L360', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2019-3-6', NULL, 'usb', NULL, NULL, NULL, 'inkjet', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "public"."tbl_assets_info" VALUES (32, 32, 'EPSON', 'BLACK', NULL, '375MM X 347MM X 179MM', NULL, NULL, NULL, NULL, NULL, NULL, 'XAGM233476', 'L3210', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2023-3-27', NULL, 'usb', NULL, NULL, NULL, 'inkjet', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_assets_info

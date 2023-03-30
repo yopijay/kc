@@ -12,21 +12,8 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 01/03/2023 13:17:22
+ Date: 30/03/2023 16:46:15
 */
-
-
--- ----------------------------
--- Table sequence for tbl_sub_category
--- ----------------------------
-CREATE SEQUENCE "public"."tbl_sub_category_id_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
-SELECT setval('"public"."tbl_sub_category_id_seq"', 26, true);
 
 
 -- ----------------------------
@@ -75,11 +62,11 @@ INSERT INTO "public"."tbl_sub_category" VALUES (21, 'ITM-0000021', 4, 'PRINTER',
 INSERT INTO "public"."tbl_sub_category" VALUES (22, 'ITM-0000022', 4, 'MONITOR', 'MNTR', 1, 1, NULL, NULL, NULL, '2023-02-14 11:16:23+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_sub_category" VALUES (23, 'ITM-0000023', 4, 'NETWORKING EQUIPMENTS', 'NTWK', 1, 1, NULL, NULL, NULL, '2023-02-14 11:16:44+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_sub_category" VALUES (25, 'ITM-0000025', 4, 'HARDDRIVES', 'HD', 1, 1, NULL, NULL, NULL, '2023-02-14 11:17:09+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_sub_category" VALUES (26, 'ITM-0000026', 4, 'PHONES', 'PHNS', 1, 1, NULL, NULL, NULL, '2023-02-14 11:17:20+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_sub_category" VALUES (3, 'ITM-0000003', 1, 'DRY ERASE MARKERS AND HIGHLIGHTERS', 'DEMH', 1, 1, 1, NULL, NULL, '2023-02-14 11:09:26+08', '2023-02-14 11:26:06+08', NULL, NULL);
 INSERT INTO "public"."tbl_sub_category" VALUES (2, 'ITM-0000002', 1, 'PENS', 'PEN', 1, 1, 1, NULL, NULL, '2023-02-14 11:09:07+08', '2023-02-14 11:26:30+08', NULL, NULL);
 INSERT INTO "public"."tbl_sub_category" VALUES (14, 'ITM-0000014', 3, 'OFFICE CHAIRS', 'CHR', 1, 1, 1, NULL, NULL, '2023-02-14 11:14:42+08', '2023-02-14 11:53:43+08', NULL, NULL);
 INSERT INTO "public"."tbl_sub_category" VALUES (24, 'ITM-0000024', 4, 'PROJECTORS', 'PRJR', 0, 1, 1, NULL, NULL, '2023-02-14 11:16:59+08', '2023-02-17 14:57:36+08', NULL, NULL);
+INSERT INTO "public"."tbl_sub_category" VALUES (26, 'ITM-0000026', 4, 'PHONES', 'PHNS', 1, 1, 1, NULL, NULL, '2023-02-14 11:17:20+08', '2023-03-13 16:02:46+08', NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_sub_category
