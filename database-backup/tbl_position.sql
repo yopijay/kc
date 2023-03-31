@@ -17,6 +17,19 @@
 
 
 -- ----------------------------
+-- Table sequence for tbl_position
+-- ----------------------------
+CREATE SEQUENCE "public"."tbl_position_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+SELECT setval('"public"."tbl_position_id_seq"', 150, false);
+
+
+-- ----------------------------
 -- Table structure for tbl_position
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tbl_position";

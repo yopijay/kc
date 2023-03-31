@@ -17,6 +17,19 @@
 
 
 -- ----------------------------
+-- Table sequence for tbl_users
+-- ----------------------------
+CREATE SEQUENCE "public"."tbl_users_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+SELECT setval('"public"."tbl_users_id_seq"', 495, false);
+
+
+-- ----------------------------
 -- Table structure for tbl_users
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tbl_users";

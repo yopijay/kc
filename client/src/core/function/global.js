@@ -3,6 +3,7 @@ import axios from "axios"
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import * as XLSX from 'xlsx';
+import QRCode from 'qrcode';
 
 export const api = ({ url, method, data= null }) => {
     const config = {
@@ -23,6 +24,7 @@ export const api = ({ url, method, data= null }) => {
 export const usePost = ({ fetch, onSuccess, onError }) => { return useMutation(fetch, { onSuccess, onError }); }
 export const useGet = ({ key, fetch, options, onSuccess, onError }) => { return useQuery(key, () => fetch, { onSuccess, onError, ...options }); }
 export const formatter = (num, size) => { return (`000000${num}`).substr((`000000${num}`).length - size); }
+export const generateQR = async ({ data, set }) => { set(await QRCode.toDataURL(data)); }
 
 export const successToast = (message, duration = 3000, navigate) => {
     return toast.success(message, {

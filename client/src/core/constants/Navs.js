@@ -31,6 +31,7 @@ export const Navs = () => ([
         title: 'Tools', nav: [
             { path: '/tools/dsf', label: 'Daily Symptoms', name: 'dsf', component: "DAILY SYMPTOMS" },
             { path: '/tools/free-meal', label: 'Free Meal', name: 'free-meal', component: "FREE MEAL" },
+            { path: '/tools/employee-tracker', label: 'Employee Tracker', name: 'employee-tracker', component: "EMPLOYEE TRACKER" }
         ]
     },
     {

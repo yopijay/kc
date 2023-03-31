@@ -17,6 +17,19 @@
 
 
 -- ----------------------------
+-- Table sequence for tbl_services_technical
+-- ----------------------------
+CREATE SEQUENCE "public"."tbl_services_technical_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+SELECT setval('"public"."tbl_services_technical_id_seq"', 1, false);
+
+
+-- ----------------------------
 -- Table structure for tbl_services_technical
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tbl_services_technical";

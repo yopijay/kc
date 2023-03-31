@@ -17,6 +17,19 @@
 
 
 -- ----------------------------
+-- Table sequence for tbl_sub_module
+-- ----------------------------
+CREATE SEQUENCE "public"."tbl_sub_module_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+SELECT setval('"public"."tbl_sub_module_id_seq"', 5, false);
+
+
+-- ----------------------------
 -- Table structure for tbl_sub_module
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tbl_sub_module";
