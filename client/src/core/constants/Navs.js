@@ -1,6 +1,10 @@
 // Libraries
 import React from 'react';
 
+// Tools
+const EmployeeTracker = React.lazy(() => import('pages/main/tools/employee-tracker'));
+
+
 // Maintenance
 const Company = React.lazy(() => import('pages/main/maintenance/company'));
 const Department = React.lazy(() => import('pages/main/maintenance/department'));
@@ -31,7 +35,7 @@ export const Navs = () => ([
         title: 'Tools', nav: [
             { path: '/tools/dsf', label: 'Daily Symptoms', name: 'dsf', component: "DAILY SYMPTOMS" },
             { path: '/tools/free-meal', label: 'Free Meal', name: 'free-meal', component: "FREE MEAL" },
-            { path: '/tools/employee-tracker', label: 'Employee Tracker', name: 'employee-tracker', component: "EMPLOYEE TRACKER" }
+            { path: '/tools/employee-tracker', label: 'Employee Tracker', name: 'employee-tracker', component: <EmployeeTracker /> }
         ]
     },
     {
