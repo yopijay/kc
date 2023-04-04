@@ -16,8 +16,8 @@ const Company = ({ fetching }) => {
     const { type } = useParams();
     const { control, getValues, setError, errors, setValue } = useContext(FormCntxt);
     const { data: company } = useGet({ key: ['dd_company'], fetch: dropdown({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false } });
-    const { data: department, mutate: dpt, dptloading } = usePost({ fetch: dropdown });
-    const { data: position, mutate: pst, pstloading } = usePost({ fetch: dropdown });
+    const { data: department, mutate: dpt, isLoading: dptloading } = usePost({ fetch: dropdown });
+    const { data: position, mutate: pst, isLoading: pstloading } = usePost({ fetch: dropdown });
 
     useEffect(() => {
         if(!fetching) {
