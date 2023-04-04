@@ -35,6 +35,7 @@ export const successToast = (message, duration = 3000, navigate) => {
         pauseOnHover: true,
         draggable: false,
         progress: undefined,
+        theme: 'colored',
         onClose: () => navigate
     });
 }
@@ -48,6 +49,7 @@ export const infoToast = (message, duration = 3000, navigate) => {
         pauseOnHover: true,
         draggable: false,
         progress: undefined,
+        theme: 'colored',
         onClose: () => navigate
     });
 }
@@ -61,6 +63,7 @@ export const errorToast = (message, duration = 3000, navigate) => {
         pauseOnHover: true,
         draggable: false,
         progress: undefined,
+        theme: 'colored',
         onClose: () => navigate
     });
 }
