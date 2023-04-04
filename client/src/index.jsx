@@ -21,11 +21,9 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
-    <React.StrictMode>
+    <ThemeProvider theme= { Light }>
         <CssBaseline />
-        <ThemeProvider theme= { Light }>
-            <App />
-            <ToastContainer />
-        </ThemeProvider>
-    </React.StrictMode>
+        <App />
+        <ToastContainer />
+    </ThemeProvider>
 );

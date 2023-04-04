@@ -21,3 +21,4 @@ export const assettag = async ({ table, data }) => { return await api({ url: `${
 export const filter = async ({ table, data }) => { return await api({ url: `${Env[env].url}/filter/${table}`, method: 'post', data: data }).then(res => res.data); }
 export const component = async (id) => { return await api({ url: `${Env[env].url}/component/${id}`, method: 'get'}).then(res => res.data); }
 export const evaluate = async ({ table, type, data }) => { return await api({ url: `${Env[env].url}/evaluate/${table}/${type}`, method: 'post', data: data }).then(res => res.data); }
+export const tracker = async (data) => { return await api({ url: `${Env[env].url}/track`, method: 'post', data: data }).then(res => res.data); }
