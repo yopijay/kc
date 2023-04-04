@@ -1,14 +1,14 @@
 // Libraries
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Box, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Divider, Grid, Stack, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { ThemeProvider } from "@emotion/react";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
-import { successToast, useGet, usePost } from "core/function/global"; // Function
+import { generateQR, successToast, useGet, usePost } from "core/function/global"; // Function
 import { save, specific, update } from "core/api"; // API
 import { theme } from "core/theme/form.theme"; // Theme
 
@@ -39,10 +39,11 @@ const input = {
 const Index = () => {
     const { type, id } = useParams();
     const navigate = useNavigate();
-    const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
+    const [ qr, setQR ] = useState();
+    const { setValidation, setValue, setError, handleSubmit, getValues } = useContext(FormCntxt);
     const { isFetching, refetch } =
-        useGet({ key: ['usr_specific'], fetch: 
-            specific({ table: 'tbl_users', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
+        useGet({ key: ['usr_specific'], 
+            fetch: specific({ table: 'tbl_users', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) {
@@ -68,7 +69,7 @@ const Index = () => {
             }
         });
 
-    useEffect(() => { setValidation(Validation()); if(id !== undefined) { refetch() } }, [ setValidation, id, refetch ]);
+    useEffect(() => { setValidation(Validation()); if(id !== undefined) { refetch(); generateQR({ data: id, set: setQR }) } }, [ setValidation, id, refetch ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
@@ -93,6 +94,12 @@ const Index = () => {
                     <Typography sx= {{ fontWeight: 'bold', textTransform: 'uppercase' }} variant= "body1" gutterBottom>Benefits</Typography>
                     <Benefits fetching= { isFetching } />
                 </Stack>
+                { type !== 'new' ? 
+                    <Stack direction= "row" justifyContent= "center" alignItems= "center" sx= {{ width: '100%' }}>
+                        <a href= { qr } download= { `${getValues()?.lname}, ${getValues()?.fname}` }>
+                            <Avatar src= { qr } alt= { `${getValues()?.lname}, ${getValues()?.fname}` } sx= {{ width: '200px', height: '200px' }} />
+                        </a>
+                    </Stack> : ''}
             </Stack>
             { type !== 'view' ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">

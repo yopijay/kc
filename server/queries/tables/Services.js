@@ -40,16 +40,7 @@ class Services {
                                             .join({ table: `tbl_services_sales AS sales`, condition: `sales.service_id = srvc.id`, type: `LEFT` })
                                             .condition(`WHERE sales.requested_by_signature IS NOT NULL AND srvc.status = 'closed'`).build()).rowCount,
                 }
-            case 'report':
-                return {
-                    ongoing: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'dispatch'`).build()).rowCount,
-                    cancelled: (await new Builder(`tbl_services AS srvc`)
-                                    .select()
-                                    .join({ table: `tbl_services_technical AS technical`, condition: `technical.service_id = srvc.id`, type: `LEFT` })
-                                    .condition(`WHERE technical.evaluated_by_signature IS NOT NULL AND technical.noted_by_signature IS NOT NULL 
-                                                            AND technical.received_by_signature IS NOT NULL AND srvc.status = 'closed'`)
-                                    .build()).rowCount
-                }
+            case 'report': return { ongoing: (await new Builder(`tbl_services`).select().condition(`WHERE status= 'dispatch'`).build()).rowCount }
             default: 
         }
     }
