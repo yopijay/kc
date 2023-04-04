@@ -1,0 +1,49 @@
+Default module for superadmin
+- Module
+- Sub module
+- User
+- Role & Access
+
+
+Module creation (fields)
+- id
+- series_no
+- name
+- status
+- created_by
+- updated_by
+- deleted_by
+- date_created
+- date_updated
+- date_deleted
+
+Sub module creation (fields)
+- id
+- module_id
+- name
+- status
+- created_by
+- updated_by
+- deleted_by
+- date_created
+- date_updated
+- date_deleted
+
+
+Role Access creation (fields)
+- id
+- user_id
+- module_id
+- sub_module_id
+- is_create (Can create a transaction)
+- is_read (Listing)
+- is_update (Can update a transaction)
+- is_delete 
+- is_import (Can import a file to the system)
+- is_export (Can export a file from the system)
+- is_print (Can print)
+
+
+
+Role & Access process
+- Once logged in, 
