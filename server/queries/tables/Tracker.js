@@ -5,6 +5,29 @@ const audit = { series_no: '', table_name: 'tbl_users',  item_id: 0, field: '', 
 class Tracker {
     series = async () => { return (await new Builder(`tbl_tracker`).select(`COUNT(*)`).build()).rows; }
     specific = async (id) => { return (await new Builder(`tbl_tracker`).select().condition(`WHERE id= ${id}`).build()).rows; }
+    filter = async () => { return [{ id: 'all', name: 'ALL' }].concat((await new Builder(`tbl_tracker`).select(`id, name`).condition(`WHERE status= 1 ORDER BY date_created DESC`).build()).rows); }
+
+    dropdown = async () => {
+        return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                        .concat((await new Builder(`tbl_tracker`).select(`id, name`).condition(`WHERE status= 1 ORDER BY date_created DESC`).build()).rows);
+    }
+
+    dashboard = async (data) => {
+        return {
+            total: (await new Builder(`tbl_users AS usr`)
+                        .select()
+                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
+                        .condition(`${data.branch !== 'all' ? `WHERE emp.branch = '${data.branch}'` : ''}`)
+                        .except(`WHERE usr.id= 1`)
+                        .build()).rowCount,
+            unknown: (await new Builder(`tbl_users AS usr`)
+                                .select(`DISTINCT trckr.user_id`)
+                                .join({ table: `tbl_employee_tracker AS trckr`, condition: `trckr.user_id = usr.id`, type: `LEFT` })
+                                .condition(`WHERE ${data.branch !== 'all' ? `trckr.branch= '${data.branch}' AND` : ''} trckr.date_out is NULL`)
+                                .except(`WHERE usr.id= 1`)
+                                .build()).rowCount
+        }
+    }
 
     list = async (data) => {
         return (await new Builder(`tbl_tracker`)
@@ -90,11 +113,6 @@ class Tracker {
         else { return { result: 'error', error: _errors } }
     }
 
-    dropdown = async () => {
-        return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
-                        .concat((await new Builder(`tbl_tracker`).select(`id, name`).condition(`WHERE status= 1 ORDER BY date_created DESC`).build()).rows);
-    }
-
     track = async (data) => {
         let currdate = Global.date(new Date());
         let date = new Date();
@@ -135,6 +153,15 @@ class Tracker {
                 
             return { result: 'success', message: 'Department Out!' }
         }
+    }
+
+    logs = async (data) => {
+        return (await new Builder(`tbl_employee_tracker AS trckr`)
+                        .select()
+                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = trckr.user_id`, type: `LEFT` })
+                        .condition(`WHERE trckr.date_in= '${data.date}' ${data.branch !== 'all' ? `AND trckr.branch= '${data.branch}' ` : ''}
+                                            ${data.tracker_id !== 'all' ? `AND trckr.tracker_id= ${data.tracker_id}` : ''}`)
+                        .build()).rows;
     }
 }
 

@@ -33,6 +33,7 @@ const filter = (table, data) => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().filter()); break;
             case 'tbl_sub_category': resolve(await new SubCategory().filter(data)); break;
+            case 'tbl_tracker': resolve(await new Tracker().filter(data)); break;
         }
     });
 }
@@ -48,6 +49,7 @@ const dashboard = (table, data) => {
             case 'tbl_assets': resolve(await new Assets().dashboard()); break;
             case 'tbl_sub_category': resolve(await new SubCategory().dashboard()); break;
             case 'tbl_services': resolve(await new Services().dashboard(data)); break;
+            case 'tbl_employee_tracker': resolve(await new Tracker().dashboard(data)); break;
         }
     });
 }
@@ -87,6 +89,7 @@ const list = (table, data) => {
             case 'tbl_sub_module': resolve(await new SubModule().list(data)); break
             case 'tbl_services': resolve(await new Services().list(data)); break;
             case 'tbl_tracker': resolve(await new Tracker().list(data)); break;
+            case 'tbl_employee_tracker': resolve(await new Tracker().logs(data)); break;
         }
     });
 }
