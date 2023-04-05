@@ -23,7 +23,7 @@ const Index = () => {
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { container }>
             <Routes>
                 <Route exact path= "/" element= { <ListPrvdr><FormPrvdr><Scanner /></FormPrvdr></ListPrvdr> } />
-                <Route exact path= "/logs" element= { <FormPrvdr><Logs /></FormPrvdr> } />
+                <Route exact path= "/logs" element= { <ListPrvdr><FormPrvdr><Logs /></FormPrvdr></ListPrvdr> } />
             </Routes>
         </Stack>
     );

@@ -2,21 +2,19 @@
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Autocomplete, Box, Grid, Stack, TextField, Typography } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Controller } from "react-hook-form";
 import QrReader from "react-qr-reader";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
-import { errorToast, successToast, useGet, usePost } from "core/function/global";
-import { dropdown, tracker } from "core/api";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { errorToast, successToast, useGet, usePost } from "core/function/global"; // Function
+import { dropdown, tracker } from "core/api"; // API
 
 // Constants
-const branch = [{ id: 'quezon_ave', name: 'QUEZON AVE.' }, { id: 'sto_domingo', name: 'STO. DOMINGO' }, { id: 'manila', name: 'MANILA' }, { id: 'cavite', name: 'CAVITE' }]; // Branch
+const branch = [{ id: 'all', name: 'ALL' }, { id: 'quezon_ave', name: 'QUEZON AVE.' }, { id: 'sto_domingo', name: 'STO. DOMINGO' }, { id: 'manila', name: 'MANILA' }, { id: 'cavite', name: 'CAVITE' }]; // Branch
 const card = {
     padding: '30px 15px',
     flexGrow: 1,
@@ -49,26 +47,25 @@ const select = {
     borderRadius: '5px'
 }
 
-const date = {
-    border: 'solid 1px #dfe4ea',
-    padding: {
-        xs: '12px 8px 9px 8px',
-        md: '9px 10px 6px 10px'
-    },
-    marginBottom: '5px',
-    borderRadius: '5px'
-}
-
 const Index = () => {
-    const { control, getValues, setError, errors } = useContext(FormCntxt);
+    const { control, getValues, setError, errors, setValue, register } = useContext(FormCntxt);
     const { data: location } = useGet({ key: ['dd_location'], fetch: dropdown({ table: 'tbl_tracker', data: {} }), options: { refetchOnWindowFocus: false } });
     const { mutate: track } = usePost({ fetch: tracker, onSuccess: data => { if(data.result === 'error') { errorToast(data.message, 3000); } else { successToast(data.message, 3000); } } });
+
+    useEffect(() => {
+        register('branch', { value: 'all' });
+        setValue('date', `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}`);
+
+        let data = getValues();
+        data['branch'] = 'all';
+        data['date'] = `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}`;
+    }, [ setValue, register, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3c4048' }}>Employee Tracker</Typography>
-                <Typography sx= { btnicon } component= { Link } to= "/tools/employee-tracker/logs" ><FontAwesomeIcon icon= { faEllipsisVertical } size= "lg" /></Typography>
+                <Typography sx= { btnicon } component= { Link } to= "/tools/employee-tracker/logs"><FontAwesomeIcon icon= { faEllipsisVertical } size= "lg" /></Typography>
             </Stack>
             <Box sx= { card }>
                 <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ marginBottom: '30px' }}>
@@ -96,29 +93,16 @@ const Index = () => {
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                             <Typography variant= "body2" gutterBottom>Branch</Typography>
                             <Box sx= { select }>
-                                <Controller control= { control } name= "branch" defaultValue= "quezon_ave"
+                                <Controller control= { control } name= "branch" defaultValue= "all"
                                         render= { ({ field: { onChange, value } }) => (
                                             <Autocomplete options= { branch } disableClearable getOptionLabel= { opt => opt.name || opt.id }
                                                 noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                                 renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
-                                                onChange= { (e, item) => { onChange(item.id); } }
+                                                onChange= { (e, item) => { setError('branch', { message: '' }); onChange(item.id); } }
                                                 value= { branch.find(data => { return data.id === (getValues().branch !== undefined ? getValues().branch : value) }) } />
                                         ) } />
                             </Box>
-                        </Stack>
-                    </Grid>
-                    <Grid item xs= { 12 } md= { 3 }>
-                        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                            <Typography variant= "body2" gutterBottom>Date</Typography>
-                            <Box sx= { date }>
-                                <Controller control= { control } name= "date" defaultValue= { `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}` }
-                                    render= { ({ field: { onChange, value } }) => (
-                                        <LocalizationProvider dateAdapter= { AdapterDayjs }>
-                                            <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } } />
-                                        </LocalizationProvider> ) }>
-                                </Controller>
-                            </Box>
+                            <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.branch?.message }</Typography>
                         </Stack>
                     </Grid>
                 </Grid>
@@ -130,6 +114,7 @@ const Index = () => {
                                 _data['id'] = data;
 
                                 if(getValues().tracker_id === undefined || getValues().tracker_id === 0) { errors.push({ name: 'tracker_id', message: 'This field is required!' }); }
+                                if(getValues().branch === 'all') { errors.push({ name: 'branch', message: 'Please select a branch!' }); }
 
                                 if(!(errors.length > 0)) { track(_data); }
                                 else { errors.forEach(err => setError(err.name, { message: err.message })); }

@@ -1,9 +1,10 @@
 // Libraries
 import React from 'react';
 
+const Dashboard = React.lazy(() => import('pages/main/dashboard'));
+
 // Tools
 const EmployeeTracker = React.lazy(() => import('pages/main/tools/employee-tracker'));
-
 
 // Maintenance
 const Company = React.lazy(() => import('pages/main/maintenance/company'));
@@ -29,7 +30,7 @@ const User = React.lazy(() => import('pages/main/user-roleaccess/user'));
 export const Navs = () => ([
     {
         title: 'Main', nav: [
-            { path: '/', label: 'Dashboard', name: 'home', component: 'DASHBOARD' }
+            { path: '/', label: 'Dashboard', name: 'home', component: <Dashboard /> }
         ]
     },
     {
@@ -74,4 +75,4 @@ export const Navs = () => ([
             { path: '/user-roleaccess/user', label: 'User', name: 'user', component: <User /> },
         ]
     },
-])
+]);
