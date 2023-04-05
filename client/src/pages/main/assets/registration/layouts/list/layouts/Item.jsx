@@ -28,9 +28,7 @@ const item = {
     overflow: 'hidden'
 }
 
-const txt = {
-    whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%'
-}
+const txt = { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }
 
 const Item = () => {
     const { list } = useContext(ListCntxt);

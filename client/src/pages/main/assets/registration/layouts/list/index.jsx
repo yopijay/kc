@@ -55,7 +55,7 @@ const Index = () => {
         data['sub_category_id'] = 'all';
         data['searchtxt'] = '';
 
-        record({ table: 'tbl_assets', data: data }); 
+        record({ table: 'tbl_assets', data: data });
     }, [ register, record, getValues ]);
 
     return (
