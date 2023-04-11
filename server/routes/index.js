@@ -23,5 +23,6 @@ router.post('/filter/:table', (req, res) => { query.filter(req.params.table, req
 router.get('/component/:id', (req, res) => { query.component(req.params.id).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
 router.post('/evaluate/:table/:type', (req, res) => { query.evaluate(req.params.table, req.params.type, req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
 router.post('/track', (req, res) => { query.tracker(req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
+router.post('/monitor', (req, res) => { query.monitor(req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
 
 module.exports = router;
