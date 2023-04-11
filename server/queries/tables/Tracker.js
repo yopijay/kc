@@ -29,6 +29,17 @@ class Tracker {
         }
     }
 
+    monitor = async (data) => {
+        console.log(data);
+        return (await new Builder(`tbl_users AS usr`)
+                        .select()
+                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
+                        .join({ table: `tbl_employee_tracker AS trckr`, condition: `trckr.user_id = usr.id`, type: `LEFT` })
+                        .condition(`WHERE ${data.tracker_id !== '' ? `trckr.tracker_id = ${data.tracker_id} AND` : ''} trckr.date_out IS NULL`)
+                        .except(`WHERE usr.id = 1`)
+                        .build()).rows;
+    }
+
     list = async (data) => {
         return (await new Builder(`tbl_tracker`)
                         .select(`id, series_no, name, status`)
@@ -160,7 +171,8 @@ class Tracker {
                         .select()
                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = trckr.user_id`, type: `LEFT` })
                         .condition(`WHERE trckr.date_in= '${data.date}' ${data.branch !== 'all' ? `AND trckr.branch= '${data.branch}' ` : ''}
-                                            ${data.tracker_id !== 'all' ? `AND trckr.tracker_id= ${data.tracker_id}` : ''}`)
+                                            ${data.tracker_id !== 'all' ? `AND trckr.tracker_id= ${data.tracker_id}` : ''}
+                                            ORDER BY trckr.date_created DESC`)
                         .build()).rows;
     }
 }
