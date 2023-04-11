@@ -9,6 +9,7 @@ import { FormPrvdr } from "core/context/Form"; // Provider
 // Layouts
 import Scanner from './layouts/scanner';
 import Logs from './layouts/logs';
+import Monitor from './layouts/monitor';
 
 // Custom styles
 const container = {
@@ -24,6 +25,7 @@ const Index = () => {
             <Routes>
                 <Route exact path= "/" element= { <ListPrvdr><FormPrvdr><Scanner /></FormPrvdr></ListPrvdr> } />
                 <Route exact path= "/logs" element= { <ListPrvdr><FormPrvdr><Logs /></FormPrvdr></ListPrvdr> } />
+                <Route exact path= "/monitor" element= { <ListPrvdr><FormPrvdr><Monitor /></FormPrvdr></ListPrvdr> } />
             </Routes>
         </Stack>
     );

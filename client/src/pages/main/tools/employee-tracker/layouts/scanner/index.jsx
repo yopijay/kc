@@ -1,5 +1,5 @@
 // Libraries
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { faDesktop, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Autocomplete, Box, Grid, Stack, TextField, Typography } from "@mui/material";
 import { useContext, useEffect } from "react";
@@ -48,24 +48,26 @@ const select = {
 }
 
 const Index = () => {
-    const { control, getValues, setError, errors, setValue, register } = useContext(FormCntxt);
+    const { control, getValues, setError, errors, setValue } = useContext(FormCntxt);
     const { data: location } = useGet({ key: ['dd_location'], fetch: dropdown({ table: 'tbl_tracker', data: {} }), options: { refetchOnWindowFocus: false } });
     const { mutate: track } = usePost({ fetch: tracker, onSuccess: data => { if(data.result === 'error') { errorToast(data.message, 3000); } else { successToast(data.message, 3000); } } });
 
     useEffect(() => {
-        register('branch', { value: 'all' });
         setValue('date', `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}`);
-
+        
         let data = getValues();
         data['branch'] = 'all';
         data['date'] = `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}`;
-    }, [ setValue, register, getValues ]);
+    }, [ setValue, getValues ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3c4048' }}>Employee Tracker</Typography>
-                <Typography sx= { btnicon } component= { Link } to= "/tools/employee-tracker/logs"><FontAwesomeIcon icon= { faEllipsisVertical } size= "lg" /></Typography>
+                <Stack direction= "row" justifyContent= "flex-end" alignItems= "center">
+                    <Typography sx= { btnicon } component= { Link } to= "/tools/employee-tracker/logs"><FontAwesomeIcon icon= { faEllipsisVertical } size= "lg" /></Typography>
+                    <Typography sx= { btnicon } component= { Link } to= "/tools/employee-tracker/monitor"><FontAwesomeIcon icon= { faDesktop } size= "lg" /></Typography>
+                </Stack>
             </Stack>
             <Box sx= { card }>
                 <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 } sx= {{ marginBottom: '30px' }}>
