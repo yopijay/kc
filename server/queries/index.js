@@ -19,6 +19,7 @@ const logout = (data) => { return new Users().logout(data); }
 const profile = (id) => { return new Users().profile(id); }
 const component = (id) => { return new UserAccess().components(id); }
 const tracker = (data) => { return new Tracker().track(data); }
+const monitor = (data) => { return new Tracker().monitor(data); }
 
 const assettag = (table, data) => {
     return new Promise(async resolve => {
@@ -271,5 +272,6 @@ module.exports = {
     filter,
     component,
     evaluate,
-    tracker
+    tracker,
+    monitor
 }
