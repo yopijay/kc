@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 // Core
 import { ListCntxt } from "core/context/List"; // Context
-import { ProfileCntx } from "core/context/Profile"; // Context
 
 // Custom styles
 const icons = {

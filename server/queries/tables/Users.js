@@ -84,7 +84,7 @@ class Users {
                                             ${data.company_id !== 'all' && data.searchtxt !== '' ? `AND `: ''}
                                             ${data.searchtxt !== '' ? `(emp.employee_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' 
                                             OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%' OR usr.email LIKE '%${(data.searchtxt).toUpperCase()}%')`: ''}`)
-                        .except(`WHERE usr.id= ${data.id} 
+                        .except(`WHERE usr.id= ${data.id} OR usr.user_level = 'superadmin'
                                         ORDER BY ${data.orderby === 'employee_no' ? `4 ${(data.sort).toUpperCase()}` : 
                                                                 data.orderby === 'lname' ? `8 ${(data.sort).toUpperCase()}` : `${data.orderby} ${(data.sort).toUpperCase()}`}`)
                         .build()).rows;

@@ -6,15 +6,11 @@ import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // Core
-import { GlobalCntx } from "core/context/Global"; // Context
 import { ListCntxt } from "core/context/List"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
 import { FormCntxt } from "core/context/Form"; // Context
 import { exporttoexcel, useGet, usePost } from "core/function/global"; // Function
 import { excel, look, records, submodule } from "core/api"; // API
-
-// Constants
-import { btnexport, btnicon, btntxt, search } from "./index.style"; // Design
 
 // Layouts
 import Dashboard from "./layouts/Dashboard";
@@ -22,12 +18,14 @@ import Item from "./layouts/Item";
 import Loader from "./layouts/Loader";
 import Sort from "./layouts/Sort";
 
+// Constants
+import { btnexport, btnicon, btntxt, search } from "./index.style"; // Design
+
 const Index = () => {
     let name = `KC-EXPORT-COMPANY-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { data } = useContext(ProfileCntx);
     const { setList } = useContext(ListCntxt);
     const { register, getValues, setValue } = useContext(FormCntxt);
-    const { message, errors } = useContext(GlobalCntx);
     const { data: sub, isFetching } = useGet({ key: ['submodule'], fetch: submodule('company'), options: { refetchOnWindowFocus: false } });
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => { setList(data) } });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: (data) => { setList(data)} });
@@ -73,11 +71,6 @@ const Index = () => {
                                 </Typography> : '' }
                             { !isFetching && (JSON.parse(data.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`].create || data.user_level === 'superadmin') ? 
                                 <Typography component= { Link } to= "/maintenance/company/form/new" sx= { btntxt }>New Company</Typography> : '' }
-                        </Stack>
-                        <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
-                            <Typography variant= "body2" sx= {{ color: '#557153', textAlign: 'right' }}>{ message }</Typography>
-                            { errors.map((err, index) => 
-                                <Typography variant= "caption" sx= {{ color: '#F47C7C', textAlign: 'right' }} key= { index }>{ `Error on row${err.row}, ${JSON.stringify(err.errors)}` }</Typography> ) }
                         </Stack>
                     </Stack>
                 </Stack>
