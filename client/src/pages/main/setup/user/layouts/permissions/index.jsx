@@ -58,7 +58,7 @@ const Index = () => {
             if(Array.isArray(data)) {
                 for(let count = 0; count < Object.keys(data[0]).length; count++) {
                     let _name = Object.keys(data[0])[count];
-                    setValue(_name, _name === 'permissions' ? JSON.parse(JSON.parse(data[0][_name])) : data[0][_name]);
+                    setValue(_name, _name === 'permissions' ? JSON.parse(data[0][_name]) : data[0][_name]);
                 }
             }
         } 
@@ -111,7 +111,6 @@ const Index = () => {
                     <Box sx= { btntxt } 
                         onClick= { handleSubmit(data => { 
                             data['updated_by'] = atob(localStorage.getItem('token'));
-                            data['permissions'] = JSON.stringify(data.permissions);
                             updating({ table: 'tbl_users_permissions', data: data }); 
                         }) }>Save</Box>
                 </Grid>

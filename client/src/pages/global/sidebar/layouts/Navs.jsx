@@ -70,9 +70,9 @@ const Navs = () => {
             { modules.length > 0 ?
                 modules.map((mdl, index) => (
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } key= { index }>
-                        { (JSON.parse(data.permissions)?.[`module_${mdl.id}`])?.length > 0 || data.user_level === 'superadmin' ?
+                        { JSON.parse(data.permissions)?.[`module_${mdl.id}`]?.status || data.user_level === 'superadmin' ?
                             <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>{ (mdl.name).charAt(0).toUpperCase() + (mdl.name).slice(1).toLowerCase() }</Typography> : '' }
-                        { (JSON.parse(data.permissions)?.[`module_${mdl.id}`])?.length > 0 || data.user_level === 'superadmin' ? <Subnavs module= { mdl.id } /> : '' }
+                        { JSON.parse(data.permissions)?.[`module_${mdl.id}`]?.status || data.user_level === 'superadmin' ? <Subnavs module= { mdl.id } /> : '' }
                     </Stack>
                 )) : '' }
         </Stack>

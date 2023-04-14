@@ -4,6 +4,7 @@ const Global = require('../../function/global'); // Function
 const audit = { series_no: '', table_name: 'tbl_sub_module',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class SubModule {
     series = async () => { return (await new Builder(`tbl_sub_module`).select(`COUNT(*)`).build()).rows; }
+    submodule = async (name) => { return (await new Builder(`tbl_sub_module`).select().condition(`WHERE name= '${(name).toUpperCase()}'`).build()).rows[0]; }
     specific = async (id) => { 
         return (await new Builder(`tbl_sub_module AS sm`)
                                         .select(`sm.*, mdl.name AS module`)

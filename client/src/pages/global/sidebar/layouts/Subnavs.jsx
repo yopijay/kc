@@ -1,12 +1,13 @@
 // Libraries
 import { useContext, useEffect, useState } from "react";
 import { Stack, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 // Core
 import { GlobalCntx } from "core/context/Global"; // Context
 import { usePost } from "core/function/global"; // Function
 import { records } from "core/api"; // API
-import { Link } from "react-router-dom";
+import { ProfileCntx } from "core/context/Profile"; // Context
 
 // Custom styles
 const linkNormal = {
@@ -27,6 +28,7 @@ const linkActive = {
 }
 
 const Subnavs = ({ module }) => {
+    const { data } = useContext(ProfileCntx);
     const [ submodules, setSubmodules ] = useState([]);
     const { isActive, setActive, setOpen } = useContext(GlobalCntx);
     const { mutate: submodule } = usePost({ fetch: records, onSuccess: data => setSubmodules(data) });
@@ -43,12 +45,14 @@ const Subnavs = ({ module }) => {
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-            { submodules.length > 0 ?
-                submodules.map((sub, index) => ( 
-                    <Typography key= { index } component= { Link } to= { `/${(sub.module).toLowerCase()}${sub.path}` }
-                        onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', (sub.name).toUpperCase()); setActive((sub.name).toUpperCase()); } }
-                        sx= { isActive === (sub.name).toUpperCase() ? linkActive : linkNormal }>{ (sub.name).charAt(0).toUpperCase() + (sub.name).slice(1).toLowerCase() }</Typography> 
-                )) : '' }
+            { submodules.length &&
+                submodules.map((sub, index) => {
+                    if(JSON.parse(data.permissions)?.[`module_${module}`][`submodule_${sub.id}`].list || data.user_level === 'superadmin')
+                        return (
+                            <Typography key= { index } component= { Link } to= { `/${(sub.module).toLowerCase()}${sub.path}` }
+                                onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', (sub.name).toUpperCase()); setActive((sub.name).toUpperCase()); } }
+                                sx= { isActive === (sub.name).toUpperCase() ? linkActive : linkNormal }>{ (sub.name).charAt(0).toUpperCase() + (sub.name).slice(1).toLowerCase() }</Typography> );
+                }) }
         </Stack>
     );
 }
