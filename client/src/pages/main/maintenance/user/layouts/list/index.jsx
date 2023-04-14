@@ -73,10 +73,10 @@ const Index = () => {
                                 formatted({ table: 'tbl_users', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
                             <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                         </Typography>
-                        <Typography component= { Link } to= "/setup/users/form/new" sx= { btnicon }>
+                        <Typography component= { Link } to= "/maintenance/users/form/new" sx= { btnicon }>
                             <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
                         </Typography>
-                        <Typography component= { Link } to= "/setup/users/form/new" sx= { btntxt }>New User</Typography>
+                        <Typography component= { Link } to= "/maintenance/users/form/new" sx= { btntxt }>New User</Typography>
                     </Stack>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                         <Typography variant= "body2" sx= {{ color: '#557153', textAlign: 'right' }}>{ message }</Typography>

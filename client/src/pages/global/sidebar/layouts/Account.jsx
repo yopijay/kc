@@ -39,7 +39,7 @@ const Account = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: { xs: '20px 10px', lg: '0' }, borderTop: 'dashed 1px #dfe6e9' }}>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%' }} spacing= { 1 }>
-                <Grid container direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
+                {/* <Grid container direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                     { data.user_level === 'superadmin' ? <Grid item xs= { 3 }>
                         <Stack direction= "row" justifyContent= "center" alignItems= "center" spacing= { 2 } 
                             component= { Link } to= "/setup/module" sx= { isActive === 'module' ? linkActive : link }
@@ -56,24 +56,26 @@ const Account = () => {
                     </Grid> : '' }
                     <Grid item xs= { 3 }>
                         <Stack direction= "row" justifyContent= "center" alignItems= "center" spacing= { 2 } 
-                            component= { Link } to= "/setup/users" sx= { isActive === 'users' ? linkActive : link }
+                            component= { Link } to= "/maintenance/users" sx= { isActive === 'users' ? linkActive : link }
                             onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'users'); setActive('users'); } }>
                             <FontAwesomeIcon icon= { faUser } />
                         </Stack>
                     </Grid>
                     <Grid item xs= { 3 }>
-                        <Stack direction= "row" justifyContent= "center" alignItems= "center" spacing= { 2 } sx= { link }>
-                            <FontAwesomeIcon icon= { faGear } />
-                        </Stack>
                     </Grid>
-                </Grid>
-                <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= {{ padding: '20px 0 0 0' }}>
+                </Grid> */}
+                <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                     <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                         <Avatar />
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch"><Typography>{ data.lname }, { data.fname }</Typography></Stack>
                     </Stack>
-                    <Stack direction= "row" justifyContent= "center" alignItems= "center" spacing= { 2 } sx= { link } onClick= { () => signout({ id: atob(localStorage.getItem('token')) }) }>
-                        <FontAwesomeIcon icon= { faRightFromBracket } />
+                    <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
+                        <Stack direction= "row" justifyContent= "center" alignItems= "center" spacing= { 2 } sx= { link }>
+                            <FontAwesomeIcon icon= { faGear } />
+                        </Stack>
+                        <Stack direction= "row" justifyContent= "center" alignItems= "center" spacing= { 2 } sx= { link } onClick= { () => signout({ id: atob(localStorage.getItem('token')) }) }>
+                            <FontAwesomeIcon icon= { faRightFromBracket } />
+                        </Stack>
                     </Stack>
                 </Stack>
             </Stack>

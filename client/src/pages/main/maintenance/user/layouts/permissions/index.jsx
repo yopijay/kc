@@ -64,7 +64,7 @@ const Index = () => {
         } 
     });
 
-    const { mutate: updating } = usePost({ fetch: update, onSuccess: data => { successToast(data.message, 3000, navigate('/setup/users', { replace: true })); } });
+    const { mutate: updating } = usePost({ fetch: update, onSuccess: data => { successToast(data.message, 3000, navigate('/maintenance/users', { replace: true })); } });
 
     useEffect(() => {
         let data = {};
@@ -79,7 +79,7 @@ const Index = () => {
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>User Permissions</Typography>
-                <Typography sx= { btnicon } component= { Link } to= "/setup/users" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
+                <Typography sx= { btnicon } component= { Link } to= "/maintenance/users" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= { card } spacing= { 2 }>
                 <Grid container direction= "row" justifyContent= "flex-start" alignItems= "stretch">

@@ -45,14 +45,14 @@ const Subnavs = ({ module }) => {
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-            { submodules.length &&
+            { submodules.length > 0 ?
                 submodules.map((sub, index) => {
                     if(JSON.parse(data.permissions)?.[`module_${module}`][`submodule_${sub.id}`].list || data.user_level === 'superadmin')
                         return (
                             <Typography key= { index } component= { Link } to= { `/${(sub.module).toLowerCase()}${sub.path}` }
                                 onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', (sub.name).toUpperCase()); setActive((sub.name).toUpperCase()); } }
                                 sx= { isActive === (sub.name).toUpperCase() ? linkActive : linkNormal }>{ (sub.name).charAt(0).toUpperCase() + (sub.name).slice(1).toLowerCase() }</Typography> );
-                }) }
+                }) : '' }
         </Stack>
     );
 }

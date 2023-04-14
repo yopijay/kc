@@ -50,9 +50,9 @@ const Item = () => {
                             { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
                                 <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
-                                <Typography sx= { icons } component= { Link } to= { `/setup/users/permission/${data.id}` }><FontAwesomeIcon icon= { faLock } size= "lg" /></Typography>
-                                <Typography sx= { icons } component= { Link } to= { `/setup/users/form/update/${data.id}` }><FontAwesomeIcon icon= { faPencil } size= "lg" /></Typography>
-                                <Typography sx= { icons } component= { Link } to= { `/setup/users/form/view/${data.id}` }><FontAwesomeIcon icon= { faEye } size= "lg" /></Typography>
+                                <Typography sx= { icons } component= { Link } to= { `/maintenance/users/permission/${data.id}` }><FontAwesomeIcon icon= { faLock } size= "lg" /></Typography>
+                                <Typography sx= { icons } component= { Link } to= { `/maintenance/users/form/update/${data.id}` }><FontAwesomeIcon icon= { faPencil } size= "lg" /></Typography>
+                                <Typography sx= { icons } component= { Link } to= { `/maintenance/users/form/view/${data.id}` }><FontAwesomeIcon icon= { faEye } size= "lg" /></Typography>
                             </Stack>
                         </Stack>
                     </Stack>

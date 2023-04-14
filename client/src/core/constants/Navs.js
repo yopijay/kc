@@ -10,6 +10,7 @@ const Dashboard = React.lazy(() => import('pages/main/dashboard'));
 const Company = React.lazy(() => import('pages/main/maintenance/company'));
 const Department = React.lazy(() => import('pages/main/maintenance/department'));
 const Position = React.lazy(() => import('pages/main/maintenance/position'));
+const User = React.lazy(() => import('pages/main/maintenance/user'));
 // const Category = React.lazy(() => import('pages/main/maintenance/category'));
 // const SubCategory = React.lazy(() => import('pages/main/maintenance/sub-category'));
 // const Tracker = React.lazy(() => import('pages/main/maintenance/tracker'));
@@ -25,7 +26,6 @@ const Position = React.lazy(() => import('pages/main/maintenance/position'));
 // const AssetIssuance = React.lazy(() => import('pages/main/assets/issuance'));
 
 // // Setup
-const User = React.lazy(() => import('pages/main/setup/user'));
 const Module = React.lazy(() => import('pages/main/setup/module'));
 const Submodule = React.lazy(() => import('pages/main/setup/sub-module'));
 
@@ -84,7 +84,7 @@ export const Components = () => ([
     { path: '/maintenance/company', name: 'company', component: <Company /> },
     { path: '/maintenance/department', name: 'department', component: <Department /> },
     { path: '/maintenance/position', name: 'position', component: <Position /> },
-    { path: '/setup/users', name: 'company', component: <User /> },
+    { path: '/maintenance/users', name: 'company', component: <User /> },
     { path: '/setup/module', name: 'module', component: <Module /> },
     { path: '/setup/submodule', name: 'submodule', component: <Submodule /> }
 ]);
