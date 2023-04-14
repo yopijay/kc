@@ -17,7 +17,7 @@ const ID = ({ fetching }) => {
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 }>
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Typography variant= "body2">*Employee no.</Typography>
+                    <Typography variant= "body2">Employee no.</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('employee_no') } name= "employee_no" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
                     <Typography variant= "body2" sx= {{ color: '#e84118' }} gutterBottom>{ errors.employee_no?.message }</Typography>
@@ -25,7 +25,7 @@ const ID = ({ fetching }) => {
             </Grid>
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Typography variant= "body2">*RFID</Typography>
+                    <Typography variant= "body2">RFID</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                         <TextField { ...register('rfid') } name= "rfid" variant= "standard" InputProps= {{ disableUnderline: true }} disabled= { type === 'view' } sx= { input } /> }
                     <Typography variant= "body2" sx= {{ color: '#e84118' }} gutterBottom>{ errors.rfid?.message }</Typography>

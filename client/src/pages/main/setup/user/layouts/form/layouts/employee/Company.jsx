@@ -35,7 +35,7 @@ const Company = ({ fetching }) => {
                     <Typography variant= "body2" gutterBottom>*Company</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= { select }>
-                            { company?.length > 0 ? 
+                            { company?.length > 1 ? 
                                 <Controller control= { control } name= "company_id" defaultValue= { 0 }
                                     render= { ({ field: { onChange, value } }) => (
                                         <Autocomplete options= { company?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
@@ -52,7 +52,7 @@ const Company = ({ fetching }) => {
                                             value= { company?.find(data => { return data.id === (getValues().company_id !== undefined ? getValues().company_id : value) }) !== undefined ?
                                                 company?.find(data => { return data.id === (getValues().company_id !== undefined ? getValues().company_id : value) }) : company.length === 0 ?
                                                 { id: 0, name: '-- SELECT AN ITEM BELOW --' } : company[0] } />
-                                    ) } /> : <Typography color= "text.disabled">You must create a user first!</Typography> }
+                                    ) } /> : <Typography color= "text.disabled">You must create a company first!</Typography> }
                         </Box> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.company_id?.message }</Typography>
                 </Stack>

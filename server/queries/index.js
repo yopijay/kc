@@ -1,6 +1,5 @@
 // Tables
 const Users = require('./tables/Users');
-const UserAccess = require('./tables/UserAccess');
 const Company = require('./tables/Company');
 const Department = require('./tables/Department');
 const Position = require('./tables/Position');
@@ -13,11 +12,11 @@ const Module = require('./tables/Module');
 const SubModule = require('./tables/SubModule');
 const Services = require('./tables/Services');
 const Tracker = require('./tables/Tracker');
+const Permissions = require('./tables/Permissions');
 
 const login = (data) => { return new Users().login(data); }
 const logout = (data) => { return new Users().logout(data); }
 const profile = (id) => { return new Users().profile(id); }
-const component = (id) => { return new UserAccess().components(id); }
 const tracker = (data) => { return new Tracker().track(data); }
 const monitor = (data) => { return new Tracker().monitor(data); }
 
@@ -128,7 +127,7 @@ const specific = (table, id) => {
             case 'tbl_module': resolve(await new Module().specific(id)); break;
             case 'tbl_sub_module': resolve(await new SubModule().specific(id)); break;
             case 'tbl_services': resolve(await new Services().specific(id)); break;
-            case 'tbl_tracker': resolve(await new Tracker().specific(id)); break;
+            case 'tbl_users_permissions': resolve(await new Permissions().specific(id)); break;
         }
     });
 }
@@ -167,6 +166,7 @@ const update = (table, data) => {
            case 'tbl_sub_module': resolve(await new SubModule().update(data)); break;
            case 'tbl_services': resolve(await new Services().update(data)); break;
            case 'tbl_tracker': resolve(await new Tracker().update(data)); break;
+           case 'tbl_users_permissions': resolve(await new Permissions().update(data)); break;
        }
    });
 }
@@ -270,7 +270,6 @@ module.exports = {
     upload,
     assettag,
     filter,
-    component,
     evaluate,
     tracker,
     monitor

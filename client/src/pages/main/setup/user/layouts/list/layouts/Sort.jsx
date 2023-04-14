@@ -16,7 +16,7 @@ import { asc, ctgy, desc, select } from "../index.style"; // Styles
 const Sort = ({ refetch }) => {
     const { getValues, control, setValue } = useContext(FormCntxt);
     const { data: cmp, isFetching } = useGet({ key: ['cmp_dropdown'], fetch: filter({ table: 'tbl_company', data: {} }) });
-    const [ orderby, setOrderby ] = useState('date_hired');
+    const [ orderby, setOrderby ] = useState('lname');
     const [ sort, setSort ] = useState('desc');
 
     return (
@@ -37,15 +37,12 @@ const Sort = ({ refetch }) => {
             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                     <Typography variant= "caption">Order by:</Typography>
-                    { orderby === 'date_hired' ?
+                    { orderby === 'employee_no' ? 
                         <Typography sx= { ctgy }
-                            onClick= { () => { setValue('orderby', 'employee_no'); setOrderby('employee_no'); refetch({ table: 'tbl_users', data: getValues() }); } }>Date hired</Typography> :
-                        orderby === 'employee_no' ? 
+                            onClick= { () => { setValue('orderby', 'lname'); setOrderby('lname'); refetch({ table: 'tbl_users', data: getValues() }); } }>Employee no.</Typography> :
+                        orderby === 'lname' ?
                             <Typography sx= { ctgy }
-                                onClick= { () => { setValue('orderby', 'lname'); setOrderby('lname'); refetch({ table: 'tbl_users', data: getValues() }); } }>Employee no.</Typography> :
-                            orderby === 'lname' ?
-                                <Typography sx= { ctgy }
-                                    onClick= { () => { setValue('orderby', 'date_hired'); setOrderby('date_hired'); refetch({ table: 'tbl_users', data: getValues() }); } }>Last name</Typography> : '' }
+                                onClick= { () => { setValue('orderby', 'employee_no'); setOrderby('employee_no'); refetch({ table: 'tbl_users', data: getValues() }); } }>Last name</Typography> : '' }
                 </Stack>
                 { sort === 'desc' ? 
                     <Typography sx= { asc }>

@@ -34,7 +34,7 @@ const Index = () => {
         usePost({ fetch: save, 
             onSuccess: (data) => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
-                else { successToast(data.message, 3000, navigate('/setup/sub-module', { replace: true })); } 
+                else { successToast(data.message, 3000, navigate('/setup/submodule', { replace: true })); } 
             } 
         });
 
@@ -42,7 +42,7 @@ const Index = () => {
         usePost({ fetch: update, 
             onSuccess: (data) => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
-                else { successToast(data.message, 3000, navigate('/setup/sub-module', { replace: true })); } 
+                else { successToast(data.message, 3000, navigate('/setup/submodule', { replace: true })); } 
             } 
         });
 
@@ -52,19 +52,23 @@ const Index = () => {
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>{ type } Sub module</Typography>
-                <Typography sx= { btnicon } component= { Link } to= "/setup/sub-module" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
+                <Typography sx= { btnicon } component= { Link } to= "/setup/submodule" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
             <Box sx= { card }><form autoComplete= "off"><Form fetching= { isFetching } /></form></Box>
             { type !== 'view' ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
-                            data[type === 'new' ? 'created_by' : 'updated_by'] = localStorage.getItem('token');
-                            
-                            if(data.module_id !== undefined) {
+                            let errors = [];
+                            data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
+
+                            if(data.module_id === undefined) { errors.push({ name: 'module_id', message: 'This field is required!' }); }
+
+                            if(!(errors.length > 0)) {
                                 if(type === 'new') { saving({ table: 'tbl_sub_module', data: data }); }
                                 else { updating({ table: 'tbl_sub_module', data: data }); }
-                            } else { setError('module_id', { message: 'This field is required!' }); }
+                            }
+                            else { errors.forEach(err => setError(err.name, { message: err.message })); }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }

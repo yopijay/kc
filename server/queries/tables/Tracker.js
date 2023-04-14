@@ -30,7 +30,6 @@ class Tracker {
     }
 
     monitor = async (data) => {
-        console.log(data);
         return (await new Builder(`tbl_users AS usr`)
                         .select()
                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })

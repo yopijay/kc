@@ -10,7 +10,7 @@ const Employee = ({ fetching }) => {
 
     return (
         <form autoComplete= "off">
-            <Grid container direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+            <Grid container direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                 <Grid item><Company fetching= { fetching } /></Grid>
                 <Grid item><ID fetching= { fetching } /></Grid>
                 <Grid item><Other fetching= { fetching } /></Grid>

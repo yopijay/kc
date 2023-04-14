@@ -9,7 +9,7 @@ class SubModule {
                                         .select(`sm.*, mdl.name AS module`)
                                         .join({ table: `tbl_module AS mdl`, condition: `sm.module_id = mdl.id`, type: `LEFT` })
                                         .condition(`WHERE sm.id= ${id}`)
-                                        .build()).rows; 
+                                        .build()).rows;
     }
 
     dropdown = async (data) => {
@@ -28,6 +28,7 @@ class SubModule {
                                         .join({ table: `tbl_employee AS cb`, condition: `sm.created_by = cb.user_id`, type: `LEFT` })
                                         .condition(`${data.searchtxt !== '' ? `WHERE sm.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR mdl.name LIKE '%${(data.searchtxt).toUpperCase()}%'
                                                             OR sm.name LIKE '%${(data.searchtxt).toUpperCase()}%' OR sm.path LIKE '%${data.searchtxt}%'` : '' }
+                                                            ${data.module_id !== '' && data.module_id !== undefined ? `WHERE sm.module_id= ${data.module_id}` : ''}
                                                             ORDER BY sm.${data.orderby} ${(data.sort).toUpperCase()}`)
                                         .build()).rows;
     }
@@ -90,7 +91,7 @@ class SubModule {
             let sm = (await new Builder(`tbl_sub_module`)
                                                 .insert({ columns: `series_no, module_id, name, path, is_maintenance, status, created_by, date_created`, 
                                                                 values: `'${(data.series_no).toUpperCase()}', ${data.module_id}, '${(data.name).toUpperCase()}', '${data.path}',
-                                                                                ${data.is_maintenance ? 1 : 0}, ${data.status ? 1 : 0}, data.created_by}, '${date}'` })
+                                                                                ${data.is_maintenance ? 1 : 0}, ${data.status ? 1 : 0}, ${data.created_by}, '${date}'` })
                                                 .condition(`RETURNING id`)
                                                 .build()).rows[0];
             
@@ -98,7 +99,7 @@ class SubModule {
             audit.field = 'all';
             audit.item_id = sm.id;
             audit.action = 'create';
-            audit.user_id = atob(data.created_by);
+            audit.user_id = data.created_by;
             audit.date = date;
 
             Global.audit(audit);
@@ -116,7 +117,7 @@ class SubModule {
         if(Global.compare(sm.module_id, data.module_id)) {
             if(!((await new Builder(`tbl_sub_module`).select().condition(`WHERE module_id= ${data.module_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
                 _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_sub_module', item_id: sm.id,
-                                        field: 'module_id', previous: sm.module_id, current: data.module_id, action: 'update', user_id: atob(data.updated_by), date: date });
+                                        field: 'module_id', previous: sm.module_id, current: data.module_id, action: 'update', user_id: data.updated_by, date: date });
             }
             else { _errors.push({ name: 'name', message: 'Name already exist in this module!' }); }
         }
@@ -124,30 +125,30 @@ class SubModule {
         if(Global.compare(sm.name, data.name)) {
             if(!((await new Builder(`tbl_sub_module`).select().condition(`WHERE module_id= ${data.module_id} AND name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
                 _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_sub_module', item_id: sm.id,
-                                        field: 'name', previous: sm.name, current: (data.name).toUpperCase(), action: 'update', user_id: atob(data.updated_by), date: date });
+                                        field: 'name', previous: sm.name, current: (data.name).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
             }
             else { _errors.push({ name: 'name', message: 'Name already exist in this module!' }); }
         }
 
         if(Global.compare(sm.path, data.path)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_sub_module', item_id: sm.id,
-                                    field: 'path', previous: sm.path, current: data.path, action: 'update', user_id: atob(data.updated_by), date: date });
+                                    field: 'path', previous: sm.path, current: data.path, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(Global.compare(sm.is_maintenance, data.is_maintenance ? 1 : 0)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_sub_module', item_id: sm.id,
-                                    field: 'is_maintenance', previous: sm.is_maintenance, current: data.is_maintenance ? 1 : 0, action: 'update', user_id: atob(data.updated_by), date: date });
+                                    field: 'is_maintenance', previous: sm.is_maintenance, current: data.is_maintenance ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(Global.compare(sm.status, data.status ? 1 : 0)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_sub_module', item_id: sm.id,
-                                    field: 'status', previous: sm.status, current: data.status ? 1 : 0, action: 'update', user_id: atob(data.updated_by), date: date });
+                                    field: 'status', previous: sm.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_sub_module`)
                                 .update(`module_id= ${data.module_id}, name= '${(data.name).toUpperCase()}', path= '${data.path}', is_maintenance= ${data.is_maintenance ? 1 : 0},
-                                                status= ${data.status ? 1 : 0}, updated_by= data.updated_by}, date_updated= '${date}'`)
+                                                status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
                                 .condition(`WHERE id= ${data.id}`)
                                 .build();
             
