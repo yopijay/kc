@@ -1,18 +1,20 @@
 // Libraries
-import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Divider, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
-import { useContext } from "react";
-import { Controller, useFieldArray } from "react-hook-form";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Dialog, Stack, Typography, useMediaQuery } from "@mui/material";
+import { useContext, useState } from "react";
+import { useFieldArray } from "react-hook-form";
 import dayjs from "dayjs";
+import { useTheme } from "@emotion/react";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
 
+// Layouts
+import NatureOfRequests from "./modal/NatureOfRequests";
+
 // Constants
-import { addrow, date, deleterow, input } from "../../../index.style"; // Styles
+import { addrow } from "../../../index.style"; // Styles
 let defaults = {
     request: '',
     personnel: '',
@@ -23,118 +25,46 @@ let defaults = {
 }
 
 const Requests = ({ fetching }) => {
-    const { register, control, getValues } = useContext(FormCntxt);
+    const { control, getValues } = useContext(FormCntxt);
     const { fields, append, remove } = useFieldArray({ control, name: 'requests' });
+    const [ open, setOpen ] = useState(false);
+    const theme = useTheme();
+    const fullscreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const [ type, setType ] = useState('');
+    const [ index, setIndex ] = useState();
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ margin: '30px 0 40px 0'}}>
             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ marginBottom: '20px' }}>
                 { !(getValues()?.status !== undefined && getValues()?.status !== 'saved') ? 
-                    <Typography sx= { addrow } onClick= { () => append(defaults) }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" /></Typography> : '' }
+                    <Typography sx= { addrow } onClick= { () => { setType('create'); setOpen(true); setIndex(fields.length) } }>
+                        <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
+                    </Typography> : '' }
             </Stack>
-            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" divider={ <Divider orientation="horizontal" flexItem /> }>
-                {
-                    fields.length > 0 ?
-                        fields.map((fld, index) => (
-                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" key= { index } sx= {{ margin: '15px 0' }}>
-                                <Stack direction= "row" justifyContent= "flex-end" alignItems= "center">
-                                    { !(getValues()?.status !== undefined && getValues()?.status !== 'saved') ? 
-                                        <Typography sx= { deleterow } onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } style= {{ color: '#FFFFFF' }} /></Typography> : ''}
-                                </Stack>
-                                <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-end" spacing= { 1 }>
-                                    <Grid item xs= { 6 } sm= { 3 }>
-                                        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                                            <Typography variant= "body2" gutterBottom>Nature of Request / Complaint</Typography>
-                                            { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                <TextField { ...register(`requests.${index}.request`) } name= { `requests.${index}.request` } 
-                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                                                    disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
-                                        </Stack>
-                                    </Grid>
-                                    <Grid item xs= { 6 } sm= { 3 }>
-                                        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                                            <Typography variant= "body2" gutterBottom>Service Personnel</Typography>
-                                            { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                <TextField { ...register(`requests.${index}.personnel`) } name= { `requests.${index}.personnel` } 
-                                                    variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input }
-                                                    disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
-                                        </Stack>
-                                    </Grid>
-                                    <Grid item xs= { 12 } sm= { 6 }>
-                                        <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-end" spacing= { 1 }>
-                                            <Grid item xs= { 6 }>
-                                                <Stack direction= "column" justifyContent= "flex-start" alignItems= "center">
-                                                    <Typography variant= "body2" sx= {{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '105%' }} gutterBottom>Date</Typography>
-                                                    <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 }>
-                                                        <Grid item xs= { 6 }>
-                                                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                                                                <Typography variant= "body2" gutterBottom>From</Typography>
-                                                                { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                                    <Box sx= { date }>
-                                                                        <Controller control= { control } name= { `requests.${index}.date_from` } 
-                                                                            defaultValue= { `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}` }
-                                                                            render= { ({ field: { onChange, value } }) => (
-                                                                                <LocalizationProvider dateAdapter= { AdapterDayjs }>
-                                                                                    <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                                                        onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
-                                                                                        disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } />
-                                                                                </LocalizationProvider> ) }>
-                                                                        </Controller>
-                                                                    </Box> }
-                                                            </Stack>
-                                                        </Grid>
-                                                        <Grid item xs= { 6 }>
-                                                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                                                                <Typography variant= "body2" gutterBottom>To</Typography>
-                                                                { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                                    <Box sx= { date }>
-                                                                        <Controller control= { control } name= { `requests.${index}.date_to` } 
-                                                                            defaultValue= { `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}` }
-                                                                            render= { ({ field: { onChange, value } }) => (
-                                                                                <LocalizationProvider dateAdapter= { AdapterDayjs }>
-                                                                                    <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                                                                        onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
-                                                                                        disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } />
-                                                                                </LocalizationProvider> ) }>
-                                                                        </Controller>
-                                                                    </Box> }
-                                                            </Stack>
-                                                        </Grid>
-                                                    </Grid>
-                                                </Stack>
-                                            </Grid>
-                                            <Grid item xs= { 6 }>
-                                                <Stack direction= "column" justifyContent= "flex-start" alignItems= "center">
-                                                    <Typography variant= "body2" sx= {{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '105%' }} gutterBottom>Time</Typography>
-                                                    <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 }>
-                                                        <Grid item xs= { 6 }>
-                                                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                                                                <Typography variant= "body2" gutterBottom>From</Typography>
-                                                                { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                                    <TextField { ...register(`requests.${index}.time_from`) } name= { `requests.${index}.time_from` } variant= "standard" 
-                                                                        InputProps= {{ disableUnderline: true }} sx= { input }
-                                                                        disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
-                                                            </Stack>
-                                                        </Grid>
-                                                        <Grid item xs= { 6 }>
-                                                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                                                                <Typography variant= "body2" gutterBottom>To</Typography>
-                                                                { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                                                    <TextField { ...register(`requests.${index}.time_to`) } name= { `requests.${index}.time_to` } variant= "standard" 
-                                                                        InputProps= {{ disableUnderline: true }} sx= { input }
-                                                                        disabled= { getValues()?.status !== undefined && getValues()?.status !== 'saved' } /> }
-                                                            </Stack>
-                                                        </Grid>
-                                                    </Grid>
-                                                </Stack>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
+            <Dialog fullScreen= { fullscreen } open= { open } maxWidth= "xs" fullWidth= { true }
+                disableEscapeKeyDown= { true }>
+                <NatureOfRequests setOpen= { setOpen } remove= { remove } index= { index } fetching= { fetching } append= { append } defaults= { defaults } type= { type } />
+            </Dialog>
+            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+                { fields.length > 0 ?
+                    fields.map((fld, index) => (
+                        <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } 
+                            sx= {{ padding: '20px 15px', borderRadius: '8px', border: 'solid 1px #919eab40' }}>
+                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
+                                <Typography><b>Nature of Request / Complaint:</b> { (fld.request).toUpperCase() }</Typography>
+                                <Typography><b>Required Service Personel:</b> { (fld.personnel).toUpperCase() }</Typography>
+                                <Typography><b>Date:</b> { fld.date_from } - { fld.date_to }</Typography>
+                                <Typography><b>Time:</b> { (fld.time_from).toUpperCase() } - { (fld.time_to).toUpperCase() }</Typography>
                             </Stack>
-                        ))
-                    : <Typography sx= {{ width: '100%', textAlign: 'center' }}>Please click the add button to add items</Typography>
-                }
+                            <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
+                                <Typography sx= {{ cursor: 'pointer' }} onClick= { () => { setIndex(index); setOpen(true); setType('update') } }>
+                                    <FontAwesomeIcon icon= { faEdit } size= "lg" />
+                                </Typography>
+                                <Typography sx= {{ cursor: 'pointer' }} onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } size= "lg" /></Typography>
+                            </Stack>
+                        </Stack>
+                    ))
+                : <Typography sx= {{ width: '100%', textAlign: 'center' }}>Please click the add button to add items</Typography> }
             </Stack>
         </Stack>
     );

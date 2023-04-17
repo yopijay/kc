@@ -96,8 +96,7 @@ const PersonnelDeployed = ({ fetching }) => {
                                                                                 <DatePicker value= { value } renderInput= { (params) => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
                                                                                     onChange= { e => { onChange(`${dayjs(e).year()}-${dayjs(e).month() + 1}-${dayjs(e).date()}`); } }
                                                                                     disabled= { !(getValues()?.status !== undefined && getValues()?.status !== 'done') } />
-                                                                            </LocalizationProvider> ) }>
-                                                                    </Controller>
+                                                                            </LocalizationProvider> ) } />
                                                                 </Box> }
                                                         </Stack>
                                                     </Grid>

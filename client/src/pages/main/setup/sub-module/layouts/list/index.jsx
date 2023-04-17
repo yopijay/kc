@@ -22,7 +22,7 @@ import Loader from "./layouts/Loader";
 import Sort from "./layouts/Sort";
 
 const Index = () => {
-    let name = `KC-EXPORT-SUB-MODULE-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
+    let name = `KC-EXPORT-SUBMODULE-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { setList } = useContext(ListCntxt);
     const { register, getValues, setValue } = useContext(FormCntxt);
     const { message, setMessage, errors, setErrors } = useContext(GlobalCntx);
@@ -48,12 +48,18 @@ const Index = () => {
 
     useEffect(() => {
         register('orderby', { value: 'date_created' }); register('sort', { value: 'desc' });
-        if(Object.keys(getValues()).length > 0) { record({ table: 'tbl_sub_module', data: getValues() }); } }, [ register, record, getValues ]);
+        let data = getValues();
+        data['orderby'] = 'date_created';
+        data['sort'] = 'desc';
+        data['searchtxt'] = '';
+
+        record({ table: 'tbl_sub_module', data: data }); 
+    }, [ register, record, getValues ] );
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Sub module</Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Submodule</Typography>
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                     <form autoComplete= "off">
                         <Box sx= { search }>
@@ -64,22 +70,22 @@ const Index = () => {
                     </form>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
-                            { data.user_level === 'superadmin' ?
+                            {/* { data.user_level === 'superadmin' ?
                                 <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
                                     onChange= { async e => { uploadfile({ table: 'tbl_sub_module', data: { json: await importfromexcel(e), id: localStorage.getItem('token') } }); e.target.value = '' } } /> : ''}
                             { data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
                                 <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF'}} size= "lg" />
-                            </FormLabel> : '' }
+                            </FormLabel> : '' } */}
                             <Typography 
                                 onClick= { () => { 
                                     if(data.user_level === 'superadmin') { original({ table: 'tbl_sub_module', type: 'original', data: getValues() });} 
                                     formatted({ table: 'tbl_sub_module', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
                                 <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
-                            <Typography component= { Link } to= "/setup/sub-module/form/new" sx= { btnicon }>
+                            <Typography component= { Link } to= "/setup/submodule/form/new" sx= { btnicon }>
                                 <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
                             </Typography>
-                            <Typography component= { Link } to= "/setup/sub-module/form/new" sx= { btntxt }>New Sub Module</Typography>
+                            <Typography component= { Link } to= "/setup/submodule/form/new" sx= { btntxt }>New Submodule</Typography>
                         </Stack>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                             <Typography variant= "body2" sx= {{ color: '#557153', textAlign: 'right' }}>{ message }</Typography>
