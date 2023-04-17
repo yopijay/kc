@@ -102,12 +102,14 @@ const Index = () => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
                             data['form'] = 'request';
                             data['status'] = 'saved';
+
+                            console.log(data);
                             
-                            if((data.requests).length > 0) {
-                                if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
-                                else { updating({ table: 'tbl_services', data: data }); }
-                            }
-                            else { errorToast('Request list must not be empty!', 3000); }
+                            // if((data.requests).length > 0) {
+                            //     if(type === 'new') { saving({ table: 'tbl_services', data: data }); }
+                            //     else { updating({ table: 'tbl_services', data: data }); }
+                            // }
+                            // else { errorToast('Request list must not be empty!', 3000); }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }
