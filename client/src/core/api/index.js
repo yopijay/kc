@@ -19,6 +19,7 @@ export const excel = async ({ table, type, data }) => { return await api({ url: 
 export const upload = async ({ table, data }) => { return await api({ url: `${Env[env].url}/upload/${table}`, method: 'post', data: data }).then(res => res.data); }
 export const assettag = async ({ table, data }) => { return await api({ url: `${Env[env].url}/assettag/${table}`, method: 'post', data: data }).then(res => res.data); }
 export const filter = async ({ table, data }) => { return await api({ url: `${Env[env].url}/filter/${table}`, method: 'post', data: data }).then(res => res.data); }
-export const component = async (id) => { return await api({ url: `${Env[env].url}/component/${id}`, method: 'get'}).then(res => res.data); }
 export const evaluate = async ({ table, type, data }) => { return await api({ url: `${Env[env].url}/evaluate/${table}/${type}`, method: 'post', data: data }).then(res => res.data); }
 export const tracker = async (data) => { return await api({ url: `${Env[env].url}/track`, method: 'post', data: data }).then(res => res.data); }
+export const monitor = async (data) => { return await api({ url: `${Env[env].url}/monitor`, method: 'post', data: data }).then(res => res.data); }
+export const submodule = async (name) => { return await api({ url: `${Env[env].url}/submodule/${name}`, method: 'get'}).then(res => res.data); }

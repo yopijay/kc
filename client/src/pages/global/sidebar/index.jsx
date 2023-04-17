@@ -1,27 +1,17 @@
 // Libraries
-import { Popover, Stack, SwipeableDrawer, Typography, Box } from "@mui/material";
+import { Stack, SwipeableDrawer } from "@mui/material";
 import { GlobalCntx } from "core/context/Global";
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-
-// Core
-import { usePost } from "core/function/global"; // Function
-import { logout } from "core/api"; // API
+import { useContext } from "react";
 
 // Layouts
 import Account from "./layouts/Account";
 import Navs from "./layouts/Navs";
 
 // Constants
-import { link, sidebar, swipe } from "./index.style"; // Design
+import { sidebar, swipe } from "./index.style"; // Design
 
 const Index = () => {
-    const { open, drawerToggle, container, setIsActive } = useContext(GlobalCntx);
-    const [ elem, setElem ] = useState(null);
-    const { mutate: signout } = usePost({ fetch: logout, onSuccess: data => { if(data.result === 'success') { localStorage.removeItem('token'); window.location.href = "/" } } });
-
-    const pop = Boolean(elem);
-    const id = pop ? 'simple-popover' : undefined;
+    const { open, drawerToggle, container } = useContext(GlobalCntx);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: { lg: 280 }, flexShrink: { xs: 0 } }}>
@@ -29,27 +19,13 @@ const Index = () => {
                 onOpen= { drawerToggle(true) } open= { open.left } onClose= { drawerToggle(false) }>
                 <Stack direction= "column" justifyContent= "space-between" alignItems= "stretch" sx= {{ height: '100vh' }} spacing= { 2 }>
                     <Navs />
-                    <Account setElem= { setElem } />
+                    <Account />
                 </Stack>
             </SwipeableDrawer>
             <Stack direction= "column" justifyContent= "space-between" alignItems= "stretch" sx= { sidebar } spacing= { 2 }>
                 <Navs />
-                <Account setElem= { setElem } />
+                <Account />
             </Stack>
-            <Popover id= { id } open= { pop } anchorEl= { elem } onClose= { () => setElem(null) } anchorOrigin= {{ vertical: 'bottom', horizontal: 'right' }} 
-                transformOrigin= {{ vertical: 'bottom', horizontal: 'left' }} style= {{ marginTop: '7px', boxShadow: 'none', marginLeft: '15px' }}>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '200px', transition: 'all 0.2s ease-in-out' }}>
-                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: '10px 20px' }}>
-                        <Typography gutterBottom variant= "body1" component= { Link } to= "" sx= { link } 
-                            onClick= { () => { setElem(null); localStorage.setItem('nav', 'profile'); setIsActive('profile'); } }>Profile</Typography>
-                        <Typography gutterBottom variant= "body1" component= { Link } to= "" sx= { link } 
-                            onClick= { () => { setElem(null); localStorage.setItem('nav', 'settings'); setIsActive('settings'); } }>Settings</Typography>
-                    </Stack>
-                    <Box sx= {{ padding: '10px 20px' }}>
-                        <Typography variant= "body1" onClick= { () => signout({ id: atob(localStorage.getItem('token')) }) } sx= { link }>Logout</Typography>
-                    </Box>
-                </Stack>
-            </Popover>
         </Stack>
     );
 }

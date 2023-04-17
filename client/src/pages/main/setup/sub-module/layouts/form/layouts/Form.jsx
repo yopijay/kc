@@ -65,6 +65,7 @@ const Form = ({ fetching }) => {
                                                 { id: 0, name: '-- SELECT AN ITEM BELOW --' } : module[0] } />
                                     ) } /> : <Typography color= "text.disabled">You must create a module first!</Typography> }
                         </Box> }
+                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.module_id?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } sm= { 6 } md= { 5 }>
