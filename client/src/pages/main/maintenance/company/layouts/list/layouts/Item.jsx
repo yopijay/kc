@@ -28,7 +28,7 @@ const item = {
     overflow: 'hidden'
 }
 
-const Item = () => {
+const Item = ({ sub, fetching, profile }) => {
     const { list } = useContext(ListCntxt);
 
     return (
@@ -45,9 +45,10 @@ const Item = () => {
                                 { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
                                     <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
                                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
-                                    <Typography sx= { icons } component= { Link } to= { `/maintenance/company/form/update/${data.id}` }>
-                                        <FontAwesomeIcon icon= { faPencil } size= "lg" />
-                                    </Typography>
+                                    { !fetching && (JSON.parse(profile.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`].update || profile.user_level === 'superadmin') ? 
+                                        <Typography sx= { icons } component= { Link } to= { `/maintenance/company/form/update/${data.id}` }>
+                                            <FontAwesomeIcon icon= { faPencil } size= "lg" />
+                                        </Typography> : '' }
                                     <Typography sx= { icons } component= { Link } to= { `/maintenance/company/form/view/${data.id}` }>
                                         <FontAwesomeIcon icon= { faEye } size= "lg" />
                                     </Typography>

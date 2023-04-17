@@ -15,6 +15,7 @@ const container = {
 
 const Index = () => {
     const { data } = useContext(ProfileCntx);
+    
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= { container } spacing= { 3 }>
             <Typography sx= {{ fontWeight: 'bold', fontFamily: 'American Captain', fontSize: '250%' }}>Welcome { data?.fname },</Typography>

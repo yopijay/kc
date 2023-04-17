@@ -24,7 +24,7 @@ const item = {
     backgroundColor: '#FFFFFF', 
     padding: '10px 20px', 
     border: 'solid 1px #F3F3F3', 
-    borderRadius: '10px',
+    borderRadius: '10px', 
     overflow: 'hidden'
 }
 
@@ -49,10 +49,10 @@ const Item = () => {
                             { data.is_maintenance === 0 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
                                 <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
-                                <Typography sx= { icons } component= { Link } to= { `/setup/sub-module/form/update/${data.id}` }>
+                                <Typography sx= { icons } component= { Link } to= { `/setup/submodule/form/update/${data.id}` }>
                                     <FontAwesomeIcon icon= { faPencil } size= "lg" />
                                 </Typography>
-                                <Typography sx= { icons } component= { Link } to= { `/setup/sub-module/form/view/${data.id}` }>
+                                <Typography sx= { icons } component= { Link } to= { `/setup/submodule/form/view/${data.id}` }>
                                     <FontAwesomeIcon icon= { faEye } size= "lg" />
                                 </Typography>
                             </Stack>
