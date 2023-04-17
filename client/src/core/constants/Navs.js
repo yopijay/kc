@@ -17,7 +17,7 @@ const User = React.lazy(() => import('pages/main/maintenance/user'));
 
 // Services
 const ServiceRequest = React.lazy(() => import('pages/main/services/request'));
-// const ServiceEvaluation = React.lazy(() => import('pages/main/services/evaluation'));
+const ServiceEvaluation = React.lazy(() => import('pages/main/services/evaluation'));
 // const ServiceDispatch = React.lazy(() => import('pages/main/services/dispatch'));
 // const ServiceReport = React.lazy(() => import('pages/main/services/reports'));
 
@@ -56,7 +56,7 @@ const Submodule = React.lazy(() => import('pages/main/setup/sub-module'));
 //     {
 //         title: 'Services', nav: [
             
-//             { path: '/services/evaluation', label: 'Evaluation', name: 'service_evaluation', component: <ServiceEvaluation /> },
+//             
 //             { path: '/services/dispatch', label: 'Dispatch', name: 'service_dispatch', component: <ServiceDispatch /> },
 //             { path: '/services/reports', label: 'Reports', name: 'service_reports', component: <ServiceReport /> },
 //         ]
@@ -88,4 +88,5 @@ export const Components = () => ([
     { path: '/setup/module', name: 'module', component: <Module /> },
     { path: '/setup/submodule', name: 'submodule', component: <Submodule /> },
     { path: '/servicing/request', label: 'Request', name: 'service_request', component: <ServiceRequest /> },
+    { path: '/servicing/evaluation', label: 'Evaluation', name: 'service_evaluation', component: <ServiceEvaluation /> },
 ]);

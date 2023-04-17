@@ -51,7 +51,7 @@ const Requests = ({ fetching }) => {
                         <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } 
                             sx= {{ padding: '20px 15px', borderRadius: '8px', border: 'solid 1px #919eab40' }}>
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
-                                <Typography><b>Nature of Request / Complaint:</b>{ (fld.request).toUpperCase() }</Typography>
+                                <Typography><b>Nature of Request / Complaint:</b> { (fld.request).toUpperCase() }</Typography>
                                 <Typography><b>Required Service Personel:</b> { (fld.personnel).toUpperCase() }</Typography>
                                 <Typography><b>Date:</b> { fld.date_from } - { fld.date_to }</Typography>
                                 <Typography><b>Time:</b> { (fld.time_from).toUpperCase() } - { (fld.time_to).toUpperCase() }</Typography>
