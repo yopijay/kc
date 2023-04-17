@@ -1,5 +1,5 @@
 // Libraries
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { Suspense, useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -8,7 +8,7 @@ import { ProfileCntx } from "core/context/Profile"; // Context
 import { useGet } from "core/function/global"; // Function
 import { profile } from "core/api"; // API
 import { LoaderScreen } from "core/loader/Screen"; // Loader
-import { Navs as components } from "core/constants/Navs"; // Constants
+import { Components } from "core/constants/Navs"; // Constants
 
 // Layout
 import Navbar from 'pages/global/navbar';
@@ -28,10 +28,9 @@ const Index = () => {
                             <Sidebar />
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100vh', padding: { xs: '70px 0 0 0', lg: '90px 10px 0 10px' } }}>
                                 <Routes>
-                                    { components().map(ctgy => { 
-                                        return (ctgy.nav).map((layout, index) => ( 
-                                        <Route exact path= { `${layout.path}/*` } key= { index } element= { <Suspense fallback= { <LoaderScreen /> }>{ layout.component }</Suspense> } /> 
-                                    )) }) }
+                                    { Components().map((layouts, index) => (
+                                        <Route exact path= { `${layouts.path}/*` } key= { index } element= { <Suspense fallback= { <LoaderScreen /> }>{ layouts.component }</Suspense> } /> 
+                                    )) }
                                 </Routes>
                             </Stack>
                         </Stack> : <LoaderScreen /> }

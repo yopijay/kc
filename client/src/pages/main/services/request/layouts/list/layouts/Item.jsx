@@ -27,7 +27,7 @@ const container = {
     '&:hover': { backgroundColor: '#F1F1F1' }
 }
 
-const Item = () => {
+const Item = ({ sub, fetching, profile }) => {
     const { list } = useContext(ListCntxt);
 
     return (
@@ -37,7 +37,9 @@ const Item = () => {
                     list?.map((data, index) => (
                         <Grid item xs= { 12 } sm= { 6 } key= { index } sx= {{ padding: '10px 8px' }}>
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= { container } spacing= { 1 } 
-                                component= { Link } to= { `/services/request/form/update/${data.id}` }>
+                                component= { Link } 
+                                to= { !fetching && (JSON.parse(profile.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`].update || profile.user_level === 'superadmin') ? 
+                                            `/servicing/request/form/update/${data.id}` : `/servicing/request` }>
                                 <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                                     <Typography variant= "body2" sx= { txt }>Service Request No.: <b>{ data.service_request_no }</b></Typography>
                                 </Stack>

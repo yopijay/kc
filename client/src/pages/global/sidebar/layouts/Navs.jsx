@@ -1,11 +1,18 @@
 // Libraries
 import { Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // Core
 import { GlobalCntx } from "core/context/Global"; // Context
-import { Navs as links } from "core/constants/Navs";
+import { ProfileCntx } from "core/context/Profile"; // Context
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
+import { usePost } from "core/function/global";
+import { records } from "core/api";
+
+// Layouts
+import Subnavs from "./Subnavs";
 
 // Custom styles
 const linkNormal = {
@@ -13,14 +20,16 @@ const linkNormal = {
     padding: '11px 15px', 
     borderRadius: '7px', 
     '&:hover': { backgroundColor: '#F47C7C2E' }, 
-    transition: 'all 0.2s ease-in-out'
+    transition: 'all 0.2s ease-in-out',
+    color: '#444444'
 }
 
 const linkActive = {
     textDecoration: 'none', 
     padding: '11px 15px', 
     borderRadius: '7px', 
-    backgroundColor: '#F47C7C61'
+    backgroundColor: '#F47C7C61',
+    color: '#444444'
 }
 
 const container = {
@@ -33,50 +42,51 @@ const container = {
 }
 
 const Navs = () => {
-    // const { data } = useContext(ProfileCntx);
+    const { data } = useContext(ProfileCntx);
+    const [ modules, setModules ] = useState([]);
     const { isActive, setActive, setOpen } = useContext(GlobalCntx);
-    // const { data: navs } = useGet({ key: ['component'], fetch: component(localStorage.getItem('token')), options: { refetchOnWindowFocus: false } });
+    const { mutate: module } = usePost({ fetch: records, onSuccess: data => setModules(data) });
 
-    // useEffect(() => { groupBy(navs, 'module') }, [ navs ]);
+    useEffect(() => {
+        let data = {};
+        data['orderby'] = 'name';
+        data['sort'] = 'asc';
+        data['searchtxt'] = '';
+
+        module({ table: 'tbl_module', data: data }); 
+    }, [ module ] );
     
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch"  sx= { container } spacing= { 2 }>
-            {/* <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Main</Typography>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography variant= "body1" component= { Link } to= "/" color= "text.secondary"
-                        onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'dashboard'); setActive('dashboard'); } }
-                        sx= { isActive === 'dashboard' ? linkActive : linkNormal }>Dashboard</Typography>
+                <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 } 
+                    component= { Link } to= "/" sx= { isActive === 'dashboard' ? linkActive : linkNormal }
+                    onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'dashboard'); setActive('dashboard'); } }>
+                    <FontAwesomeIcon icon= { faChartSimple } />
+                    <Typography>Dashboard</Typography>
                 </Stack>
-            </Stack> */}
-            {/* <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Setup</Typography>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    { data.user_level === 'superadmin' ? 
-                        <Typography variant= "body1" component= { Link } to= "/setup/module" color= "text.secondary"
-                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'module'); setActive('module'); } }
-                            sx= { isActive === 'module' ? linkActive : linkNormal }>Module</Typography> : '' }
-                    { data.user_level === 'superadmin' ? 
-                        <Typography variant= "body1" component= { Link } to= "/setup/sub-module" color= "text.secondary"
-                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'sub-module'); setActive('sub-module'); } }
-                            sx= { isActive === 'sub-module' ? linkActive : linkNormal }>Sub-module</Typography> : '' }
-                    { (navs?.filter(sub => sub.module === 'setup'))?.map((nav, index) => (
-                        <Typography key= { index } variant= "body1" component= { Link } to= { `/${nav.module}${nav.path}` } color= "text.secondary"
-                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', nav.sub_module); setActive(nav.sub_module); } } 
-                            sx= { isActive === nav.sub_module ? linkActive : linkNormal }>{ (nav.sub_module).charAt(0).toUpperCase() + (nav.sub_module).slice(1) }</Typography>
-                    )) }
-                </Stack>
-            </Stack> */}
-            { links().map((ctgy, index) => (
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } key= { index }>
-                    <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: 'rgb(200, 200, 200)' }} color= "text.primary">{ ctgy.title }</Typography>
-                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                        { (ctgy.nav).map((link, index) => (
-                                <Typography variant= "body1" component= { Link } to= { link.path } color= "text.secondary" key= { index }
-                                    onClick= { () => { setOpen({ left: false }); localStorage.setItem('nav', link.name); setActive(link.name); } }
-                                    sx= { isActive === link.name ? linkActive : linkNormal }>{ link.label }</Typography> )) }
+            </Stack>
+            { modules.length > 0 ?
+                modules.map((mdl, index) => (
+                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } key= { index }>
+                        { JSON.parse(data.permissions)?.[`module_${mdl.id}`]?.status || data.user_level === 'superadmin' ?
+                            <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>{ (mdl.name).charAt(0).toUpperCase() + (mdl.name).slice(1).toLowerCase() }</Typography> : '' }
+                        { JSON.parse(data.permissions)?.[`module_${mdl.id}`]?.status || data.user_level === 'superadmin' ? <Subnavs module= { mdl.id } /> : '' }
                     </Stack>
-                </Stack> )) }
+                )) : '' }
+            { data.user_level === 'superadmin' ? 
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+                    <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Setup</Typography>
+                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                        <Typography component= { Link } to= { `/setup/module` }
+                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'module'); setActive('module'); } }
+                            sx= { isActive === 'module' ? linkActive : linkNormal }>Module</Typography>
+                        <Typography component= { Link } to= { `/setup/submodule` }
+                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'submodule'); setActive('submodule'); } }
+                            sx= { isActive === 'submodule' ? linkActive : linkNormal }>Submodule</Typography>
+                    </Stack>
+                </Stack> : '' }
         </Stack>
     );
 }

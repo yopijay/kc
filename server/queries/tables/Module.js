@@ -44,16 +44,16 @@ class Mdl {
 
         if(!(errors.length > 0)) {
             let mdl = (await new Builder(`tbl_module`)
-                                                .insert({ columns: `series_no, name, status, created_by, date_created`, 
-                                                                values: `'${Global.randomizer(7)}', '${(data.name).toUpperCase()}', ${data.status ? 1 : 0}, data.created_by}, '${date}'` })
-                                                .condition(`RETURNING id`)
-                                                .build()).rows[0];
+                                .insert({ columns: `series_no, name, status, created_by, date_created`, 
+                                                values: `'${Global.randomizer(7)}', '${(data.name).toUpperCase()}', ${data.status ? 1 : 0}, ${data.created_by}, '${date}'` })
+                                .condition(`RETURNING id`)
+                                .build()).rows[0];
 
             audit.series_no = Global.randomizer(7);
             audit.field = 'all';
             audit.item_id = mdl.id;
             audit.action = 'create';
-            audit.user_id = atob(data.created_by);
+            audit.user_id = data.created_by;
             audit.date = date;
 
             Global.audit(audit);
@@ -71,19 +71,19 @@ class Mdl {
         if(Global.compare(mdl.name, data.name)) {
             if(!((await new Builder(`tbl_module`).select().condition(`WHERE name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
                 _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_module', item_id: mdl.id, 
-                                        field: 'name', previous: mdl.name, current: (data.name).toUpperCase(), action: 'update', user_id: atob(data.updated_by), date: date });
+                                        field: 'name', previous: mdl.name, current: (data.name).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
             }
             else { _errors.push({ name: 'name', message: 'Module already used!' }); }
         }
 
         if(Global.compare(mdl.status, data.status ? 1 : 0)) {
             _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_module', item_id: mdl.id,
-                                    field: 'status', previous: mdl.status, current: data.status ? 1 : 0, action: 'update', user_id: atob(data.updated_by), date: date });
+                                    field: 'status', previous: mdl.status, current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_module`)
-                                .update(`name= '${(data.name).toUpperCase()}', status= ${data.status ? 1 : 0}, updated_by= data.updated_by}, date_updated= '${date}'`)
+                                .update(`name= '${(data.name).toUpperCase()}', status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
                                 .condition(`WHERE id= ${mdl.id}`)
                                 .build();
             
