@@ -75,17 +75,18 @@ const Navs = () => {
                         { JSON.parse(data.permissions)?.[`module_${mdl.id}`]?.status || data.user_level === 'superadmin' ? <Subnavs module= { mdl.id } /> : '' }
                     </Stack>
                 )) : '' }
-            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Setup</Typography>
-                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                    <Typography component= { Link } to= { `/setup/module` }
-                        onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'module'); setActive('module'); } }
-                        sx= { isActive === 'module' ? linkActive : linkNormal }>Module</Typography>
-                    <Typography component= { Link } to= { `/setup/submodule` }
-                        onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'submodule'); setActive('submodule'); } }
-                        sx= { isActive === 'submodule' ? linkActive : linkNormal }>Submodule</Typography>
-                </Stack>
-            </Stack>
+            { data.user_level === 'superadmin' ? 
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
+                    <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Setup</Typography>
+                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                        <Typography component= { Link } to= { `/setup/module` }
+                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'module'); setActive('module'); } }
+                            sx= { isActive === 'module' ? linkActive : linkNormal }>Module</Typography>
+                        <Typography component= { Link } to= { `/setup/submodule` }
+                            onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'submodule'); setActive('submodule'); } }
+                            sx= { isActive === 'submodule' ? linkActive : linkNormal }>Submodule</Typography>
+                    </Stack>
+                </Stack> : '' }
         </Stack>
     );
 }

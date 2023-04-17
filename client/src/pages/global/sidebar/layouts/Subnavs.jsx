@@ -47,7 +47,7 @@ const Subnavs = ({ module }) => {
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
             { submodules.length > 0 ?
                 submodules.map((sub, index) => {
-                    if(JSON.parse(data.permissions)?.[`module_${module}`][`submodule_${sub.id}`].list || data.user_level === 'superadmin')
+                    if(JSON.parse(data.permissions)?.[`module_${module}`][`submodule_${sub.id}`]?.list || data.user_level === 'superadmin')
                         return (
                             <Typography key= { index } component= { Link } to= { `/${(sub.module).toLowerCase()}${sub.path}` }
                                 onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', (sub.name).toUpperCase()); setActive((sub.name).toUpperCase()); } }

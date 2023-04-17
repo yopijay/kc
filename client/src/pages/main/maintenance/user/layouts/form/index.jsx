@@ -66,13 +66,12 @@ const Index = () => {
     const { mutate: updating } =
         usePost({ fetch: update,
             onSuccess: (data) => {
-                console.log(data);
-                // if(data.result === 'error') { 
-                //     (data.error).forEach((err, index) => { 
-                //         setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); 
-                //     });
-                // }
-                // else { successToast(data.message, 3000, navigate('/maintenance/users', { replace: true })); }
+                if(data.result === 'error') { 
+                    (data.error).forEach((err, index) => { 
+                        setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); 
+                    });
+                }
+                else { successToast(data.message, 3000, navigate('/maintenance/users', { replace: true })); }
             }
         });
 

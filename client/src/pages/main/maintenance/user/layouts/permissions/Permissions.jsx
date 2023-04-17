@@ -60,6 +60,7 @@ const Permissions = ({ module }) => {
             { submodules.length > 0 ?
                 submodules.map((sub, count) => (
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 2 } key= { count }>
+                        {/* (sub.name).toLowerCase() === 'users' */}
                         <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                             <Typography sx= {{ fontWeight: 'bold' }}>{ (sub.name).charAt(0).toUpperCase() + (sub.name).slice(1).toLowerCase() }</Typography>
                             <Controller control= { control } name= { `permissions[module_${module}][submodule_${sub.id}].status` }
@@ -121,6 +122,22 @@ const Permissions = ({ module }) => {
                                         } } />
                                     ) } />
                             </Stack>
+                            { (sub.name).toLowerCase() === 'users' ?
+                                <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
+                                    <Typography>Permission</Typography>
+                                    <Controller control= { control } name= { `permissions[module_${module}][submodule_${sub.id}].permission` }
+                                        render= { ({ field: { onChange } }) => (
+                                            <IOSSwitch 
+                                                checked= { getValues().permissions[`module_${module}`][`submodule_${sub.id}`].permission !== null &&
+                                                                    getValues().permissions[`module_${module}`][`submodule_${sub.id}`].permission !== undefined ?
+                                                                        getValues().permissions[`module_${module}`][`submodule_${sub.id}`].permission : false }
+                                                onChange= { (e) => { 
+                                                    setValue(`permissions['module_${module}']['submodule_${sub.id}'].permission`, 
+                                                                        !(getValues().permissions[`module_${module}`][`submodule_${sub.id}`].permission) ?? false); 
+                                                    onChange(e.target.checked);
+                                            } } />
+                                        ) } />
+                                </Stack> : '' }
                             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                                 <Typography>Export</Typography>
                                 <Controller control= { control } name= { `permissions[module_${module}][submodule_${sub.id}].export` }

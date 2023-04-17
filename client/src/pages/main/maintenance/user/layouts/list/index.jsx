@@ -11,8 +11,8 @@ import { ListCntxt } from "core/context/List"; // Context
 import { GlobalCntx } from "core/context/Global"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
 import { FormCntxt } from "core/context/Form"; // Context
-import { excel, look, records } from "core/api"; // API
-import { exporttoexcel, usePost } from "core/function/global"; // Functions
+import { excel, look, records, submodule } from "core/api"; // API
+import { exporttoexcel, useGet, usePost } from "core/function/global"; // Functions
 
 // Layouts
 import Dashboard from "./layouts/Dashboard";
@@ -22,10 +22,11 @@ import Loader from "./layouts/Loader";
 
 const Index = () => {
     let name = `KC-EXPORT-USERS-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
+    const { data } = useContext(ProfileCntx);
     const { setList } = useContext(ListCntxt);
     const { register, getValues, setValue } = useContext(FormCntxt);
     const { message, errors } = useContext(GlobalCntx);
-    const { data } = useContext(ProfileCntx);
+    const { data: sub, isFetching } = useGet({ key: ['submodule'], fetch: submodule('users'), options: { refetchOnWindowFocus: false } });
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => setList(data) });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowsFocus: false }, onSuccess: (data) => setList(data) });
 
@@ -34,7 +35,6 @@ const Index = () => {
 
     useEffect(() => { 
         register('id', { value: atob(localStorage.getItem('token')) }); register('orderby', { value: 'lname' }); register('sort', { value: 'desc' }); register('company_id', { value: 'all' });
-
         let data = getValues();
         data['id'] = atob(localStorage.getItem('token'));
         data['orderby'] = 'lname';
@@ -61,22 +61,19 @@ const Index = () => {
                 </form>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing=  { 1 }>
-                        {/* { data.user_level === 'superadmin' ?
-                            <input type= "file" name= "upload-file" id= "upload-file" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
-                                onChange= { async e => { uploadfile({ table: 'tbl_users', data: { json: await importfromexcel(e), id: localStorage.getItem('token')) } }); e.target.value = '' } } /> : '' }
-                        { data.user_level === 'superadmin' ? <FormLabel htmlFor= "upload-file" sx= { btnimport }>
-                            <FontAwesomeIcon icon= { !uploading ? faFileArrowUp : faEllipsisH } style= {{ color: '#FFFFFF'}} size= "lg" />
-                        </FormLabel> : '' } */}
-                        <Typography 
-                            onClick= { () => { 
-                                if(data.user_level === 'superadmin') { original({ table: 'tbl_users', type: 'original', data: getValues() }); } 
-                                formatted({ table: 'tbl_users', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
-                            <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
-                        </Typography>
-                        <Typography component= { Link } to= "/maintenance/users/form/new" sx= { btnicon }>
-                            <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
-                        </Typography>
-                        <Typography component= { Link } to= "/maintenance/users/form/new" sx= { btntxt }>New User</Typography>
+                        { !isFetching && (JSON.parse(data.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`].export || data.user_level === 'superadmin') ? 
+                            <Typography 
+                                onClick= { () => { 
+                                    if(data.user_level === 'superadmin') { original({ table: 'tbl_users', type: 'original', data: getValues() }); } 
+                                    formatted({ table: 'tbl_users', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
+                                <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
+                            </Typography> : '' }
+                        { !isFetching && (JSON.parse(data.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`].create || data.user_level === 'superadmin') ? 
+                            <Typography component= { Link } to= "/maintenance/users/form/new" sx= { btnicon }>
+                                <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
+                            </Typography> : '' }
+                        { !isFetching && (JSON.parse(data.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`].create || data.user_level === 'superadmin') ? 
+                            <Typography component= { Link } to= "/maintenance/users/form/new" sx= { btntxt }>New User</Typography> : '' }
                     </Stack>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                         <Typography variant= "body2" sx= {{ color: '#557153', textAlign: 'right' }}>{ message }</Typography>
@@ -86,7 +83,7 @@ const Index = () => {
                 </Stack>
             </Stack>
             <Sort refetch= { record } />
-            <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>{ !fetching && !finding ? <Item /> : <Loader /> }</Box>
+            <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>{ !fetching && !finding ? <Item sub= { sub } fetching= { isFetching } profile= { data } /> : <Loader /> }</Box>
         </Stack>
     );
 }
