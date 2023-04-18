@@ -34,7 +34,7 @@ SELECT setval('"public"."tbl_department_id_seq"', 1, false);
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tbl_department";
 CREATE TABLE "public"."tbl_department" (
-  "id" int4 NOT NULL DEFAULT nextval('tbl_depertment_id_seq'::regclass),
+  "id" int4 NOT NULL DEFAULT nextval('tbl_department_id_seq'::regclass),
   "series_no" varchar(50) COLLATE "pg_catalog"."default",
   "company_id" int4,
   "department_head_id" int4,
