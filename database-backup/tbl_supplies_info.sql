@@ -12,7 +12,7 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 30/03/2023 16:46:27
+ Date: 18/04/2023 08:13:50
 */
 
 
@@ -45,10 +45,6 @@ CREATE TABLE "public"."tbl_supplies_info" (
   "no_of_drawers" int4
 )
 ;
-
--- ----------------------------
--- Records of tbl_supplies_info
--- ----------------------------
 
 -- ----------------------------
 -- Primary Key structure for table tbl_supplies_info
