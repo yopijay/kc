@@ -12,7 +12,7 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 30/03/2023 16:44:49
+ Date: 18/04/2023 08:12:44
 */
 
 
@@ -26,7 +26,7 @@ MAXVALUE 2147483647
 START 1
 CACHE 1;
 
-SELECT setval('"public"."tbl_module_id_seq"', 3, false);
+SELECT setval('"public"."tbl_module_id_seq"', 1, false);
 
 
 -- ----------------------------
@@ -48,13 +48,6 @@ CREATE TABLE "public"."tbl_module" (
   "date_imported" timestamptz(6)
 )
 ;
-
--- ----------------------------
--- Records of tbl_module
--- ----------------------------
-INSERT INTO "public"."tbl_module" VALUES (1, '6SRVZVJ', 'MAINTENANCE', 1, 1, 1, NULL, NULL, '2023-03-06 15:34:10+08', '2023-03-06 15:38:05+08', NULL, NULL);
-INSERT INTO "public"."tbl_module" VALUES (2, 'Q97LEDT', 'TOOLS', 1, 1, NULL, NULL, NULL, '2023-03-06 15:39:48+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_module" VALUES (3, 'DWAGGL7', 'SETUP', 1, 1, 1, NULL, NULL, '2023-03-08 13:19:43+08', '2023-03-08 14:14:58+08', NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_module
