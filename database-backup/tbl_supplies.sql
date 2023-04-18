@@ -12,7 +12,7 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 30/03/2023 16:46:23
+ Date: 18/04/2023 08:13:44
 */
 
 
@@ -51,10 +51,6 @@ CREATE TABLE "public"."tbl_supplies" (
   "date_imported" timestamptz(6)
 )
 ;
-
--- ----------------------------
--- Records of tbl_supplies
--- ----------------------------
 
 -- ----------------------------
 -- Primary Key structure for table tbl_supplies
