@@ -56,12 +56,13 @@ const Requests = ({ fetching }) => {
                                 <Typography><b>Date:</b> { fld.date_from } - { fld.date_to }</Typography>
                                 <Typography><b>Time:</b> { (fld.time_from).toUpperCase() } - { (fld.time_to).toUpperCase() }</Typography>
                             </Stack>
-                            <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
-                                <Typography sx= {{ cursor: 'pointer' }} onClick= { () => { setIndex(index); setOpen(true); setType('update') } }>
-                                    <FontAwesomeIcon icon= { faEdit } size= "lg" />
-                                </Typography>
-                                <Typography sx= {{ cursor: 'pointer' }} onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } size= "lg" /></Typography>
-                            </Stack>
+                            { !(getValues()?.status !== undefined && getValues()?.status !== 'saved') ?
+                                <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
+                                    <Typography sx= {{ cursor: 'pointer' }} onClick= { () => { setIndex(index); setOpen(true); setType('update') } }>
+                                        <FontAwesomeIcon icon= { faEdit } size= "lg" />
+                                    </Typography>
+                                    <Typography sx= {{ cursor: 'pointer' }} onClick= { () => remove(index) }><FontAwesomeIcon icon= { faTrash } size= "lg" /></Typography>
+                                </Stack> : '' }
                         </Stack>
                     ))
                 : <Typography sx= {{ width: '100%', textAlign: 'center' }}>Please click the add button to add items</Typography> }

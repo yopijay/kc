@@ -12,7 +12,7 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 30/03/2023 16:46:19
+ Date: 18/04/2023 08:13:36
 */
 
 
@@ -26,7 +26,7 @@ MAXVALUE 2147483647
 START 1
 CACHE 1;
 
-SELECT setval('"public"."tbl_sub_module_id_seq"', 5, false);
+SELECT setval('"public"."tbl_sub_module_id_seq"', 1, false);
 
 
 -- ----------------------------
@@ -51,15 +51,6 @@ CREATE TABLE "public"."tbl_sub_module" (
   "date_imported" timestamptz(6)
 )
 ;
-
--- ----------------------------
--- Records of tbl_sub_module
--- ----------------------------
-INSERT INTO "public"."tbl_sub_module" VALUES (2, 'SUB-MDL-0000002', 1, 'DEPARTMENT', '/department', 0, 1, 1, 1, NULL, NULL, '2023-03-08 09:19:09+08', '2023-03-08 11:16:57+08', NULL, NULL);
-INSERT INTO "public"."tbl_sub_module" VALUES (1, 'SUB-MDL-0000001', 1, 'COMPANY', '/company', 0, 1, 1, 1, NULL, NULL, '2023-03-08 09:15:16+08', '2023-03-08 11:16:59+08', NULL, NULL);
-INSERT INTO "public"."tbl_sub_module" VALUES (3, 'SUB-MDL-0000003', 1, 'POSITION', '/position', 0, 1, 1, 1, NULL, NULL, '2023-03-08 09:19:19+08', '2023-03-08 11:19:10+08', NULL, NULL);
-INSERT INTO "public"."tbl_sub_module" VALUES (4, 'SUB-MDL-0000004', 3, 'USER', '/user', 1, 1, 1, NULL, NULL, NULL, '2023-03-08 13:20:00+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_sub_module" VALUES (5, 'SUB-MDL-0000005', 3, 'USER-ACCESS', '/user-access', 1, 1, 1, 1, NULL, NULL, '2023-03-08 13:20:18+08', '2023-03-08 14:15:13+08', NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_sub_module
