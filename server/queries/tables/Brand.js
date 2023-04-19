@@ -69,7 +69,7 @@ class Brand {
         }
 
         if((await new Builder(`tbl_brand`).select().condition(`WHERE name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
-            errors.push({ name: 'name', message: 'Company already exist!' });
+            errors.push({ name: 'name', message: 'Brand already exist!' });
         }
 
         if(!(errors.length > 0)) {
@@ -138,7 +138,7 @@ class Brand {
         //     let _itemerror = [];
 
         //     if(file[count].name !== undefined) {
-        //         if((await new Builder(`tbl_brand`).select().condition(`WHERE name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) { _itemerror.push('company already exist!'); }
+        //         if((await new Builder(`tbl_brand`).select().condition(`WHERE name= '${(file[count].name).toUpperCase()}'`).build()).rowCount > 0) { _itemerror.push('Brand already exist!'); }
         //     }
         //     else { _itemerror.push('name must not be empty!'); }
             

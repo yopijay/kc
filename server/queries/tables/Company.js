@@ -203,7 +203,6 @@ class Company {
         //     list: list
         // }
     }
-
 }
 
 module.exports = Company;
