@@ -11,6 +11,7 @@ const Company = React.lazy(() => import('pages/main/maintenance/company'));
 const Department = React.lazy(() => import('pages/main/maintenance/department'));
 const Position = React.lazy(() => import('pages/main/maintenance/position'));
 const User = React.lazy(() => import('pages/main/maintenance/user'));
+const Brand = React.lazy(() => import('pages/main/maintenance/brand'));
 // const Category = React.lazy(() => import('pages/main/maintenance/category'));
 // const SubCategory = React.lazy(() => import('pages/main/maintenance/sub-category'));
 // const Tracker = React.lazy(() => import('pages/main/maintenance/tracker'));
@@ -85,6 +86,7 @@ export const Components = () => ([
     { path: '/maintenance/department', name: 'department', component: <Department /> },
     { path: '/maintenance/position', name: 'position', component: <Position /> },
     { path: '/maintenance/users', name: 'company', component: <User /> },
+    { path: '/maintenance/brand', name: 'company', component: <Brand /> },
     { path: '/setup/module', name: 'module', component: <Module /> },
     { path: '/setup/submodule', name: 'submodule', component: <Submodule /> },
     { path: '/servicing/request', label: 'Request', name: 'service_request', component: <ServiceRequest /> },

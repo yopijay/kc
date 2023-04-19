@@ -13,6 +13,7 @@ const SubModule = require('./tables/SubModule');
 const Services = require('./tables/Services');
 const Tracker = require('./tables/Tracker');
 const Permissions = require('./tables/Permissions');
+const Brand = require('./tables/Brand');
 
 const login = (data) => { return new Users().login(data); }
 const logout = (data) => { return new Users().logout(data); }
@@ -35,6 +36,7 @@ const filter = (table, data) => {
             case 'tbl_company': resolve(await new Company().filter()); break;
             case 'tbl_sub_category': resolve(await new SubCategory().filter(data)); break;
             case 'tbl_tracker': resolve(await new Tracker().filter(data)); break;
+            case 'tbl_brand': resolve(await new Brand().filter(data)); break;
         }
     });
 }
@@ -51,6 +53,7 @@ const dashboard = (table, data) => {
             case 'tbl_sub_category': resolve(await new SubCategory().dashboard()); break;
             case 'tbl_services': resolve(await new Services().dashboard(data)); break;
             case 'tbl_employee_tracker': resolve(await new Tracker().dashboard(data)); break;
+            case 'tbl_brand': resolve(await new Brand().dashboard(data)); break;
         }
     });
 }
@@ -70,6 +73,7 @@ const excel = (table, type, data) => {
             case 'tbl_sub_module': resolve(await new SubModule().excel(type, data)); break;
             case 'tbl_services': resolve(await new Services().excel(type, data)); break;
             case 'tbl_tracker': resolve(await new Tracker().excel(type, data)); break;
+            case 'tbl_brand': resolve(await new Brand().excel(type, data)); break;
         }
     });
 }
@@ -91,6 +95,7 @@ const list = (table, data) => {
             case 'tbl_services': resolve(await new Services().list(data)); break;
             case 'tbl_tracker': resolve(await new Tracker().list(data)); break;
             case 'tbl_employee_tracker': resolve(await new Tracker().logs(data)); break;
+            case 'tbl_brand': resolve(await new Brand().list(data)); break;
         }
     });
 }
@@ -110,6 +115,7 @@ const search = (table, data) => {
             case 'tbl_sub_module': resolve(await new SubModule().search(data)); break;
             case 'tbl_services': resolve(await new Services().search(data)); break;
             case 'tbl_tracker': resolve(await new Tracker().search(data)); break;
+            case 'tbl_brand': resolve(await new Brand().search(data)); break;
         }
     });
 }
@@ -129,6 +135,7 @@ const specific = (table, id) => {
             case 'tbl_sub_module': resolve(await new SubModule().specific(id)); break;
             case 'tbl_services': resolve(await new Services().specific(id)); break;
             case 'tbl_users_permissions': resolve(await new Permissions().specific(id)); break;
+            case 'tbl_brand': resolve(await new Brand().specific(id)); break;
         }
     });
 }
@@ -148,6 +155,7 @@ const specific = (table, id) => {
             case 'tbl_sub_module': resolve(await new SubModule().save(data)); break;
             case 'tbl_services': resolve(await new Services().save(data)); break;
             case 'tbl_tracker': resolve(await new Tracker().save(data)); break;
+            case 'tbl_brand': resolve(await new Brand().save(data)); break;
         }
     });
 }
@@ -168,6 +176,7 @@ const update = (table, data) => {
            case 'tbl_services': resolve(await new Services().update(data)); break;
            case 'tbl_tracker': resolve(await new Tracker().update(data)); break;
            case 'tbl_users_permissions': resolve(await new Permissions().update(data)); break;
+           case 'tbl_brand': resolve(await new Brand().update(data)); break;
        }
    });
 }
@@ -218,6 +227,7 @@ const series = (table) => {
             case 'tbl_sub_module': resolve(await new SubModule().series()); break;
             case 'tbl_services': resolve(await new Services().series()); break;
             case 'tbl_tracker': resolve(await new Tracker().series()); break;
+            case 'tbl_brand': resolve(await new Brand().series()); break;
         }
     });
 }
@@ -235,6 +245,7 @@ const dropdown = (table, data) => {
             case 'tbl_module': resolve(await new Module().dropdown(data)); break;
             case 'tbl_sub_module': resolve(await new SubModule().dropdown(data)); break;
             case 'tbl_tracker': resolve(await new Tracker().dropdown(data)); break;
+            case 'tbl_brand': resolve(await new Brand().dropdown(data)); break;
         }
     });
 }
