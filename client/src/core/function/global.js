@@ -86,31 +86,3 @@ export const importfromexcel = async (e) => {
 
     return json;
 }
-
-export const groupBy = (collection, property) => {
-    let modules = collection.filter((obj, index) => collection.findIndex(item => item.module === obj.module) === index);
-    let result = [];
-    // let val = '';
-    // let index = 0;
-    // let values = [];
-    for (let count = 0; count < modules.length; count++) {
-        result.push({ title: modules[count].module })
-    }
-    
-    console.log(result);
-    // for(let i = 0; i < collection.length; i++) {
-    //     console.log
-        // let obj = {}
-        // obj['title'] = collection[i]['property'];
-
-        // result.push(obj);
-        // result['title'] = collection[i][property];
-        // val = collection[i][property];
-        // index = values.indexOf(val);
-
-        // if(index > -1) { result[index].push(collection[i]); }
-        // else { values.push(val); result.push([collection[i]]); }
-    // }
-
-    // return result;
-}

@@ -89,9 +89,9 @@ const Index = () => {
                                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: '20px', backgroundColor: '#f5f6fa', borderRadius: '8px' }} spacing= { 3 }>
                                     <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                                         <Typography sx= {{ fontWeight: 'bold', color: '#444444', fontSize: '115%' }}>{ (mdl.name).charAt(0).toUpperCase() + (mdl.name).slice(1).toLowerCase() }</Typography>
-                                        <Controller control= { control } name= { `permissions[module_${mdl.id}].status` } defaultValue= { false }
+                                        <Controller control= { control } name= { `permissions[module_${mdl.id}].status` }
                                             render= { ({ field: { onChange } }) => (
-                                                <IOSSwitch 
+                                                <IOSSwitch defaultChecked= { true }
                                                     checked= { getValues().permissions[`module_${mdl.id}`].status !== null && 
                                                                         getValues().permissions[`module_${mdl.id}`].status !== undefined ? getValues().permissions[`module_${mdl.id}`].status : false }
                                                     onChange= { (e) => { 
