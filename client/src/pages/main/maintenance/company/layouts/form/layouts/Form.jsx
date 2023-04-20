@@ -77,7 +77,7 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Controller control= { control } name= "status"
+                            <Controller control= { control } name= "status" defaultValue= { getValues().status ?? true }
                                 render= { ({ field: { onChange } }) => (
                                     <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} disabled= { type === 'view' }
                                         checked= { getValues().status !== null && getValues().status !== undefined ? getValues().status : true }

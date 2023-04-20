@@ -23,7 +23,7 @@ class Brand {
 
     list = async (data) => {
         return (await new Builder(`tbl_racks AS rck`)
-                        .select(`rck.id, rck.series_no, rck.code, rck.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, rck.date_created`)
+                        .select(`rck.id, rck.series_no, rck.branch, rck.floor, rck.code, rck.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, rck.date_created`)
                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = rck.created_by`})
                         .condition(`${data.searchtxt !== '' ? 
                                                 `WHERE rck.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR rck.code LIKE '%${(data.searchtxt).toUpperCase()}%'` : ''}
@@ -54,76 +54,74 @@ class Brand {
 
     search = async (data) => {
         return (await new Builder(`tbl_racks AS rck`)
-                        .select(`rck.id, rck.series_no, rck.code, rck.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, rck.date_created`)
+                        .select(`rck.id, rck.series_no, rck.branch, rck.floor, rck.code, rck.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, rck.date_created`)
                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = rck.created_by`})
                         .condition(`${data.searchtxt !== '' ? `WHERE rck.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                                            OR rck.code LIKE '%${(data.searchtxt).toUpperCase()}%'` : '' } ORDER BY rck.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                            OR rck.code LIKE '%${data.searchtxt}%'` : '' } ORDER BY rck.${data.orderby} ${(data.sort).toUpperCase()}`)
                         .build()).rows;
     }
 
     save = async (data) => {
-        return {}
-        // let date = Global.date(new Date()); // Date
-        // let errors = [];
+        let date = Global.date(new Date()); // Date
+        let errors = [];
 
-        // if((await new Builder(`tbl_racks`).select().condition(`WHERE series_no= '${(data.series_no).toUpperCase()}'`).build()).rowCount > 0) {
-        //     errors.push({ name: 'series_no', message: 'Series number already used!' });
-        // }
+        if((await new Builder(`tbl_racks`).select().condition(`WHERE series_no= '${(data.series_no).toUpperCase()}'`).build()).rowCount > 0) {
+            errors.push({ name: 'series_no', message: 'Series number already used!' });
+        }
 
-        // if((await new Builder(`tbl_racks`).select().condition(`WHERE name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0) {
-        //     errors.push({ name: 'name', message: 'Rack already exist!' });
-        // }
+        if((await new Builder(`tbl_racks`).select().condition(`WHERE branch= '${data.branch}' AND floor= '${data.floor}' AND code= '${data.code}'`).build()).rowCount > 0) {
+            errors.push({ name: 'code', message: 'Rack already exist!' });
+        }
 
-        // if(!(errors.length > 0)) {
-        //     let rck = (await new Builder(`tbl_racks`)
-        //                         .insert({ columns: `series_no, name, status, created_by, date_created`,
-        //                                     values: `'${(data.series_no).toUpperCase()}', '${(data.name).toUpperCase()}', ${data.status === true ? 1 : 0}, ${data.created_by}, '${date}'` })
-        //                         .condition(`RETURNING id`)
-        //                         .build()).rows[0];
+        if(!(errors.length > 0)) {
+            let rck = (await new Builder(`tbl_racks`)
+                                .insert({ columns: `series_no, branch, floor, code, status, created_by, date_created`,
+                                            values: `'${(data.series_no).toUpperCase()}', '${data.branch}', '${data.floor}', '${data.code}', ${data.status === true ? 1 : 0}, ${data.created_by}, '${date}'` })
+                                .condition(`RETURNING id`)
+                                .build()).rows[0];
 
-        //     audit.series_no = Global.randomizer(7);
-        //     audit.field = 'all',
-        //     audit.item_id = rck.id;
-        //     audit.action = 'create';
-        //     audit.user_id = data.created_by;
-        //     audit.date = date;
+            audit.series_no = Global.randomizer(7);
+            audit.field = 'all',
+            audit.item_id = rck.id;
+            audit.action = 'create';
+            audit.user_id = data.created_by;
+            audit.date = date;
 
-        //     Global.audit(audit);
-        //     return { result: 'success', message: 'Successfully saved!' }
-        // }
-        // else { return { result: 'error', error: errors } }
+            Global.audit(audit);
+            return { result: 'success', message: 'Successfully saved!' }
+        }
+        else { return { result: 'error', error: errors } }
     }
 
     update = async (data) => {
-        return {}
-        // let rck = (await new Builder(`tbl_racks`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
-        // let date = Global.date(new Date());
-        // let _audit = [];
-        // let _errors = [];
+        let rck = (await new Builder(`tbl_racks`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
+        let date = Global.date(new Date());
+        let _audit = [];
+        let _errors = [];
 
-        // if(Global.compare(rck.code, data.name)) {
-        //     if(!((await new Builder(`tbl_racks`).select().condition(`WHERE name= '${(data.name).toUpperCase()}'`).build()).rowCount > 0)) {
-        //         _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_racks', item_id: rck.id, field: 'name', previous: rck.code, 
-        //                                 current: (data.name).toUpperCase(), action: 'update', user_id: data.updated_by, date: date });
-        //     }
-        //     else { _errors.push({ name: 'name', message: 'Name already used!' }); }
-        // }
+        if(Global.compare(rck.code, data.code)) {
+            if(!((await new Builder(`tbl_racks`).select().condition(`WHERE branch= '${data.branch}' AND floor= '${data.floor}' AND code= '${data.code}'`).build()).rowCount > 0)) {
+                _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_racks', item_id: rck.id, field: 'code', previous: rck.code, 
+                                        current: data.code, action: 'update', user_id: data.updated_by, date: date });
+            }
+            else { _errors.push({ name: 'name', message: 'Name already used!' }); }
+        }
 
-        // if(Global.compare(rck.status, data.status ? 1 : 0)) {
-        //     _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_racks', item_id: rck.id, field: 'status', previous: rck.status, 
-        //                             current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
-        // }
+        if(Global.compare(rck.status, data.status ? 1 : 0)) {
+            _audit.push({ series_no: Global.randomizer(7), table_name: 'tbl_racks', item_id: rck.id, field: 'status', previous: rck.status, 
+                                    current: data.status ? 1 : 0, action: 'update', user_id: data.updated_by, date: date });
+        }
 
-        // if(!(_errors.length > 0)) {
-        //     await new Builder(`tbl_racks`)
-        //         .update(`name= '${(data.name).toUpperCase()}', status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
-        //         .condition(`WHERE id= ${rck.id}`)
-        //         .build();
+        if(!(_errors.length > 0)) {
+            await new Builder(`tbl_racks`)
+                .update(`code= '${data.code}', status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
+                .condition(`WHERE id= ${rck.id}`)
+                .build();
 
-        //     _audit.forEach(data => Global.audit(data));
-        //     return { result: 'success', message: 'Successfully updated!' }
-        // }
-        // else { return { result: 'error', error: _errors } }
+            _audit.forEach(data => Global.audit(data));
+            return { result: 'success', message: 'Successfully updated!' }
+        }
+        else { return { result: 'error', error: _errors } }
     }
 
     upload = async (data) => {

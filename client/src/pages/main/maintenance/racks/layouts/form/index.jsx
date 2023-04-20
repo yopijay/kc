@@ -1,7 +1,7 @@
 // Libraries
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Grid, Stack, ThemeProvider, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import { useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -9,26 +9,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { FormCntxt } from "core/context/Form"; // Context
 import { successToast, useGet, usePost } from "core/function/global"; // Function
 import { save, specific, update } from "core/api"; // API
-import { theme } from "core/theme/form.theme"; // Theme
 
 // Constants
 import { btnicon, btntxt, card } from "./index.style"; // Styles
 import Form from "./layouts/Form"; // Layout
 import { validation as Validation } from './index.validation'; // Validation
-
-const input = {
-    MuiInput: {
-        styleOverrides: {
-            root: {
-                '&:before': { borderBottom: 'none' },
-                '&:after': { borderBottom: 'none' },
-                '&.Mui-disabled:before': { borderBottom: 'none' },
-                '&:hover:not(.Mui-disabled):before': { borderBottom: 'none' }
-            },
-            input: { textTransform: 'uppercase' }
-        }
-    }
-}
 
 const Index = () => {
     const { type, id } = useParams();
@@ -69,18 +54,15 @@ const Index = () => {
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>{ type } Rack</Typography>
                 <Typography sx= { btnicon } component= { Link } to= "/maintenance/racks" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
-            <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { theme(input) }><Form fetching= { isFetching } /></ThemeProvider></form></Box>
+            <Box sx= { card }><form autoComplete= "off"><Form fetching= { isFetching } /></form></Box>
             { type !== 'view' ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
 
-                            if(data.owner_id !== undefined && data.owner_id !== 0 && data.owner_id !== null) {
-                                if(type === 'new') { saving({ table: 'tbl_racks', data: data }); }
-                                else { updating({ table: 'tbl_racks', data: data }); }
-                            }
-                            else { setError('owner_id', { message: 'This field is required!' }); }
+                            if(type === 'new') { saving({ table: 'tbl_racks', data: data }); }
+                            else { updating({ table: 'tbl_racks', data: data }); }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }
