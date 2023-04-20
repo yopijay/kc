@@ -39,7 +39,8 @@ const Index = () => {
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
-                        let _name = Object.keys(data[0])[count]; setValue(_name, data[0][_name]); 
+                        let _name = Object.keys(data[0])[count]; 
+                        setValue(_name, _name === 'status' ? data[0][_name] === 1 : data[0][_name]);
                     } 
             } 
         });
@@ -73,16 +74,14 @@ const Index = () => {
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
+                            let errors = [];
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
 
-                            if(data.company_id !== undefined && data.company_id !== 0 && data.company_id !== null) {
-                                if(data.department_id !== undefined && data.department_id !== 0 && data.department_id !== null) {
-                                    if(type === 'new') { saving({ table: 'tbl_position', data: data }); }
-                                    else { updating({ table: 'tbl_position', data: data }); }
-                                }
-                                else { setError('department_id', { message: 'This field is required!' }); }
-                            }
-                            else { setError('company_id', { message: 'This field is required!' }); }
+                            if(data.company_id === undefined) { errors.push({ name: 'company_id', message: 'This field is required!' }); }
+                            if(data.department_id === undefined) { errors.push({ name: 'department_id', message: 'This field is required!' }); }
+
+                            if(!(errors.length > 0)) { if(type === 'new') { saving({ table: 'tbl_position', data: data }); } else { updating({ table: 'tbl_position', data: data }); } }
+                            else { errors.forEach(err => setError(err.name, { message: err.message })); }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }

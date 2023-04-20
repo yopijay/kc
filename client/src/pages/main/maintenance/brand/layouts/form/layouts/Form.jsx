@@ -2,6 +2,7 @@
 import { Box, Checkbox, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
+import { Controller } from "react-hook-form";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
@@ -13,7 +14,7 @@ import { input } from "../index.style"; // Styles
 
 const Form = ({ fetching }) => {
     const { type } = useParams();
-    const { register, errors, getValues, check, setCheck, setValue } = useContext(FormCntxt);
+    const { register, errors, getValues, control, setValue } = useContext(FormCntxt);
     useGet({ key: ['cmp_series'], fetch: series('tbl_brand'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `BRD-${formatter(parseInt(data) + 1, 7)}`); } });
 
     return (
@@ -39,10 +40,11 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 
-                                disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
-                            <Typography gutterBottom sx= {{ marginTop: '7px' }}>
-                                { getValues().status !== undefined ? getValues().status > 0 ? 'Active' : 'Inactive' : check ? 'Active' : 'Inactive' }</Typography>
+                            <Controller control= { control } name= "status" defaultValue= { getValues().status ?? true }
+                                render= { ({ field: { onChange } }) => (
+                                    <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} disabled= { type === 'view' }
+                                        checked= { getValues().status ?? true } onChange= { e => { setValue('status', getValues().status ?? true); onChange(e.target.checked); } } /> ) 
+                                } />
                         </Box> }
                 </Stack>
             </Grid>
