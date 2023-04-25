@@ -7,11 +7,10 @@ class Brand {
     series = async () => { return (await new Builder(`tbl_racks`).select(`COUNT(*)`).build()).rows; }
     filter = async () => { return [{ id: 'all', name: 'ALL' }].concat((await new Builder(`tbl_racks`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows); }
 
-    dropdown = async () => { 
+    dropdown = async (data) => {
         return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
-                        .concat((await new Builder(`tbl_racks`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows); 
+                        .concat((await new Builder(`tbl_racks`).select(`id, code AS name`).condition(`WHERE branch= '${data.branch}' AND floor= '${data.floor}' AND status= 1 ORDER BY code ASC`).build()).rows); 
     }
-
  
     dashboard = async () => {
         return {

@@ -23,13 +23,16 @@ const ServiceEvaluation = React.lazy(() => import('pages/main/services/evaluatio
 // const ServiceDispatch = React.lazy(() => import('pages/main/services/dispatch'));
 // const ServiceReport = React.lazy(() => import('pages/main/services/reports'));
 
-// // Assets
+// Assets
 // const AssetRegistration = React.lazy(() => import('pages/main/assets/registration'));
 // const AssetIssuance = React.lazy(() => import('pages/main/assets/issuance'));
 
-// // Setup
+// Setup
 const Module = React.lazy(() => import('pages/main/setup/module'));
 const Submodule = React.lazy(() => import('pages/main/setup/sub-module'));
+
+// Warehouse
+const Items = React.lazy(() => import('pages/main/warehouse/items'));
 
 // export const Navs = () => ([
 //     {
@@ -93,4 +96,5 @@ export const Components = () => ([
     { path: '/setup/submodule', name: 'submodule', component: <Submodule /> },
     { path: '/servicing/request', name: 'service_request', component: <ServiceRequest /> },
     { path: '/servicing/evaluation', name: 'service_evaluation', component: <ServiceEvaluation /> },
+    { path: '/warehouse/item', name: 'item', component: <Items /> },
 ]);
