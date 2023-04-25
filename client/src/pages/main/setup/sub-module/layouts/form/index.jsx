@@ -25,7 +25,7 @@ const Index = () => {
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) {
                         let _name = Object.keys(data[0])[count]; 
-                        setValue(_name, _name === 'module' ? `/${(data[0][_name]).toLowerCase()}` : data[0][_name]);
+                        setValue(_name, _name === 'module' ? `/${(data[0][_name]).toLowerCase()}` : _name === 'status' || _name === 'is_maintenance' ? data[0][_name] === 1 : data[0][_name]);
                     }
             } 
         });
