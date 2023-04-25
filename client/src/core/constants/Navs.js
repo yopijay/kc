@@ -33,6 +33,7 @@ const Submodule = React.lazy(() => import('pages/main/setup/sub-module'));
 
 // Warehouse
 const Items = React.lazy(() => import('pages/main/warehouse/items'));
+const Inventory = React.lazy(() => import('pages/main/warehouse/inventory'));
 
 // export const Navs = () => ([
 //     {
@@ -97,4 +98,5 @@ export const Components = () => ([
     { path: '/servicing/request', name: 'service_request', component: <ServiceRequest /> },
     { path: '/servicing/evaluation', name: 'service_evaluation', component: <ServiceEvaluation /> },
     { path: '/warehouse/item', name: 'item', component: <Items /> },
+    { path: '/warehouse/inventory', name: 'inventory', component: <Inventory /> },
 ]);
