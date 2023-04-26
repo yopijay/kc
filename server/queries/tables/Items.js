@@ -5,6 +5,13 @@ const audit = { series_no: '', table_name: 'tbl_items',  item_id: 0, field: '', 
 class Items {
     series = async () => { return (await new Builder(`tbl_items`).select(`COUNT(*)`).build()).rows; }
 
+    count = async (data) => {
+        let cndtn = ''
+        data.forEach((qry, index) => cndtn += `${index !== 0 ? ' OR' : ''} brand_id= ${qry.id}`);
+
+        return (await new Builder(`tbl_items`).select(`COUNT(*)`).condition(`${data.length > 0 ? `WHERE${cndtn}` : ''}`).build()).rows[0].count;
+    }
+
     specific = async (id) => {
         return (await new Builder(`tbl_items AS itm`)
                         .select(`itm.*, rck.branch, rck.floor, rck.id AS rack_id`)

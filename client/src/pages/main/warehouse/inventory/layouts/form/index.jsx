@@ -15,7 +15,6 @@ import { theme } from "core/theme/form.theme"; // Theme
 
 // Constants
 import { btnicon, btntxt, card } from "./index.style"; // Styles
-import { validation as Validation } from './index.validation'; // Validation
 import Form from "./layouts/Form";
 
 const input = {
@@ -35,14 +34,14 @@ const input = {
 const Index = () => {
     const { type, id } = useParams();
     const navigate = useNavigate();
-    const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
+    const { setValue, setError, handleSubmit } = useContext(FormCntxt);
     const { isFetching, refetch } =  
         useGet({ key: ['inv_specific'], fetch: specific({ table: 'tbl_inventory', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
                         let _name = Object.keys(data[0])[count]; 
-                        setValue(_name, _name === 'status' ? data[0][_name] === 1 : _name === 'brands' ? JSON.parse(data[0][_name]) : data[0][_name]); 
+                        setValue(_name, _name === 'brands' || _name === 'branch' ? JSON.parse(data[0][_name]) : data[0][_name]); 
                     }
             }
         });
@@ -59,16 +58,16 @@ const Index = () => {
         usePost({ fetch: update, 
             onSuccess: (data) => { 
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
-                else { successToast(data.message, 3000, navigate('/warehouse/inventory', { replace: true })); }
+                // else { successToast(data.message, 3000, navigate('/warehouse/inventory', { replace: true })); }
             } 
         });
 
-    useEffect(() => { setValidation(Validation()); if(id !== undefined) { refetch(); } }, [ setValidation, id, refetch ]);
+    useEffect(() => { if(id !== undefined) { refetch(); } }, [ id, refetch ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>{ type } Inventory count</Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ type } Inventory count</Typography>
                 <Typography sx= { btnicon } component= { Link } to= "/warehouse/inventory" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
             <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { theme(input) }><Form fetching= { isFetching } /></ThemeProvider></form></Box>
@@ -79,10 +78,10 @@ const Index = () => {
                             let errors = [];
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
 
-                            if(data.brand_id === undefined) { errors.push({ name: 'brand_id', message: 'This field is required!' }); }
-                            if(data.rack_id === undefined) { errors.push({ name: 'rack_id', message: 'This field is required!' }); }
-                            if(data.total <= 0) { errors.push({ name: 'total', message: 'Total must be greater than 0!' }); }
-                            
+                            if(data.type === 'specific' && (data.brands).length <= 0) { errors.push({ name: 'brands', message: 'Please select at least one brand' }); }
+                            if(data.total_items <= 0) { errors.push({ name: 'total_items', message: 'Total items must be greater than 0!' }); }
+                            if(data.branch <= 0) { errors.push({ name: 'branch', message: 'Please select at least one branch' }); }
+
                             if(!(errors.length > 0)) {
                                 if(type === 'new') { saving({ table: 'tbl_inventory', data: data }); }
                                 else { updating({ table: 'tbl_inventory', data: data }); }

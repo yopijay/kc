@@ -1,5 +1,5 @@
 // Libraries
-import { Avatar, Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
@@ -43,18 +43,29 @@ const Item = ({ sub, fetching, profile }) => {
             { list.length > 0 ?
                 list?.map((data, index) => (
                     <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= { item } spacing= { 2 }>
-                        <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
-                            <Avatar src= { data.photo !== null ? JSON.parse(data.photo) : '#' } />
-                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
-                                {/* <Typography variant= "body1" sx= { label } style= {{ fontWeight: 'bold' }}>{ data.item_code }</Typography>
-                                <Typography variant= "body2" sx= { label }>Location: { data.rack }</Typography>
-                                <Typography variant= "body2" sx= { label }>Unit of measure: { (data.uom).toUpperCase() }</Typography> */}
-                                <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
+                        <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
+                            <Typography variant= "body1" sx= { label } style= {{ fontWeight: 'bold' }}>{ (data.type).toUpperCase() }</Typography>
+                            <Typography variant= "body2" sx= { label }>Date: { data.date_from }{ data.date_from !== data.date_to ? ` - ${data.date_to}` : ''}</Typography>
+                            <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { label } spacing= { 1 }>
+                                <Typography variant= "body2">Brands: </Typography>
+                                <Stack direction= "row" justifyContent= "flex-start" alignItems= "center">
+                                    { (JSON.parse(data.brands)).length > 0 ?
+                                        (JSON.parse(data.brands)).map((brd, index) => ( <Typography key= { index } variant= "body2">{ index !== 0 ? ', ' : '' } { brd.name }</Typography>)) :
+                                        <Typography variant= "body2">ALL</Typography> }
+                                </Stack>
                             </Stack>
+                            <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { label } spacing= { 1 }>
+                                <Typography variant= "body2">Branch: </Typography>
+                                <Stack direction= "row" justifyContent= "flex-start" alignItems= "center">
+                                    { (JSON.parse(data.branch)).map((brc, index) => ( <Typography key= { index } variant= "body2">{ index !== 0 ? ', ' : '' } { brc.name }</Typography>)) }
+                                </Stack>
+                            </Stack>
+                            <Typography variant= "body2" sx= { label }>Status: { (data.status).toUpperCase() }</Typography>
+                            <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
                         </Stack>
                         <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
-                            { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
-                                <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
+                            {/* { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
+                                <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> } */}
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                                 { !fetching && (JSON.parse(profile.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`]?.update || profile.user_level === 'superadmin') ? 
                                     <Typography sx= { icons } component= { Link } to= { `/warehouse/inventory/form/update/${data.id}` }>

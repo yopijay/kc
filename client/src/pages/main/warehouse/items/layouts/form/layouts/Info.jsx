@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Controller } from "react-hook-form";
-import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, ThemeProvider, Typography } from "@mui/material";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
@@ -16,7 +16,21 @@ import Others from "./Others";
 
 // Constants
 import { input, select } from "../index.style"; // Styles
+import { theme } from "core/theme/form.theme";
 const uom = [{ id: 'pc', name: 'PC/S' }]; // Unit of measures
+
+const _input = {
+    MuiInput: {
+        styleOverrides: {
+            root: {
+                '&:before': { borderBottom: 'none' },
+                '&:after': { borderBottom: 'none' },
+                '&.Mui-disabled:before': { borderBottom: 'none' },
+                '&:hover:not(.Mui-disabled):before': { borderBottom: 'none' }
+            }
+        }
+    }
+}
 
 const Info = ({ fetching }) => {
     const { type } = useParams();
@@ -58,7 +72,7 @@ const Info = ({ fetching }) => {
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.brand_id?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 }><Location fetching= { fetching } /></Grid>
+            <Grid item xs= { 12 }><ThemeProvider theme= { theme(_input) }><Location fetching= { fetching } /></ThemeProvider></Grid>
             <Grid item xs= { 12 } sm= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">*Item Code</Typography>

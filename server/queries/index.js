@@ -24,6 +24,7 @@ const profile = (id) => { return new Users().profile(id); }
 const tracker = (data) => { return new Tracker().track(data); }
 const monitor = (data) => { return new Tracker().monitor(data); }
 const submodule = (name) => { return new SubModule().submodule(name); }
+const count = (data) => { return new Items().count(data); }
 
 const assettag = (table, data) => {
     return new Promise(async resolve => {
@@ -310,5 +311,6 @@ module.exports = {
     evaluate,
     tracker,
     monitor,
-    submodule
+    submodule,
+    count
 }
