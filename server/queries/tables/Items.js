@@ -4,12 +4,8 @@ const Global = require('../../function/global'); // Function
 const audit = { series_no: '', table_name: 'tbl_items',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class Items {
     series = async () => { return (await new Builder(`tbl_items`).select(`COUNT(*)`).build()).rows; }
-
     count = async (data) => {
-        let cndtn = ''
-        data.forEach((qry, index) => cndtn += `${index !== 0 ? ' OR' : ''} brand_id= ${qry.id}`);
-
-        return (await new Builder(`tbl_items`).select(`COUNT(*)`).condition(`${data.length > 0 ? `WHERE${cndtn}` : ''}`).build()).rows[0].count;
+        return (await new Builder(`tbl_items`).select(`COUNT(*)`).condition(`${data.brand_id !== undefined ? `WHERE brand_id= ${data.brand_id}` : ''}`).build()).rows[0].count; 
     }
 
     specific = async (id) => {

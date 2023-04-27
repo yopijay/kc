@@ -80,3 +80,15 @@ export const date = {
     },
     borderRadius: '5px'
 }
+
+export const addrow = {
+    color: '#ffffff',
+    backgroundColor: '#204c6f',
+    borderRadius: '7px',
+    padding: {
+        xs: '5px 12px',
+        md: '4px 10px'
+    },
+    transition: 'all 0.2s ease-in-out',
+    '&:hover': { backgroundColor: '#1b405d' }
+}
