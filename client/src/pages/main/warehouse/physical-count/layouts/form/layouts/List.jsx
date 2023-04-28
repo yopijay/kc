@@ -12,6 +12,7 @@ import { FormCntxt } from "core/context/Form"; // Context
 // Constants
 import { addrow } from "../index.style"; // Styles
 import Brands from "./modal/Brands"; // Modals
+import { useParams } from "react-router-dom";
 let defaults = {
     brand_id: '',
     brand_name: '',
@@ -19,11 +20,12 @@ let defaults = {
 }
 
 const List = ({ fetching, counts }) => {
+    const { type } = useParams();
     const { control } = useContext(FormCntxt);
     const { fields, append, remove } = useFieldArray({ control, name: 'brands' });
     const theme = useTheme();
     const [ open, setOpen ] = useState(false);
-    const [ type, setType ] = useState('');
+    const [ _type, setType ] = useState('');
     const [ index, setIndex ] = useState();
 
     const fullscreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -31,12 +33,13 @@ const List = ({ fetching, counts }) => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 3 }>
             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center">
-                <Typography sx= { addrow }onClick= { () => { setType('create'); setOpen(true); setIndex(fields.length); } }>
-                    <FontAwesomeIcon icon= { faPlus } style= {{ color: '#ffffff' }} size= "lg" />
-                </Typography>
+                { type !== 'view' ?
+                    <Typography sx= { addrow }onClick= { () => { setType('create'); setOpen(true); setIndex(fields.length); } }>
+                        <FontAwesomeIcon icon= { faPlus } style= {{ color: '#ffffff' }} size= "lg" />
+                    </Typography> : '' }
             </Stack>
             <Dialog fullScreen= { fullscreen } open= { open } maxWidth= "xs" fullWidth= { true } disableEscapeKeyDown= { true }>
-                <Brands setOpen= { setOpen } remove= { remove } index= { index } fetching= { fetching } append= { append } defaults= { defaults } type= { type } _counts= { counts } />
+                <Brands fields= { fields } setOpen= { setOpen } remove= { remove } index= { index } fetching= { fetching } append= { append } defaults= { defaults } type= { _type } _counts= { counts } />
             </Dialog>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 { fields.length > 0 ?
@@ -47,12 +50,12 @@ const List = ({ fetching, counts }) => {
                             </Stack>
                             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" spacing= { 4 }>
                                 <Typography variant= "h6">{ fld.items }</Typography>
-                                <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
+                                { type !== 'view' ? <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                                     <Typography sx= {{ cursor: 'pointer' }} onClick= { () => { setIndex(index); setOpen(true); setType('update') } }>
                                         <FontAwesomeIcon icon= { faEdit } size= "lg" />
                                     </Typography>
                                     <Typography sx= {{ cursor: 'pointer' }} onClick= { () => { remove(index); counts({}); } }><FontAwesomeIcon icon= { faTrash } size= "lg" /></Typography>
-                                </Stack>
+                                </Stack> : '' }
                             </Stack>
                         </Stack>
                     )) :

@@ -137,9 +137,9 @@ class Company {
         if(!(_errors.length > 0)) {
             await new Builder(`tbl_company`)
                 .update(`owner_id= ${data.owner_id}, name= '${(data.name).toUpperCase()}', 
-                                    description= ${data.description !== '' && data.description !== null ? `'${(data.description).toUpperCase()}'` : null},
-                                    address= ${data.address !== '' && data.address !== null ? `'${(data.address).toUpperCase()}'` : null}, 
-                                    status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
+                                description= ${data.description !== '' && data.description !== null ? `'${(data.description).toUpperCase()}'` : null},
+                                address= ${data.address !== '' && data.address !== null ? `'${(data.address).toUpperCase()}'` : null}, 
+                                status= ${data.status ? 1 : 0}, updated_by= ${data.updated_by}, date_updated= '${date}'`)
                 .condition(`WHERE id= ${cmp.id}`)
                 .build();
 

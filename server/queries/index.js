@@ -16,7 +16,7 @@ const Permissions = require('./tables/Permissions');
 const Brand = require('./tables/Brand');
 const Racks = require('./tables/Racks');
 const Items = require('./tables/Items');
-const Inventory = require('./tables/Inventory');
+const PhysicalCount = require('./tables/PhysicalCount');
 
 const login = (data) => { return new Users().login(data); }
 const logout = (data) => { return new Users().logout(data); }
@@ -105,7 +105,7 @@ const list = (table, data) => {
             case 'tbl_brand': resolve(await new Brand().list(data)); break;
             case 'tbl_racks': resolve(await new Racks().list(data)); break;
             case 'tbl_items': resolve(await new Items().list(data)); break;
-            case 'tbl_inventory': resolve(await new Inventory().list(data)); break;
+            case 'tbl_physical_count': resolve(await new PhysicalCount().list(data)); break;
         }
     });
 }
@@ -128,7 +128,7 @@ const search = (table, data) => {
             case 'tbl_brand': resolve(await new Brand().search(data)); break;
             case 'tbl_racks': resolve(await new Racks().search(data)); break;
             case 'tbl_items': resolve(await new Items().search(data)); break;
-            case 'tbl_inventory': resolve(await new Inventory().search(data)); break;
+            case 'tbl_physical_count': resolve(await new PhysicalCount().search(data)); break;
         }
     });
 }
@@ -151,7 +151,7 @@ const specific = (table, id) => {
             case 'tbl_brand': resolve(await new Brand().specific(id)); break;
             case 'tbl_racks': resolve(await new Racks().specific(id)); break;
             case 'tbl_items': resolve(await new Items().specific(id)); break;
-            case 'tbl_inventory': resolve(await new Inventory().specific(id)); break;
+            case 'tbl_physical_count': resolve(await new PhysicalCount().specific(id)); break;
         }
     });
 }
@@ -174,7 +174,7 @@ const specific = (table, id) => {
             case 'tbl_brand': resolve(await new Brand().save(data)); break;
             case 'tbl_racks': resolve(await new Racks().save(data)); break;
             case 'tbl_items': resolve(await new Items().save(data)); break;
-            case 'tbl_inventory': resolve(await new Inventory().save(data)); break;
+            case 'tbl_physical_count': resolve(await new PhysicalCount().save(data)); break;
         }
     });
 }
@@ -198,7 +198,7 @@ const update = (table, data) => {
            case 'tbl_brand': resolve(await new Brand().update(data)); break;
            case 'tbl_racks': resolve(await new Racks().update(data)); break;
            case 'tbl_items': resolve(await new Items().update(data)); break;
-           case 'tbl_inventory': resolve(await new Inventory().update(data)); break;
+           case 'tbl_physical_count': resolve(await new PhysicalCount().update(data)); break;
        }
    });
 }
@@ -252,7 +252,7 @@ const series = (table) => {
             case 'tbl_brand': resolve(await new Brand().series()); break;
             case 'tbl_racks': resolve(await new Racks().series()); break;
             case 'tbl_items': resolve(await new Items().series()); break;
-            case 'tbl_inventory': resolve(await new Inventory().series()); break;
+            case 'tbl_physical_count': resolve(await new PhysicalCount().series()); break;
         }
     });
 }

@@ -47,20 +47,17 @@ const Sort = ({ refetch }) => {
                 <Typography variant= "caption">Order by:</Typography>
                 { orderby === 'date_created' ? 
                     <Typography sx= { ctgy } 
-                        onClick= { () => {  setValue('orderby', 'item_code'); setOrderby('item_code'); refetch({ table: 'tbl_items', data: getValues() }); } }>Date created</Typography> : 
-                    orderby === 'item_code' ? 
+                        onClick= { () => {  setValue('orderby', 'series_no'); setOrderby('series_no'); refetch({ table: 'tbl_physical_count', data: getValues() }); } }>Date created</Typography> : 
+                    orderby === 'series_no' ? 
                         <Typography sx= { ctgy } 
-                            onClick= { () => {  setValue('orderby', 'series_no'); setOrderby('series_no'); refetch({ table: 'tbl_items', data: getValues() }); } }>Item code</Typography> :
-                        orderby === 'series_no' ? 
-                            <Typography sx= { ctgy } 
-                                onClick= { () => {  setValue('orderby', 'date_created'); setOrderby('date_created'); refetch({ table: 'tbl_items', data: getValues() }); } }>Series no</Typography> : '' }
-            </Stack>
+                            onClick= { () => {  setValue('orderby', 'date_created'); setOrderby('date_created'); refetch({ table: 'tbl_physical_count', data: getValues() }); } }>Series no</Typography> : '' }
+        </Stack>
                 { sort === 'desc' ? 
                     <Typography sx= { asc }>
-                        <FontAwesomeIcon icon= { faArrowDownZA } onClick= { () => { setValue('sort', 'asc'); setSort('asc'); refetch({ table: 'tbl_items', data: getValues() }); } } />
+                        <FontAwesomeIcon icon= { faArrowDownZA } onClick= { () => { setValue('sort', 'asc'); setSort('asc'); refetch({ table: 'tbl_physical_count', data: getValues() }); } } />
                     </Typography> :
                     <Typography sx= { desc }>
-                        <FontAwesomeIcon icon= { faArrowDownAZ } onClick= { () => { setValue('sort', 'desc'); setSort('desc'); refetch({ table: 'tbl_items', data: getValues() }); } } />
+                        <FontAwesomeIcon icon= { faArrowDownAZ } onClick= { () => { setValue('sort', 'desc'); setSort('desc'); refetch({ table: 'tbl_physical_count', data: getValues() }); } } />
                     </Typography> }
         </Stack>
     );

@@ -11,8 +11,8 @@ import { count, dropdown } from "core/api"; // API
 // Constants
 import { input, select } from "../../index.style"; // Styles
 
-const Brands = ({ setOpen, remove, index, fetching, type, _counts }) => {
-    const { register, getValues, control, setValue } = useContext(FormCntxt);
+const Brands = ({ fields, setOpen, remove, index, fetching, append, type, _counts, defaults }) => {
+    const { register, getValues, control, setValue, setError } = useContext(FormCntxt);
     const { data: brand } = useGet({ key: ['dd_brands'], fetch: dropdown({ table: 'tbl_brand', data: {} }), options: { refetchOnWindowFocus: false } });
     const { mutate: counts } = usePost({ fetch: count, onSuccess: data => setValue(`brands[${index}].items`, data) });
 
@@ -45,8 +45,10 @@ const Brands = ({ setOpen, remove, index, fetching, type, _counts }) => {
                 </Stack>
             </Stack>
             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" spacing= { 4 }>
-                <Typography sx= {{ cursor: 'pointer' }} onClick= { () => { setValue('brands', getValues().brands); setOpen(false); _counts({}) } }>Save</Typography>
-                { type === 'create' ? <Typography sx= {{ cursor: 'pointer' }} onClick= { () => { remove(index); setOpen(false); } }>Cancel</Typography> : '' }
+                <Typography sx= {{ cursor: 'pointer' }} 
+                    onClick= { () => {  setValue('brands', getValues().brands); setOpen(false); _counts({}); setError('total_items', { message: '' }); } }>Save</Typography>
+                { type === 'create' ? <Typography sx= {{ cursor: 'pointer' }} 
+                    onClick= { () => {  setValue('brands', getValues().brands); remove(index); setOpen(false); setError('total_items', { message: '' }); } }>Cancel</Typography> : '' }
             </Stack>
         </Stack>
     );

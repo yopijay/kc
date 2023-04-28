@@ -21,11 +21,11 @@ import Sort from "./layouts/Sort";
 import { btnexport, btnicon, btntxt, search } from "./index.style"; // Design
 
 const Index = () => {
-    let name = `KC-EXPORT-INVENTORY-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
+    let name = `KC-EXPORT-PHYSICAL-COUNT-${parseInt((new Date()).getMonth()) + 1}${(new Date()).getDate()}${(new Date()).getFullYear()}`;
     const { data } = useContext(ProfileCntx);
     const { setList } = useContext(ListCntxt);
     const { register, getValues, setValue } = useContext(FormCntxt);
-    const { data: sub, isFetching } = useGet({ key: ['submodule'], fetch: submodule('inventory'), options: { refetchOnWindowFocus: false } });
+    const { data: sub, isFetching } = useGet({ key: ['submodule'], fetch: submodule('physical count'), options: { refetchOnWindowFocus: false } });
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: (data) => { setList(data) } });
     const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: (data) => { setList(data)} });
 
@@ -39,20 +39,20 @@ const Index = () => {
         data['sort'] = 'desc';
         data['searchtxt'] = '';
 
-        record({ table: 'tbl_inventory', data: data });
+        record({ table: 'tbl_physical_count', data: data });
     }, [ register, record, getValues ] );
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>Inventory</Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>Physical Count</Typography>
                 {/* <Dashboard /> */}
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "flex-start" spacing= { 1 }>
                     <form autoComplete= "off">
                         <Box sx= { search }>
                             <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
                             <TextField { ...register('searchtxt') } variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
-                                onChange= { e => { setValue('searchtxt', e.target.value); find({ table: 'tbl_inventory', data: getValues() }); } } />
+                                onChange= { e => { setValue('searchtxt', e.target.value); find({ table: 'tbl_physical_count', data: getValues() }); } } />
                         </Box>
                     </form>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
@@ -60,16 +60,16 @@ const Index = () => {
                             { !isFetching && (JSON.parse(data.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`]?.export || data.user_level === 'superadmin') ? 
                                 <Typography 
                                     onClick= { () => { 
-                                        if(data.user_level === 'superadmin') { original({ table: 'tbl_inventory', type: 'original', data: getValues() }); } 
-                                        formatted({ table: 'tbl_inventory', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
+                                        if(data.user_level === 'superadmin') { original({ table: 'tbl_physical_count', type: 'original', data: getValues() }); } 
+                                        formatted({ table: 'tbl_physical_count', type: 'formatted', data: getValues() }); }} sx= { btnexport }>
                                     <FontAwesomeIcon icon= { faFileArrowDown } style= {{ color: '#FFFFFF' }} size= "lg" />
                                 </Typography> : '' }
                             { !isFetching && (JSON.parse(data.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`]?.create || data.user_level === 'superadmin') ? 
-                                <Typography component= { Link } to= "/warehouse/inventory/form/new" sx= { btnicon }>
+                                <Typography component= { Link } to= "/warehouse/physical-count/form/new" sx= { btnicon }>
                                     <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
                                 </Typography> : '' }
                             { !isFetching && (JSON.parse(data.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`]?.create || data.user_level === 'superadmin') ? 
-                                <Typography component= { Link } to= "/warehouse/inventory/form/new" sx= { btntxt }>Set Count</Typography> : '' }
+                                <Typography component= { Link } to= "/warehouse/physical-count/form/new" sx= { btntxt }>Set Count</Typography> : '' }
                         </Stack>
                     </Stack>
                 </Stack>

@@ -50,8 +50,9 @@ const Item = ({ sub, fetching, profile }) => {
                                 <Typography variant= "body2">Brands: </Typography>
                                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center">
                                     { (JSON.parse(data.brands)).length > 0 ?
-                                        (JSON.parse(data.brands)).map((brd, index) => ( <Typography key= { index } variant= "body2">{ index !== 0 ? ', ' : '' } { brd.name }</Typography>)) :
-                                        <Typography variant= "body2">ALL</Typography> }
+                                        (JSON.parse(data.brands)).map((brd, index) => ( 
+                                            <Typography key= { index } variant= "body2">{ index !== 0 ? ', ' : '' } { brd.brand_name }{ `(${brd.items})` }</Typography>)) :
+                                        <Typography variant= "body2">ALL{ `(${data.total_items})` }</Typography> }
                                 </Stack>
                             </Stack>
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { label } spacing= { 1 }>
@@ -64,14 +65,12 @@ const Item = ({ sub, fetching, profile }) => {
                             <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
                         </Stack>
                         <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
-                            {/* { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
-                                <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> } */}
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                                 { !fetching && (JSON.parse(profile.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`]?.update || profile.user_level === 'superadmin') ? 
-                                    <Typography sx= { icons } component= { Link } to= { `/warehouse/inventory/form/update/${data.id}` }>
+                                    <Typography sx= { icons } component= { Link } to= { `/warehouse/physical-count/form/update/${data.id}` }>
                                         <FontAwesomeIcon icon= { faPencil } size= "lg" />
                                     </Typography> : '' }
-                                <Typography sx= { icons } component= { Link } to= { `/warehouse/inventory/form/view/${data.id}` }>
+                                <Typography sx= { icons } component= { Link } to= { `/warehouse/physical-count/form/view/${data.id}` }>
                                     <FontAwesomeIcon icon= { faEye } size= "lg" />
                                 </Typography>
                             </Stack>
