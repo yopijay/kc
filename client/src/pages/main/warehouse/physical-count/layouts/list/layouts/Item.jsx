@@ -2,7 +2,7 @@
 import { Stack, Typography } from "@mui/material";
 import { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faClipboardList, faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 // Core
@@ -66,6 +66,9 @@ const Item = ({ sub, fetching, profile }) => {
                         </Stack>
                         <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
+                                <Typography sx= { icons } component= { Link } to= { `/warehouse/physical-count/personnel/${data.id}` }>
+                                    <FontAwesomeIcon icon= { faClipboardList } size= "lg" />
+                                </Typography>
                                 { !fetching && (JSON.parse(profile.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`]?.update || profile.user_level === 'superadmin') ? 
                                     <Typography sx= { icons } component= { Link } to= { `/warehouse/physical-count/form/update/${data.id}` }>
                                         <FontAwesomeIcon icon= { faPencil } size= "lg" />

@@ -36,10 +36,10 @@ class PhysicalCount {
 
         if(!(errors.length > 0)) {
             let inv = (await new Builder(`tbl_physical_count`)
-                            .insert({ columns: `series_no, branch, date_from, date_to, type, brands, total_items, remarks, status, created_by, date_created`, 
+                            .insert({ columns: `series_no, branch, date_from, date_to, type, brands, personnel, total_items, remarks, status, created_by, date_created`, 
                                             values: `'${(data.series_no).toUpperCase()}', '${JSON.stringify(data.branch)}', '${data.date_from}', '${data.date_to}', '${data.type}',
-                                            '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', ${data.total_items}, 
-                                            ${data.remarks !== '' ? `'${(data.remarks).toUpperCase()}'` : null}, 'ongoing', ${data.created_by}, '${date}'` })
+                                            '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', '${JSON.stringify(data.personnel !== undefined ? data.personnel : [])}', 
+                                            ${data.total_items}, ${data.remarks !== '' ? `'${(data.remarks).toUpperCase()}'` : null}, 'ongoing', ${data.created_by}, '${date}'` })
                             .condition(`RETURNING id`)
                             .build()).rows[0];
 
@@ -100,14 +100,19 @@ class PhysicalCount {
         
         if(Global.compare(pc.brands, JSON.stringify(data.brands))) {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count', item_id: pc.id, field: 'brands', previous: pc.brands, 
-                                    current: JSON.stringify(data.branch), action: 'update', user_id: data.updated_by, date: date });
+                                    current: JSON.stringify(data.brands), action: 'update', user_id: data.updated_by, date: date });
+        }
+        
+        if(Global.compare(pc.personnel, JSON.stringify(data.personnel))) {
+            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count', item_id: pc.id, field: 'personnel', previous: pc.personnel, 
+                                    current: JSON.stringify(data.personnel), action: 'update', user_id: data.updated_by, date: date });
         }
 
         if(!(errors.length > 0)) {
             await new Builder(`tbl_physical_count`)
                 .update(`branch= '${JSON.stringify(data.branch)}', date_from= '${data.date_from}', date_to= '${data.date_to}', type= '${data.type}',
-                                brands= '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', total_items= ${data.total_items}, 
-                                remarks= ${data.remarks !== '' && data.remarks !== null ? `'${(data.remarks).toUpperCase()}'` : null}, status= '${data.status}',
+                                brands= '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', personnel= '${JSON.stringify((data.personnel).length > 0 ? data.personnel : [])}',
+                                total_items= ${data.total_items}, remarks= ${data.remarks !== '' && data.remarks !== null ? `'${(data.remarks).toUpperCase()}'` : null}, status= '${data.status}',
                                 updated_by= ${data.updated_by}, date_updated= '${date}'`)
                 .condition(`WHERE id= ${data.id}`)
                 .build();
@@ -116,6 +121,10 @@ class PhysicalCount {
             return { result: 'success', message: 'Successfully updated!' }
         }
         else { return { result: 'error', error: errors } }
+    }
+
+    personnel = (data) => {
+        return [];
     }
 }
 
