@@ -91,7 +91,7 @@ const Index = () => {
                                         <Typography sx= {{ fontWeight: 'bold', color: '#444444', fontSize: '115%' }}>{ (mdl.name).charAt(0).toUpperCase() + (mdl.name).slice(1).toLowerCase() }</Typography>
                                         <Controller control= { control } name= { `permissions[module_${mdl.id}].status` }
                                             render= { ({ field: { onChange } }) => (
-                                                <IOSSwitch defaultChecked= { true }
+                                                <IOSSwitch
                                                     checked= { getValues().permissions[`module_${mdl.id}`].status !== null && 
                                                                         getValues().permissions[`module_${mdl.id}`].status !== undefined ? getValues().permissions[`module_${mdl.id}`].status : false }
                                                     onChange= { (e) => { 
