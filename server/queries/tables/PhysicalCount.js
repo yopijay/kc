@@ -5,6 +5,7 @@ const audit = { series_no: '', table_name: 'tbl_physical_count',  item_id: 0, fi
 class PhysicalCount {
     series = async () => { return (await new Builder(`tbl_physical_count`).select(`COUNT(*)`).build()).rows; }
     specific = async (id) => {return (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${id}`).build()).rows; }
+    schedule = async (date) => { return (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${date}'`).build()).rows; }
 
     list = async (data) => {
         return (await new Builder(`tbl_physical_count AS pc`)
@@ -122,10 +123,26 @@ class PhysicalCount {
         }
         else { return { result: 'error', error: errors } }
     }
-    
-    schedule = async (date) => {
-        console.log(date);
-        return date;
+
+    login = async (data) => {
+        let errors = [];
+        let sched = (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${data.date}'`).build()).rows[0];
+        let emp = (await new Builder(`tbl_employee`)
+                            .select(`user_id AS employee, CONCAT(lname, ', ', fname, ' ', mname) AS name`)
+                            .condition(`WHERE employee_no= '${data.employee_no}'`)
+                            .build()).rows;
+        
+                            
+        if(emp.length === 0) { errors.push({ name: 'employee_no', message: 'Employee no doesn`t exist!' }); }
+        if(emp.length > 0) { 
+            emp[0]['branch'] = data.branch;
+            if(!((JSON.parse(sched.personnel)).some(pnl => pnl.employee === emp[0].employee && pnl.branch === emp[0].branch))) { 
+                errors.push({ name: 'employee_no', message: 'Employee not found!' }); 
+            }
+        }
+
+        if(!(errors.length > 0)) { return { result: 'success', id: emp[0].employee } }
+        else { return { result: 'error', error: errors } }
     }
 }
 

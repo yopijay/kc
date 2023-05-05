@@ -9,12 +9,30 @@ export const title = {
 }
 
 export const input = {
-    border: 'solid 1px #ced6e0',
+    border: 'solid 1px #dfe4ea',
     padding: {
-        xs: '6px 8px',
-        md: '8px 10px'
+        xs: '12px 8px 9px 8px',
+        md: '9px 10px 6px 10px'
     },
     borderRadius: '5px'
+}
+
+export const select = {
+    width: '100%',
+    border: 'solid 1px #dfe4ea',
+    padding: {
+        xs: '12px 8px 9px 8px',
+        md: '9px 10px 6px 10px'
+    },
+    borderRadius: '5px'
+}
+
+export const label = {
+    fontSize: {
+        xs: '.90rem',
+        md: '.95rem'
+    },
+    transition: 'all 0.2s ease-in-out'
 }
 
 export const link = { 

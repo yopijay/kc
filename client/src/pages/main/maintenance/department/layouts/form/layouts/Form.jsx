@@ -21,7 +21,7 @@ const Form = ({ fetching }) => {
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>
-            <Grid item xs= { 12 } sm= { 8 }>
+            <Grid item xs= { 12 } sm= { 8 }> 
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">*Series No.</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
@@ -36,7 +36,7 @@ const Form = ({ fetching }) => {
                         <Box sx= { select }>
                             { company?.length > 0 ? 
                                 <Controller control= { control } name= "company_id" defaultValue= { 0 }
-                                    render= { ({ field: { onChange, value } }) => (
+                                    render= { ({ field: { onChange, value } })  => (
                                         <Autocomplete options= { company?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
                                             getOptionLabel= { company => company.name || company.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
                                             isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 

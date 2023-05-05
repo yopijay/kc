@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 // Core
 import { ProfilePrvdr } from "core/context/Profile";
 import { GlobalPrvdr } from "core/context/Global";
+import { FormPrvdr } from "core/context/Form";
 
 // Layouts
 import Authentication from 'pages/authentication';
@@ -20,7 +21,7 @@ const App = () => {
                     <Routes>
                         <Route path= "*" element= { localStorage.getItem('token') ? 
                             <ProfilePrvdr><Main /></ProfilePrvdr> : 
-                            <Authentication /> } />
+                            <FormPrvdr><Authentication /></FormPrvdr> } />
                         </Routes>
                     </GlobalPrvdr>
             </QueryClientProvider>
