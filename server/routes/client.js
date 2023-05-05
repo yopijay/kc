@@ -2,7 +2,7 @@
 const { Router } = require('express');
 
 // Variables
-const query = require('../queries');
+const query = require('../queries/client');
 const router = Router();
 
 router.post('/login', (req, res) => { query.login(req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });

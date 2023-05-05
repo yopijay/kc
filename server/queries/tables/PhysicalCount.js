@@ -122,9 +122,10 @@ class PhysicalCount {
         }
         else { return { result: 'error', error: errors } }
     }
-
-    personnel = (data) => {
-        return [];
+    
+    schedule = async (date) => {
+        console.log(date);
+        return date;
     }
 }
 

@@ -25,14 +25,7 @@ const tracker = (data) => { return new Tracker().track(data); }
 const monitor = (data) => { return new Tracker().monitor(data); }
 const submodule = (name) => { return new SubModule().submodule(name); }
 const count = (data) => { return new Items().count(data); }
-
-const assettag = (table, data) => {
-    return new Promise(async resolve => {
-        switch(table) {
-            case 'tbl_assets': resolve(await new Assets().assettag(data)); break;
-        }
-    });
-}
+const assettag = (table, data) => { return new Promise(async resolve => { switch(table) { case 'tbl_assets': resolve(await new Assets().assettag(data)); break; } }); }
 
 const filter = (table, data) => {
     return new Promise(async resolve => {
