@@ -1,7 +1,8 @@
 // Libraries
 const express = require('express');
 const cors = require('cors');
-const routes = require('./routes');
+const client = require('./routes/client');
+const warehouse = require('./routes/warehouse');
 
 // Variables
 const app = express();
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
 // Routes
-app.use('/', routes);
+app.use('/', client);
+app.use('/warehouse', warehouse);
 
 app.listen(port, () => console.log(`App running on port ${port}`) );
