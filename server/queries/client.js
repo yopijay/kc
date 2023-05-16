@@ -17,14 +17,15 @@ const Brand = require('./tables/Brand');
 const Racks = require('./tables/Racks');
 const Items = require('./tables/Items');
 const PhysicalCount = require('./tables/PhysicalCount');
+const PhysicalCountPersonnel = require('./tables/PhysicalCountPersonnel');
 
-const login = (data) => { return new Users().login(data); }
-const logout = (data) => { return new Users().logout(data); }
-const profile = (id) => { return new Users().profile(id); }
-const tracker = (data) => { return new Tracker().track(data); }
-const monitor = (data) => { return new Tracker().monitor(data); }
-const submodule = (name) => { return new SubModule().submodule(name); }
-const count = (data) => { return new Items().count(data); }
+const login = data => { return new Users().login(data); }
+const logout = data => { return new Users().logout(data); }
+const profile = id => { return new Users().profile(id); }
+const tracker = data => { return new Tracker().track(data); }
+const monitor = data => { return new Tracker().monitor(data); }
+const submodule = name => { return new SubModule().submodule(name); }
+const count = data => { return new Items().count(data); }
 const assettag = (table, data) => { return new Promise(async resolve => { switch(table) { case 'tbl_assets': resolve(await new Assets().assettag(data)); break; } }); }
 
 const filter = (table, data) => {
@@ -192,6 +193,7 @@ const update = (table, data) => {
            case 'tbl_racks': resolve(await new Racks().update(data)); break;
            case 'tbl_items': resolve(await new Items().update(data)); break;
            case 'tbl_physical_count': resolve(await new PhysicalCount().update(data)); break;
+           case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().update(data)); break;
        }
    });
 }
@@ -228,7 +230,7 @@ const evaluate = async (table, type, data) => {
     });
 }
 
-const series = (table) => {
+const series = table => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_company': resolve(await new Company().series()); break;
@@ -265,6 +267,7 @@ const dropdown = (table, data) => {
             case 'tbl_tracker': resolve(await new Tracker().dropdown(data)); break;
             case 'tbl_brand': resolve(await new Brand().dropdown(data)); break;
             case 'tbl_racks': resolve(await new Racks().dropdown(data)); break;
+            case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().dropdown()); break;
         }
     });
 }

@@ -29,7 +29,7 @@ const Info = () => {
                 <Typography variant= "body2">Brands: </Typography>
                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center">
                     { (getValues().brands)?.length > 0 ?
-                        (getValues().brands)?.map((data, index) => ( <Typography variant= "body2" key= { index }>{ index !== 0 ? ', ' : '' } { data.name }</Typography> )) :
+                        (getValues().brands)?.map((data, index) => ( <Typography variant= "body2" key= { index }>{ index !== 0 ? ', ' : '' } { data.brand_name }</Typography> )) :
                         <Typography variant= "body2">ALL</Typography> }
                 </Stack>
             </Stack>

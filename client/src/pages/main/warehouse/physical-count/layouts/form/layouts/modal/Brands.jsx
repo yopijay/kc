@@ -11,7 +11,7 @@ import { count, dropdown } from "core/api"; // API
 // Constants
 import { input, select } from "../../index.style"; // Styles
 
-const Brands = ({ fields, setOpen, remove, index, fetching, append, type, _counts, defaults }) => {
+const Brands = ({ setOpen, index, fetching, type, _counts }) => {
     const { register, getValues, control, setValue, setError } = useContext(FormCntxt);
     const { data: brand } = useGet({ key: ['dd_brands'], fetch: dropdown({ table: 'tbl_brand', data: {} }), options: { refetchOnWindowFocus: false } });
     const { mutate: counts } = usePost({ fetch: count, onSuccess: data => setValue(`brands[${index}].items`, data) });
@@ -26,7 +26,7 @@ const Brands = ({ fields, setOpen, remove, index, fetching, append, type, _count
                             { brand?.length > 0 ? 
                                 <Controller control= { control } name= { `brands[${index}].brand_id` } defaultValue= { 0 }
                                     render= { ({ field: { onChange, value } }) => (
-                                        <Autocomplete options= { brand?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                        <Autocomplete options= { (brand?.filter(brd => !(getValues().brands).find(brds => brd.id === brds?.brand_id)))?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
                                             getOptionLabel= { brand => brand.name || brand.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
                                             isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
                                             onChange= { (e, item) => { onChange(item.id); setValue(`brands[${index}].brand_name`, item.name); counts({ brand_id: item.id }); } }
@@ -46,9 +46,9 @@ const Brands = ({ fields, setOpen, remove, index, fetching, append, type, _count
             </Stack>
             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" spacing= { 4 }>
                 <Typography sx= {{ cursor: 'pointer' }} 
-                    onClick= { () => {  setValue('brands', getValues().brands); setOpen(false); _counts({}); setError('total_items', { message: '' }); } }>Save</Typography>
+                    onClick= { () => { setValue(`brands`, getValues().brands); setOpen(false); _counts({}); setError('total_items', { message: '' }); } }>Save</Typography>
                 { type === 'create' ? <Typography sx= {{ cursor: 'pointer' }} 
-                    onClick= { () => {  setValue('brands', getValues().brands); remove(index); setOpen(false); setError('total_items', { message: '' }); } }>Cancel</Typography> : '' }
+                    onClick= { () => { (getValues().brands).splice(index, 1); setValue(`brands`, getValues().brands); setOpen(false); setError('total_items', { message: '' }); } }>Cancel</Typography> : '' }
             </Stack>
         </Stack>
     );

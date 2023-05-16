@@ -35,25 +35,19 @@ const input = {
 const Index = () => {
     const { type, id } = useParams();
     const navigate = useNavigate();
-    const { setValue, setError, handleSubmit } = useContext(FormCntxt);
+    const { setValue, handleSubmit } = useContext(FormCntxt);
     const { refetch } =  
         useGet({ key: ['inv_specific'], fetch: specific({ table: 'tbl_physical_count', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
-            onSuccess: (data) => { 
+            onSuccess: (data) => {
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
-                        let _name = Object.keys(data[0])[count]; 
+                        let _name = Object.keys(data[0])[count];
                         setValue(_name, _name === 'brands' || _name === 'branch' || _name === 'personnel' ? JSON.parse(data[0][_name]) : data[0][_name]);
                     }
             }
         });
 
-    const { mutate: assign } = 
-        usePost({ fetch: update, 
-            onSuccess: (data) => { 
-                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
-                else { successToast(data.message, 3000, navigate('/warehouse/physical-count', { replace: true })); }
-            }
-        });
+    const { mutate: assign } = usePost({ fetch: update, onSuccess: data => { successToast(data.message, 3000, navigate('/warehouse/physical-count', { replace: true })); } });
 
     useEffect(() => { if(id !== undefined) { refetch(); } }, [ id, refetch ]);
 
@@ -76,7 +70,7 @@ const Index = () => {
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(data => {
                             data[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
-                            assign({ table: 'tbl_physical_count', data: data });
+                            assign({ table: 'tbl_physical_count_personnels', data: data });
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }

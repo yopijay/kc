@@ -87,7 +87,7 @@ const Index = () => {
 
                             if(data.brand_id === undefined) { errors.push({ name: 'brand_id', message: 'This field is required!' }); }
                             if(data.rack_id === undefined) { errors.push({ name: 'rack_id', message: 'This field is required!' }); }
-                            if(data.total <= 0) { errors.push({ name: 'total', message: 'Total must be greater than 0!' }); }
+                            // if(data.total <= 0) { errors.push({ name: 'total', message: 'Total must be greater than 0!' }); }
                             
                             if(!(errors.length > 0)) {
                                 if(type === 'new') { saving({ table: 'tbl_items', data: data }); }

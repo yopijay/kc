@@ -4,10 +4,18 @@ const Global = require('../../function/global'); // Function
 const audit = { series_no: '', table_name: 'tbl_physical_count',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class PhysicalCount {
     series = async () => { return (await new Builder(`tbl_physical_count`).select(`COUNT(*)`).build()).rows; }
-    specific = async (id) => {return (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${id}`).build()).rows; }
-    schedule = async (date) => { return (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${date}'`).build()).rows; }
+    specific = async id => { return (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${id}`).build()).rows; }
+    schedule = async date => { return (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${date}'`).build()).rows; }
 
-    list = async (data) => {
+    profile = async id => { 
+        return (await new Builder(`tbl_physical_count_personnels AS pnl`)
+                        .select(`pnl.*, emp.fname, emp.mname, emp.lname`)
+                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = pnl.user_id`, type: `LEFT` })
+                        .condition(`WHERE pnl.user_id= ${id}`)
+                        .build()).rows; 
+    }
+
+    list = async data => {
         return (await new Builder(`tbl_physical_count AS pc`)
                         .select(`pc.id, pc.series_no, pc.branch, pc.date_from, pc.date_to, pc.type, pc.brands, pc.total_items, pc.status,
                                         CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by`)
@@ -19,11 +27,11 @@ class PhysicalCount {
                         .build()).rows;
     }
 
-    search = async (data) => {
+    search = async data => {
         return [];
     }
 
-    save = async (data) => {
+    save = async data => {
         let date = Global.date(new Date());
         let errors = [];
 
@@ -37,15 +45,15 @@ class PhysicalCount {
 
         if(!(errors.length > 0)) {
             let inv = (await new Builder(`tbl_physical_count`)
-                            .insert({ columns: `series_no, branch, date_from, date_to, type, brands, personnel, total_items, remarks, status, created_by, date_created`, 
+                            .insert({ columns: `series_no, branch, date_from, date_to, type, brands, total_items, remarks, status, created_by, date_created, personnel`, 
                                             values: `'${(data.series_no).toUpperCase()}', '${JSON.stringify(data.branch)}', '${data.date_from}', '${data.date_to}', '${data.type}',
-                                            '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', '${JSON.stringify(data.personnel !== undefined ? data.personnel : [])}', 
-                                            ${data.total_items}, ${data.remarks !== '' ? `'${(data.remarks).toUpperCase()}'` : null}, 'ongoing', ${data.created_by}, '${date}'` })
+                                                            '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', ${data.total_items}, 
+                                                            ${data.remarks !== '' ? `'${(data.remarks).toUpperCase()}'` : null}, 'ongoing', ${data.created_by}, '${date}', '${JSON.stringify([])}'` })
                             .condition(`RETURNING id`)
                             .build()).rows[0];
 
             audit.series_no = Global.randomizer(7);
-            audit.field = 'all',
+            audit.field = 'all';
             audit.item_id = inv.id;
             audit.action = 'create';
             audit.user_id = data.created_by;
@@ -57,7 +65,7 @@ class PhysicalCount {
         else { return { result: 'error', error: errors } }
     }
 
-    update = async (data) => {
+    update = async data => {
         let pc = (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
         let date = Global.date(new Date());
         let audits = [];
@@ -103,19 +111,14 @@ class PhysicalCount {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count', item_id: pc.id, field: 'brands', previous: pc.brands, 
                                     current: JSON.stringify(data.brands), action: 'update', user_id: data.updated_by, date: date });
         }
-        
-        if(Global.compare(pc.personnel, JSON.stringify(data.personnel))) {
-            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count', item_id: pc.id, field: 'personnel', previous: pc.personnel, 
-                                    current: JSON.stringify(data.personnel), action: 'update', user_id: data.updated_by, date: date });
-        }
 
         if(!(errors.length > 0)) {
             await new Builder(`tbl_physical_count`)
                 .update(`branch= '${JSON.stringify(data.branch)}', date_from= '${data.date_from}', date_to= '${data.date_to}', type= '${data.type}',
-                                brands= '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', personnel= '${JSON.stringify((data.personnel).length > 0 ? data.personnel : [])}',
-                                total_items= ${data.total_items}, remarks= ${data.remarks !== '' && data.remarks !== null ? `'${(data.remarks).toUpperCase()}'` : null}, status= '${data.status}',
+                                brands= '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', total_items= ${data.total_items}, 
+                                remarks= ${data.remarks !== '' && data.remarks !== null ? `'${(data.remarks).toUpperCase()}'` : null}, status= '${data.status}',
                                 updated_by= ${data.updated_by}, date_updated= '${date}'`)
-                .condition(`WHERE id= ${data.id}`)
+                .condition(`WHERE id= ${pc.id}`)
                 .build();
 
             audits.forEach(data => Global.audit(data));
@@ -125,24 +128,35 @@ class PhysicalCount {
     }
 
     login = async (data) => {
-        let errors = [];
-        let sched = (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${data.date}'`).build()).rows[0];
-        let emp = (await new Builder(`tbl_employee`)
-                            .select(`user_id AS employee, CONCAT(lname, ', ', fname, ' ', mname) AS name`)
-                            .condition(`WHERE employee_no= '${data.employee_no}'`)
-                            .build()).rows;
+        // let errors = [];
+        // let sched = (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${data.date}'`).build()).rows[0];
+        // let emp = (await new Builder(`tbl_employee`)
+        //                     .select(`user_id AS employee, CONCAT(lname, ', ', fname, ' ', mname) AS name`)
+        //                     .condition(`WHERE employee_no= '${data.employee_no}'`)
+        //                     .build()).rows;
         
-                            
-        if(emp.length === 0) { errors.push({ name: 'employee_no', message: 'Employee no doesn`t exist!' }); }
-        if(emp.length > 0) { 
-            emp[0]['branch'] = data.branch;
-            if(!((JSON.parse(sched.personnel)).some(pnl => pnl.employee === emp[0].employee && pnl.branch === emp[0].branch))) { 
-                errors.push({ name: 'employee_no', message: 'Employee not found!' }); 
-            }
-        }
+        // if(emp.length === 0) { errors.push({ name: 'employee_no', message: 'Employee no doesn`t exist!' }); }
+        // if(emp.length > 0) { 
+        //     emp[0]['branch'] = data.branch;
 
-        if(!(errors.length > 0)) { return { result: 'success', id: emp[0].employee } }
-        else { return { result: 'error', error: errors } }
+        //     if(!((JSON.parse(sched.personnel)).some(pnl => pnl.employee === emp[0].employee && pnl.branch === emp[0].branch))) { 
+        //         errors.push({ name: 'employee_no', message: 'Employee not found!' }); 
+        //     }
+        //     if((await new Builder(`tbl_physical_count_personnels`).select().condition(`WHERE user_id= ${emp[0].employee} AND is_logged= 1`).build()).rowCount > 0) {
+        //         errors.push({ name: 'employee_no', message: 'Employee already logged in!' });
+        //     }
+        // }
+
+        // if(!(errors.length > 0)) {
+        //     await new Builder(`tbl_physical_count_personnels`).update(`is_logged= 1`).condition(`WHERE user_id= ${emp[0].employee}`).build();
+        //     return { result: 'success', id: emp[0].employee } 
+        // }
+        // else { return { result: 'error', error: errors } }
+    }
+
+    logout = async data => {
+        // await new Builder(`tbl_physical_count_personnels`).update(`is_logged= 0`).condition(`WHERE user_id= ${data.id}`).build();
+        // return { result: 'success', message: 'Successfully logged out!' }
     }
 }
 

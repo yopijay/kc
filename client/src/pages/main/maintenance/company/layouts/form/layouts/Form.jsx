@@ -42,8 +42,8 @@ const Form = ({ fetching }) => {
                                                 onChange= { (e, item) => { setError('owner_id', { message: '' }); onChange(item.id); } }
                                                 renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
                                                 value= { owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) !== undefined ?
-                                                    owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) : owner.length === 0 ?
-                                                    { id: 0, name: '-- SELECT AN ITEM BELOW --' } : owner[0] } />
+                                                                owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) : owner.length === 0 ?
+                                                                { id: 0, name: '-- SELECT AN ITEM BELOW --' } : owner[0] } />
                                         ) } /> : 
                                 <Typography color= "text.disabled">You must create a user first!</Typography> }
                         </Box> }

@@ -34,14 +34,14 @@ const List = () => {
                     </Typography> : '' }
             </Stack>
             <Dialog fullScreen= { fullscreen } open= { open } maxWidth= "xs" fullWidth= { true } disableEscapeKeyDown= { true }>
-                <Personnel setOpen= { setOpen } remove= { remove } index= { index } type= { _type } />
+                <Personnel setOpen= { setOpen } index= { index } type= { _type } />
             </Dialog>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 { fields.length > 0 ?
                     fields.map((fld, index) => (
-                        <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= {{ padding: '20px 15px', border: 'solid 1px #7e7e7e40', borderRadius: '8px' }}>
+                        <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= {{ padding: '20px', backgroundColor: '#f1f1f1', borderRadius: '8px' }}>
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ flexGrow: 1 }}>
-                                <Typography variant= "body1" sx= {{ fontWeight: 'bold' }}>{ fld.name }</Typography>
+                                <Typography variant= "body1" sx= {{ fontWeight: 'bold' }}>{ fld.employee.name }</Typography>
                                 <Typography variant= "body2">{ ((fld.branch).replaceAll('_', ' ')).toUpperCase() }</Typography>
                                 <Typography variant= "body2">{ (fld.type).toUpperCase() }</Typography>
                             </Stack>

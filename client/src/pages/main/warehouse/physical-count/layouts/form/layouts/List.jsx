@@ -13,16 +13,11 @@ import { FormCntxt } from "core/context/Form"; // Context
 import { addrow } from "../index.style"; // Styles
 import Brands from "./modal/Brands"; // Modals
 import { useParams } from "react-router-dom";
-let defaults = {
-    brand_id: '',
-    brand_name: '',
-    items: 0,
-}
 
 const List = ({ fetching, counts }) => {
     const { type } = useParams();
     const { control } = useContext(FormCntxt);
-    const { fields, append, remove } = useFieldArray({ control, name: 'brands' });
+    const { fields, remove } = useFieldArray({ control, name: 'brands' });
     const theme = useTheme();
     const [ open, setOpen ] = useState(false);
     const [ _type, setType ] = useState('');
@@ -39,7 +34,7 @@ const List = ({ fetching, counts }) => {
                     </Typography> : '' }
             </Stack>
             <Dialog fullScreen= { fullscreen } open= { open } maxWidth= "xs" fullWidth= { true } disableEscapeKeyDown= { true }>
-                <Brands fields= { fields } setOpen= { setOpen } remove= { remove } index= { index } fetching= { fetching } append= { append } defaults= { defaults } type= { _type } _counts= { counts } />
+                <Brands setOpen= { setOpen } index= { index } fetching= { fetching } type= { _type } _counts= { counts } />
             </Dialog>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 { fields.length > 0 ?
