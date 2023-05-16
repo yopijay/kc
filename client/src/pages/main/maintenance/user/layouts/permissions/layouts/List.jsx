@@ -21,8 +21,8 @@ const List = ({ module, sub }) => {
                                             getValues().permissions[`module_${module}`][`submodule_${sub.id}`].list !== undefined ?
                                                 getValues().permissions[`module_${module}`][`submodule_${sub.id}`].list : false }
                         onChange= { (e) => { 
-                            setValue(`permissions['module_${module}']['submodule_${sub.id}'].list`, 
-                                                !(getValues().permissions[`module_${module}`][`submodule_${sub.id}`].list) ?? false); 
+                            setValue(`permissions['module_${module}'].status`, !(getValues().permissions[`module_${module}`][`submodule_${sub.id}`].list) ?? false);
+                            setValue(`permissions['module_${module}']['submodule_${sub.id}'].list`, !(getValues().permissions[`module_${module}`][`submodule_${sub.id}`].list) ?? false); 
                             onChange(e.target.checked);
                     } } />
                 ) } />
