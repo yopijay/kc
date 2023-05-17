@@ -126,38 +126,6 @@ class PhysicalCount {
         }
         else { return { result: 'error', error: errors } }
     }
-
-    login = async (data) => {
-        // let errors = [];
-        // let sched = (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${data.date}'`).build()).rows[0];
-        // let emp = (await new Builder(`tbl_employee`)
-        //                     .select(`user_id AS employee, CONCAT(lname, ', ', fname, ' ', mname) AS name`)
-        //                     .condition(`WHERE employee_no= '${data.employee_no}'`)
-        //                     .build()).rows;
-        
-        // if(emp.length === 0) { errors.push({ name: 'employee_no', message: 'Employee no doesn`t exist!' }); }
-        // if(emp.length > 0) { 
-        //     emp[0]['branch'] = data.branch;
-
-        //     if(!((JSON.parse(sched.personnel)).some(pnl => pnl.employee === emp[0].employee && pnl.branch === emp[0].branch))) { 
-        //         errors.push({ name: 'employee_no', message: 'Employee not found!' }); 
-        //     }
-        //     if((await new Builder(`tbl_physical_count_personnels`).select().condition(`WHERE user_id= ${emp[0].employee} AND is_logged= 1`).build()).rowCount > 0) {
-        //         errors.push({ name: 'employee_no', message: 'Employee already logged in!' });
-        //     }
-        // }
-
-        // if(!(errors.length > 0)) {
-        //     await new Builder(`tbl_physical_count_personnels`).update(`is_logged= 1`).condition(`WHERE user_id= ${emp[0].employee}`).build();
-        //     return { result: 'success', id: emp[0].employee } 
-        // }
-        // else { return { result: 'error', error: errors } }
-    }
-
-    logout = async data => {
-        // await new Builder(`tbl_physical_count_personnels`).update(`is_logged= 0`).condition(`WHERE user_id= ${data.id}`).build();
-        // return { result: 'success', message: 'Successfully logged out!' }
-    }
 }
 
 module.exports = PhysicalCount;

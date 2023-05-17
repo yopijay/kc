@@ -62,6 +62,36 @@ class PhysicalCountPersonnel {
         if(qry === '') { await new Builder(`tbl_physical_count_personnels`).update(`status= 0, is_logged= 0`).build(); }
         return { result: 'success', message: 'Successfully assigned!' }
     }
+
+    login = async data => {
+        let errors = [];
+        let sched = (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${data.date}'`).build()).rows[0];
+        let emp = (await new Builder(`tbl_employee`).select().condition(`WHERE employee_no= '${data.employee_no}'`).build()).rows[0];
+
+        if(emp === undefined) { errors.push({ name: 'employee_no', message: 'Employee no doesn`t exist!' }); }
+        else {
+            let assign = await new Builder(`tbl_physical_count_personnels`)
+                                    .select()
+                                    .condition(`WHERE physical_count_id= ${sched.id} AND user_id= ${emp.user_id} AND branch= '${data.branch}' AND status= 1`)
+                                    .build();
+                                    
+            if(assign.rowCount > 0) {
+                let is_logged = await new Builder(`tbl_physical_count_personnels`).select().condition(`WHERE user_id= ${emp.user_id} AND is_logged = 1`).build();
+                if(is_logged.rowCount > 0) { errors.push({ name: 'employee_no', message: 'Already logged in in another device!' }); }
+            }
+            else { errors.push({ name: 'employee_no', message: 'Employee is not registered!' }); }
+        }
+        
+        if(!(errors.length > 0)) {
+            await new Builder(`tbl_physical_count_personnels`).update(`is_logged= 1`).condition(`WHERE user_id= ${emp.user_id}`).build();
+            return { result: 'success', id: emp.user_id }
+        }
+        else { return { result: 'error', error: errors } }
+    }
+
+    logout = async data => {
+        return [];
+    }
 }
 
 module.exports = PhysicalCountPersonnel;

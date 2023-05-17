@@ -23,7 +23,7 @@ const Index = () => {
     return (
         <Box display= "flex">
             <Navbar />
-            <Container maxWidth= "lg">
+            {/* <Container maxWidth= "lg">
                 { !isFetching ? 
                     <Stack direction= "row" justifyContent= "flex-start" alignItems= "flex-start">
                         <Sidebar />
@@ -39,7 +39,7 @@ const Index = () => {
                             </Routes>
                         </Stack>
                     </Stack> : <LoaderScreen /> }
-            </Container>
+            </Container> */}
         </Box>
     );
 }
