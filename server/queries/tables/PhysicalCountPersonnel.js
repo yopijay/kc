@@ -90,7 +90,8 @@ class PhysicalCountPersonnel {
     }
 
     logout = async data => {
-        return [];
+        await new Builder(`tbl_physical_count_personnels`).update(`is_logged= 0`).condition(`WHERE user_id= ${data.id}`).build();
+        return { result: 'success', message: 'Successfully logged out!' }
     }
 }
 
