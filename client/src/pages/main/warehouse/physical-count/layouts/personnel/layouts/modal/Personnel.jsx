@@ -47,8 +47,7 @@ const Brands = ({ setOpen, index, type }) => {
                                         renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
                                         value= { getValues()?.personnel[index]?.employee !== undefined ? getValues()?.personnel[index]?.employee : { id: 0, name: '-- SELECT AN ITEM BELOW --' } } />
                                 ) } />
-                                 : 
-                        <Typography color= "text.disabled">You must create a user first!</Typography> }
+                                 : <Typography color= "text.disabled">You must create a user first!</Typography> }
                     </Box>
                 </Stack>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">

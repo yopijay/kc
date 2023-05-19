@@ -11,6 +11,10 @@ class PhysicalCountPersonnel {
                                         .build()).rows);
     }
 
+    save = async data => {
+        console.log(data);
+    }
+
     update = async data => {
         let date = Global.date(new Date());
         let pc = (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
@@ -92,6 +96,15 @@ class PhysicalCountPersonnel {
     logout = async data => {
         await new Builder(`tbl_physical_count_personnels`).update(`is_logged= 0`).condition(`WHERE user_id= ${data.id}`).build();
         return { result: 'success', message: 'Successfully logged out!' }
+    }
+
+    list = async data => {
+        return (await new Builder(`tbl_physical_count_personnels AS pnl`)
+                        .select(`pnl.*, emp.fname, emp.mname, emp.lname`)
+                        .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
+                        .condition(`WHERE pnl.branch= '${data.branch}' AND pnl.physical_count_id= ${data.physical_count_id}`)
+                        .except(`WHERE pnl.user_id = ${data.user_id} ORDER BY 1 DESC`)
+                        .build()).rows;
     }
 }
 

@@ -9,8 +9,9 @@ class PhysicalCount {
 
     profile = async id => { 
         return (await new Builder(`tbl_physical_count_personnels AS pnl`)
-                        .select(`pnl.*, emp.fname, emp.mname, emp.lname`)
+                        .select(`pnl.*, emp.fname, emp.mname, emp.lname, pc.branch AS branches, pc.brands AS brands, pc.personnel AS personnels`)
                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = pnl.user_id`, type: `LEFT` })
+                        .join({ table: `tbl_physical_count AS pc`, condition: `pc.id = pnl.physical_count_id`, type: `LEFT` })
                         .condition(`WHERE pnl.user_id= ${id}`)
                         .build()).rows; 
     }
