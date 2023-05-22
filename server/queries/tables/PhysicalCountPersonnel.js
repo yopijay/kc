@@ -3,6 +3,12 @@ const Global = require('../../function/global'); // Function
 
 const audit = { series_no: '', table_name: 'tbl_physical_count_personnel',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class PhysicalCountPersonnel {
+    specific = async id => { 
+        return (await new Builder(`tbl_physical_count_personnels AS pnl`)
+                        .select(`pnl.*, CONCAT(emp.lname, ', ', emp.fname, ' ', emp.mname) AS name`)
+                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = pnl.user_id`, type: `LEFT` })
+                        .condition(`WHERE pnl.user_id= ${id}`).build()).rows; }
+
     dropdown = async () => {
         return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
                         .concat((await new Builder(`tbl_physical_count_personnels AS pnl`)
@@ -16,11 +22,23 @@ class PhysicalCountPersonnel {
         let pc = (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${data.physical_count_id}`).build()).rows[0];
         let pnls = JSON.parse(pc.personnel);
         
-        pnls.push({ branch: data.branch, type: data.type, employee: data.employee });
-        
-        await new Builder(`tbl_physical_count`).update(`updated_by= ${data.created_by}, date_updated= '${date}', personnel= '${JSON.stringify(pnls)}'`).condition(`WHERE id= ${pc.id}`).build();
+        if(data.form === 'create') { pnls.push({ branch: data.branch, type: data.type, employee: data.employee }); }
+        else {
+            let index = pnls.findIndex(obj => obj.employee.id === data.user_id);
+            
+            pnls[index]['branch'] = data.branch;
+            pnls[index]['type'] = data.type;
+            pnls[index]['employee']  = data.employee;
+        }
+
+        await new Builder(`tbl_physical_count`)
+            .update(`updated_by= ${data.form === 'create' ? data.created_by : data.updated_by}, date_updated= '${date}', personnel= '${JSON.stringify(pnls)}'`)
+            .condition(`WHERE id= ${pc.id}`)
+            .build();
+
         await new Builder(`tbl_physical_count_personnels`)
-            .update(`physical_count_id= ${data.physical_count_id}, branch= '${data.branch}', type= '${data.type}', assigned_by= ${data.created_by}, assigned_date= '${date}', status= 1`)
+            .update(`physical_count_id= ${data.physical_count_id}, branch= '${data.branch}', type= '${data.type}', 
+                            assigned_by= ${data.form === 'create' ? data.created_by : data.updated_by}, assigned_date= '${date}', status= 1`)
             .condition(`WHERE user_id= ${data.employee.id}`)
             .build();
 

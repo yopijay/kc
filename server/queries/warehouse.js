@@ -7,6 +7,14 @@ const login = data => { return new PhysicalCountPersonnel().login(data); }
 const logout = (data) => { return new PhysicalCountPersonnel().logout(data); }
 const profile = id => { return new PhysicalCount().profile(id); }
 
+const specific = (table, id) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().specific(id)); break;
+        }
+    });
+}
+
 const list = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
@@ -48,5 +56,6 @@ module.exports = {
     list,
     dropdown,
     save,
-    update
+    update,
+    specific
 }
