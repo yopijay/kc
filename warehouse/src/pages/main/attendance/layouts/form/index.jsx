@@ -48,6 +48,7 @@ const Index = () => {
                 <Grid item xs= { 6 } sm= { 3 } lg= { 2 }>
                     <Box sx= { btntxt } onClick= { handleSubmit(form => {
                         let errors = [];
+                        form[type === 'new' ? 'created_by' : 'updated_by'] = atob(localStorage.getItem('token'));
                         form['physical_count_id'] = data.physical_count_id;
 
                         if(form.branch === undefined) { errors.push({ name: 'branch', message: 'This field is required!' }); }

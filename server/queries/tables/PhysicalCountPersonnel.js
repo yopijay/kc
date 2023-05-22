@@ -12,7 +12,19 @@ class PhysicalCountPersonnel {
     }
 
     save = async data => {
-        console.log(data);
+        let date = Global.date(new Date());
+        let pc = (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${data.physical_count_id}`).build()).rows[0];
+        let pnls = JSON.parse(pc.personnel);
+        
+        pnls.push({ branch: data.branch, type: data.type, employee: data.employee });
+        
+        await new Builder(`tbl_physical_count`).update(`updated_by= ${data.created_by}, date_updated= '${date}', personnel= '${JSON.stringify(pnls)}'`).condition(`WHERE id= ${pc.id}`).build();
+        await new Builder(`tbl_physical_count_personnels`)
+            .update(`physical_count_id= ${data.physical_count_id}, branch= '${data.branch}', type= '${data.type}', assigned_by= ${data.created_by}, assigned_date= '${date}', status= 1`)
+            .condition(`WHERE user_id= ${data.employee.id}`)
+            .build();
+
+        return { result: 'success', message: 'Successfully saved!' }
     }
 
     update = async data => {
