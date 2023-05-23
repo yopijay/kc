@@ -1,8 +1,18 @@
 // Libraries
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Grid, Stack, ThemeProvider, Typography } from "@mui/material"
+import { Box, Stack, ThemeProvider, Typography } from "@mui/material"
 import { Link, useParams } from "react-router-dom";
+import { useContext, useEffect } from "react";
+
+// Core
+import { FormCntxt } from "core/context/Form"; // Context
+import { useGet } from "core/function/global"; // Function
+import { specific } from "core/api"; // API
+
+// Layouts
+import Form from "./layouts/Form";
+import Items from "./layouts/Items";
 
 // Constants
 const card = { flexGrow: 1, backgroundColor: '#ffffff', padding: '20px', borderRadius: '8px',  overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }
@@ -21,8 +31,21 @@ const input = {
 }
 
 const Index = () => {
-    const { type } = useParams();
+    const { type, id } = useParams();
+    const { setValue } = useContext(FormCntxt);
+    const { isFetching, refetch } =  
+        useGet({ key: ['cmp_specific'], fetch: specific({ table: 'tbl_racks', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
+            onSuccess: (data) => { 
+                if(Array.isArray(data)) 
+                    for(let count = 0; count < Object.keys(data[0]).length; count++) { 
+                        let _name = Object.keys(data[0])[count]; 
+                        setValue(_name, data[0][_name]); 
+                    }
+            }
+        });
     
+    useEffect(() => { if(id !== undefined) { refetch(); } }, [ id, refetch ]);
+
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', overflow: 'hidden' }} spacing= { 1 }>
             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 } sx= {{ padding: '0 5px' }}>
@@ -30,15 +53,11 @@ const Index = () => {
                 <Typography sx= {{ fontWeight: 'bold' }} variant= "h6">Rack ({ type.toUpperCase() })</Typography>
             </Stack>
             <Box sx= { card }>
-                <form autoComplete= "off">
-                    <ThemeProvider theme= { input }>
-
-                    </ThemeProvider>
-                </form>
+                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 3 }>
+                    <ThemeProvider theme= { input }><Form fetching= { isFetching } /></ThemeProvider>
+                    <Items />
+                </Stack>
             </Box>
-            <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
-                <Grid item xs= { 6 } sm= { 4 } md= { 3 }>Save</Grid>
-            </Grid>
         </Stack>
     );
 }

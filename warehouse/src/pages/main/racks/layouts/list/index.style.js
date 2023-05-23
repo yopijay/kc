@@ -15,10 +15,7 @@ export const search = {
 }
 
 export const btnicon = {
-    display: {
-        xs: 'flex',
-        md: 'none'
-    }, 
+    display: 'flex', 
     flexDirection: 'row', 
     justifyContent: 'center', 
     alignItems: 'center',

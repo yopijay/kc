@@ -30,6 +30,35 @@ class Brand {
                         .build()).rows;
     }
 
+    rackcountlist = async data => {
+        let brd = null;
+        let query = '';
+
+        if((JSON.parse(data.brands)).length > 0) { brd = JSON.parse(data.brands); }
+        else { brd = (await new Builder(`tbl_brand`).select(`id AS brand_id, name AS brand_name`).condition(`WHERE status = 1`).build()).rows; }
+
+        for(let count = 0; count < brd.length; count++) { query += `${count > 0 ? ' OR ' : ''}itm.brand_id= ${brd[count].brand_id}`; }
+
+        if(data.list === 'racks') {
+            return (await new Builder(`tbl_items AS itm`)
+                            .select(`DISTINCT rck.id, rck.branch, rck.floor, rck.code`)
+                            .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                            .condition(`WHERE ${query}`)
+                            .build()).rows;
+        }
+        else {
+            return (await new Builder(`tbl_items AS itm`)
+                            .select(`itm.*`)
+                            .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                            .condition(`WHERE (${query}) AND itm.rack_id= ${data.rack_id}`)
+                            .build()).rows;
+        }
+    }
+
+    rackspecific = async id => {
+        console.log(id);
+    }
+
     excel = async (type, data) => {
         return [];
         // switch(type) {

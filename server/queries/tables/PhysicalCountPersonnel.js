@@ -108,7 +108,7 @@ class PhysicalCountPersonnel {
                                     .select()
                                     .condition(`WHERE physical_count_id= ${sched.id} AND user_id= ${emp.user_id} AND branch= '${data.branch}' AND status= 1`)
                                     .build();
-                                    
+
             if(assign.rowCount > 0) {
                 let is_logged = await new Builder(`tbl_physical_count_personnels`).select().condition(`WHERE user_id= ${emp.user_id} AND is_logged = 1`).build();
                 if(is_logged.rowCount > 0) { errors.push({ name: 'employee_no', message: 'Already logged in in another device!' }); }

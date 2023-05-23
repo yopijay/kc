@@ -5,7 +5,7 @@ const audit = { series_no: '', table_name: 'tbl_physical_count',  item_id: 0, fi
 class PhysicalCount {
     series = async () => { return (await new Builder(`tbl_physical_count`).select(`COUNT(*)`).build()).rows; }
     specific = async id => { return (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${id}`).build()).rows; }
-    schedule = async date => { console.log(date); return (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${date}'`).build()).rows; }
+    schedule = async date => { return (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${date}'`).build()).rows; }
 
     profile = async id => { 
         return (await new Builder(`tbl_physical_count_personnels AS pnl`)
