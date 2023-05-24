@@ -1,16 +1,21 @@
+// Libraries
 import { useTheme } from "@emotion/react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dialog, Stack, Typography, useMediaQuery } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { addrow } from "../index.style";
-import { usePost } from "core/function/global";
-import { records } from "core/api";
 import { useParams } from "react-router-dom";
-import { FormCntxt } from "core/context/Form";
-import { ProfileCntx } from "core/context/Profile";
 
-const card = { backgroundColor: '#FFFFFF', padding: '10px', border: 'solid 1px #F3F3F3', borderRadius: '10px' };
+// Core
+import { FormCntxt } from "core/context/Form"; // Context
+import { ProfileCntx } from "core/context/Profile"; // Profile
+import { usePost } from "core/function/global"; // Function
+import { records } from "core/api"; // API
+
+// Constants
+import Products from "./Products"; // Dialog
+import { addrow } from "../index.style"; // Styles
+const card = { backgroundColor: '#FFFFFF', padding: '20px', border: 'solid 1px #F3F3F3', borderRadius: '10px' };
 
 const Items = () => {
     const { id } = useParams();
@@ -19,9 +24,10 @@ const Items = () => {
     const [ open, setOpen ] = useState(false);
     const fullscreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [ list, setList ] = useState([]);
+    const [ prodid, setProdid ] = useState();
     const { getValues } = useContext(FormCntxt);
 
-    const { mutate: record, isLoading: fetching } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: data => setList(data) });
+    const { mutate: record } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: data => setList(data) });
 
     useEffect(() => {
         let _data = data;
@@ -34,16 +40,15 @@ const Items = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 3 }>
             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center">
-                <Typography sx= { addrow } onClick= { () => setOpen(true) }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#ffffff' }} size= "lg" /></Typography>
+                <Typography sx= { addrow } onClick= { () => { setOpen(true); setProdid(null) } }><FontAwesomeIcon icon= { faPlus } style= {{ color: '#ffffff' }} size= "lg" /></Typography>
             </Stack>
-            <Dialog fullScreen= { fullscreen } open= { open } maxWidth= "xs" fullWidth= { true } disableEscapeKeyDown= { true }>
-                
-            </Dialog>
+            <Dialog fullScreen= { fullscreen } open= { open } maxWidth= "xs" fullWidth= { true } disableEscapeKeyDown= { true }><Products id= { prodid } /></Dialog>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 { list?.length > 0 ?
                     list?.map((data, index) => (
-                        <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { card } key= { index }>
-                            <Typography sx= {{ fontWeight: 'bold' }}>{ data.item_code }</Typography>
+                        <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= { card } key= { index }>
+                            <Typography sx= {{ fontWeight: 'bold', flexGrow: 1 }}>{ data.item_code }</Typography>
+                            <Typography>{ data.total }</Typography>
                         </Stack>
                     )) :
                     <Stack direction= "row" justifyContent= "center" alignItems= "center" sx= { card }>
