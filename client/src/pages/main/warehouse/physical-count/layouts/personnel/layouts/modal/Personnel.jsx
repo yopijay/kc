@@ -14,7 +14,7 @@ const usertype = [{ id: 'admin', name: 'ADMIN' }, { id: 'ras', name: 'RAS' }, { 
 
 const Brands = ({ setOpen, index, type }) => {
     const { getValues, control, setValue, setError } = useContext(FormCntxt);
-    const { data: personnel } = useGet({ key: ['personnel'], fetch: dropdown({ table: 'tbl_physical_count_personnels', data: {} }), options: { refetchOnWindowFocus: false } });
+    const { data: personnel } = useGet({ key: ['personnel'], fetch: dropdown({ table: 'tbl_physical_count_personnels', data: { platform: 'client' } }), options: { refetchOnWindowFocus: false } });
 
     return (
         <Stack direction= "column" justifyContent= "space-between" alignItems= "stretch" sx= {{ padding: '25px 20px', height: '100%' }} spacing= { 2 }>

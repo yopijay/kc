@@ -47,11 +47,26 @@ class Brand {
                             .build()).rows;
         }
         else {
-            return (await new Builder(`tbl_items AS itm`)
-                            .select(`itm.*`)
-                            .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
-                            .condition(`WHERE (${query}) AND itm.rack_id= ${data.rack_id}`)
-                            .build()).rows;
+            let items = [];
+            let itm = (await new Builder(`tbl_items AS itm`)
+                                .select(`itm.*`)
+                                .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                                .condition(`WHERE (${query}) AND itm.rack_id= ${data.rack_id}`)
+                                .build()).rows;
+
+            for(let count = 0; count < itm.length; count++) {
+                let item = (await new Builder(`tbl_items AS itm`)
+                                    .select(`itm.id, itm.item_code, rcs.count_by AS rcs, ras.count_by AS ras, des.count_by AS des`)
+                                    .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                                    .join({ table: `tbl_physical_count_ras AS ras`, condition: `ras.item_id = itm.id`, type: `LEFT` })
+                                    .join({ table: `tbl_physical_count_descrepancy AS des`, condition: `des.item_id = itm.id`, type: `LEFT` })
+                                    .condition(`WHERE itm.id= ${itm[count].id}`)
+                                    .build()).rows[0];
+
+                items.push(item);
+            }
+
+            return items;
         }
     }
 

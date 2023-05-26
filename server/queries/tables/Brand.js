@@ -7,9 +7,23 @@ class Brand {
     series = async () => { return (await new Builder(`tbl_brand`).select(`COUNT(*)`).build()).rows; }
     filter = async () => { return [{ id: 'all', name: 'ALL' }].concat((await new Builder(`tbl_brand`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows); }
 
-    dropdown = async () => { 
-        return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
-                        .concat((await new Builder(`tbl_brand`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows); 
+    dropdown = async data => { 
+        switch(data.platform) {
+            case 'client':
+                return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                                .concat((await new Builder(`tbl_brand`).select(`id, name`).condition(`WHERE status= 1 ORDER BY name ASC`).build()).rows); 
+            
+            case 'warehouse':
+                let brands = JSON.parse(data.brands);
+                let qry = '';
+
+                if(brands.length > 0) { for(let count = 0; count < brands.length; count++) { qry += `(${count > 0 ? ' OR ' : ''}id= ${brands[count].id})`; } }
+                
+                return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                                .concat((await new Builder(`tbl_brand`).select(`id, name`).condition(`WHERE status= 1 ${qry !== '' ? 'AND' : ''} ${qry} ORDER BY name ASC`).build()).rows);
+
+            default: return [];
+        }
     }
 
  

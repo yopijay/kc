@@ -34,17 +34,17 @@ const Form = ({ fetching }) => {
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= { select }>
                             { owner?.length > 0 ? 
-                                    <Controller control= { control } name= "owner_id" defaultValue= { 0 }
-                                        render= { ({ field: { onChange, value } }) => (
-                                            <Autocomplete options= { owner?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
-                                                getOptionLabel= { owner => owner.name || owner.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
-                                                isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
-                                                onChange= { (e, item) => { setError('owner_id', { message: '' }); onChange(item.id); } }
-                                                renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
-                                                value= { owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) !== undefined ?
-                                                                owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) : owner.length === 0 ?
-                                                                { id: 0, name: '-- SELECT AN ITEM BELOW --' } : owner[0] } />
-                                        ) } /> : 
+                                <Controller control= { control } name= "owner_id" defaultValue= { 0 }
+                                    render= { ({ field: { onChange, value } }) => (
+                                        <Autocomplete options= { owner?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                            getOptionLabel= { owner => owner.name || owner.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                            isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
+                                            onChange= { (e, item) => { setError('owner_id', { message: '' }); onChange(item.id); } }
+                                            renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
+                                            value= { owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) !== undefined ?
+                                                            owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) : owner.length === 0 ?
+                                                            { id: 0, name: '-- SELECT AN ITEM BELOW --' } : owner[0] } />
+                                    ) } /> : 
                                 <Typography color= "text.disabled">You must create a user first!</Typography> }
                         </Box> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.owner_id?.message }</Typography>

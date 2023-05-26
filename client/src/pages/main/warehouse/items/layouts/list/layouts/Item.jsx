@@ -48,7 +48,6 @@ const Item = ({ sub, fetching, profile }) => {
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
                                 <Typography variant= "body1" sx= { label } style= {{ fontWeight: 'bold' }}>{ data.item_code }</Typography>
                                 <Typography variant= "body2" sx= { label }>Location: { data.rack }</Typography>
-                                <Typography variant= "body2" sx= { label }>Unit of measure: { (data.uom).toUpperCase() }</Typography>
                                 <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
                             </Stack>
                         </Stack>

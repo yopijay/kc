@@ -18,7 +18,8 @@ const Form = ({ fetching }) => {
     const { type } = useParams();
     const { data } = useContext(ProfileCntx);
     const { control, getValues, errors } = useContext(FormCntxt);
-    const { data: personnel } = useGet({ key: ['personnel'], fetch: dropdown({ table: 'tbl_physical_count_personnels', data: {} }), options: { refetchOnWindowFocus: false } });
+    const { data: personnel } = 
+        useGet({ key: ['personnel'], fetch: dropdown({ table: 'tbl_physical_count_personnels', data: { platform: 'client' } }), options: { refetchOnWindowFocus: false } });
 
     return (
         <Grid container direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>

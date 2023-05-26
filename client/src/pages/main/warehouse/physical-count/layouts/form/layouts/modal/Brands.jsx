@@ -13,7 +13,7 @@ import { input, select } from "../../index.style"; // Styles
 
 const Brands = ({ setOpen, index, fetching, type, _counts }) => {
     const { register, getValues, control, setValue, setError } = useContext(FormCntxt);
-    const { data: brand } = useGet({ key: ['dd_brands'], fetch: dropdown({ table: 'tbl_brand', data: {} }), options: { refetchOnWindowFocus: false } });
+    const { data: brand } = useGet({ key: ['dd_brands'], fetch: dropdown({ table: 'tbl_brand', data: { platform: 'client' } }), options: { refetchOnWindowFocus: false } });
     const { mutate: counts } = usePost({ fetch: count, onSuccess: data => setValue(`brands[${index}].items`, data) });
 
     return (
@@ -26,8 +26,9 @@ const Brands = ({ setOpen, index, fetching, type, _counts }) => {
                             { brand?.length > 0 ? 
                                 <Controller control= { control } name= { `brands[${index}].brand_id` } defaultValue= { 0 }
                                     render= { ({ field: { onChange, value } }) => (
-                                        <Autocomplete options= { (brand?.filter(brd => !(getValues().brands).find(brds => brd.id === brds?.brand_id)))?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
-                                            getOptionLabel= { brand => brand.name || brand.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                        <Autocomplete options= { (brand?.filter(brd => !(getValues().brands).find(brds => brd.id === brds?.brand_id)))?.sort((a, b) => a.id - b.id) } 
+                                            disabled= { type === 'view' } disableClearable getOptionLabel= { brand => brand.name || brand.id } 
+                                            noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
                                             isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
                                             onChange= { (e, item) => { onChange(item.id); setValue(`brands[${index}].brand_name`, item.name); counts({ brand_id: item.id }); } }
                                             renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 

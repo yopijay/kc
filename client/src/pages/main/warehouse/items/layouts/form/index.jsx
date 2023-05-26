@@ -41,9 +41,9 @@ const Index = () => {
         useGet({ key: ['cmp_specific'], fetch: specific({ table: 'tbl_items', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
-                    for(let count = 0; count < Object.keys(data[0]).length; count++) { 
-                        let _name = Object.keys(data[0])[count]; 
-                        setValue(_name, _name === 'status' ? data[0][_name] === 1 : data[0][_name]); 
+                    for(let count = 0; count < Object.keys(data[0]).length; count++) {
+                        let _name = Object.keys(data[0])[count];
+                        setValue(_name, _name === 'status' ? data[0][_name] === 1 : data[0][_name]);
                     }
             }
         });

@@ -36,7 +36,7 @@ const Info = ({ fetching }) => {
     const { type } = useParams();
     const { register, errors, getValues, control, setValue, setError } = useContext(FormCntxt);
     const [ totalqty, setTotalqty ] = useState(0);
-    const { data: brand } = useGet({ key: ['dd_brands'], fetch: dropdown({ table: 'tbl_brand', data: {} }), options: { refetchOnWindowFocus: false } });
+    const { data: brand } = useGet({ key: ['dd_brands'], fetch: dropdown({ table: 'tbl_brand', data: { platform: 'client' } }), options: { refetchOnWindowFocus: false } });
     useGet({ key: ['itm_series'], fetch: series('tbl_items'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `ITM-${formatter(parseInt(data) + 1, 7)}`); } });
 
     useEffect(() => { setValue('total', totalqty); }, [ setValue, totalqty ]);
@@ -85,13 +85,15 @@ const Info = ({ fetching }) => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography variant= "body2" gutterBottom>*UOM</Typography>
                     <Box sx= { select }>
-                        <Controller control= { control } name= "uom" defaultValue= "pc"
+                        <Controller control= { control } name= "uom"
                                 render= { ({ field: { onChange, value } }) => (
                                     <Autocomplete options= { uom } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
                                         noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                         renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
                                         onChange= { (e, item) => { onChange(item.id); } }
-                                        value= { uom.find(data => { return data.id === (getValues().uom !== undefined ? getValues().uom : value) }) } />
+                                        value= { uom?.find(data => { return data.id === (getValues().uom !== undefined ? getValues().uom : value) }) !== undefined ?
+                                                        uom?.find(data => { return data.id === (getValues().uom !== undefined ? getValues().uom : value) }) : uom.length === 0 ?
+                                                        { id: 0, name: '-- SELECT AN ITEM BELOW --' } : uom[0] } />
                                 ) } />
                     </Box>
                 </Stack>

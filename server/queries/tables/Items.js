@@ -10,8 +10,11 @@ class Items {
 
     specific = async (id) => {
         return (await new Builder(`tbl_items AS itm`)
-                        .select(`itm.*, rck.branch, rck.floor, rck.id AS rack_id`)
+                        .select(`itm.*, rck.branch, rck.floor, rck.id AS rack_id, rcs.count_by AS rcs, ras.count_by AS ras, des.count_by AS des`)
                         .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                        .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                        .join({ table: `tbl_physical_count_ras AS ras`, condition: `ras.item_id = itm.id`, type: `LEFT` })
+                        .join({ table: `tbl_physical_count_descrepancy AS des`, condition: `des.item_id = itm.id`, type: `LEFT` })
                         .condition(`WHERE itm.id= ${id}`)
                         .build()).rows
     }

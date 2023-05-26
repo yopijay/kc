@@ -9,12 +9,26 @@ class PhysicalCountPersonnel {
                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = pnl.user_id`, type: `LEFT` })
                         .condition(`WHERE pnl.user_id= ${id}`).build()).rows; }
 
-    dropdown = async () => {
-        return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
-                        .concat((await new Builder(`tbl_physical_count_personnels AS pnl`)
-                                        .select(`pnl.user_id AS id, CONCAT(emp.lname, ', ', emp.fname, ' ', emp.mname) AS name`)
-                                        .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
-                                        .build()).rows);
+    dropdown = async data => {
+        switch(data.platform) {
+            case 'client':
+                return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                                .concat((await new Builder(`tbl_physical_count_personnels AS pnl`)
+                                                .select(`pnl.user_id AS id, CONCAT(emp.lname, ', ', emp.fname, ' ', emp.mname) AS name`)
+                                                .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
+                                                .build()).rows);
+
+            case 'warehouse':
+                return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
+                                .concat((await new Builder(`tbl_physical_count_personnels AS pnl`)
+                                                .select(`pnl.user_id AS id, CONCAT(emp.lname, ', ', emp.fname, ' ', emp.mname) AS name`)
+                                                .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
+                                                .condition(`WHERE is_logged = 1 AND physical_count_id= ${data.physical_count_id} AND pnl.type= '${data.type}'`)
+                                                .except(`WHERE pnl.user_id= ${data.user_id}`)
+                                                .build()).rows);
+
+            default: return [];
+        }
     }
 
     save = async data => {
@@ -51,7 +65,11 @@ class PhysicalCountPersonnel {
         let qry = '';
 
         if((data.personnel).length > 0) {
-            for(let count = 0; count < (data.personnel).length; count++) { let pnl = (data.personnel)[count]; qry += `${count > 0 ? ' OR ' : ''}user_id != ${pnl.employee.id}`; }
+            for(let count = 0; count < (data.personnel).length; count++) { 
+                let pnl = (data.personnel)[count];
+                qry += `${count > 0 ? ' OR ' : ''}user_id != ${pnl.employee.id}`; 
+            }
+
             await new Builder(`tbl_physical_count_personnels`).update(`status= 0, is_logged= 0`).condition(`WHERE ${qry}`).build();
         }
 
@@ -132,7 +150,7 @@ class PhysicalCountPersonnel {
         return (await new Builder(`tbl_physical_count_personnels AS pnl`)
                         .select(`pnl.*, emp.fname, emp.mname, emp.lname`)
                         .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
-                        .condition(`WHERE pnl.branch= '${data.branch}' AND pnl.physical_count_id= ${data.physical_count_id}`)
+                        .condition(`WHERE pnl.branch= '${data.branch}' AND pnl.physical_count_id= ${data.physical_count_id} AND pnl.status = 1`)
                         .except(`WHERE pnl.user_id = ${data.user_id} ORDER BY 1 DESC`)
                         .build()).rows;
     }

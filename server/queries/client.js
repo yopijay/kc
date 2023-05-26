@@ -267,7 +267,7 @@ const dropdown = (table, data) => {
             case 'tbl_tracker': resolve(await new Tracker().dropdown(data)); break;
             case 'tbl_brand': resolve(await new Brand().dropdown(data)); break;
             case 'tbl_racks': resolve(await new Racks().dropdown(data)); break;
-            case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().dropdown()); break;
+            case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().dropdown(data)); break;
         }
     });
 }
