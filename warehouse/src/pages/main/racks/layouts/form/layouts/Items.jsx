@@ -64,7 +64,7 @@ const Items = () => {
             </Stack>
             <Dialog fullScreen= { fullscreen } open= { open } maxWidth= "xs" fullWidth= { true } disableEscapeKeyDown= { true }>
                 <ThemeProvider theme= { theme(input) }>
-                    <Products id= { prodid } setOpen= { setOpen } />
+                    <Products id= { prodid } setOpen= { setOpen } record= { record } rack= { id } />
                 </ThemeProvider>
             </Dialog>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>

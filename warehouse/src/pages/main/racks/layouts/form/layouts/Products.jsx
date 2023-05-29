@@ -6,13 +6,13 @@ import { Controller } from "react-hook-form";
 // Core
 import { ProfileCntx } from "core/context/Profile"; // Context
 import { FormCntxt } from "core/context/Form"; // Context
-import { formatter, useGet, usePost } from "core/function/global"; // Function
+import { formatter, successToast, useGet, usePost } from "core/function/global"; // Function
 import { dropdown, save, series, specific } from "core/api"; // API
 
 // Constants
 import { input, select } from "../index.style"; // Styles
 
-const Products = ({ id, setOpen }) => {
+const Products = ({ id, setOpen, record, rack }) => {
     const { data } = useContext(ProfileCntx);
     const { register, errors, control, getValues, handleSubmit, setError, setValue } = useContext(FormCntxt);
     const { data: brands } = useGet({ key: ['brands'], fetch: dropdown({ table: 'tbl_brands', data: { brands: data.brands, platform: 'warehouse' } }), options: { refetchWindowFocus: false } });
@@ -32,8 +32,17 @@ const Products = ({ id, setOpen }) => {
 
     const { mutate: rcs } = 
         usePost({ fetch: save,
-            onSuccess: data => {
-                console.log(data);
+            onSuccess: res => {
+                if(res.result === 'error') { (res.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
+                else { 
+                    let _data = data;
+                    _data['rack_id'] = rack;
+                    _data['list'] = 'items';
+
+                    successToast(res.message, 3000);
+                    record({ table: 'tbl_racks', data: _data });
+                    setOpen(false);
+                }
             }
         });
 
