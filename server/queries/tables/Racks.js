@@ -33,7 +33,8 @@ class Brand {
     rackcountlist = async data => {
         let brd = null;
         let query = '';
-
+        let branch = { quezon_ave: 'qa', sto_domingo: 'sd', manila: 'ma' };
+        
         if((JSON.parse(data.brands)).length > 0) { brd = JSON.parse(data.brands); }
         else { brd = (await new Builder(`tbl_brand`).select(`id AS brand_id, name AS brand_name`).condition(`WHERE status = 1`).build()).rows; }
 
@@ -43,7 +44,7 @@ class Brand {
             return (await new Builder(`tbl_items AS itm`)
                             .select(`DISTINCT rck.id, rck.branch, rck.floor, rck.code`)
                             .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
-                            .condition(`WHERE ${query}`)
+                            .condition(`WHERE (${query}) AND rck.branch= '${branch[data.branch]}'`)
                             .build()).rows;
         }
         else {
@@ -56,7 +57,8 @@ class Brand {
 
             for(let count = 0; count < itm.length; count++) {
                 let item = (await new Builder(`tbl_items AS itm`)
-                                    .select(`itm.id, itm.item_code, rcs.count_by AS rcs, ras.count_by AS ras, des.count_by AS des`)
+                                    .select(`itm.id, itm.item_code, rcs.count_by AS rcs, rcs.date_counted AS rcs_date, rcs.total AS rcs_total, ras.count_by AS ras, ras.date_counted AS ras_date, 
+                                                    ras.total AS ras_total, des.count_by AS des, des.date_counted AS des_date, des.total AS des_total`)
                                     .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
                                     .join({ table: `tbl_physical_count_ras AS ras`, condition: `ras.item_id = itm.id`, type: `LEFT` })
                                     .join({ table: `tbl_physical_count_descrepancy AS des`, condition: `des.item_id = itm.id`, type: `LEFT` })

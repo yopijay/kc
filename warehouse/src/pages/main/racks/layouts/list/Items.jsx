@@ -24,7 +24,7 @@ const Items = () => {
                     </Stack>
                 )) :
                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { card }>
-                    <Typography variant= "body2" sx= {{ textAlign: 'center', width: '100%' }}>No employee/s found!</Typography>
+                    <Typography variant= "body2" sx= {{ textAlign: 'center', width: '100%' }}>No rack/s found!</Typography>
                 </Stack> }
         </Box>
     );

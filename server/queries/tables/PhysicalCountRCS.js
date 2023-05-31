@@ -47,6 +47,30 @@ class PhysicalCountRCS {
 
         return { result: 'success', message: 'Successfully saved!' }
     }
+
+    list = async data => {
+        let branch = { quezon_ave: 'qa', sto_domingo: 'sd', manila: 'ma' };
+        
+        switch(data.type) {
+            case 'admin':
+                return (await new Builder(`tbl_physical_count_rcs AS rcs`)
+                                .select(`rcs.id, itm.item_code, emp.fname, emp.lname, rcs.date_counted`)
+                                .join({ table: `tbl_items AS itm`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                                .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS emp`, condition: `rcs.count_by = emp.user_id`, type: `LEFT` })
+                                .condition(`WHERE rcs.physical_count_id= ${data.physical_count_id} AND rck.branch= '${branch[data.branch]}'`)
+                                .build()).rows;
+            case 'rcs':  
+                return (await new Builder(`tbl_physical_count_rcs AS rcs`)
+                                .select(`rcs.*, itm.item_code, rck.branch, rck.floor, rck.code`)
+                                .join({ table: `tbl_items AS itm`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                                .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                                .condition(`WHERE rcs.physical_count_id= ${data.physical_count_id} AND rcs.count_by= ${data.user_id} ORDER BY rck.code ASC`)
+                                .build()).rows;
+            case 'ras': return []
+            default: return []
+        }
+    }
 }
 
 module.exports = PhysicalCountRCS;

@@ -43,12 +43,14 @@ const Item = ({ sub, fetching, profile }) => {
             { list.length > 0 ?
                 list?.map((data, index) => (
                     <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= { item } spacing= { 2 }>
-                        <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
-                            <Avatar src= { data.photo !== null ? JSON.parse(data.photo) : '#' } />
-                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
-                                <Typography variant= "body1" sx= { label } style= {{ fontWeight: 'bold' }}>{ data.item_code }</Typography>
-                                <Typography variant= "body2" sx= { label }>Location: { data.rack }</Typography>
-                                <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
+                        <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
+                            <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
+                                <Avatar src= { data.photo !== null ? JSON.parse(data.photo) : '#' } />
+                                <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                                    <Typography variant= "body1" sx= {{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '90%' }}>{ data.item_code }</Typography>
+                                    <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>Location: { data.rack }</Typography>
+                                    <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>#{ data.series_no }</Typography>
+                                </Stack>
                             </Stack>
                         </Stack>
                         <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>

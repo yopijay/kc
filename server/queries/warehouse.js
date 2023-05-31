@@ -26,6 +26,7 @@ const list = (table, data) => {
         switch(table) {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().list(data)); break;
             case 'tbl_racks': resolve(await new Racks().rackcountlist(data)); break;
+            case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().list(data)); break;
         }
     });
 }

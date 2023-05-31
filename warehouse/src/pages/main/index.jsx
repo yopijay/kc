@@ -30,7 +30,7 @@ const Index = () => {
                 { !isFetching ? 
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100vh' }}>
                         <Routes>
-                            <Route exact path= "/" element= { <Suspense fallback= { <LoaderScreen /> }><Home /></Suspense> } />
+                            <Route exact path= "*" element= { <Suspense fallback= { <LoaderScreen /> }><Home /></Suspense> } />
                             <Route exact path= "/attendees/*" element= { <Suspense fallback= { <LoaderScreen /> }><Attendance /></Suspense> } />
                             <Route exact path= "/racks/*" element= { <Suspense fallback= { <LoaderScreen /> }><Racks /></Suspense> } />
                             <Route exact path= "/rcs/*" element= { <Suspense fallback= { <LoaderScreen /> }><RCS /></Suspense> } />

@@ -2,7 +2,7 @@
 import { useTheme } from "@emotion/react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Dialog, Stack, ThemeProvider, Typography, useMediaQuery } from "@mui/material";
+import {  Dialog, Stack, ThemeProvider, Typography, useMediaQuery } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -73,8 +73,12 @@ const Items = () => {
                         <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= { card } key= { index } style= {{ cursor: 'pointer' }}
                             onClick= { () => { setProdId(data.id); setOpen(true); } }>
                             <Typography sx= {{ fontWeight: 'bold', flexGrow: 1 }}>{ data.item_code }</Typography>
-                            { data.rcs !== null ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
-                                <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
+                            <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
+                                { data.rcs !== null ? <Typography sx= {{ color: `${ data.rcs_date !== null ? '#7D8F69' : '#E67E22' }`, fontWeight: 'bold' }}>RCS</Typography> : '' }
+                                { data.ras !== null ? <Typography sx= {{ color: `${ data.ras_date !== null ? '#7D8F69' : '#E67E22' }`, fontWeight: 'bold' }}>RAS</Typography> : '' }
+                                { data.ras_date !== null && data.rcs_date !== null && (data.rcs_total === data.ras_total) ? 
+                                    <Typography sx= {{ color: `${ data.des_date !== null ? '#7D8F69' : '#E67E22' }`, fontWeight: 'bold' }}>DES</Typography> : '' }
+                            </Stack>
                         </Stack>
                     )) : <Stack direction= "row" justifyContent= "center" alignItems= "center" sx= { card }><Typography variant= "body2">No record/s found!</Typography></Stack> }
             </Stack>
