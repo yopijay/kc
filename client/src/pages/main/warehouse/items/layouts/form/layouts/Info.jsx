@@ -32,7 +32,7 @@ const _input = {
     }
 }
 
-const Info = ({ fetching }) => {
+const Info = ({ fetching, qr }) => {
     const { type } = useParams();
     const { register, errors, getValues, control, setValue, setError } = useContext(FormCntxt);
     const [ totalqty, setTotalqty ] = useState(0);
@@ -107,7 +107,7 @@ const Info = ({ fetching }) => {
                 </Stack>
             </Grid>
             <Grid item xs= { 12 }><Quantity fetching= { fetching } setTotalqty= { setTotalqty } totalqty= { totalqty } /></Grid>
-            <Grid item xs= { 12 }><Others fetching= { fetching } /></Grid>
+            <Grid item xs= { 12 }><Others fetching= { fetching } qr= { qr } /></Grid>
         </Grid>
     );
 }

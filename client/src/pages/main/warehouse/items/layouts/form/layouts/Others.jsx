@@ -1,5 +1,5 @@
 // Libraries
-import { Box, Checkbox, Grid, Skeleton, Stack, TextareaAutosize, Typography } from "@mui/material";
+import { Avatar, Box, Checkbox, Grid, Skeleton, Stack, TextareaAutosize, Typography } from "@mui/material";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
@@ -10,7 +10,7 @@ import { FormCntxt } from "core/context/Form"; // Context
 import { textarea } from "../index.style"; // Styles
 import { Controller } from "react-hook-form";
 
-const Others = ({ fetching }) => {
+const Others = ({ fetching, qr }) => {
     const { type } = useParams();
     const { register, getValues, control, setValue } = useContext(FormCntxt);
 
@@ -43,6 +43,11 @@ const Others = ({ fetching }) => {
                         </Box> }
                 </Stack>
             </Grid>
+            { type === 'view' ? <Grid item xs= { 12 }>
+                <Stack direction= "column" justifyContent= "center" alignItems= "center" sx= {{ width: '100%' }}>
+                    <a href= { qr } download= { getValues()?.item_code }><Avatar src= { qr } alt= "QR Code" sx= {{ width: '200px', height: '200px' }} /></a>
+                </Stack>
+            </Grid> : '' }
         </Grid>
     );
 }

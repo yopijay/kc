@@ -3,6 +3,15 @@ const Global = require('../../function/global'); // Function
 
 const audit = { series_no: '', table_name: 'tbl_physical_count_rcs',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class PhysicalCountRCS {
+    specific = async id => { 
+        return (await new Builder(`tbl_physical_count_rcs AS rcs`)
+                        .select(`rcs.*, itm.item_code, itm.item_description, brd.name AS brand`)
+                        .join({ table: `tbl_items AS itm`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                        .join({ table: `tbl_brand AS brd`, condition: `itm.brand_id= brd.id`, type: `LEFT` })
+                        .condition(`WHERE rcs.id= ${id}`)
+                        .build()).rows;
+    }
+
     save = async data => {
         let date = Global.date(new Date()); // Date
         let errors = [];
@@ -70,6 +79,65 @@ class PhysicalCountRCS {
             case 'ras': return []
             default: return []
         }
+    }
+
+    update = async data => {
+        let rcs = (await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
+        let date = Global.date(new Date());
+        let audits = [];
+
+        if(Global.compare(rcs.qty_mother_box, data.qty_mother_box)) {
+            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'qty_mother_box', previous: rcs.qty_mother_box,
+                                    current: data.qty_mother_box, action: 'update', user_id: data.count_by, date: date });
+        }
+
+        if(Global.compare(rcs.qty_per_mother_box, data.qty_per_mother_box)) {
+            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'qty_per_mother_box', previous: rcs.qty_per_mother_box,
+                                    current: data.qty_per_mother_box, action: 'update', user_id: data.count_by, date: date });
+        }
+
+        if(Global.compare(rcs.qty_small_box, data.qty_small_box)) {
+            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'qty_small_box', previous: rcs.qty_small_box,
+                                    current: data.qty_small_box, action: 'update', user_id: data.count_by, date: date });
+        }
+
+        if(Global.compare(rcs.qty_per_small_box, data.qty_per_small_box)) {
+            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'qty_per_small_box', previous: rcs.qty_per_small_box,
+                                    current: data.qty_per_small_box, action: 'update', user_id: data.count_by, date: date });
+        }
+
+        if(Global.compare(rcs.tingi, data.tingi)) {
+            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'tingi', previous: rcs.tingi,
+                                    current: data.tingi, action: 'update', user_id: data.count_by, date: date });
+        }
+
+        if(Global.compare(rcs.total, data.total)) {
+            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'total', previous: rcs.total,
+                                    current: data.total, action: 'update', user_id: data.count_by, date: date });
+        }
+
+        if(Global.compare(rcs.remarks, data.remarks)) {
+            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'remarks', previous: rcs.remarks,
+                                    current: data.remarks !== '' ? (data.remarks).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+        }
+
+        if(Global.compare(rcs.comments, data.comments)) {
+            audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'comments', previous: rcs.comments,
+                                    current: data.comments !== '' ? (data.comments).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+        }
+        
+        await new Builder(`tbl_physical_count_rcs`)
+            .update(`qty_mother_box= ${data.qty_mother_box !== '' ? data.qty_mother_box : 0}, qty_per_mother_box= ${data.qty_per_mother_box !== '' ? data.qty_per_mother_box : 0},
+                            qty_small_box= ${data.qty_small_box !== '' ? data.qty_small_box : 0}, qty_per_small_box= ${data.qty_per_small_box !== '' ? data.qty_per_small_box : 0},
+                            tingi= ${data.tingi !== '' ? data.tingi : 0}, total= ${data.total !== '' ? data.total : 0}, 
+                            remarks= ${data.remarks !== '' && data.remarks !== null ? `'${(data.remarks).toUpperCase()}'` : null},
+                            comments= ${data.comments !== '' && data.comments !== null ? `'${(data.comments).toUpperCase()}'` : null},
+                            date_counted= '${date}'`)
+            .condition(`WHERE id= ${data.id}`)
+            .build();
+
+        audits.forEach(data => Global.audit(data));
+        return { result: 'success', message: 'Successfully saved!' }
     }
 }
 

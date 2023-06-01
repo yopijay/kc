@@ -17,6 +17,7 @@ const specific = (table, id) => {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().specific(id)); break;
             case 'tbl_racks': resolve(await new Racks().specific(id)); break;
             case 'tbl_items': resolve(await new Items().specific(id)); break;
+            case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().specific(id)); break;
         }
     });
 }
@@ -54,6 +55,7 @@ const update = (table, data) => {
   return new Promise(async resolve => {
       switch(table) {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().update(data)); break;
+            case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().update(data)); break;
       }
   });
 }

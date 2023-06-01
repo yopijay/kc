@@ -2,7 +2,7 @@
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Grid, Stack, ThemeProvider, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Core
@@ -18,6 +18,7 @@ import Photo from "./layouts/Photo";
 // Constants
 import { btnicon, btntxt, card } from "./index.style"; // Styles
 import { validation as Validation } from './index.validation'; // Validation
+import { generateQR } from "core/function/global";
 
 const input = {
     MuiInput: {
@@ -37,14 +38,16 @@ const Index = () => {
     const { type, id } = useParams();
     const navigate = useNavigate();
     const { setValidation, setValue, setError, handleSubmit } = useContext(FormCntxt);
+    const [ qr, setQr ] = useState('');
     const { isFetching, refetch } =  
-        useGet({ key: ['cmp_specific'], fetch: specific({ table: 'tbl_items', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
+        useGet({ key: ['itm_specific'], fetch: specific({ table: 'tbl_items', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
             onSuccess: (data) => { 
-                if(Array.isArray(data)) 
+                if(Array.isArray(data))
                     for(let count = 0; count < Object.keys(data[0]).length; count++) {
                         let _name = Object.keys(data[0])[count];
                         setValue(_name, _name === 'status' ? data[0][_name] === 1 : data[0][_name]);
                     }
+                    generateQR({ data: data?.[0].item_code, set: setQr });
             }
         });
 
@@ -75,7 +78,7 @@ const Index = () => {
             <Box sx= { card }>
                 <form autoComplete= "off">
                     <Photo fetching= { isFetching } />
-                    <ThemeProvider theme= { theme(input) }><Info fetching= { isFetching } /></ThemeProvider>
+                    <ThemeProvider theme= { theme(input) }><Info fetching= { isFetching } qr= { qr } /></ThemeProvider>
                 </form>
             </Box>
             { type !== 'view' ?

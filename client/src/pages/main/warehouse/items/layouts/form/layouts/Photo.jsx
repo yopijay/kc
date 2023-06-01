@@ -7,6 +7,7 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
 import { base64 } from "core/function/global"; // Function
+import { useParams } from "react-router-dom";
 
 // Custom design
 const btn = {
@@ -26,6 +27,7 @@ const btn = {
 const error = { color: '#e84118' }
 
 const Photo = ({ fetching }) => {
+    const { type } = useParams();
     const { register, errors, setError, getValues, setValue } = useContext(FormCntxt);
     const [ pic, setPic ] = useState('#');
 
@@ -35,7 +37,7 @@ const Photo = ({ fetching }) => {
         <Stack direction= "row" justifyContent= "center" alignItems= "center" sx= {{ marginBottom: '50px' }}>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-end">
                 <Avatar src= { pic } sx= {{ width: '180px', height: '180px', border: 'solid 5px #DFE4EA' }} />
-                <FormLabel htmlFor= "photo" sx= { btn }><FontAwesomeIcon icon= { faCamera } /></FormLabel>
+                { type !== 'view' ? <FormLabel htmlFor= "photo" sx= { btn }><FontAwesomeIcon icon= { faCamera } /></FormLabel> : '' }
                 <input type= "file" name= "photo" id= "photo" style= {{ width: '0.1px', height: '0.1px', opacity: 0, overflow: 'hidden', position: 'absolute', zIndex: -1 }}
                     onChange= { async (e) => {
                         setError('photo', { message: '' });

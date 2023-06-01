@@ -8,6 +8,8 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 // Core
 import { ListCntxt } from "core/context/List"; // Context
+import { errorToast, successToast } from "core/function/global";
+import { useNavigate } from "react-router-dom";
 
 // Constants
 const card = { margin: '10px 0', backgroundColor: '#ffffff', padding: '15px', borderRadius: '8px', textDecoration: 'none', color: '#444444' };
@@ -15,15 +17,17 @@ const card = { margin: '10px 0', backgroundColor: '#ffffff', padding: '15px', bo
 const Items = () => {
     const { list } = useContext(ListCntxt);
     const theme = useTheme();
+    const navigate = useNavigate();
     const fullscreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [ scanner, setScanner ] = useState(false);
     const [ code, setCode ] = useState('');
+    const [ id, setId ] = useState('');
 
     return (
         <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>
             { list?.map((itm, index) => (
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= { card } style= {{ cursor: 'pointer' }}
-                    onClick= { () => { setScanner(true); setCode(itm.item_code); } }>
+                    onClick= { () => { setScanner(true); setCode(itm.item_code); setId(itm.id); } }>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                         <Typography sx= {{ fontWeight: 'bold', flexGrow: 1 }}>{ itm.item_code }</Typography>
                         <Typography variant= "body2">Location: { `${(itm.branch).toUpperCase()}${(itm.floor).toUpperCase()}-${itm.code}` }</Typography>
@@ -46,7 +50,10 @@ const Items = () => {
                             <Box sx= {{ width: { xs: '80%', sm: '400px'}, height: { xs: 'auto', sm: '400px'}, overflow: 'hidden', borderRadius: '10px' }}>
                                 <QrReader delay= { 3000 } onError= { err => console.log(err) } style= {{ width: '100%' }} facingMode= "environment"
                                     onScan= { data => {
-                                        console.log(data);
+                                        if(data !== null) {
+                                            if(data === code) { successToast('Successfully scanned!', 3000, navigate(`/form/${id}`));  }
+                                            else { errorToast('Invalid QR Code!', 3000); }
+                                        }
                                     }
                                 } />
                             </Box>
