@@ -18,8 +18,7 @@ class PhysicalCount {
 
     list = async data => {
         return (await new Builder(`tbl_physical_count AS pc`)
-                        .select(`pc.id, pc.series_no, pc.branch, pc.date_from, pc.date_to, pc.type, pc.brands, pc.total_items, pc.status,
-                                        CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by`)
+                        .select(`pc.id, pc.series_no, pc.branch, pc.date_from, pc.date_to, pc.type, pc.brands, pc.total_items, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by`)
                         .join({ table: `tbl_employee AS cb`, condition: `pc.created_by = cb.user_id`, type: `LEFT` })
                         .condition(`${data.searchtxt !== '' ? `WHERE pc.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' OR pc.status LIKE '%${data.searchtxt}%' OR
                                                 pc.date_from LIKE '%${data.searchtxt}%' OR pc.date_to LIKE '%${data.searchtxt}%' OR pc.type LIKE '%${data.searchtxt}%' OR
@@ -46,10 +45,10 @@ class PhysicalCount {
 
         if(!(errors.length > 0)) {
             let inv = (await new Builder(`tbl_physical_count`)
-                            .insert({ columns: `series_no, branch, date_from, date_to, type, brands, total_items, remarks, status, created_by, date_created, personnel`, 
+                            .insert({ columns: `series_no, branch, date_from, date_to, type, brands, total_items, remarks, created_by, date_created, personnel`, 
                                             values: `'${(data.series_no).toUpperCase()}', '${JSON.stringify(data.branch)}', '${data.date_from}', '${data.date_to}', '${data.type}',
                                                             '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', ${data.total_items}, 
-                                                            ${data.remarks !== '' ? `'${(data.remarks).toUpperCase()}'` : null}, 'ongoing', ${data.created_by}, '${date}', '${JSON.stringify([])}'` })
+                                                            ${data.remarks !== '' ? `'${(data.remarks).toUpperCase()}'` : null}, ${data.created_by}, '${date}', '${JSON.stringify([])}'` })
                             .condition(`RETURNING id`)
                             .build()).rows[0];
 
@@ -117,7 +116,7 @@ class PhysicalCount {
             await new Builder(`tbl_physical_count`)
                 .update(`branch= '${JSON.stringify(data.branch)}', date_from= '${data.date_from}', date_to= '${data.date_to}', type= '${data.type}',
                                 brands= '${JSON.stringify(data.type !== 'annual' ? data.brands : [])}', total_items= ${data.total_items}, 
-                                remarks= ${data.remarks !== '' && data.remarks !== null ? `'${(data.remarks).toUpperCase()}'` : null}, status= '${data.status}',
+                                remarks= ${data.remarks !== '' && data.remarks !== null ? `'${(data.remarks).toUpperCase()}'` : null},
                                 updated_by= ${data.updated_by}, date_updated= '${date}'`)
                 .condition(`WHERE id= ${pc.id}`)
                 .build();

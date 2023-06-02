@@ -45,6 +45,7 @@ const Item = ({ sub, fetching, profile }) => {
                     <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= { item } spacing= { 2 }>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
                             <Typography variant= "body1" sx= { label } style= {{ fontWeight: 'bold' }}>{ (data.type).toUpperCase() }</Typography>
+                            <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
                             <Typography variant= "body2" sx= { label }>Date: { data.date_from }{ data.date_from !== data.date_to ? ` - ${data.date_to}` : ''}</Typography>
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { label } spacing= { 1 }>
                                 <Typography variant= "body2">Brands: </Typography>
@@ -55,14 +56,16 @@ const Item = ({ sub, fetching, profile }) => {
                                         <Typography variant= "body2">ALL{ `(${data.total_items})` }</Typography> }
                                 </Stack>
                             </Stack>
+                            { console.log(parseInt((new Date(data.date_from)).getDate()) - parseInt((new Date(data.date_to)).getDate())) }
+                            {/* { console.log(parseInt((new Date(data.date_from)).getDate()) - (parseInt((new Date()).getDate())), parseInt((new Date(data.date_to)).getDate()) - (parseInt((new Date()).getDate()))) } */}
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { label } spacing= { 1 }>
                                 <Typography variant= "body2">Branch: </Typography>
                                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center">
                                     { (JSON.parse(data.branch)).map((brc, index) => ( <Typography key= { index } variant= "body2">{ index !== 0 ? ', ' : '' } { brc.name }</Typography>)) }
                                 </Stack>
                             </Stack>
-                            <Typography variant= "body2" sx= { label }>Status: { (data.status).toUpperCase() }</Typography>
-                            <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
+                            {/* <Typography variant= "body2">Status: 
+                                { (parseInt((new Date(data.date_from)).getDate()) - (parseInt((new Date()).getDate()))) === 0 && (parseInt((new Date(data.date_from)).getDate()) - (parseInt((new Date()).getDate()))) >  }</Typography> */}
                         </Stack>
                         <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
