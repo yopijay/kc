@@ -49,6 +49,13 @@ const Products = ({ id, setOpen, record, rack }) => {
             }
         });
 
+    const  { mutate: assignras } =
+        usePost({ fetch: save, 
+            onSuccess: res => {
+                console.log(res);
+            }
+        });
+
     return (
         <Stack direction= "column" justifyContent= "space-between" alignItems= "stretch" sx= {{ padding: '25px 20px', height: '100%' }} spacing= { 2 }>
             <form autoComplete= "off">
@@ -81,7 +88,7 @@ const Products = ({ id, setOpen, record, rack }) => {
                         <TextField name= "item_code" { ...register('item_code') } variant= "standard" InputProps= {{ disableUnderline: true }} sx= { input } disabled= { id !== null } />
                         <Typography variant= "body2" color= "error.dark">{ errors.item_code?.message }</Typography>
                     </Stack>
-                    <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                    { !(id !== null && getValues()?.rcs_date !== null) ? <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                         <Typography variant= "body2" gutterBottom>*Assign RCS Counter</Typography>
                         <Box sx= { select }>
                             { rcs?.length > 0 ?
@@ -99,7 +106,7 @@ const Products = ({ id, setOpen, record, rack }) => {
                                 : <Typography color= "text.disabled">You must create a user first!</Typography> }
                         </Box>
                         <Typography variant= "body2" color= "error.dark">{ errors.rcs?.message }</Typography>
-                    </Stack>
+                    </Stack> : '' }
                     { id !== null && getValues()?.rcs_date !== null ? <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                         <Typography variant= "body2" gutterBottom>*Assign RAS Counter</Typography>
                         <Box sx= { select }>
@@ -136,7 +143,7 @@ const Products = ({ id, setOpen, record, rack }) => {
                         if(form.ras === null && form.rcs_date !== null) { errors.push({ name: 'ras', message: 'This field is required!' }); }
 
                         if(!(errors.length > 0)) { 
-                            if(form.rcs_date !== null) {}
+                            if(form.rcs_date !== null) { assignras({ table: 'tbl_physical_count_ras', data: form }); }
                             else if(form.ras_date !== null) {}
                             else { assignrcs({ table: 'tbl_physical_count_rcs', data: form }); }
                         }
