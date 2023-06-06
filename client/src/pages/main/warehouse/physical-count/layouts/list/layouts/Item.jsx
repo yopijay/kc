@@ -46,7 +46,7 @@ const Item = ({ sub, fetching, profile }) => {
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
                             <Typography variant= "body1" sx= { label } style= {{ fontWeight: 'bold' }}>{ (data.type).toUpperCase() }</Typography>
                             <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
-                            <Typography variant= "body2" sx= { label }>Date: { data.date_from }{ data.date_from !== data.date_to ? ` - ${data.date_to}` : ''}</Typography>
+                            <Typography variant= "body2" sx= { label }>Date: { data.date_from }{ data.date_from !== data.date_to ? ` to ${data.date_to}` : ''}</Typography>
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { label } spacing= { 1 }>
                                 <Typography variant= "body2">Brands: </Typography>
                                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center">
@@ -56,7 +56,8 @@ const Item = ({ sub, fetching, profile }) => {
                                         <Typography variant= "body2">ALL{ `(${data.total_items})` }</Typography> }
                                 </Stack>
                             </Stack>
-                            { console.log(parseInt((new Date(data.date_from)).getDate()) - parseInt((new Date(data.date_to)).getDate())) }
+                            { console.log(parseInt((new Date(data.date_from)).getDate()) - parseInt((new Date()).getDate())) }
+                            {/* { console.log(parseInt((new Date(data.date_from)).getDate()) - parseInt((new Date(data.date_to)).getDate())) } */}
                             {/* { console.log(parseInt((new Date(data.date_from)).getDate()) - (parseInt((new Date()).getDate())), parseInt((new Date(data.date_to)).getDate()) - (parseInt((new Date()).getDate()))) } */}
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { label } spacing= { 1 }>
                                 <Typography variant= "body2">Branch: </Typography>

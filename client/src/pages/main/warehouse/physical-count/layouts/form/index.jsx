@@ -96,6 +96,7 @@ const Index = () => {
 
                             if(data.total_items <= 0) { errors.push({ name: 'total_items', message: 'Total items must be greater than 0!' }); }
                             if(data.branch <= 0) { errors.push({ name: 'branch', message: 'Please select at least one branch' }); }
+                            if((parseInt((new Date(data.date_to)).getDate()) - parseInt((new Date(data.date_from)).getDate())) < 0) { errors.push({ name: 'date_from', message: 'Invalid date range!' }); }
 
                             if(!(errors.length > 0)) {
                                 if(type === 'new') { saving({ table: 'tbl_physical_count', data: data }); }
