@@ -1,35 +1,30 @@
 // Libraries
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useContext } from "react";
 import { Box, Stack, TextField, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
-import { faChevronLeft, faFileArrowDown, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileArrowDown, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 // Core
-import { FormCntxt } from "core/context/Form"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
+import { FormCntxt } from "core/context/Form"; // Context
 import { ListCntxt } from "core/context/List"; // Context
-import { usePost } from "core/function/global"; // Function
+import { useGet } from "core/function/global"; // Function
 import { records } from "core/api"; // API
+
+// Layouts
+import Items from "./Items";
 
 // Constants
 import { btnexport, search } from "./index.style"; // Styles
-import Items from "./Items"; // Layouts
 
 const Index = () => {
     const { data } = useContext(ProfileCntx);
-    const { setList } = useContext(ListCntxt);
     const { register, setValue } = useContext(FormCntxt);
-    const { mutate: record } = usePost({ fetch: records, options: { refetchOnWvindowFocus: false }, onSuccess: data => setList(data) });
-
-    useEffect(() => record({ table: 'tbl_physical_count_rcs', data: data }), [ record, data ]);
+    const { setList } = useContext(ListCntxt);
+    useGet({ key: ['ras'], fetch: records({ table: 'tbl_physical_count_ras', data: data }), options: { refetchInterval: 1000 }, onSuccess: data => setList(data) });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
-            <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 } sx= {{ padding: '0 5px' }}>
-                <Typography component= { Link } to= "/" sx= {{ cursor: 'pointer' }} color= "#444444"><FontAwesomeIcon icon= { faChevronLeft } size= "lg" /></Typography>
-                <Typography sx= {{ fontWeight: 'bold' }} variant= "h6">Rack Count Sheet</Typography>
-            </Stack>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <form autoComplete= "off">
                     <Box sx= { search }>

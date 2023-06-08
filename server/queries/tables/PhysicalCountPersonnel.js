@@ -117,7 +117,7 @@ class PhysicalCountPersonnel {
 
     login = async data => {
         let errors = [];
-        let sched = (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${data.date}'`).build()).rows[0];
+        let sched = (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
         let emp = (await new Builder(`tbl_employee`).select().condition(`WHERE employee_no= '${data.employee_no}'`).build()).rows[0];
 
         if(emp === undefined) { errors.push({ name: 'employee_no', message: 'Employee no doesn`t exist!' }); }

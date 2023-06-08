@@ -62,7 +62,7 @@ const Index = () => {
                                             if(data.branch === '') { errors.push({ name: 'branch', message: 'This field is required!' }); }
                                             if(data.employee_no === '') { errors.push({ name: 'employee_no', message: 'This field is required!' }); }
 
-                                            if(!(errors.length > 0)) { data['date'] = date; signin(data); }
+                                            if(!(errors.length > 0)) { data['id'] = sched[0].id; signin(data); }
                                             else { errors.forEach(err => setError(err.name, { message: err.message })); }
                                         } ) }>Sign in</Typography>
                                 </Stack>

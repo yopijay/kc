@@ -9,6 +9,7 @@ import { ProfileCntx } from "core/context/Profile"; // Context
 import Profile from "pages/global/profile";
 import Admin from "./layouts/Admin";
 import RCS from "./layouts/RCS";
+import RAS from "./layouts/RAS";
 
 // Constants
 const container = { width: '100%', flexGrow: 1, overflowY: 'scroll', padding: '90px 0 20px 0', '&::-webkit-scrollbar': { display: 'none' } };
@@ -21,7 +22,7 @@ const Index = () => {
             <Profile />
             { data.type === 'admin' ? <Admin /> : '' }
             { data.type === 'rcs' ? <RCS /> : '' }
-            {/* { data.type === 'ras' ? <RAS /> : '' } */}
+            { data.type === 'ras' ? <RAS /> : '' }
         </Stack>
     );
 }

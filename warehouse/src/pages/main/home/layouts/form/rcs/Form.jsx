@@ -29,7 +29,7 @@ const Form = ({ fetching }) => {
                                     onChange= { (e) => {
                                         setValue('total', ((parseInt(e.target.value !== '' ? e.target.value : 0) * parseInt(getValues().qty_per_mother_box)) +
                                             parseInt(getValues().qty_small_box) * parseInt(getValues().qty_per_small_box)) + parseInt(getValues().tingi)); } }
-                                    InputProps= {{ inputProps: { min: 0, max: 20 }, disableUnderline: true }} sx= { input } /> }
+                                    InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
                             <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.qty_mother_box?.message }</Typography>
                         </Stack>
                     </Grid>
@@ -41,7 +41,7 @@ const Form = ({ fetching }) => {
                                     disabled= { getValues().date_counted !== null }
                                     onChange= { (e) => { setValue('total', ((parseInt(getValues().qty_mother_box) * parseInt(e.target.value !== '' ? e.target.value : 0)) +
                                         parseInt(getValues().qty_small_box) * parseInt(getValues().qty_per_small_box)) + parseInt(getValues().tingi)); } }
-                                    InputProps= {{ inputProps: { min: 0, max: 20 }, disableUnderline: true }} sx= { input } /> }
+                                    InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
                             <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.qty_per_mother_box?.message }</Typography>
                         </Stack>
                     </Grid>
@@ -53,7 +53,7 @@ const Form = ({ fetching }) => {
                                     disabled= { getValues().date_counted !== null }
                                     onChange= { (e) => { setValue('total', ((parseInt(getValues().qty_mother_box) * parseInt(getValues().qty_per_mother_box)) +
                                         parseInt(e.target.value !== '' ? e.target.value : 0) * parseInt(getValues().qty_per_small_box)) + parseInt(getValues().tingi)); } } 
-                                    InputProps= {{ inputProps: { min: 0, max: 20 }, disableUnderline: true }} sx= { input } /> }
+                                    InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
                             <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.qty_small_box?.message }</Typography>
                         </Stack>
                     </Grid>
@@ -65,7 +65,7 @@ const Form = ({ fetching }) => {
                                     disabled= { getValues().date_counted !== null }
                                     onChange= { (e) => { setValue('total', ((parseInt(getValues().qty_mother_box) * parseInt(getValues().qty_per_mother_box)) +
                                         parseInt(getValues().qty_small_box) * parseInt(e.target.value !== '' ? e.target.value : 0)) + parseInt(getValues().tingi)); } } 
-                                    InputProps= {{ inputProps: { min: 0, max: 20 }, disableUnderline: true }} sx= { input } /> }
+                                    InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
                             <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.qty_per_small_box?.message }</Typography>
                         </Stack>
                     </Grid>
@@ -76,7 +76,7 @@ const Form = ({ fetching }) => {
                                 <TextField type= "number" { ...register('tingi') } name= "tingi" variant= "standard" defaultValue= "0" disabled= { getValues().date_counted !== null }
                                     onChange= { (e) => { setValue('total', ((parseInt(getValues().qty_mother_box) * parseInt(getValues().qty_per_mother_box)) +
                                         parseInt(getValues().qty_small_box) * parseInt(getValues().qty_per_small_box)) + parseInt(e.target.value !== '' ? e.target.value : 0)); } } 
-                                    InputProps= {{ inputProps: { min: 0, max: 20 }, disableUnderline: true }} sx= { input } /> }
+                                    InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
                             <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.tingi?.message }</Typography>
                         </Stack>
                     </Grid>
@@ -85,7 +85,7 @@ const Form = ({ fetching }) => {
                             <Typography gutterBottom variant= "body2">*Total</Typography>
                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                 <TextField type= "number" { ...register('total') } name= "total" variant= "standard" defaultValue= "0" disabled
-                                    InputProps= {{ inputProps: { min: 0, max: 20 }, disableUnderline: true }} sx= { input } /> }
+                                    InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
                         </Stack>
                     </Grid>
                     <Grid item xs= { 12 }>

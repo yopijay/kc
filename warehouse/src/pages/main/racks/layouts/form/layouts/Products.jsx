@@ -52,6 +52,14 @@ const Products = ({ id, setOpen, record, rack }) => {
     const  { mutate: assignras } =
         usePost({ fetch: save, 
             onSuccess: res => {
+                if(res.result === 'error') { (res.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
+                else { let _data = data; _data['rack_id'] = rack; _data['list'] = 'items'; successToast(res.message, 3000); record({ table: 'tbl_racks', data: _data }); setOpen(false); }
+            }
+        });
+
+    const  { mutate: assigndes } =
+        usePost({ fetch: save, 
+            onSuccess: res => {
                 console.log(res);
             }
         });
@@ -134,7 +142,6 @@ const Products = ({ id, setOpen, record, rack }) => {
                     onClick= { handleSubmit(form => {
                         let errors = [];
                         form['item_id'] = id;
-                        form['rcs_created_by'] = atob(localStorage.getItem('token'));
                         form['physical_count_id'] = data.physical_count_id;
 
                         if(form.brand_id === null) { errors.push({ name: 'brand_id', message: 'This field is required!' }); }
@@ -143,9 +150,9 @@ const Products = ({ id, setOpen, record, rack }) => {
                         if(form.ras === null && form.rcs_date !== null) { errors.push({ name: 'ras', message: 'This field is required!' }); }
 
                         if(!(errors.length > 0)) { 
-                            if(form.rcs_date !== null) { assignras({ table: 'tbl_physical_count_ras', data: form }); }
-                            else if(form.ras_date !== null) {}
-                            else { assignrcs({ table: 'tbl_physical_count_rcs', data: form }); }
+                            if(form.rcs_date !== null) { form['ras_created_by'] = atob(localStorage.getItem('token')); assignras({ table: 'tbl_physical_count_ras', data: form }); }
+                            else if(form.ras_date !== null) { form['des_created_by'] = atob(localStorage.getItem('token')); assigndes({ table: 'tbl_physical_count_des', data: form }); }
+                            else { form['rcs_created_by'] = atob(localStorage.getItem('token')); assignrcs({ table: 'tbl_physical_count_rcs', data: form }); }
                         }
                         else { errors.forEach(err => setError(err.name, { message: err.message })); }
                     }) }>Save</Typography>

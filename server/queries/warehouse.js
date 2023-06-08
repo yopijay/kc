@@ -5,6 +5,7 @@ const Racks = require('./tables/Racks');
 const Items = require('./tables/Items');
 const Brand = require('./tables/Brand');
 const PhysicalCountRCS = require('./tables/PhysicalCountRCS');
+const PhysicalCountRAS = require('./tables/PhysicalCountRAS');
 
 const schedule = date => { return new PhysicalCount().schedule(date); }
 const login = data => { return new PhysicalCountPersonnel().login(data); }
@@ -28,6 +29,7 @@ const list = (table, data) => {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().list(data)); break;
             case 'tbl_racks': resolve(await new Racks().rackcountlist(data)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().list(data)); break;
+            case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().list(data)); break;
         }
     });
 }
@@ -47,6 +49,7 @@ const save = (table, data) => {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().save(data)); break;
             case 'tbl_items': resolve(await new Items().save(data)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().save(data)); break;
+            case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().save(data)); break;
        }
    });
 }
@@ -56,6 +59,7 @@ const update = (table, data) => {
       switch(table) {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().update(data)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().update(data)); break;
+            case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().update(data)); break;
       }
   });
 }

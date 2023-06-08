@@ -10,9 +10,17 @@ import { FormCntxt } from "core/context/Form"; // Context
 
 // Constants
 import { btnexport, search } from "./index.style"; // Styles
+import Items from "./Items"; // Layouts
+import { ProfileCntx } from "core/context/Profile";
+import { ListCntxt } from "core/context/List";
+import { usePost } from "core/function/global";
+import { records } from "core/api";
 
 const Index = () => {
+    const { data } = useContext(ProfileCntx);
+    const { setList } = useContext(ListCntxt);
     const { register, setValue } = useContext(FormCntxt);
+    const { mutate: record } = usePost({ fetch: records, })
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>

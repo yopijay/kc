@@ -44,8 +44,7 @@ class PhysicalCountRCS {
         }
         else {
             let _rcs = (await new Builder(`tbl_physical_count_rcs`)
-                                .insert({ columns: `physical_count_id, item_id, qty_mother_box, qty_per_mother_box, qty_small_box, qty_per_small_box, 
-                                                                tingi, total, count_by, assigned_by, date_assigned`, 
+                                .insert({ columns: `physical_count_id, item_id, qty_mother_box, qty_per_mother_box, qty_small_box, qty_per_small_box, tingi, total, count_by, assigned_by, date_assigned`, 
                                                 values: `${data.physical_count_id}, ${itm.id}, 0, 0, 0, 0, 0, 0, ${data.rcs}, ${data.rcs_created_by}, '${date}'` })
                                 .condition(`RETURNING id`)
                                 .build()).rows[0];
@@ -76,7 +75,6 @@ class PhysicalCountRCS {
                                 .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
                                 .condition(`WHERE rcs.physical_count_id= ${data.physical_count_id} AND rcs.count_by= ${data.user_id} ORDER BY rck.code ASC`)
                                 .build()).rows;
-            case 'ras': return []
             default: return []
         }
     }
