@@ -5,15 +5,34 @@ const audit = { series_no: '', table_name: 'tbl_physical_count',  item_id: 0, fi
 class PhysicalCount {
     series = async () => { return (await new Builder(`tbl_physical_count`).select(`COUNT(*)`).build()).rows; }
     specific = async id => { return (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${id}`).build()).rows; }
-    schedule = async date => { return (await new Builder(`tbl_physical_count`).select().condition(`WHERE date_from= '${date}'`).build()).rows; }
+    schedule = async date => { 
+        let sched = [];
+        let scheds = (await new Builder(`tbl_physical_count`).select().build()).rows;
+        
+        scheds.forEach(schd => {
+            if(!(((parseInt((new Date(schd.date_from)).getDate()) - parseInt((new Date(date)).getDate()))) < 0 &&
+                ((parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(date)).getDate()))) < 0)) {
+                let total = Math.abs(parseInt((new Date(schd.date_from)).getDate()) - parseInt((new Date(date)).getDate())) +
+                                    (parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(date)).getDate()));
+
+                if(total <= (((parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(schd.date_from)).getDate()))) + 1) && total > 0) {
+                    sched.push(schd);
+                }
+            }
+        });
+
+        return sched;
+    }
 
     profile = async id => { 
-        return (await new Builder(`tbl_physical_count_personnels AS pnl`)
-                        .select(`pnl.*, emp.fname, emp.mname, emp.lname, pc.branch AS branches, pc.brands AS brands, pc.personnel AS personnels`)
-                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = pnl.user_id`, type: `LEFT` })
-                        .join({ table: `tbl_physical_count AS pc`, condition: `pc.id = pnl.physical_count_id`, type: `LEFT` })
-                        .condition(`WHERE pnl.user_id= ${id}`)
-                        .build()).rows; 
+        console.log(id);
+        return [];
+        // return (await new Builder(`tbl_physical_count_personnels AS pnl`)
+        //                 .select(`pnl.*, emp.fname, emp.mname, emp.lname, pc.branch AS branches, pc.brands AS brands, pc.personnel AS personnels`)
+        //                 .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = pnl.user_id`, type: `LEFT` })
+        //                 .join({ table: `tbl_physical_count AS pc`, condition: `pc.id = pnl.physical_count_id`, type: `LEFT` })
+        //                 .condition(`WHERE pnl.user_id= ${id}`)
+        //                 .build()).rows; 
     }
 
     list = async data => {
