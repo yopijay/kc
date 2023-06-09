@@ -16,8 +16,8 @@ class Brand {
             case 'warehouse':
                 let brands = JSON.parse(data.brands);
                 let qry = '';
-
-                if(brands.length > 0) { for(let count = 0; count < brands.length; count++) { qry += `(${count > 0 ? ' OR ' : ''}id= ${brands[count].id})`; } }
+                
+                if(brands.length > 0) { for(let count = 0; count < brands.length; count++) { qry += `(${count > 0 ? ' OR ' : ''}id= ${brands[count].brand_id})`; } }
                 
                 return [{ id: 0, name: '-- SELECT AN ITEM BELOW --' }]
                                 .concat((await new Builder(`tbl_brand`).select(`id, name`).condition(`WHERE status= 1 ${qry !== '' ? 'AND' : ''} ${qry} ORDER BY name ASC`).build()).rows);
