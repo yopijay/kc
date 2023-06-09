@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, Checkbox, Divider, Grid, Skeleton, Stack, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { Controller } from "react-hook-form";
 import { ThemeProvider } from "@emotion/react";
 
 // Core
@@ -38,7 +39,7 @@ const input = {
 const Index = () => {
     const { type, id } = useParams();
     const navigate = useNavigate();
-    const { setValidation, setValue, setError, handleSubmit, getValues, register, check, setCheck } = useContext(FormCntxt);
+    const { setValidation, setValue, setError, handleSubmit, getValues, control } = useContext(FormCntxt);
     const { isFetching, refetch } =
         useGet({ key: ['usr_specific'], 
             fetch: specific({ table: 'tbl_users', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false }, 
@@ -46,7 +47,9 @@ const Index = () => {
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) {
                         let _name = Object.keys(data[0])[count];
-                        setValue(_name, _name === 'password' ? atob(data[0][_name]) : data[0][_name]); 
+                        setValue(_name, 
+                                            _name === 'password' ? atob(data[0][_name]) : 
+                                            _name === 'status' ? data[0][_name] === 1 : data[0][_name]); 
                     } 
             } 
         });
@@ -54,11 +57,7 @@ const Index = () => {
     const { mutate: saving } =
         usePost({ fetch: save,
             onSuccess: (data) => {
-                if(data.result === 'error') { 
-                    (data.error).forEach((err, index) => { 
-                        setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); 
-                    }); 
-                }
+                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { successToast(data.message, 3000, navigate('/maintenance/users', { replace: true })); }
             } 
         });
@@ -66,11 +65,7 @@ const Index = () => {
     const { mutate: updating } =
         usePost({ fetch: update,
             onSuccess: (data) => {
-                if(data.result === 'error') { 
-                    (data.error).forEach((err, index) => { 
-                        setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); 
-                    });
-                }
+                if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { successToast(data.message, 3000, navigate('/maintenance/users', { replace: true })); }
             }
         });
@@ -101,10 +96,11 @@ const Index = () => {
                         <Typography gutterBottom variant= "body2">Status</Typography>
                         { isFetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                             <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                                <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 
-                                    disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
-                                <Typography gutterBottom sx= {{ marginTop: '7px' }}>
-                                    { getValues().status !== undefined ? getValues().status > 0 ? 'Active' : 'Inactive' : check ? 'Active' : 'Inactive' }</Typography>
+                                <Controller control= { control } name= "status" defaultValue= { getValues().status ?? true }
+                                    render= { ({ field: { onChange } }) => (
+                                        <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} disabled= { type === 'view' }
+                                            checked= { getValues().status ?? true } onChange= { e => { setValue('status', getValues().status ?? true); onChange(e.target.checked); } } /> ) 
+                                    } />
                             </Box> }
                     </Stack>
                 </Stack>
@@ -127,9 +123,6 @@ const Index = () => {
                                 if(type === 'new') { saving({ table: 'tbl_users', data: data }); } else { updating({ table: 'tbl_users', data: data }); } 
                             }
                             else { errors.forEach(err => setError(err.name, { message: err.message })); }
-
-                            // if(errors.length > 0) { errors.forEach(err => setError(err.name, { message: err.message })); }
-                            // else {  }
                         }) }>Save</Box>
                     </Grid>
                 </Grid> : '' }

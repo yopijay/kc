@@ -1,8 +1,8 @@
 // Libraries
-import { Autocomplete, Box, Checkbox, Grid, Skeleton, Stack, TextareaAutosize, TextField, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
 import { useContext } from "react";
+import { useParams } from "react-router-dom";
 import { Controller } from "react-hook-form";
+import { Autocomplete, Box, Checkbox, Grid, Skeleton, Stack, TextareaAutosize, TextField, Typography } from "@mui/material";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
@@ -14,7 +14,7 @@ import { input, select, textarea } from "../index.style"; // Styles
 
 const Form = ({ fetching }) => {
     const { type } = useParams();
-    const { register, errors, getValues, check, setCheck, control, setValue, setError } = useContext(FormCntxt);
+    const { register, errors, getValues, control, setValue, setError } = useContext(FormCntxt);
     const { data: owner } = useGet({ key: ['owner'], fetch: dropdown({ table: 'tbl_users', data: {} }), options: { refetchOnWindowFocus: false } });
     useGet({ key: ['cmp_series'], fetch: series('tbl_company'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `CMP-${formatter(parseInt(data) + 1, 7)}`); } });
 
@@ -34,17 +34,17 @@ const Form = ({ fetching }) => {
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= { select }>
                             { owner?.length > 0 ? 
-                                    <Controller control= { control } name= "owner_id" defaultValue= { 0 }
-                                        render= { ({ field: { onChange, value } }) => (
-                                            <Autocomplete options= { owner?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
-                                                getOptionLabel= { owner => owner.name || owner.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
-                                                isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
-                                                onChange= { (e, item) => { setError('owner_id', { message: '' }); onChange(item.id); } }
-                                                renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
-                                                value= { owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) !== undefined ?
-                                                    owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) : owner.length === 0 ?
-                                                    { id: 0, name: '-- SELECT AN ITEM BELOW --' } : owner[0] } />
-                                        ) } /> : 
+                                <Controller control= { control } name= "owner_id" defaultValue= { 0 }
+                                    render= { ({ field: { onChange, value } }) => (
+                                        <Autocomplete options= { owner?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
+                                            getOptionLabel= { owner => owner.name || owner.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                            isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
+                                            onChange= { (e, item) => { setError('owner_id', { message: '' }); onChange(item.id); } }
+                                            renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
+                                            value= { owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) !== undefined ?
+                                                            owner?.find(data => { return data.id === (getValues().owner_id !== undefined ? getValues().owner_id : value) }) : owner.length === 0 ?
+                                                            { id: 0, name: '-- SELECT AN ITEM BELOW --' } : owner[0] } />
+                                    ) } /> : 
                                 <Typography color= "text.disabled">You must create a user first!</Typography> }
                         </Box> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.owner_id?.message }</Typography>
@@ -77,10 +77,11 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 
-                                disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
-                            <Typography gutterBottom sx= {{ marginTop: '7px' }}>
-                                { getValues().status !== undefined ? getValues().status > 0 ? 'Active' : 'Inactive' : check ? 'Active' : 'Inactive' }</Typography>
+                            <Controller control= { control } name= "status" defaultValue= { getValues().status ?? true }
+                                render= { ({ field: { onChange } }) => (
+                                    <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} disabled= { type === 'view' }
+                                        checked= { getValues().status ?? true } onChange= { e => { setValue('status', getValues().status ?? true); onChange(e.target.checked); } } /> ) 
+                                } />
                         </Box> }
                 </Stack>
             </Grid>
