@@ -34,8 +34,10 @@ const Products = ({ id, setOpen, record, rack }) => {
             setValue('item_code', data[0].item_code); 
             setValue('rcs', data[0].rcs); 
             setValue('ras', data[0].ras); 
+            setValue('des', data[0].des); 
             setValue('rcs_date', data[0].rcs_date); 
             setValue('ras_date', data[0].ras_date);
+            setValue('des_date', data[0].des_date);
         } 
     });
 
