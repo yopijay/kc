@@ -15,9 +15,8 @@ import { Validation } from "./index.validation"; // Validations
 const Index = () => {
     const { register, handleSubmit, formState: { errors }, setError } = useForm({ resolver: yupResolver(Validation()) });
     const { mutate: signin } = usePost({ fetch: authentication, onSuccess: (data) => {
-        console.log(data);
-        // if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0}); }); }
-        // else { localStorage.setItem('token', btoa(data.id)); window.location.href = '/'; }
+        if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0}); }); }
+        else { localStorage.setItem('token', btoa(data.id)); window.location.href = '/'; }
     }});
     
     return (
