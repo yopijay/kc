@@ -19,11 +19,11 @@ const Products = ({ id, setOpen, record, rack }) => {
     useGet({ key: ['itm_series'], fetch: series('tbl_items'), options: { }, onSuccess: (data) => { setValue('itm_series_no', id === null ? `ITM-${formatter(parseInt(data) + 1, 7)}` : ''); } });
     
     const { data: rcs } = 
-        useGet({ key: ['rcs'], fetch: dropdown({ table: 'tbl_physical_count_personnels', 
+        useGet({ key: ['rcs_dd'], fetch: dropdown({ table: 'tbl_physical_count_personnels', 
                         data: { platform: 'warehouse', physical_count_id: data.physical_count_id, user_id: data.user_id, type: 'rcs' } }), 
                         options: { refetchWindowFocus: false } });
     const { data: ras } = 
-        useGet({ key: ['ras'], fetch: dropdown({ table: 'tbl_physical_count_personnels', 
+        useGet({ key: ['ras_dd'], fetch: dropdown({ table: 'tbl_physical_count_personnels', 
                         data: { platform: 'warehouse', physical_count_id: data.physical_count_id, user_id: data.user_id, type: 'ras' } }), 
                         options: { refetchWindowFocus: false } });
                         
