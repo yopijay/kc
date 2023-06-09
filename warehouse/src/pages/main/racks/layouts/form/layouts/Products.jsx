@@ -34,10 +34,8 @@ const Products = ({ id, setOpen, record, rack }) => {
             setValue('item_code', data[0].item_code); 
             setValue('rcs', data[0].rcs); 
             setValue('ras', data[0].ras); 
-            setValue('des', data[0].des); 
             setValue('rcs_date', data[0].rcs_date); 
-            setValue('ras_date', data[0].ras_date); 
-            setValue('des_date', data[0].des_date); 
+            setValue('ras_date', data[0].ras_date);
         } 
     });
 
@@ -54,13 +52,6 @@ const Products = ({ id, setOpen, record, rack }) => {
             onSuccess: res => {
                 if(res.result === 'error') { (res.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { let _data = data; _data['rack_id'] = rack; _data['list'] = 'items'; successToast(res.message, 3000); record({ table: 'tbl_racks', data: _data }); setOpen(false); }
-            }
-        });
-
-    const  { mutate: assigndes } =
-        usePost({ fetch: save, 
-            onSuccess: res => {
-                console.log(res);
             }
         });
 
@@ -151,7 +142,6 @@ const Products = ({ id, setOpen, record, rack }) => {
 
                         if(!(errors.length > 0)) { 
                             if(form.rcs_date !== null) { form['ras_created_by'] = atob(localStorage.getItem('token')); assignras({ table: 'tbl_physical_count_ras', data: form }); }
-                            else if(form.ras_date !== null) { form['des_created_by'] = atob(localStorage.getItem('token')); assigndes({ table: 'tbl_physical_count_des', data: form }); }
                             else { form['rcs_created_by'] = atob(localStorage.getItem('token')); assignrcs({ table: 'tbl_physical_count_rcs', data: form }); }
                         }
                         else { errors.forEach(err => setError(err.name, { message: err.message })); }
