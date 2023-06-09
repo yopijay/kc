@@ -7,20 +7,20 @@ import { Link } from "react-router-dom";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
+import { ProfileCntx } from "core/context/Profile"; // Context
+import { ListCntxt } from "core/context/List"; // Context
+import { useGet } from "core/function/global"; // Function
+import { records } from "core/api"; // API
 
 // Constants
 import { btnexport, search } from "./index.style"; // Styles
 import Items from "./Items"; // Layouts
-import { ProfileCntx } from "core/context/Profile";
-import { ListCntxt } from "core/context/List";
-import { usePost } from "core/function/global";
-import { records } from "core/api";
 
 const Index = () => {
     const { data } = useContext(ProfileCntx);
     const { setList } = useContext(ListCntxt);
     const { register, setValue } = useContext(FormCntxt);
-    const { mutate: record } = usePost({ fetch: records, })
+    useGet({ key: ['ras_list'], fetch: records({ table: 'tbl_physical_count_ras', data: data }), options: { refetchOnWindowFocus: false, refetchInterval: 1000 }, onSuccess: data => setList(data) });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
@@ -40,11 +40,7 @@ const Index = () => {
                     <Typography sx= { btnexport }><FontAwesomeIcon icon= { faFileArrowDown } color= "#ffffff" size= "lg" /></Typography>
                 </Stack>
             </Stack>
-            <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>
-                <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= {{ margin: '10px 0', backgroundColor: '#ffffff', padding: '15px', borderRadius: '8px' }}>
-                    <Typography variant= "body2" sx= {{ textAlign: 'center', width: '100%' }}>No rack/s found!</Typography>
-                </Stack>
-            </Box>
+            <Items />
         </Stack>
     );
 }

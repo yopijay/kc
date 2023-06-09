@@ -15,16 +15,16 @@ const Items = () => {
     return (
         <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>
             { list?.length > 0 ?
-                list?.map((rcs, index) => (
+                list?.map((ras, index) => (
                     <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" key= { index } sx= { card } style= {{ cursor: 'pointer' }}
-                        component= { Link } to= { `/rcs/form/view/${rcs.id}` }>
+                        component= { Link } to= { `/ras/form/view/${ras.id}` }>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%' }}>
-                            <Typography sx= {{ fontWeight: 'bold', flexGrow: 1 }}>{ rcs.item_code }</Typography>
-                            <Typography variant= "body2" sx= {{ flexGrow: 1 }}>Counter: { `${rcs.lname}, ${rcs.fname}` }</Typography>
-                            <Typography variant= "body2" sx= {{ flexGrow: 1 }}>Time: { rcs.date_counted !== null ? rcs.date_counted : '-- : -- --' }</Typography>
+                            <Typography sx= {{ fontWeight: 'bold', flexGrow: 1 }}>{ ras.item_code }</Typography>
+                            <Typography variant= "body2" sx= {{ flexGrow: 1 }}>Counter: { `${ras.lname}, ${ras.fname}` }</Typography>
+                            <Typography variant= "body2" sx= {{ flexGrow: 1 }}>Time: { ras.date_counted !== null ? ras.date_counted : '-- : -- --' }</Typography>
                         </Stack>
-                        { rcs.date_counted !== null ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
-                                <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
+                        { ras.date_counted !== null ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 
+                            <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#EF9F9F', borderRadius: '20px' }} /> }
                     </Stack>
                 )) :
                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= { card }>

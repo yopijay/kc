@@ -76,7 +76,7 @@ const Items = () => {
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 }>
                                 { data.rcs !== null ? <Typography sx= {{ color: `${ data.rcs_date !== null ? '#7D8F69' : '#E67E22' }`, fontWeight: 'bold' }}>RCS</Typography> : '' }
                                 { data.ras !== null ? <Typography sx= {{ color: `${ data.ras_date !== null ? '#7D8F69' : '#E67E22' }`, fontWeight: 'bold' }}>RAS</Typography> : '' }
-                                { data.ras_date !== null && data.rcs_date !== null && (data.rcs_total === data.ras_total) ? 
+                                { data.ras_date !== null && data.rcs_date !== null && (data.rcs_total !== data.ras_total) ? 
                                     <Typography sx= {{ color: `${ data.des_date !== null ? '#7D8F69' : '#E67E22' }`, fontWeight: 'bold' }}>DES</Typography> : '' }
                             </Stack>
                         </Stack>

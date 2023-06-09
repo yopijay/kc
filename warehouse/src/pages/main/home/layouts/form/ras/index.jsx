@@ -1,6 +1,63 @@
+// Libraries
+import { useContext } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Box, Grid, Stack, Typography } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { ThemeProvider } from "@emotion/react";
+
+// Core
+import { FormCntxt } from "core/context/Form"; // Context
+import { successToast, useGet, usePost } from "core/function/global"; // Function
+import { specific, update } from "core/api"; // API
+import { theme } from "core/theme/form.theme"; // Theme
+
+// Constants
+import { btntxt, card } from "./index.style"; // Styles
+import Form from "./Form"; // Layout
+const input = {
+    MuiInput: {
+        styleOverrides: {
+            root: {
+                '&:before': { borderBottom: 'none' },
+                '&:after': { borderBottom: 'none' },
+                '&.Mui-disabled:before': { borderBottom: 'none' },
+                '&:hover:not(.Mui-disabled):before': { borderBottom: 'none' }
+            },
+            input: { textTransform: 'uppercase' }
+        }
+    }
+}
+
 const Index = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { handleSubmit, setValue, getValues } = useContext(FormCntxt);
+    const { mutate: updating } = usePost({ fetch: update, onSuccess: data => successToast(data.message, 3000, navigate('/')) });
+    const { isFetching } =
+        useGet({ key: ['itm_specific'], fetch: specific({ table: 'tbl_physical_count_ras', id: id }), options: { enabled: true, refetchOnWIndowFocus: false },
+            onSuccess: data => {
+                if(Array.isArray(data))
+                    for(let count = 0; count < Object.keys(data[0]).length; count++) {
+                        let _name = Object.keys(data[0])[count];
+                        setValue(_name, data[0][_name]);
+                    }
+            } 
+        });
+
     return (
-        ''
+        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', overflow: 'hidden' }} spacing= { 2 }>
+            <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 } sx= {{ padding: '0 5px' }}>
+                <Typography component= { Link } to= "/" sx= {{ cursor: 'pointer' }} color= "#444444"><FontAwesomeIcon icon= { faChevronLeft } size= "lg" /></Typography>
+                <Typography sx= {{ fontWeight: 'bold' }} variant= "h6">Rack Audit Sheet</Typography>
+            </Stack>
+            <Box sx= { card }><ThemeProvider theme= { theme(input) }><Form fetching= { isFetching } /></ThemeProvider></Box>
+            { getValues()?.date_counted === null ? <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
+                <Grid item xs= { 6 } sm= { 3 } lg= { 2 }>
+                    <Box sx= { btntxt } onClick= { handleSubmit(form => { updating({ table: 'tbl_physical_count_ras', data: form }); }) }>Save</Box>
+                </Grid>
+            </Grid> : '' }
+        </Stack>
     );
 }
 

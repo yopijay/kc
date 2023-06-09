@@ -19,6 +19,7 @@ const specific = (table, id) => {
             case 'tbl_racks': resolve(await new Racks().specific(id)); break;
             case 'tbl_items': resolve(await new Items().specific(id)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().specific(id)); break;
+            case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().specific(id)); break;
         }
     });
 }
