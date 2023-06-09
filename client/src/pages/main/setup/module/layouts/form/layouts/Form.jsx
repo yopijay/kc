@@ -10,11 +10,12 @@ import { formatter, useGet } from "core/function/global"; // Function
 
 // Constants
 import { input } from "../index.style"; // Styles
+import { Controller } from "react-hook-form";
 
 
 const Form = ({ fetching }) => {
     const { type } = useParams();
-    const { register, errors, getValues, check, setCheck, setValue } = useContext(FormCntxt);
+    const { register, errors, getValues, control, setValue } = useContext(FormCntxt);
     useGet({ key: ['mdl_series'], fetch: series('tbl_module'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `MDL-${formatter(parseInt(data) + 1, 7)}`); } });
 
     return (
@@ -40,10 +41,11 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 
-                                disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
-                            <Typography gutterBottom sx= {{ marginTop: '7px' }}>
-                                { getValues().status !== undefined ? getValues().status > 0 ? 'Active' : 'Inactive' : check ? 'Active' : 'Inactive' }</Typography>
+                            <Controller control= { control } name= "status" defaultValue= { getValues().status ?? true }
+                                render= { ({ field: { onChange } }) => (
+                                    <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} disabled= { type === 'view' }
+                                        checked= { getValues().status ?? true } onChange= { e => { setValue('status', getValues().status ?? true); onChange(e.target.checked); } } /> ) 
+                                } />
                         </Box> }
                 </Stack>
             </Grid>
