@@ -58,7 +58,7 @@ class Brand {
             for(let count = 0; count < itm.length; count++) {
                 let item = (await new Builder(`tbl_items AS itm`)
                                     .select(`itm.id, itm.item_code, rcs.count_by AS rcs, rcs.date_counted AS rcs_date, rcs.total AS rcs_total, ras.count_by AS ras, ras.date_counted AS ras_date, 
-                                                    ras.total AS ras_total`)
+                                                    ras.total AS ras_total ras.third_count_id AS des, ras.third_count_date AS des_date`)
                                     .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
                                     .join({ table: `tbl_physical_count_ras AS ras`, condition: `ras.item_id = itm.id`, type: `LEFT` })
                                     .condition(`WHERE itm.id= ${itm[count].id}`)
