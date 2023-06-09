@@ -173,13 +173,16 @@ class Users {
                                                             ${data.contact_no !== '' ? `'${data.contact_no}'` : null}, '${data.user_level}', 0, 1, ${data.created_by}, '${date}'` })
                             .condition(`RETURNING id`)
                             .build()).rows[0];
+
             await new Builder(`tbl_employee`)
                 .insert({ columns: `user_id, employee_no, rfid, company_id, department_id, position_id, fname, mname, lname, branch, gender`, 
                                 values: `${usr.id}, ${data.employee_no !== '' ? `'${data.employee_no}'` : null}, ${data.rfid !== '' ? `'${data.rfid}'` : null},
                                 ${data.company_id}, ${data.department_id}, ${data.position_id}, '${(data.fname).toUpperCase()}', ${data.mname !== '' ? `'${(data.mname).toUpperCase()}'` : null},
                                 '${(data.lname).toUpperCase()}', '${data.branch}', '${data.gender}'` })
                 .build();
+
             await new Builder(`tbl_users_permissions`).insert({ columns: `series_no, user_id, updated_by, date_updated`, values: `'${Global.randomizer(7)}', ${usr.id}, ${data.created_by}, '${date}'` }).build();
+            await new Builder(`tbl_physical_count_personnels`).insert({ columns: `user_id, is_logged, status`, values: `${usr.id}, 0, 0` }).build();
             
             audit.series_no = Global.randomizer(7);
             audit.field = 'all';
@@ -204,8 +207,6 @@ class Users {
                             .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = usr.id`, type: `LEFT` })
                             .condition(`WHERE usr.id = ${data.id}`)
                             .build()).rows[0];
-
-        console.log(usr);
 
         if(Global.compare(usr.email, data.email)) {
             if(data.email !== '' && data.email !== null) {

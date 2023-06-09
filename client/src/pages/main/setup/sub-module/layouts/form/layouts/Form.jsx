@@ -29,7 +29,7 @@ const txtfield = {
 
 const Form = ({ fetching }) => {
     const { type } = useParams();
-    const { register, errors, getValues, check, setCheck, control, setValue, setError, maintenance, setMaintenance } = useContext(FormCntxt);
+    const { register, errors, getValues, control, setValue, setError } = useContext(FormCntxt);
     const { data: module } = useGet({ key: ['module'], fetch: dropdown({ table: 'tbl_module', data: {} }), options: { refetchOnWindowFocus: false } });
     useGet({ key: ['smdl_series'], fetch: series('tbl_sub_module'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `SUB-MDL-${formatter(parseInt(data) + 1, 7)}`); } });
 
@@ -94,11 +94,11 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">*Maintenance</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "is_maintenance" 
-                                { ...register('is_maintenance', { onChange: () => setMaintenance(!maintenance) }) } 
-                                disabled= { type === 'view' } checked= { getValues().is_maintenance !== undefined ? getValues().is_maintenance > 0 ? true : false : maintenance } />
-                            <Typography gutterBottom sx= {{ marginTop: '7px' }}>
-                                { getValues().is_maintenance !== undefined ? getValues().is_maintenance > 0 ? 'Under maintenance' : 'Good' : maintenance ? 'Under maintenance' : 'Good' }</Typography>
+                        <Controller control= { control } name= "is_maintenance" defaultValue= { getValues().is_maintenance ?? true }
+                            render= { ({ field: { onChange } }) => (
+                                <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} disabled= { type === 'view' }
+                                    checked= { getValues().is_maintenance ?? true } onChange= { e => { setValue('is_maintenance', getValues().is_maintenance ?? true); onChange(e.target.checked); } } /> ) 
+                            } />
                         </Box> }
                 </Stack>
             </Grid>
@@ -107,10 +107,11 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 
-                                disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
-                            <Typography gutterBottom sx= {{ marginTop: '7px' }}>
-                                { getValues().status !== undefined ? getValues().status > 0 ? 'Active' : 'Inactive' : check ? 'Active' : 'Inactive' }</Typography>
+                            <Controller control= { control } name= "status" defaultValue= { getValues().status ?? true }
+                                render= { ({ field: { onChange } }) => (
+                                    <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} disabled= { type === 'view' }
+                                        checked= { getValues().status ?? true } onChange= { e => { setValue('status', getValues().status ?? true); onChange(e.target.checked); } } /> ) 
+                                } />
                         </Box> }
                 </Stack>
             </Grid>

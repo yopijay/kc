@@ -24,7 +24,7 @@ let defaults = {
     time_to: ''
 }
 
-const Requests = ({ fetching }) => {
+const  Requests = ({ fetching }) => {
     const { control, getValues } = useContext(FormCntxt);
     const { fields, append, remove } = useFieldArray({ control, name: 'requests' });
     const [ open, setOpen ] = useState(false);

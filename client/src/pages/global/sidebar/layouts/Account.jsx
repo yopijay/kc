@@ -34,7 +34,7 @@ const Account = () => {
     const { mutate: signout } = usePost({ fetch: logout, onSuccess: data => { if(data.result === 'success') { localStorage.removeItem('token'); window.location.href = "/" } } });
 
     return (
-        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: { xs: '20px 10px', lg: '0' }, borderTop: 'dashed 1px #dfe6e9' }}>
+        <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: { xs: '20px 10px', lg: '15px 0 0 0' }, borderTop: 'dashed 1px #dfe6e9' }}>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%' }} spacing= { 1 }>
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "center" sx= {{ overflow: 'hidden' }}>
                     <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 } sx= {{ width: '60%', overflow: 'hidden' }}>

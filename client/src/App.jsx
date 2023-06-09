@@ -17,7 +17,13 @@ const App = () => {
     return ( 
         <Router>
             <QueryClientProvider client= { client }>
-                <GlobalPrvdr><Routes><Route path= "*" element= { localStorage.getItem('token') ? <ProfilePrvdr><Main /></ProfilePrvdr> : <Account /> } /></Routes></GlobalPrvdr>
+                <GlobalPrvdr>
+                    <Routes>
+                        <Route path= "*" element= { localStorage.getItem('token') ? 
+                            <ProfilePrvdr><Main /></ProfilePrvdr> : 
+                            <Account /> } />
+                        </Routes>
+                    </GlobalPrvdr>
             </QueryClientProvider>
         </Router> 
     ); 
