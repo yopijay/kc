@@ -47,7 +47,7 @@ const Index = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>Service Requests</Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>Service Requests</Typography>
                 <Dashboard />
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "flex-start" spacing= { 1 }>
                     <form autoComplete= "off">
