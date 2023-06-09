@@ -121,7 +121,7 @@ class PhysicalCountRAS {
             await new Builder(`tbl_items`)
                 .update(`mother_box= ${data.qty_mother_box !== '' ? data.qty_mother_box : 0}, qty_per_mother_box= ${data.qty_per_mother_box !== '' ? data.qty_per_mother_box : 0}, 
                                 small_box= ${data.qty_small_box !== '' ? data.qty_small_box : 0}, qty_per_small_box= ${data.qty_per_small_box !== '' ? data.qty_per_small_box : 0}, 
-                                tingi= ${data.tingi !== '' ? data.tingi : 0}, total= ${data.total !== '' ? data.total : 0}`)
+                                tingi= ${data.tingi !== '' ? data.tingi : 0}, total= ${data.total !== '' ? data.total : 0}, updated_by= ${data.count_by}, date_updated= '${date}'`)
                 .condition(`WHERE id= ${data.item_id}`)
                 .build();
         }
