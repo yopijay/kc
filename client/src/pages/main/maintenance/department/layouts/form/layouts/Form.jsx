@@ -14,14 +14,14 @@ import { input, select, textarea } from "../index.style"; // Styles
 
 const Form = ({ fetching }) => {
     const { type } = useParams();
-    const { register, errors, getValues, check, setCheck, control, setValue, setError } = useContext(FormCntxt);
+    const { register, errors, getValues, control, setValue, setError } = useContext(FormCntxt);
     const { data: head } = useGet({ key: ['head'], fetch: dropdown({ table: 'tbl_users', data: {} }), options: { refetchOnWindowFocus: false } });
     const { data: company } = useGet({ key: ['company'], fetch: dropdown({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false } });
     useGet({ key: ['dpt_series'], fetch: series('tbl_department'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `DPT-${formatter(parseInt(data) + 1, 7)}`); } });
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>
-            <Grid item xs= { 12 } sm= { 8 }>
+            <Grid item xs= { 12 } sm= { 8 }> 
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">*Series No.</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
@@ -36,7 +36,7 @@ const Form = ({ fetching }) => {
                         <Box sx= { select }>
                             { company?.length > 0 ? 
                                 <Controller control= { control } name= "company_id" defaultValue= { 0 }
-                                    render= { ({ field: { onChange, value } }) => (
+                                    render= { ({ field: { onChange, value } })  => (
                                         <Autocomplete options= { company?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable 
                                             getOptionLabel= { company => company.name || company.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
                                             isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
@@ -92,10 +92,11 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 
-                                disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
-                            <Typography gutterBottom sx= {{ marginTop: '7px' }}>
-                                { getValues().status !== undefined ? getValues().status > 0 ? 'Active' : 'Inactive' : check ? 'Active' : 'Inactive' }</Typography>
+                            <Controller control= { control } name= "status" defaultValue= { getValues().status ?? true }
+                                render= { ({ field: { onChange } }) => (
+                                    <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} disabled= { type === 'view' }
+                                        checked= { getValues().status ?? true } onChange= { e => { setValue('status', getValues().status ?? true); onChange(e.target.checked); } } /> ) 
+                                } />
                         </Box> }
                 </Stack>
             </Grid>

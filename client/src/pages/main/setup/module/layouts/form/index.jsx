@@ -38,8 +38,9 @@ const Index = () => {
         useGet({ key: ['mdl_specific'], fetch: specific({ table: 'tbl_module', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
             onSuccess: (data) => { 
                 if(Array.isArray(data)) 
-                    for(let count = 0; count < Object.keys(data[0]).length; count++) { 
-                        let _name = Object.keys(data[0])[count]; setValue(_name, data[0][_name]); 
+                    for(let count = 0; count < Object.keys(data[0]).length; count++) {
+                        let _name = Object.keys(data[0])[count];
+                        setValue(_name, _name === 'status' ? data[0][_name] === 1 : data[0][_name]);
                     }
             }
         });
@@ -49,7 +50,7 @@ const Index = () => {
             onSuccess: (data) => {
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { successToast(data.message, 3000, navigate('/setup/module', { replace: true })); } 
-            } 
+            }
         });
 
     const { mutate: updating } = 
@@ -57,7 +58,7 @@ const Index = () => {
             onSuccess: (data) => { 
                 if(data.result === 'error') { (data.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); } 
                 else { successToast(data.message, 3000, navigate('/setup/module', { replace: true })); } 
-            } 
+            }
         });
 
     useEffect(() => { setValidation(Validation()); if(id !== undefined) { refetch(); } }, [ setValidation, id, refetch ]);
@@ -65,7 +66,7 @@ const Index = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', paddingBottom: '20px' }} spacing= { 3 }>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
-                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#3C4048' }}>{ type } Module</Typography>
+                <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ type } Module</Typography>
                 <Typography sx= { btnicon } component= { Link } to= "/setup/module" ><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
             <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { theme(input) }><Form fetching= { isFetching } /></ThemeProvider></form></Box>

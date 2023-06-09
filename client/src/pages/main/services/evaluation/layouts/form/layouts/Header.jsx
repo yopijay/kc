@@ -33,8 +33,8 @@ const Header = ({ fetching }) => {
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>
             <Grid item xs= { 12 } md= { 6 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start">
-                    <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#444444' }}>S-Power Corporation</Typography>
-                    <Typography sx= {{ fontWeight: 'bold', textTransform: 'uppercase' }}>Service Request</Typography>
+                    <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>S-Power Corporation</Typography>
+                    <Typography sx= {{ fontWeight: 'bold', textTransform: 'uppercase', color: '#535b64' }}>Service Request</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 12 } md= { 6 }>

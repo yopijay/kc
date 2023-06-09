@@ -14,7 +14,7 @@ import { input, select, textarea } from "../index.style"; // Styles
 
 const Form = ({ fetching }) => {
     const { type } = useParams();
-    const { register, errors, getValues, check, setCheck, control, setValue, setError } = useContext(FormCntxt);
+    const { register, errors, getValues, control, setValue, setError } = useContext(FormCntxt);
     const { data: company } = useGet({ key: ['dd_company'], fetch: dropdown({ table: 'tbl_company', data: {} }), options: { refetchOnWindowFocus: false } });
     const { data: department, mutate: menu, isLoading } = usePost({ fetch: dropdown });
     useGet({ key: ['pst_series'], fetch: series('tbl_position'), options: {}, onSuccess: (data) => { if(type === 'new') setValue('series_no', `PST-${formatter(parseInt(data) + 1, 7)}`); } });
@@ -68,8 +68,8 @@ const Form = ({ fetching }) => {
                                                     onChange= { (e, item) => { setError('department_id', { message: '' }); onChange(item.id); } }
                                                     renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
                                                     value= { department?.find(data => { return data.id === (getValues().department_id !== undefined ? getValues().department_id : value) }) !== undefined ?
-                                                        department?.find(data => { return data.id === (getValues().department_id !== undefined ? getValues().department_id : value) }) : department.length === 0 ?
-                                                        { id: 0, name: '-- SELECT AN ITEM BELOW --' } : department[0] } />
+                                                        department?.find(data => { return data.id === (getValues().department_id !== undefined ? getValues().department_id : value) }) : 
+                                                        department.length === 0 ? { id: 0, name: '-- SELECT AN ITEM BELOW --' } : department[0] } />
                                             ) } /> : <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>You must create a user first!</Typography> : 
                                     <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>Please select a company first!</Typography>
                                 : <Typography color= "text.disabled" sx= {{ padding: '3px 0' }}>Loading...</Typography> }
@@ -97,9 +97,11 @@ const Form = ({ fetching }) => {
                     <Typography gutterBottom variant= "body2">Status</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
                         <Box sx= {{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} name= "status" { ...register('status', { onChange: () => setCheck(!check) }) } 
-                                disabled= { type === 'view' } checked= { getValues().status !== undefined ? getValues().status > 0 ? true : false : check } />
-                            <Typography gutterBottom sx= {{ marginTop: '7px' }}>{ getValues().status !== undefined ? getValues().status > 0 ? 'Active' : 'Inactive' : check ? 'Active' : 'Inactive' }</Typography>
+                            <Controller control= { control } name= "status" defaultValue= { getValues().status ?? true }
+                                render= { ({ field: { onChange } }) => (
+                                    <Checkbox sx= {{ color: '#919eab', '&.Mui-checked': { color: '#2065d1' } }} disabled= { type === 'view' }
+                                        checked= { getValues().status ?? true } onChange= { e => { setValue('status', getValues().status ?? true); onChange(e.target.checked); } } /> ) 
+                                } />
                         </Box> }
                 </Stack>
             </Grid>
