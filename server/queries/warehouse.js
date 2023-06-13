@@ -40,6 +40,7 @@ const dropdown = (table, data) => {
         switch(table) {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().dropdown(data)); break;
             case 'tbl_brands': resolve(await new Brand().dropdown(data)); break;
+            case 'tbl_racks': resolve(await new Racks().dropdown(data)); break;
         }
     });
 }
@@ -73,6 +74,15 @@ const series = table => {
     });
 }
 
+const search = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().search(data)); break;
+            case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().search(data)); break;
+        }
+    });
+}
+
 
 module.exports = {
     schedule,
@@ -84,5 +94,6 @@ module.exports = {
     save,
     update,
     specific,
-    series
+    series,
+    search
 }

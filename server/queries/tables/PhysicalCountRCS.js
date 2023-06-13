@@ -4,11 +4,10 @@ const Global = require('../../function/global'); // Function
 const audit = { series_no: '', table_name: 'tbl_physical_count_rcs',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class PhysicalCountRCS {
     specific = async id => { 
-        return (await new Builder(`tbl_physical_count_rcs AS rcs`)
-                        .select(`rcs.*, itm.item_code, itm.item_description, brd.name AS brand`)
-                        .join({ table: `tbl_items AS itm`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
-                        .join({ table: `tbl_brand AS brd`, condition: `itm.brand_id= brd.id`, type: `LEFT` })
-                        .condition(`WHERE rcs.id= ${id}`)
+        return (await new Builder(`tbl_items AS itm`)
+                        .select(`itm.*, rcs.count_by`)
+                        .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                        .condition(`WHERE itm.id= ${id}`)
                         .build()).rows;
     }
 
@@ -58,24 +57,36 @@ class PhysicalCountRCS {
 
     list = async data => {
         let branch = { quezon_ave: 'qa', sto_domingo: 'sd', manila: 'ma' };
-        
+        let items = [];
+        let brands = null;
+        let query = '';
+
+        if((JSON.parse(data.brands)).length > 0) { brands = JSON.parse(data.brands); }
+        else { brands = (await new Builder(`tbl_brand`).select(`id AS brand_id, name AS brand_name`).condition(`WHERE status = 1`).build()).rows; }
+
+        for(let count = 0; count < brands.length; count++) { query += `${count > 0 ? ' OR' : ''}itm.brand_id= ${brands[count].brand_id}`; }
+
         switch(data.type) {
             case 'admin':
-                return (await new Builder(`tbl_physical_count_rcs AS rcs`)
-                                .select(`rcs.id, itm.item_code, emp.fname, emp.lname, rcs.date_counted`)
-                                .join({ table: `tbl_items AS itm`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
-                                .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
-                                .join({ table: `tbl_employee AS emp`, condition: `rcs.count_by = emp.user_id`, type: `LEFT` })
-                                .condition(`WHERE rcs.physical_count_id= ${data.physical_count_id} AND rck.branch= '${branch[data.branch]}'`)
-                                .build()).rows;
-            case 'rcs':  
-                return (await new Builder(`tbl_physical_count_rcs AS rcs`)
-                                .select(`rcs.*, itm.item_code, rck.branch, rck.floor, rck.code`)
-                                .join({ table: `tbl_items AS itm`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
-                                .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
-                                .condition(`WHERE rcs.physical_count_id= ${data.physical_count_id} AND rcs.count_by= ${data.user_id} ORDER BY rck.code ASC`)
-                                .build()).rows;
-            default: return []
+                let itm = (await new Builder(`tbl_items AS itm`)
+                                    .select(`itm.*`)
+                                    .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                                    .condition(`WHERE (${query}) AND rck.branch= '${branch[data.branch]}' ORDER BY itm.item_code DESC`)
+                                    .build()).rows;
+        
+                for(let count = 0; count < itm.length; count++) {
+                    let item = (await new Builder(`tbl_items AS itm`)
+                                        .select(`itm.id, itm.item_code, rcs.count_by, rcs.date_counted, rcs.total, emp.fname, emp.lname`)
+                                        .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = rcs.count_by`, type: `LEFT` })
+                                        .condition(`WHERE itm.id= ${itm[count].id}`)
+                                        .build()).rows[0];
+                    
+                    items.push(item);
+                }
+
+                return items;
+            default: return [];
         }
     }
 
@@ -136,6 +147,11 @@ class PhysicalCountRCS {
 
         audits.forEach(data => Global.audit(data));
         return { result: 'success', message: 'Successfully saved!' }
+    }
+
+    search = async data => {
+        console.log(data);
+        return [];
     }
 }
 

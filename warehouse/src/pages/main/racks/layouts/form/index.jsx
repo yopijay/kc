@@ -35,7 +35,7 @@ const Index = () => {
     const { setValue } = useContext(FormCntxt);
     const { isFetching, refetch } =  
         useGet({ key: ['cmp_specific'], fetch: specific({ table: 'tbl_racks', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false}, 
-            onSuccess: (data) => { 
+            onSuccess: (data) => {
                 if(Array.isArray(data)) 
                     for(let count = 0; count < Object.keys(data[0]).length; count++) { 
                         let _name = Object.keys(data[0])[count]; 

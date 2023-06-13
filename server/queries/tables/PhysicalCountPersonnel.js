@@ -151,7 +151,17 @@ class PhysicalCountPersonnel {
                         .select(`pnl.*, emp.fname, emp.mname, emp.lname`)
                         .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
                         .condition(`WHERE pnl.branch= '${data.branch}' AND pnl.physical_count_id= ${data.physical_count_id} AND pnl.status = 1`)
-                        .except(`WHERE pnl.user_id = ${data.user_id} ORDER BY 1 DESC`)
+                        .except(`WHERE pnl.user_id = ${data.user_id} ORDER BY 12 DESC`)
+                        .build()).rows;
+    }
+
+    search = async data => {
+        return (await new Builder(`tbl_physical_count_personnels AS pnl`)
+                        .select(`pnl.*, emp.fname, emp.mname, emp.lname`)
+                        .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
+                        .condition(`WHERE pnl.branch= '${data.branch}' AND pnl.physical_count_id= ${data.physical_count_id} AND pnl.status = 1
+                                            ${data.searchtxt !== '' ? `AND (emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}`)
+                        .except(`WHERE pnl.user_id = ${data.user_id} ORDER BY 12 DESC`)
                         .build()).rows;
     }
 }

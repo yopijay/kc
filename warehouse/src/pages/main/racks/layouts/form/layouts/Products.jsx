@@ -7,7 +7,7 @@ import { Controller } from "react-hook-form";
 import { ProfileCntx } from "core/context/Profile"; // Context
 import { FormCntxt } from "core/context/Form"; // Context
 import { formatter, successToast, useGet, usePost } from "core/function/global"; // Function
-import { dropdown, save, series, specific } from "core/api"; // API
+import { dropdown, save, series, specific, update } from "core/api"; // API
 
 // Constants
 import { input, select } from "../index.style"; // Styles
@@ -38,6 +38,8 @@ const Products = ({ id, setOpen, record, rack }) => {
             setValue('rcs_date', data[0].rcs_date); 
             setValue('ras_date', data[0].ras_date);
             setValue('des_date', data[0].des_date);
+            setValue('rcs_total', data[0].rcs_total); 
+            setValue('ras_total', data[0].ras_total);
         } 
     });
 
@@ -51,6 +53,14 @@ const Products = ({ id, setOpen, record, rack }) => {
 
     const  { mutate: assignras } =
         usePost({ fetch: save, 
+            onSuccess: res => {
+                if(res.result === 'error') { (res.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
+                else { let _data = data; _data['rack_id'] = rack; _data['list'] = 'items'; successToast(res.message, 3000); record({ table: 'tbl_racks', data: _data }); setOpen(false); }
+            }
+        });
+
+    const  { mutate: assigndes } =
+        usePost({ fetch: update, 
             onSuccess: res => {
                 if(res.result === 'error') { (res.error).forEach((err, index) => { setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 }); }); }
                 else { let _data = data; _data['rack_id'] = rack; _data['list'] = 'items'; successToast(res.message, 3000); record({ table: 'tbl_racks', data: _data }); setOpen(false); }
@@ -108,25 +118,46 @@ const Products = ({ id, setOpen, record, rack }) => {
                         </Box>
                         <Typography variant= "body2" color= "error.dark">{ errors.rcs?.message }</Typography>
                     </Stack> : '' }
-                    { id !== null && getValues()?.rcs_date !== null ? <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
-                        <Typography variant= "body2" gutterBottom>*Assign RAS Counter</Typography>
-                        <Box sx= { select }>
-                            { ras?.length > 0 ?
-                                <Controller control= { control } name= "ras"
-                                    render= { ({ field: { onChange, value } }) => (
-                                        <Autocomplete options= { ras?.sort((a, b) => a.id - b.id) } disableClearable 
-                                            getOptionLabel= { pnl => pnl.name || pnl.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
-                                            isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
-                                            onChange= { (e, item) => { setError('ras', { message: '' }); onChange(item.id); } }
-                                            renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
-                                            value= { ras?.find(data => { return data.id === (getValues().ras !== undefined ? getValues().ras : value) }) !== undefined ?
-                                                            ras?.find(data => { return data.id === (getValues().ras !== undefined ? getValues().ras : value) }) : ras.length === 0 ?
-                                                            { id: 0, name: '-- SELECT AN ITEM BELOW --' } : ras[0] } />
-                                    ) } />
-                                : <Typography color= "text.disabled">You must create a user first!</Typography> }
-                        </Box>
-                        <Typography variant= "body2" color= "error.dark">{ errors.ras?.message }</Typography>
-                    </Stack> : '' }
+                    { id !== null && getValues()?.rcs_date !== null ? 
+                        getValues()?.rcs_total === getValues()?.ras_total ? 
+                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                                <Typography variant= "body2" gutterBottom>*Assign RAS Counter</Typography>
+                                <Box sx= { select }>
+                                    { ras?.length > 0 ?
+                                        <Controller control= { control } name= "ras"
+                                            render= { ({ field: { onChange, value } }) => (
+                                                <Autocomplete options= { ras?.sort((a, b) => a.id - b.id) } disableClearable 
+                                                    getOptionLabel= { pnl => pnl.name || pnl.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                                    isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
+                                                    onChange= { (e, item) => { setError('ras', { message: '' }); onChange(item.id); } }
+                                                    renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
+                                                    value= { ras?.find(data => { return data.id === (getValues().ras !== undefined ? getValues().ras : value) }) !== undefined ?
+                                                                    ras?.find(data => { return data.id === (getValues().ras !== undefined ? getValues().ras : value) }) : ras.length === 0 ?
+                                                                    { id: 0, name: '-- SELECT AN ITEM BELOW --' } : ras[0] } />
+                                            ) } />
+                                        : <Typography color= "text.disabled">You must create a user first!</Typography> }
+                                </Box>
+                                <Typography variant= "body2" color= "error.dark">{ errors.ras?.message }</Typography>
+                            </Stack> :
+                            <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
+                                <Typography variant= "body2" gutterBottom>*Assign Third Counter</Typography>
+                                <Box sx= { select }>
+                                    { ras?.length > 0 ?
+                                        <Controller control= { control } name= "third_count"
+                                            render= { ({ field: { onChange, value } }) => (
+                                                <Autocomplete options= { ras?.sort((a, b) => a.id - b.id) } disableClearable 
+                                                    getOptionLabel= { pnl => pnl.name || pnl.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
+                                                    isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id } 
+                                                    onChange= { (e, item) => { setError('third_count', { message: '' }); onChange(item.id); } }
+                                                    renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth /> ) } 
+                                                    value= { ras?.find(data => { return data.id === (getValues().third_count !== undefined ? getValues().third_count : value) }) !== undefined ?
+                                                                    ras?.find(data => { return data.id === (getValues().third_count !== undefined ? getValues().third_count : value) }) : ras.length === 0 ?
+                                                                    { id: 0, name: '-- SELECT AN ITEM BELOW --' } : ras[0] } />
+                                            ) } />
+                                        : <Typography color= "text.disabled">You must create a user first!</Typography> }
+                                </Box>
+                                <Typography variant= "body2" color= "error.dark">{ errors.third_count?.message }</Typography>
+                            </Stack> : '' }
                 </Stack>
             </form>
             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" spacing= { 2 }>
@@ -143,7 +174,10 @@ const Products = ({ id, setOpen, record, rack }) => {
                         if(form.ras === null && form.rcs_date !== null) { errors.push({ name: 'ras', message: 'This field is required!' }); }
 
                         if(!(errors.length > 0)) { 
-                            if(form.rcs_date !== null) { form['ras_created_by'] = atob(localStorage.getItem('token')); assignras({ table: 'tbl_physical_count_ras', data: form }); }
+                            if(form.rcs_date !== null) { 
+                                if(form.rcs_total === form.ras_total) { form['ras_created_by'] = atob(localStorage.getItem('token')); assignras({ table: 'tbl_physical_count_ras', data: form }); }
+                                else { form['des_created_by'] = atob(localStorage.getItem('token')); assigndes({ table: 'tbl_physical_count_ras', data: form }); }
+                            }
                             else { form['rcs_created_by'] = atob(localStorage.getItem('token')); assignrcs({ table: 'tbl_physical_count_rcs', data: form }); }
                         }
                         else { errors.forEach(err => setError(err.name, { message: err.message })); }
