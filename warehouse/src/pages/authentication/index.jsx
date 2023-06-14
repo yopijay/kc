@@ -15,7 +15,7 @@ import { btn, input, label, select, title } from "./index.style"; // Styles
 const Index = () => {
     let date = `${dayjs(new Date()).year()}-${dayjs(new Date()).month() + 1}-${dayjs(new Date()).date()}`;
     const { control, errors, register, handleSubmit, setError } = useContext(FormCntxt);
-    const { data: sched } = useGet({ key: ['schedule'], fetch: schedule(date), options: { refetchOnWindowFocus: false } });
+    const { data: sched } = useGet({ key: ['schedule'], fetch: schedule(date), options: { refetchOnWindowFocus: false, refetchInterval: 1000 } });
     const { mutate: signin } = usePost({ fetch: authentication, onSuccess: data => { 
         if(data.result === 'error') { (data.error).forEach((err, index) => setError(err.name, { type: index === 0 ? 'focus' : '', message: err.message }, { shouldFocus: index === 0 })) }
         else { localStorage.setItem('token', btoa(data.id)); window.location.href = '/'; }

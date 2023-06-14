@@ -1,7 +1,7 @@
 // Libraries
 import { Grid, Stack, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBoxesStacked, faChartPie, faTriangleExclamation, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faChartPie, faTriangleExclamation, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const Admin = () => {
@@ -12,12 +12,6 @@ const Admin = () => {
                 <Stack direction= "column" justifyContent= "center" alignItems= "center" spacing= { 2 } sx= {{ padding: '20px 0' }}>
                     <FontAwesomeIcon icon= { faUsers } size= "xl" color= "#4b4b4b" />
                     <Typography variant= "body2">Attendees</Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs= { 6 } sm= { 3 } component= { Link } to= "/racks" sx= {{ textDecoration: 'none', color: '#444444' }}>
-                <Stack direction= "column" justifyContent= "center" alignItems= "center" spacing= { 2 } sx= {{ padding: '20px 0' }}>
-                    <FontAwesomeIcon icon= { faBoxesStacked } size= "xl" color= "#4b4b4b" />
-                    <Typography variant= "body2">Racks</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 6 } sm= { 3 } component= { Link } to= "/rcs" sx= {{ textDecoration: 'none', color: '#444444' }}>

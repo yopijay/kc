@@ -25,7 +25,7 @@ const Items = () => {
 
     return (
         <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>
-            { list?.map((itm, index) => (
+            { list?.length > 0 ? list?.map((itm, index) => (
                 <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= { card } style= {{ cursor: 'pointer' }}
                     onClick= { () => { setScanner(true); setCode(itm.item_code); setId(itm.id); } }>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
@@ -34,7 +34,7 @@ const Items = () => {
                     </Stack>
                     <Box sx= {{ width: '10px', height: '10px', backgroundColor: `${itm.date_counted !== null ? '#7D8F69' : '#EF9F9F'}`, borderRadius: '20px' }} />
                 </Stack>
-            )) }
+            )) : <Stack direction= "row" justifyContent= "center" alignItems= "center" sx= { card }><Typography variant= "body2">No items/s found!</Typography></Stack> }
             <Dialog fullScreen= { fullscreen } open= { scanner } maxWidth= "md" fullWidth= { true } disableEscapeKeyDown= { true }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ padding: '30px' }}>
                     <Stack direction= "row" justifyContent= "flex-end" alignItems= "center">
