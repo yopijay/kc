@@ -3,14 +3,20 @@ const Global = require('../../function/global'); // Function
 
 const audit = { series_no: '', table_name: 'tbl_physical_count_rcs',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class PhysicalCountRCS {
-    specific = async data => { 
-        let itm = (await new Builder(`tbl_items`).select().condition(`WHERE id= ${JSON.parse(data).id}`).build()).rows;
-        let rcs = await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).physical_count_id} AND item_id= ${JSON.parse(data).id}`).build();
-        
-        itm[0]['rcs'] = rcs.rowCount > 0 ? rcs.rows[0].count_by : null;
-        itm[0]['rcs_date'] = rcs.rowCount > 0 ? rcs.rows[0].date_counted : null;
-
-        return itm;
+    specific = async data => {
+        if(JSON.parse(data).id !== null) {
+            let itm = (await new Builder(`tbl_items AS itm`)
+                                .select(`itm.*, brd.name AS brand`)
+                                .join({ table: `tbl_brand AS brd`, condition: `itm.brand_id = brd.id`, type: `LEFT` })
+                                .condition(`WHERE itm.id= ${JSON.parse(data).id}`)
+                                .build()).rows;
+            let rcs = await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).physical_count_id} AND item_id= ${JSON.parse(data).id}`).build();
+            
+            itm[0]['rcs'] = rcs.rowCount > 0 ? rcs.rows[0].count_by : null;
+            itm[0]['rcs_date'] = rcs.rowCount > 0 ? rcs.rows[0].date_counted : null;
+    
+            return itm;
+        }
     }
 
     save = async data => {
@@ -50,46 +56,6 @@ class PhysicalCountRCS {
             Global.audit(audit);
             return { result: 'success', message: 'Successfully assigned!' }
         }
-        // let errors = [];
-        // let itm = null;
-
-        // if(data.item_id !== null) { itm = (await new Builder(`tbl_items`).select().condition(`WHERE id= ${data.item_id}`).build()).rows[0]; }
-        // else {
-        //     if((await new Builder(`tbl_items`).select().condition(`WHERE item_code= '${(data.item_code).toUpperCase()}'`).build()).rowCount > 0) {
-        //         errors.push({ name: 'item_code', message: 'Item code already exist!' });
-        //     }
-
-        //     if(!(errors.length > 0)) {
-        //         itm = (await new Builder(`tbl_items`)
-        //                     .insert({ columns: `series_no, brand_id, rack_id, item_code, mother_box, qty_per_mother_box, small_box, qty_per_small_box, tingi, total, status, created_by, date_created`, 
-        //                                     values: `'${(data.itm_series_no).toUpperCase()}', ${data.brand_id}, ${data.id}, '${(data.item_code).toUpperCase()}', 0, 0, 0, 0, 0, 0, 1, ${data.rcs_created_by}, '${date}'` })
-        //                     .condition(`RETURNING *`)
-        //                     .build()).rows[0];
-
-        //         Global.audit({ series_no: Global.randomizer(7), table_name: 'tbl_items', item_id: itm.id, field: 'all', previous: null, current: null, action: 'create', user_id: data.rcs_created_by, date: date });
-        //     }
-        //     else { return { result: 'error', error: errors } }
-        // }
-
-        // let rcs = await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE physical_count_id= ${data.physical_count_id} AND item_id= ${itm.id}`).build();
-        
-        // if(rcs.rowCount > 0) {
-        //     await new Builder(`tbl_physical_count_rcs`).update(`count_by= ${data.rcs}`).condition(`WHERE id= ${rcs.rows[0].id}`).build();
-        //     Global.audit({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: rcs.rows[0].id, field: 'count_by', previous: rcs.rows[0].count_by, current: data.rcs, 
-        //                             action: 'update', user_id: data.rcs_created_by, date: date });
-        // }
-        // else {
-        //     let _rcs = (await new Builder(`tbl_physical_count_rcs`)
-        //                         .insert({ columns: `physical_count_id, item_id, qty_mother_box, qty_per_mother_box, qty_small_box, qty_per_small_box, tingi, total, count_by, assigned_by, date_assigned`, 
-        //                                         values: `${data.physical_count_id}, ${itm.id}, 0, 0, 0, 0, 0, 0, ${data.rcs}, ${data.rcs_created_by}, '${date}'` })
-        //                         .condition(`RETURNING id`)
-        //                         .build()).rows[0];
-
-        //     Global.audit({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: _rcs.id, field: 'all', previous: null, current: null, 
-        //                             action: 'create', user_id: data.rcs_created_by, date: date });
-        // }
-
-        // return { result: 'success', message: 'Successfully saved!' }
     }
 
     list = async data => {
@@ -103,14 +69,14 @@ class PhysicalCountRCS {
 
         for(let count = 0; count < brands.length; count++) { query += `${count > 0 ? ' OR' : ''}itm.brand_id= ${brands[count].brand_id}`; }
 
+        let itm = (await new Builder(`tbl_items AS itm`)
+                            .select(`itm.*`)
+                            .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                            .condition(`WHERE (${query}) AND rck.branch= '${branch[data.branch]}' ORDER BY itm.item_code DESC`)
+                            .build()).rows;
+
         switch(data.type) {
             case 'admin':
-                let itm = (await new Builder(`tbl_items AS itm`)
-                                    .select(`itm.*`)
-                                    .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
-                                    .condition(`WHERE (${query}) AND rck.branch= '${branch[data.branch]}' ORDER BY itm.item_code DESC`)
-                                    .build()).rows;
-        
                 for(let count = 0; count < itm.length; count++) {
                     let item = (await new Builder(`tbl_items AS itm`)
                                         .select(`itm.id, itm.item_code, rcs.count_by, rcs.date_counted, rcs.total, emp.fname, emp.lname`)
@@ -123,12 +89,25 @@ class PhysicalCountRCS {
                 }
 
                 return items;
-            default: return [];
+            default:
+                for(let count = 0; count < itm.length; count++) {
+                    let item = (await new Builder(`tbl_items AS itm`)
+                                        .select(`itm.id, itm.item_code, rcs.count_by, rcs.date_counted, rcs.total, emp.fname, emp.lname, rck.branch, rck.floor, rck.code`)
+                                        .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = rcs.count_by`, type: `LEFT` })
+                                        .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                                        .condition(`WHERE itm.id= ${itm[count].id} AND rcs.count_by= ${data.user_id}`)
+                                        .build()).rows[0];
+                    
+                    items.push(item);
+                }
+
+                return items;
         }
     }
 
     update = async data => {
-        let rcs = (await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE id= ${data.id}`).build()).rows[0];
+        let rcs = (await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE physical_count_id= ${data.physical_count_id} AND item_id= ${data.id}`).build()).rows[0];
         let date = Global.date(new Date());
         let audits = [];
 
@@ -179,9 +158,14 @@ class PhysicalCountRCS {
                             remarks= ${data.remarks !== '' && data.remarks !== null ? `'${(data.remarks).toUpperCase()}'` : null},
                             comments= ${data.comments !== '' && data.comments !== null ? `'${(data.comments).toUpperCase()}'` : null},
                             date_counted= '${date}'`)
-            .condition(`WHERE id= ${data.id}`)
+            .condition(`WHERE id= ${rcs.id}`)
             .build();
 
+        await new Builder(`tbl_physical_count_ras`)
+            .insert({ columns: `physical_count_id, item_id, qty_mother_box, qty_per_mother_box, qty_small_box, qty_per_small_box, tingi, total`, 
+                            values: `${data.physical_count_id}, ${data.id}, 0, 0, 0, 0, 0, 0` })
+            .build();
+            
         audits.forEach(data => Global.audit(data));
         return { result: 'success', message: 'Successfully saved!' }
     }

@@ -16,8 +16,6 @@ const specific = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().specific(data)); break;
-            // case 'tbl_racks': resolve(await new Racks().specific(data)); break;
-            // case 'tbl_items': resolve(await new Items().specific(data)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().specific(data)); break;
             case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().specific(data)); break;
         }

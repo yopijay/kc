@@ -30,7 +30,7 @@ const Form = ({ fetching }) => {
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>
-            <Grid item xs= { 12 }><Counter fetching= { fetching } /></Grid>
+            { type !== 'new' ? <Grid item xs= { 12 }><Counter fetching= { fetching } /></Grid> : '' }
             <Grid item xs= { 12 } sm= { 8 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">*Series No.</Typography>
