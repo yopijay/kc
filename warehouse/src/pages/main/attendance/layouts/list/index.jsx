@@ -1,7 +1,7 @@
 // Libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Stack, TextField, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { useContext, useState } from "react";
 import { faChevronLeft, faFileArrowDown, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
@@ -9,20 +9,24 @@ import { Link } from "react-router-dom";
 import { ProfileCntx } from "core/context/Profile"; // Context
 import { ListCntxt } from "core/context/List"; // Context
 import { FormCntxt } from "core/context/Form"; // Context
-import { usePost } from "core/function/global"; //Functions
-import { records } from "core/api"; // API
+import { useGet, usePost } from "core/function/global"; //Functions
+import { look, records } from "core/api"; // API
 
 // Constants
 import { btnexport, btnicon, search } from "./index.style"; // Styles
 import Items from "./Items"; // Layouts
+import Loader from "./Loader"; // Layouts
 
 const Index = () => {
     const { data } = useContext(ProfileCntx);
     const { setList } = useContext(ListCntxt);
-    const { register, setValue } = useContext(FormCntxt);
-    const { mutate: record } = usePost({ fetch: records, options: { refetchOnWindowFocus: false }, onSuccess: data => setList(data) });
-
-    useEffect(() => record({ table: 'tbl_physical_count_personnels', data: data }), [ record, data ]);
+    const { register, getValues } = useContext(FormCntxt);
+    const [ interval, setInterval ] = useState(true);
+    const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: data => setList(data) });
+    useGet({ key: ['attendance_list'], 
+                    fetch: records({ table: `tbl_physical_count_personnels`, data: data }), 
+                    options: { refetchOnWindowFocus: false, refetchInterval: interval ? 1000 : false }, 
+                    onSuccess: data => setList(data) });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
@@ -35,7 +39,16 @@ const Index = () => {
                     <Box sx= { search }>
                         <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
                         <TextField { ...register('searchtxt') } variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
-                            onChange= { e => { setValue('searchtxt', e.target.value); } } />
+                            onChange= { e => { 
+                                let form = getValues();
+                                form['searchtxt'] = e.target.value;
+                                form['branch'] = data.branch;
+                                form['user_id'] = data.user_id;
+                                form['physical_count_id'] = data.physical_count_id;
+
+                                setInterval(false);
+                                find({ table: 'tbl_physical_count_personnels', data: form }); 
+                            } } />
                     </Box>
                 </form>
                 <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" spacing= { 1 }>
@@ -45,7 +58,7 @@ const Index = () => {
                     </Typography>
                 </Stack>
             </Stack>
-            <Items />
+            { !finding ? <Items /> : <Loader /> }
         </Stack>
     );
 }

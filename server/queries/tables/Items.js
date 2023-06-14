@@ -11,7 +11,7 @@ class Items {
     specific = async (id) => {
         return (await new Builder(`tbl_items AS itm`)
                         .select(`itm.*, rck.branch, rck.floor, rck.id AS rack_id, rcs.count_by AS rcs, ras.count_by AS ras, rcs.date_counted AS rcs_date,
-                                        ras.date_counted AS ras_date`)
+                                        ras.date_counted AS ras_date, rcs.total AS rcs_total, ras.total AS ras_total`)
                         .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
                         .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
                         .join({ table: `tbl_physical_count_ras AS ras`, condition: `ras.item_id = itm.id`, type: `LEFT` })

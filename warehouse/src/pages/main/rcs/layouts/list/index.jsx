@@ -1,28 +1,26 @@
 // Libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Stack, TextField, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
-import { faChevronLeft, faFileArrowDown, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useContext } from "react";
+import { faChevronLeft, faFileArrowDown, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 // Core
 import { FormCntxt } from "core/context/Form"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
 import { ListCntxt } from "core/context/List"; // Context
-import { usePost } from "core/function/global"; // Function
+import { useGet } from "core/function/global"; // Function
 import { records } from "core/api"; // API
 
 // Constants
-import { btnexport, search } from "./index.style"; // Styles
+import { btnexport, btnicon, search } from "./index.style"; // Styles
 import Items from "./Items"; // Layouts
 
 const Index = () => {
     const { data } = useContext(ProfileCntx);
     const { setList } = useContext(ListCntxt);
     const { register, setValue } = useContext(FormCntxt);
-    const { mutate: record } = usePost({ fetch: records, options: { refetchOnWvindowFocus: false }, onSuccess: data => setList(data) });
-
-    useEffect(() => record({ table: 'tbl_physical_count_rcs', data: data }), [ record, data ]);
+    useGet({ key: ['rcs_list'], fetch: records({ table: 'tbl_physical_count_rcs', data: data }), options: { refetchOnWindowFocus: false, refetchInterval: 1000 }, onSuccess: data => setList(data) });
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
@@ -40,6 +38,9 @@ const Index = () => {
                 </form>
                 <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" spacing= { 1 }>
                     <Typography sx= { btnexport }><FontAwesomeIcon icon= { faFileArrowDown } color= "#ffffff" size= "lg" /></Typography>
+                    <Typography component= { Link } to= "/rcs/form/new" sx= { btnicon }>
+                        <FontAwesomeIcon icon= { faPlus } style= {{ color: '#FFFFFF' }} size= "lg" />
+                    </Typography>
                 </Stack>
             </Stack>
             <Items />

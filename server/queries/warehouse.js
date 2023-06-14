@@ -12,14 +12,12 @@ const login = data => { return new PhysicalCountPersonnel().login(data); }
 const logout = (data) => { return new PhysicalCountPersonnel().logout(data); }
 const profile = id => { return new PhysicalCount().profile(id); }
 
-const specific = (table, id) => {
+const specific = (table, data) => {
     return new Promise(async resolve => {
         switch(table) {
-            case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().specific(id)); break;
-            case 'tbl_racks': resolve(await new Racks().specific(id)); break;
-            case 'tbl_items': resolve(await new Items().specific(id)); break;
-            case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().specific(id)); break;
-            case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().specific(id)); break;
+            case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().specific(data)); break;
+            case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().specific(data)); break;
+            case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().specific(data)); break;
         }
     });
 }
@@ -40,6 +38,7 @@ const dropdown = (table, data) => {
         switch(table) {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().dropdown(data)); break;
             case 'tbl_brands': resolve(await new Brand().dropdown(data)); break;
+            case 'tbl_racks': resolve(await new Racks().dropdown(data)); break;
         }
     });
 }
@@ -73,6 +72,15 @@ const series = table => {
     });
 }
 
+const search = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().search(data)); break;
+            case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().search(data)); break;
+        }
+    });
+}
+
 
 module.exports = {
     schedule,
@@ -84,5 +92,6 @@ module.exports = {
     save,
     update,
     specific,
-    series
+    series,
+    search
 }
