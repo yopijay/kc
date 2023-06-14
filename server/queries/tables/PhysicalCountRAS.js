@@ -3,13 +3,18 @@ const Global = require('../../function/global'); // Function
 
 const audit = { series_no: '', table_name: 'tbl_physical_count_ras',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class PhysicalCountRAS {
-    specific = async id => {
-        return (await new Builder(`tbl_physical_count_ras AS ras`)
-                        .select(`ras.*, itm.item_code, itm.item_description, brd.name AS brand`)
-                        .join({ table: `tbl_items AS itm`, condition: `ras.item_id = itm.id`, type: `LEFT` })
-                        .join({ table: `tbl_brand AS brd`, condition: `itm.brand_id= brd.id`, type: `LEFT` })
-                        .condition(`WHERE ras.id= ${id}`)
-                        .build()).rows;
+    specific = async data => {
+        let itm = (await new Builder(`tbl_items AS itm`)
+                            .select(`itm.*, brd.name AS brand`)
+                            .join({ table: `tbl_brand AS brd`, condition: `itm.brand_id = brd.id`, type: `LEFT` })
+                            .condition(`WHERE itm.id= ${JSON.parse(data).id}`)
+                            .build()).rows;
+        let ras = await new Builder(`tbl_physical_count_ras`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).physical_count_id} AND item_id= ${JSON.parse(data).id}`).build();
+        
+        itm[0]['ras'] = ras.rowCount > 0 ? ras.rows[0].count_by : null;
+        itm[0]['ras_date'] = ras.rowCount > 0 ? ras.rows[0].date_counted : null;
+
+        return itm;
     }
 
     list = async data => {
@@ -18,7 +23,7 @@ class PhysicalCountRAS {
         switch(data.type) {
             case 'admin':
                 return (await new Builder(`tbl_physical_count_ras AS ras`)
-                                .select(`ras.id, itm.item_code, emp.fname, emp.lname, ras.date_counted`)
+                                .select(`itm.id, itm.item_code, ras.count_by, ras.date_counted, ras.total, emp.fname, emp.lname`)
                                 .join({ table: `tbl_items AS itm`, condition: `ras.item_id = itm.id`, type: `LEFT` })
                                 .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
                                 .join({ table: `tbl_employee AS emp`, condition: `ras.count_by = emp.user_id`, type: `LEFT` })
@@ -26,7 +31,7 @@ class PhysicalCountRAS {
                                 .build()).rows;
             case 'ras': 
                 return (await new Builder(`tbl_physical_count_ras AS ras`)
-                                .select(`ras.*, itm.item_code, rck.branch, rck.floor, rck.code`)
+                                .select(`itm.id, itm.item_code, ras.count_by, ras.date_counted, ras.total, emp.fname, emp.lname`)
                                 .join({ table: `tbl_items AS itm`, condition: `ras.item_id = itm.id`, type: `LEFT` })
                                 .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
                                 .condition(`WHERE ras.physical_count_id= ${data.physical_count_id} AND ras.count_by= ${data.user_id} ORDER BY rck.code ASC`)
