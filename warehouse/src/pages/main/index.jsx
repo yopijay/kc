@@ -13,7 +13,6 @@ import { LoaderScreen } from "core/loader/Screen"; // Loader
 import Navbar from "pages/global/navbar";
 import Home from "pages/main/home";
 import Attendance from "pages/main/attendance";
-import Racks from "pages/main/racks";
 import RCS from "pages/main/rcs";
 import RAS from "pages/main/ras";
 import Descrepancies from "pages/main/descrepancy";
@@ -32,7 +31,6 @@ const Index = () => {
                         <Routes>
                             <Route exact path= "*" element= { <Suspense fallback= { <LoaderScreen /> }><Home /></Suspense> } />
                             <Route exact path= "/attendees/*" element= { <Suspense fallback= { <LoaderScreen /> }><Attendance /></Suspense> } />
-                            <Route exact path= "/racks/*" element= { <Suspense fallback= { <LoaderScreen /> }><Racks /></Suspense> } />
                             <Route exact path= "/rcs/*" element= { <Suspense fallback= { <LoaderScreen /> }><RCS /></Suspense> } />
                             <Route exact path= "/ras/*" element= { <Suspense fallback= { <LoaderScreen /> }><RAS /></Suspense> } />
                             <Route exact path= "/descrepancies/*" element= { <Suspense fallback= { <LoaderScreen /> }><Descrepancies /></Suspense> } />

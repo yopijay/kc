@@ -36,7 +36,7 @@ const Index = () => {
     const navigate = useNavigate();
     const { handleSubmit, setError, setValue } = useContext(FormCntxt);
     const { isFetching, refetch } =
-        useGet({ key: ['pnl_specific'], fetch: specific({ table: 'tbl_physical_count_personnels', id: id ?? null }), options: { enabled: type !== 'new', refetchOnWindowFocus: false },
+        useGet({ key: ['pnl_specific'], fetch: specific({ table: 'tbl_physical_count_personnels', data: JSON.stringify({ id: id ?? null }) }), options: { enabled: type !== 'new', refetchOnWindowFocus: false },
             onSuccess: data => {
                 if(Array.isArray(data))
                     for(let count = 0; count < Object.keys(data[0]).length; count++) {

@@ -40,7 +40,7 @@ const Index = () => {
         data['sort'] = 'desc';
         data['searchtxt'] = '';
 
-        record({ table: 'tbl_company', data: data }); 
+        record({ table: 'tbl_company', data: data });
     }, [ register, record, getValues ] );
 
     return (
