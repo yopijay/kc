@@ -3,11 +3,12 @@ const Global = require('../../function/global'); // Function
 
 const audit = { series_no: '', table_name: 'tbl_physical_count_personnel',  item_id: 0, field: '', previous: null, current: null, action: '', user_id: 0, date: '' }; // Used for audit trail
 class PhysicalCountPersonnel {
-    specific = async id => { 
+    specific = async data => { 
         return (await new Builder(`tbl_physical_count_personnels AS pnl`)
                         .select(`pnl.*, CONCAT(emp.lname, ', ', emp.fname, ' ', emp.mname) AS name`)
                         .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = pnl.user_id`, type: `LEFT` })
-                        .condition(`WHERE pnl.user_id= ${id}`).build()).rows; }
+                        .condition(`WHERE pnl.user_id= ${JSON.parse(data).id}`).build()).rows; 
+    }
 
     dropdown = async data => {
         switch(data.platform) {
@@ -23,7 +24,7 @@ class PhysicalCountPersonnel {
                                 .concat((await new Builder(`tbl_physical_count_personnels AS pnl`)
                                                 .select(`pnl.user_id AS id, CONCAT(emp.lname, ', ', emp.fname, ' ', emp.mname) AS name`)
                                                 .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
-                                                .condition(`WHERE is_logged = 1 AND physical_count_id= ${data.physical_count_id} AND pnl.type= '${data.type}'`)
+                                                .condition(`WHERE physical_count_id= ${data.physical_count_id} AND pnl.type= '${data.type}'`)
                                                 .except(`WHERE pnl.user_id= ${data.user_id}`)
                                                 .build()).rows);
 
@@ -151,7 +152,17 @@ class PhysicalCountPersonnel {
                         .select(`pnl.*, emp.fname, emp.mname, emp.lname`)
                         .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
                         .condition(`WHERE pnl.branch= '${data.branch}' AND pnl.physical_count_id= ${data.physical_count_id} AND pnl.status = 1`)
-                        .except(`WHERE pnl.user_id = ${data.user_id} ORDER BY 1 DESC`)
+                        .except(`WHERE pnl.user_id = ${data.user_id} ORDER BY 12 DESC`)
+                        .build()).rows;
+    }
+
+    search = async data => {
+        return (await new Builder(`tbl_physical_count_personnels AS pnl`)
+                        .select(`pnl.*, emp.fname, emp.mname, emp.lname`)
+                        .join({ table: `tbl_employee AS emp`, condition: `pnl.user_id = emp.user_id`, type: `LEFT` })
+                        .condition(`WHERE pnl.branch= '${data.branch}' AND pnl.physical_count_id= ${data.physical_count_id} AND pnl.status = 1
+                                            ${data.searchtxt !== '' ? `AND (emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}`)
+                        .except(`WHERE pnl.user_id = ${data.user_id} ORDER BY 12 DESC`)
                         .build()).rows;
     }
 }

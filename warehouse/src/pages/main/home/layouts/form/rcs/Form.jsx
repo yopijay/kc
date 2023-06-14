@@ -25,7 +25,7 @@ const Form = ({ fetching }) => {
                             <Typography gutterBottom variant= "body2">*Mother Box</Typography>
                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                 <TextField type= "number" { ...register('qty_mother_box') } name= "qty_mother_box" variant= "standard" defaultValue= "0" 
-                                    disabled= { getValues().date_counted !== null }
+                                    disabled= { getValues().rcs_date !== null }
                                     onChange= { (e) => {
                                         setValue('total', ((parseInt(e.target.value !== '' ? e.target.value : 0) * parseInt(getValues().qty_per_mother_box)) +
                                             parseInt(getValues().qty_small_box) * parseInt(getValues().qty_per_small_box)) + parseInt(getValues().tingi)); } }
@@ -38,7 +38,7 @@ const Form = ({ fetching }) => {
                             <Typography gutterBottom variant= "body2">*Quantity Per Mother Box</Typography>
                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                 <TextField type= "number" { ...register('qty_per_mother_box') } name= "qty_per_mother_box" variant= "standard" defaultValue= "0" 
-                                    disabled= { getValues().date_counted !== null }
+                                    disabled= { getValues().rcs_date !== null }
                                     onChange= { (e) => { setValue('total', ((parseInt(getValues().qty_mother_box) * parseInt(e.target.value !== '' ? e.target.value : 0)) +
                                         parseInt(getValues().qty_small_box) * parseInt(getValues().qty_per_small_box)) + parseInt(getValues().tingi)); } }
                                     InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
@@ -50,7 +50,7 @@ const Form = ({ fetching }) => {
                             <Typography gutterBottom variant= "body2">*Small Box</Typography>
                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                 <TextField type= "number" { ...register('qty_small_box') } name= "qty_small_box" variant= "standard" defaultValue= "0"
-                                    disabled= { getValues().date_counted !== null }
+                                    disabled= { getValues().rcs_date !== null }
                                     onChange= { (e) => { setValue('total', ((parseInt(getValues().qty_mother_box) * parseInt(getValues().qty_per_mother_box)) +
                                         parseInt(e.target.value !== '' ? e.target.value : 0) * parseInt(getValues().qty_per_small_box)) + parseInt(getValues().tingi)); } } 
                                     InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
@@ -62,7 +62,7 @@ const Form = ({ fetching }) => {
                             <Typography gutterBottom variant= "body2">*Quantity Per Small Box</Typography>
                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
                                 <TextField type= "number" { ...register('qty_per_small_box') } name= "qty_per_small_box" variant= "standard" defaultValue= "0" 
-                                    disabled= { getValues().date_counted !== null }
+                                    disabled= { getValues().rcs_date !== null }
                                     onChange= { (e) => { setValue('total', ((parseInt(getValues().qty_mother_box) * parseInt(getValues().qty_per_mother_box)) +
                                         parseInt(getValues().qty_small_box) * parseInt(e.target.value !== '' ? e.target.value : 0)) + parseInt(getValues().tingi)); } } 
                                     InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
@@ -73,7 +73,7 @@ const Form = ({ fetching }) => {
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                             <Typography gutterBottom variant= "body2">*Tingi</Typography>
                             { fetching ? <Skeleton variant= "rounded" height= "35px" /> :
-                                <TextField type= "number" { ...register('tingi') } name= "tingi" variant= "standard" defaultValue= "0" disabled= { getValues().date_counted !== null }
+                                <TextField type= "number" { ...register('tingi') } name= "tingi" variant= "standard" defaultValue= "0" disabled= { getValues().rcs_date !== null }
                                     onChange= { (e) => { setValue('total', ((parseInt(getValues().qty_mother_box) * parseInt(getValues().qty_per_mother_box)) +
                                         parseInt(getValues().qty_small_box) * parseInt(getValues().qty_per_small_box)) + parseInt(e.target.value !== '' ? e.target.value : 0)); } } 
                                     InputProps= {{ inputProps: { min: 0 }, disableUnderline: true }} sx= { input } /> }
@@ -92,14 +92,14 @@ const Form = ({ fetching }) => {
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                             <Typography gutterBottom variant= "body2">Remarks</Typography>
                             { fetching ? <Skeleton variant= "rounded" height= "100px" /> : 
-                                <TextareaAutosize name= "remarks" { ...register('remarks') } minRows= { 4 } maxRows= { 4 } style= { textarea } disabled= { getValues().date_counted !== null } /> }
+                                <TextareaAutosize name= "remarks" { ...register('remarks') } minRows= { 4 } maxRows= { 4 } style= { textarea } disabled= { getValues().rcs_date !== null } /> }
                         </Stack>
                     </Grid>
                     <Grid item xs= { 12 }>
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                             <Typography gutterBottom variant= "body2">Comments</Typography>
                             { fetching ? <Skeleton variant= "rounded" height= "100px" /> : 
-                                <TextareaAutosize name= "comments" { ...register('comments') } minRows= { 4 } maxRows= { 4 } style= { textarea } disabled= { getValues().date_counted !== null } /> }
+                                <TextareaAutosize name= "comments" { ...register('comments') } minRows= { 4 } maxRows= { 4 } style= { textarea } disabled= { getValues().rcs_date !== null } /> }
                         </Stack>
                     </Grid>
                 </Grid>
