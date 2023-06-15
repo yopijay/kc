@@ -6,6 +6,7 @@ const Items = require('./tables/Items');
 const Brand = require('./tables/Brand');
 const PhysicalCountRCS = require('./tables/PhysicalCountRCS');
 const PhysicalCountRAS = require('./tables/PhysicalCountRAS');
+const PhysicalCountDES = require('./tables/PhysicalCountDES');
 
 const schedule = date => { return new PhysicalCount().schedule(date); }
 const login = data => { return new PhysicalCountPersonnel().login(data); }
@@ -29,6 +30,7 @@ const list = (table, data) => {
             case 'tbl_racks': resolve(await new Racks().rackcountlist(data)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().list(data)); break;
             case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().list(data)); break;
+            case 'tbl_physical_count_des': resolve(await new PhysicalCountDES().list(data)); break;
         }
     });
 }
