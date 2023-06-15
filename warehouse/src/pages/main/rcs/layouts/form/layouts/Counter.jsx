@@ -27,20 +27,20 @@ const Counter = ({ fetching }) => {
                     <Typography variant= "body2" gutterBottom>*Assign RCS Counter</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : <Box sx= { select }>
                         { rcs?.length > 0 ?
-                            <Controller control= { control } name= "rcs"
+                            <Controller control= { control } name= "count_by"
                                 render= { ({ field: { onChange, value } }) => (
-                                    <Autocomplete options= { rcs?.sort((a, b) => a.id - b.id) } disableClearable disabled= { getValues()?.rcs_date !== null }
+                                    <Autocomplete options= { rcs?.sort((a, b) => a.id - b.id) } disableClearable disabled= { getValues()?.date_counted !== null }
                                         getOptionLabel= { pnl => pnl.name || pnl.id } noOptionsText= "No results..." getOptionDisabled= { option => option.id === 0 }
                                         isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                         onChange= { (e, item) => { setError('rcs', { message: '' }); onChange(item.id); } }
                                         renderInput= { params => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                        value= { rcs?.find(data => { return data.id === (getValues().rcs !== undefined ? getValues().rcs : value) }) !== undefined ?
-                                                            rcs?.find(data => { return data.id === (getValues().rcs !== undefined ? getValues().rcs : value) }) : rcs.length === 0 ?
+                                        value= { rcs?.find(data => { return data.id === (getValues().count_by !== undefined ? getValues().count_by : value) }) !== undefined ?
+                                                            rcs?.find(data => { return data.id === (getValues().count_by !== undefined ? getValues().count_by : value) }) : rcs.length === 0 ?
                                                             { id: 0, name: '-- SELECT AN ITEM BELOW --' } : rcs[0] } />
                                 ) } />
                             : <Typography color= "text.disabled">You must create a user first!</Typography> }
                     </Box> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.rcs?.message }</Typography>
+                    <Typography variant= "body2" color= "error.dark">{ errors.count_by?.message }</Typography>
                 </Stack>
             </Grid>
         </Grid>

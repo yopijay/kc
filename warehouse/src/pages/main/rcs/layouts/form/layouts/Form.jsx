@@ -26,7 +26,7 @@ const Form = ({ fetching }) => {
     const { data: brands } = useGet({ key: ['brands'], fetch: dropdown({ table: 'tbl_brands', data: { brands: data.brands, platform: 'warehouse' } }), options: { refetchWindowFocus: false } });
     useGet({ key: ['itm_series'], fetch: series('tbl_items'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `ITM-${formatter(parseInt(data) + 1, 7)}`); } });
 
-    useEffect(() => { setValue('total', totalqty); }, [ setValue, totalqty, fetching, type, getValues ]);
+    useEffect(() => { /*setValue('total', totalqty);*/ }, [ setValue, totalqty, fetching, type, getValues ]);
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>

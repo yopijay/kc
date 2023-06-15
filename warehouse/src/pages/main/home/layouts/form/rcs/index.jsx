@@ -57,7 +57,7 @@ const Index = () => {
                 <Typography sx= {{ fontWeight: 'bold' }} variant= "h6">Rack Count Sheet</Typography>
             </Stack>
             <Box sx= { card }><ThemeProvider theme= { theme(input) }><Form fetching= { isFetching } /></ThemeProvider></Box>
-            { getValues()?.rcs_date === null ? <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
+            { getValues()?.date_counted === null ? <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                 <Grid item xs= { 6 } sm= { 3 } lg= { 2 }>
                     <Box sx= { btntxt } onClick= { 
                         handleSubmit(form => { 
