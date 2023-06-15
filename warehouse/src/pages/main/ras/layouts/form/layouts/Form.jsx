@@ -1,6 +1,6 @@
 // Libraries
 import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Controller } from "react-hook-form";
 
@@ -15,18 +15,15 @@ import { input, select } from "../index.style"; // Styles
 import Quantity from "./Quantity"; // Layouts
 import Others from "./Others"; // Layouts
 import Location from "./Location"; // Layouts
-import Counter from "./Counter";
+import Counter from "./Counter"; // Layouts
 const uom = [{ id: 'pc', name: 'PC/S' }]; // Unit of measures
 
 const Form = ({ fetching }) => {
     const { type } = useParams();
     const { data } = useContext(ProfileCntx);
-    const [ totalqty, setTotalqty ] = useState(0);
     const { register, errors, control, setError, getValues, setValue } = useContext(FormCntxt);
     const { data: brands } = useGet({ key: ['brands'], fetch: dropdown({ table: 'tbl_brands', data: { brands: data.brands, platform: 'warehouse' } }), options: { refetchWindowFocus: false } });
     useGet({ key: ['itm_series'], fetch: series('tbl_items'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `ITM-${formatter(parseInt(data) + 1, 7)}`); } });
-
-    useEffect(() => { setValue('total', totalqty); }, [ setValue, totalqty, fetching, type, getValues ]);
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>
@@ -94,7 +91,7 @@ const Form = ({ fetching }) => {
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.total?.message }</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 12 }><Quantity fetching= { fetching } setTotalqty= { setTotalqty } /></Grid>
+            <Grid item xs= { 12 }><Quantity fetching= { fetching } /></Grid>
             <Grid item xs= { 12 }><Others fetching= { fetching } /></Grid>
         </Grid> 
     );

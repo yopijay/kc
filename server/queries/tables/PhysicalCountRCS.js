@@ -14,9 +14,9 @@ class PhysicalCountRCS {
             let rcs = await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).physical_count_id} AND item_id= ${JSON.parse(data).id}`).build();
             
             itm[0]['qty_mother_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_mother_box : 0;
-            itm[0]['qty_pet_mother_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_pet_mother_box : 0;
+            itm[0]['qty_per_mother_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_per_mother_box : 0;
             itm[0]['qty_small_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_small_box : 0;
-            itm[0]['qty_pet_small_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_pet_small_box : 0;
+            itm[0]['qty_per_small_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_per_small_box : 0;
             itm[0]['tingi'] = rcs.rowCount > 0 ? rcs.rows[0].tingi : 0;
             itm[0]['total'] = rcs.rowCount > 0 ? rcs.rows[0].total : 0;
             itm[0]['remarks'] = rcs.rowCount > 0 ? rcs.rows[0].remarks : null;
@@ -40,11 +40,7 @@ class PhysicalCountRCS {
                                         current: data.count_by, action: 'update', user_id: data.assigned_by, date: date });
             }
 
-            await new Builder(`tbl_physical_count_rcs`)
-                .update(`count_by= ${data.count_by}, assigned_by= ${data.assigned_by}, date_assigned= '${date}'`)
-                .condition(`WHERE id= ${rcs.id}`)
-                .build();
-
+            await new Builder(`tbl_physical_count_rcs`).update(`count_by= ${data.count_by}, assigned_by= ${data.assigned_by}, date_assigned= '${date}'`).condition(`WHERE id= ${rcs.id}`).build();
             audits.forEach(data => Global.audit(data));
             return { result: 'success', message: 'Successfully re-assigned!' }
         }
