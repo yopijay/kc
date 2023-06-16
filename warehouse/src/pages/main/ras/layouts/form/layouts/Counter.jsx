@@ -27,20 +27,20 @@ const Counter = ({ fetching }) => {
                     <Typography variant= "body2" gutterBottom>*Assign RAS Counter</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : <Box sx= { select }>
                         { ras?.length > 0 ?
-                            <Controller control= { control } name= "ras"
+                            <Controller control= { control } name= "count_by"
                                 render= { ({ field: { onChange, value } }) => (
-                                    <Autocomplete options= { ras?.sort((a, b) => a.id - b.id) } disableClearable disabled= { getValues()?.ras_date !== null }
+                                    <Autocomplete options= { ras?.sort((a, b) => a.id - b.id) } disableClearable disabled= { getValues()?.date_counted !== null }
                                         getOptionLabel= { pnl => pnl.name || pnl.id } noOptionsText= "No results..." getOptionDisabled= { option => option.id === 0 }
                                         isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
-                                        onChange= { (e, item) => { setError('ras', { message: '' }); onChange(item.id); } }
+                                        onChange= { (e, item) => { setError('count_by', { message: '' }); onChange(item.id); } }
                                         renderInput= { params => <TextField { ...params } variant= "standard" size= "small" fullWidth /> }
-                                        value= { ras?.find(data => { return data.id === (getValues().ras !== undefined ? getValues().ras : value) }) !== undefined ?
-                                                            ras?.find(data => { return data.id === (getValues().ras !== undefined ? getValues().ras : value) }) : ras.length === 0 ?
+                                        value= { ras?.find(data => { return data.id === (getValues().count_by !== undefined ? getValues().count_by : value) }) !== undefined ?
+                                                            ras?.find(data => { return data.id === (getValues().count_by !== undefined ? getValues().count_by : value) }) : ras.length === 0 ?
                                                             { id: 0, name: '-- SELECT AN ITEM BELOW --' } : ras[0] } />
                                 ) } />
                             : <Typography color= "text.disabled">You must create a user first!</Typography> }
                     </Box> }
-                    <Typography variant= "body2" color= "error.dark">{ errors.ras?.message }</Typography>
+                    <Typography variant= "body2" color= "error.dark">{ errors.count_by?.message }</Typography>
                 </Stack>
             </Grid>
         </Grid>
