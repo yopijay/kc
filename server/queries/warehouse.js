@@ -10,8 +10,9 @@ const PhysicalCountDES = require('./tables/PhysicalCountDES');
 
 const schedule = date => { return new PhysicalCount().schedule(date); }
 const login = data => { return new PhysicalCountPersonnel().login(data); }
-const logout = (data) => { return new PhysicalCountPersonnel().logout(data); }
+const logout = data => { return new PhysicalCountPersonnel().logout(data); }
 const profile = id => { return new PhysicalCount().profile(id); }
+const counts = data => { return new PhysicalCount().counts(data); }
 
 const specific = (table, data) => {
     return new Promise(async resolve => {
@@ -19,6 +20,7 @@ const specific = (table, data) => {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().specific(data)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().specific(data)); break;
             case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().specific(data)); break;
+            case 'tbl_physical_count_des': resolve(await new PhysicalCountDES().specific(data)); break;
         }
     });
 }
@@ -52,6 +54,7 @@ const save = (table, data) => {
             case 'tbl_items': resolve(await new Items().save(data)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().save(data)); break;
             case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().save(data)); break;
+            case 'tbl_physical_count_des': resolve(await new PhysicalCountDES().save(data)); break;
        }
    });
 }
@@ -62,6 +65,7 @@ const update = (table, data) => {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().update(data)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().update(data)); break;
             case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().update(data)); break;
+            case 'tbl_physical_count_des': resolve(await new PhysicalCountDES().update(data)); break;
       }
   });
 }
@@ -95,5 +99,6 @@ module.exports = {
     update,
     specific,
     series,
-    search
+    search,
+    counts
 }

@@ -1,13 +1,13 @@
 // Libraries
-import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Grid, Skeleton, Stack, TextField, Typography } from "@mui/material"
 import { Controller } from "react-hook-form";
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 // Core
-import { FormCntxt } from "core/context/Form"; // Context
 import { usePost } from "core/function/global"; // Function
 import { dropdown } from "core/api"; // API
+import { FormCntxt } from "core/context/Form"; // Context
 
 // Constants
 import { label, select } from "../index.style"; // Styles
@@ -16,7 +16,7 @@ const floors = [{ id: '1f', name: '1ST FLOOR' }, { id: '2f', name: '2ND FLOOR' }
 
 const Location = ({ fetching }) => {
     const { type } = useParams();
-    const { errors, getValues, control, setError } = useContext(FormCntxt);
+    const { getValues, setError, control, errors } = useContext(FormCntxt);
     const { data: rack, mutate: rck, isLoading: rckloading } = usePost({ fetch: dropdown });
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const Location = ({ fetching }) => {
                     <Box sx= { select }>
                         <Controller control= { control } name= "branch" defaultValue= "qa"
                                 render= { ({ field: { onChange, value } }) => (
-                                    <Autocomplete options= { branch } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
+                                    <Autocomplete options= { branch } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'update' }
                                         noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                         renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
                                         onChange= { (e, item) => { onChange(item.id); rck({ table: 'tbl_racks', data: { branch: item.id, floor: getValues().floor } }); } }
@@ -49,7 +49,7 @@ const Location = ({ fetching }) => {
                     <Box sx= { select }>
                         <Controller control= { control } name= "floor" defaultValue= "1f"
                                 render= { ({ field: { onChange, value } }) => (
-                                    <Autocomplete options= { floors } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'view' }
+                                    <Autocomplete options= { floors } disableClearable getOptionLabel= { opt => opt.name || opt.id } disabled= { type === 'update' }
                                         noOptionsText= "No results..." isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                         renderInput= { params => ( <TextField { ...params } variant= "standard" size= "small" fullWidth= { true } /> ) } getOptionDisabled= { option => option.id === 0 }
                                         onChange= { (e, item) => { onChange(item.id); rck({ table: 'tbl_racks', data: { branch: getValues().branch, floor: item.id } }); } }
@@ -68,7 +68,7 @@ const Location = ({ fetching }) => {
                                     <Box sx= { select }>
                                         <Controller control= { control } name= "rack_id" defaultValue= { 0 }
                                             render= { ({ field: { onChange, value } }) => (
-                                                <Autocomplete options= { rack?.sort((a, b) => a.id - b.id) } disabled= { type === 'view' } disableClearable
+                                                <Autocomplete options= { rack?.sort((a, b) => a.id - b.id) } disabled= { type === 'update' } disableClearable
                                                     getOptionLabel= { rack => rack.name || rack.id } noOptionsText= "No results.." getOptionDisabled= { option => option.id === 0 }
                                                     isOptionEqualToValue= { (option, value) => option.name === value.name || option.id === value.id }
                                                     onChange= { (e, item) => {

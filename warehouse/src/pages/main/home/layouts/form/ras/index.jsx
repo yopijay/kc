@@ -38,7 +38,7 @@ const Index = () => {
     const { mutate: updating } = usePost({ fetch: update, onSuccess: data => successToast(data.message, 3000, navigate('/')) });
     const { isFetching } =
         useGet({ key: ['itm_specific'], 
-            fetch: specific({ table: 'tbl_physical_count_ras', data: JSON.stringify({ id: id, physical_count_id: data.physical_count_id }) }), 
+            fetch: specific({ table: 'tbl_physical_count_des', data: JSON.stringify({ id: id, physical_count_id: data.physical_count_id }) }), 
             options: { enabled: true, refetchOnWIndowFocus: false },
             onSuccess: data => {
                 if(Array.isArray(data))
@@ -63,7 +63,7 @@ const Index = () => {
                             form['physical_count_id'] = data.physical_count_id;
                             form['count_by'] = data.user_id;
 
-                            updating({ table: 'tbl_physical_count_ras', data: form }); 
+                            updating({ table: 'tbl_physical_count_des', data: form });
                         }) 
                     }>Save</Box>
                 </Grid>
