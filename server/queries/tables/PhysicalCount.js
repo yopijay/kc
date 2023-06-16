@@ -143,6 +143,10 @@ class PhysicalCount {
         }
         else { return { result: 'error', error: errors } }
     }
+
+    counts = async data => {
+        return [];
+    }
 }
 
 module.exports = PhysicalCount;

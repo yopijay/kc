@@ -6,15 +6,24 @@ class PhysicalCountRCS {
     specific = async data => {
         if(JSON.parse(data).id !== null) {
             let itm = (await new Builder(`tbl_items AS itm`)
-                                .select(`itm.*, brd.name AS brand`)
-                                .join({ table: `tbl_brand AS brd`, condition: `itm.brand_id = brd.id`, type: `LEFT` })
-                                .condition(`WHERE itm.id= ${JSON.parse(data).id}`)
-                                .build()).rows;
+                            .select(`itm.id, itm.series_no, itm.brand_id, itm.rack_id, itm.item_code, brd.name AS brand, rck.branch, rck.floor`)
+                            .join({ table: `tbl_brand AS brd`, condition: `itm.brand_id = brd.id`, type: `LEFT` })
+                            .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                            .condition(`WHERE itm.id= ${JSON.parse(data).id}`)
+                            .build()).rows;
             let rcs = await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).physical_count_id} AND item_id= ${JSON.parse(data).id}`).build();
             
-            itm[0]['rcs'] = rcs.rowCount > 0 ? rcs.rows[0].count_by : null;
-            itm[0]['rcs_date'] = rcs.rowCount > 0 ? rcs.rows[0].date_counted : null;
-    
+            itm[0]['qty_mother_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_mother_box : 0;
+            itm[0]['qty_per_mother_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_per_mother_box : 0;
+            itm[0]['qty_small_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_small_box : 0;
+            itm[0]['qty_per_small_box'] = rcs.rowCount > 0 ? rcs.rows[0].qty_per_small_box : 0;
+            itm[0]['tingi'] = rcs.rowCount > 0 ? rcs.rows[0].tingi : 0;
+            itm[0]['total'] = rcs.rowCount > 0 ? rcs.rows[0].total : 0;
+            itm[0]['remarks'] = rcs.rowCount > 0 ? rcs.rows[0].remarks : null;
+            itm[0]['comments'] = rcs.rowCount > 0 ? rcs.rows[0].comments : 0;
+            itm[0]['count_by'] = rcs.rowCount > 0 ? rcs.rows[0].count_by : null;
+            itm[0]['date_counted'] = rcs.rowCount > 0 ? rcs.rows[0].date_counted : null;
+
             return itm;
         }
     }
@@ -31,18 +40,14 @@ class PhysicalCountRCS {
                                         current: data.count_by, action: 'update', user_id: data.assigned_by, date: date });
             }
 
-            await new Builder(`tbl_physical_count_rcs`)
-                .update(`count_by= ${data.rcs}, assigned_by= ${data.assigned_by}, date_assigned= '${date}'`)
-                .condition(`WHERE id= ${rcs.id}`)
-                .build();
-
+            await new Builder(`tbl_physical_count_rcs`).update(`count_by= ${data.count_by}, assigned_by= ${data.assigned_by}, date_assigned= '${date}'`).condition(`WHERE id= ${rcs.id}`).build();
             audits.forEach(data => Global.audit(data));
             return { result: 'success', message: 'Successfully re-assigned!' }
         }
         else {
             let rcs = (await new Builder(`tbl_physical_count_rcs`)
                             .insert({ columns: `physical_count_id, item_id, qty_mother_box, qty_per_mother_box, qty_small_box, qty_per_small_box, tingi, total, count_by, assigned_by, date_assigned`, 
-                                            values: `${data.physical_count_id}, ${data.id}, 0, 0, 0, 0, 0, 0, ${data.rcs}, ${data.assigned_by}, '${date}'` })
+                                            values: `${data.physical_count_id}, ${data.id}, 0, 0, 0, 0, 0, 0, ${data.count_by}, ${data.assigned_by}, '${date}'` })
                             .condition(`RETURNING id`)
                             .build()).rows[0];
 
@@ -67,7 +72,7 @@ class PhysicalCountRCS {
         if((JSON.parse(data.brands)).length > 0) { brands = JSON.parse(data.brands); }
         else { brands = (await new Builder(`tbl_brand`).select(`id AS brand_id, name AS brand_name`).condition(`WHERE status = 1`).build()).rows; }
 
-        for(let count = 0; count < brands.length; count++) { query += `${count > 0 ? ' OR' : ''}itm.brand_id= ${brands[count].brand_id}`; }
+        for(let count = 0; count < brands.length; count++) { query += `${count > 0 ? ' OR ' : ''}itm.brand_id= ${brands[count].brand_id}`; }
 
         let itm = (await new Builder(`tbl_items AS itm`)
                             .select(`itm.*`)
@@ -99,7 +104,7 @@ class PhysicalCountRCS {
                                         .condition(`WHERE itm.id= ${itm[count].id} AND rcs.count_by= ${data.user_id}`)
                                         .build()).rows[0];
                     
-                    items.push(item);
+                    if(item !== undefined) { items.push(item); }
                 }
 
                 return items;

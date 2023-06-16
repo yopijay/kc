@@ -19,7 +19,12 @@ const Location = ({ fetching }) => {
     const { getValues, setError, control, errors } = useContext(FormCntxt);
     const { data: rack, mutate: rck, isLoading: rckloading } = usePost({ fetch: dropdown });
 
-    useEffect(() => rck({ table: 'tbl_racks', data: { branch: 'qa', floor: '1f' } }), [rck])
+    useEffect(() => {
+        if(!fetching)
+            rck({ table: 'tbl_racks', data: { branch: 'qa', floor: '1f' } });
+            if(type !== 'new') 
+                rck({ table: 'tbl_racks', data: { branch: getValues().branch, floor: getValues().floor } });
+    }, [ fetching, type, getValues, rck ])
 
     return (
         <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>

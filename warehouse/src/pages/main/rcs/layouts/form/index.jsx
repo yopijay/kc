@@ -57,7 +57,7 @@ const Index = () => {
             } 
         });
 
-    useEffect(() => { setValidation(Validation()); if(id !== undefined && id !== null) { refetch() } }, [ setValidation, id, refetch ]);
+    useEffect(() => { setValidation(Validation()); if(id !== undefined && id !== null) { refetch(); } }, [ setValidation, id, refetch ]);
 
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', height: '100%', overflow: 'hidden' }} spacing= { 1 }>
@@ -66,7 +66,7 @@ const Index = () => {
                 <Typography sx= {{ fontWeight: 'bold' }} variant= "h6">Rack Count Sheet</Typography>
             </Stack>
             <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { input }><Form fetching= { isFetching } /></ThemeProvider></form></Box>
-            { getValues()?.rcs_date === null ?
+            { getValues()?.date_counted === null ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 6 } sm= { 3 } lg= { 2 }>
                         <Box sx= { btntxt } onClick= { handleSubmit(form => {
@@ -74,7 +74,7 @@ const Index = () => {
                             form['assigned_by'] = atob(localStorage.getItem('token'));
                             form['physical_count_id'] = data.physical_count_id;
                             
-                            if(form.rcs === null) { errors.push({ name: 'rcs', message: 'This field is required!' }); }
+                            if(form.count_by === null) { errors.push({ name: 'count_by', message: 'This field is required!' }); }
 
                             if(!(errors.length > 0)) { assign({ table: 'tbl_physical_count_rcs', data: form }); }
                             else { errors.forEach(err => setError(err.name, { message: err.message })); }
