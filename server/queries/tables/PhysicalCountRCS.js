@@ -174,11 +174,6 @@ class PhysicalCountRCS {
         audits.forEach(data => Global.audit(data));
         return { result: 'success', message: 'Successfully saved!' }
     }
-
-    search = async data => {
-        console.log(data);
-        return [];
-    }
 }
 
 module.exports = PhysicalCountRCS;
