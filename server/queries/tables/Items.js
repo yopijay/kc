@@ -30,8 +30,13 @@ class Items {
     }
 
     search = async (data) => {
-        console.log(data);
-        return [];
+        return (await new Builder(`tbl_items AS itm`)
+                        .select(`itm.id, itm.series_no, brd.name AS brand, CONCAT(UPPER(rck.branch), UPPER(rck.floor), '-', rck.code) AS rack, itm.item_code, itm.uom, itm.total, itm.photo, itm.status`)
+                        .join({ table: `tbl_brand AS brd`, condition: `itm.brand_id = brd.id`, type: `LEFT` })
+                        .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                        .condition(`${data.searchtxt !== '' ? `WHERE itm.item_code LIKE '%${(data.searchtxt).toUpperCase()}%' OR brd.name LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                OR CONCAT(UPPER(rck.branch), UPPER(rck.floor), '-', rck.code) LIKE '%${data.searchtxt}%'` : '' } ORDER BY itm.${data.orderby} ${(data.sort).toUpperCase()}`)
+                        .build()).rows;
     }
 
     save = async (data) => {

@@ -100,7 +100,7 @@ class Brand {
                         .select(`rck.id, rck.series_no, rck.branch, rck.floor, rck.code, rck.status, CONCAT(cb.lname, ', ', cb.fname, ' ', cb.mname) AS created_by, rck.date_created`)
                         .join({ table: `tbl_employee AS cb`, condition: `cb.user_id = rck.created_by`})
                         .condition(`${data.searchtxt !== '' ? `WHERE rck.series_no LIKE '%${(data.searchtxt).toUpperCase()}%' 
-                                            OR rck.code LIKE '%${data.searchtxt}%'` : '' } ORDER BY rck.${data.orderby} ${(data.sort).toUpperCase()}`)
+                                            OR CONCAT(UPPER(rck.branch), UPPER(rck.floor), '-', rck.code) LIKE '%${data.searchtxt}%'` : '' } ORDER BY rck.${data.orderby} ${(data.sort).toUpperCase()}`)
                         .build()).rows;
     }
 
