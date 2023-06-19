@@ -12,7 +12,7 @@
  Target Server Version : 140003
  File Encoding         : 65001
 
- Date: 16/06/2023 11:47:14
+ Date: 19/06/2023 16:36:34
 */
 
 
@@ -624,6 +624,164 @@ INSERT INTO "public"."tbl_audit_trail" VALUES (157, 'A7GJDIN', 'tbl_users_permis
 INSERT INTO "public"."tbl_audit_trail" VALUES (158, 'QB74DVO', 'tbl_users_permissions', 2, 'permissions', NULL, '{"module_1":{"submodule_1":{"list":null},"submodule_2":{},"submodule_3":{},"submodule_4":{},"submodule_5":{"list":true},"submodule_6":{"list":true},"status":true},"module_2":{"submodule_7":{"list":true},"submodule_8":{},"status":true}}', 'update', 1, '2023-06-16 11:42:53+08');
 INSERT INTO "public"."tbl_audit_trail" VALUES (159, '593ZBTR', 'tbl_users_permissions', 4, 'permissions', NULL, '{"module_1":{"submodule_1":{"list":null},"submodule_2":{},"submodule_3":{},"submodule_4":{},"submodule_5":{"list":true},"submodule_6":{"list":true},"status":true},"module_2":{"submodule_7":{"list":true},"submodule_8":{},"status":true}}', 'update', 1, '2023-06-16 11:43:02+08');
 INSERT INTO "public"."tbl_audit_trail" VALUES (160, 'OHO26WI', 'tbl_users_permissions', 3, 'permissions', NULL, '{"module_1":{"submodule_1":{"list":null},"submodule_2":{},"submodule_3":{},"submodule_4":{},"submodule_5":{"list":true,"create":true,"update":false,"export":true},"submodule_6":{"list":true,"create":true,"update":true,"export":true},"status":true},"module_2":{"submodule_7":{"list":true,"create":true,"export":true},"submodule_8":{},"status":true}}', 'update', 1, '2023-06-16 11:43:34+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (161, 'P6ZVJ97', 'tbl_physical_count_rcs', 9, 'all', NULL, NULL, 'create', 2, '2023-06-16 14:49:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (162, 'Q1JJX8V', 'tbl_physical_count', 2, 'all', NULL, NULL, 'create', 1, '2023-06-19 08:23:03+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (163, '37GTRRD', 'tbl_department', 9, 'all', NULL, NULL, 'create', 1, '2023-06-19 08:31:01+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (164, 'UPH2XGO', 'tbl_position', 11, 'all', NULL, NULL, 'create', 1, '2023-06-19 08:31:13+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (165, '0S5XYL6', 'tbl_users', 6, 'all', NULL, NULL, 'create', 1, '2023-06-19 08:31:56+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (166, 'YGGRKZ2', 'tbl_physical_count_personnels', 1, 'physical_count_id', '1', '2', 'update', 1, '2023-06-19 08:32:36+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (167, '02K2KK7', 'tbl_physical_count_personnels', 5, 'physical_count_id', NULL, '2', 'update', 1, '2023-06-19 08:32:36+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (168, 'EOQR9FK', 'tbl_physical_count', 2, 'personnel', '[]', '[{"branch":"quezon_ave","type":"admin","employee":{"id":2,"name":"LASAM, MARLON UY"}},{"branch":"sto_domingo","employee":{"id":6,"name":"CO, FRANCIS LIM"},"type":"admin"}]', 'update', 1, '2023-06-19 08:32:36+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (169, 'CTV7OJ0', 'tbl_physical_count_personnels', 1, 'assigned_by', '1', '1', 'update', 1, '2023-06-19 08:32:36+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (170, '0Q5FQZ6', 'tbl_physical_count_personnels', 5, 'branch', NULL, 'sto_domingo', 'update', 1, '2023-06-19 08:32:36+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (171, 'NBZYR82', 'tbl_physical_count_personnels', 5, 'type', NULL, 'admin', 'update', 1, '2023-06-19 08:32:36+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (172, 'WD6B33B', 'tbl_physical_count_personnels', 5, 'assigned_by', NULL, '1', 'update', 1, '2023-06-19 08:32:36+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (173, 'RAFFICI', 'tbl_users', 7, 'all', NULL, NULL, 'create', 1, '2023-06-19 09:24:23+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (174, 'KNBBXAC', 'tbl_physical_count_rcs', 10, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:06+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (175, '05WVQR7', 'tbl_physical_count_rcs', 11, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:10+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (176, '536SVJ7', 'tbl_physical_count_rcs', 12, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:12+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (177, 'AAMAL5T', 'tbl_physical_count_rcs', 13, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:16+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (178, '2D2QTCQ', 'tbl_physical_count_rcs', 14, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:21+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (179, '9GB19A4', 'tbl_physical_count_rcs', 15, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:25+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (180, '31SRFJM', 'tbl_physical_count_rcs', 16, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:29+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (181, 'KW33B00', 'tbl_physical_count_rcs', 17, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:33+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (182, '933YLHU', 'tbl_physical_count_rcs', 18, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:36+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (183, '87DZZCW', 'tbl_physical_count_rcs', 19, 'all', NULL, NULL, 'create', 2, '2023-06-19 09:25:40+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (184, 'IU7797S', 'tbl_physical_count_rcs', 14, 'count_by', '4', '7', 'update', 2, '2023-06-19 09:25:46+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (185, 'HRHX4UA', 'tbl_physical_count_rcs', 14, 'count_by', '7', '4', 'update', 2, '2023-06-19 09:25:50+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (186, 'K5PGB7R', 'tbl_physical_count_rcs', 15, 'qty_mother_box', '0', '3', 'update', 7, '2023-06-19 09:27:43+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (187, '9RV1G5Z', 'tbl_physical_count_rcs', 15, 'qty_per_mother_box', '0', '100', 'update', 7, '2023-06-19 09:27:43+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (188, '9IIMS1M', 'tbl_physical_count_rcs', 15, 'qty_small_box', '0', '0', 'update', 7, '2023-06-19 09:27:43+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (189, 'FBBCWZS', 'tbl_physical_count_rcs', 15, 'qty_per_small_box', '0', '0', 'update', 7, '2023-06-19 09:27:43+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (190, '00T5RD4', 'tbl_physical_count_rcs', 15, 'total', '0', '343', 'update', 7, '2023-06-19 09:27:43+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (191, '2CZJBXE', 'tbl_physical_count_rcs', 15, 'tingi', '0', '43', 'update', 7, '2023-06-19 09:27:43+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (192, '6X5IF1L', 'tbl_physical_count_ras', 6, 'count_by', NULL, '3', 'update', 2, '2023-06-19 09:28:19+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (193, 'ISYGNVC', 'tbl_users_permissions', 5, 'permissions', NULL, '{"module_1":{"submodule_1":{"list":null},"submodule_2":{},"submodule_3":{},"submodule_4":{},"submodule_5":{"list":true,"create":true,"update":true},"submodule_6":{"list":true,"create":true,"update":true},"status":true},"module_2":{"submodule_7":{"list":true,"create":true,"update":true,"export":true},"submodule_8":{"list":true,"create":true,"update":true,"export":true},"status":true}}', 'update', 1, '2023-06-19 09:38:43+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (194, 'Q9ANO1P', 'tbl_physical_count_rcs', 14, 'qty_mother_box', '0', '7', 'update', 7, '2023-06-19 09:41:13+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (195, '17C7KV4', 'tbl_physical_count_rcs', 14, 'qty_per_mother_box', '0', '50', 'update', 7, '2023-06-19 09:41:13+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (196, 'JGEI02S', 'tbl_physical_count_rcs', 14, 'qty_small_box', '0', '4', 'update', 7, '2023-06-19 09:41:13+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (197, 'BCPVO5M', 'tbl_physical_count_rcs', 14, 'qty_per_small_box', '0', '10', 'update', 7, '2023-06-19 09:41:13+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (198, 'HJEMM1A', 'tbl_physical_count_rcs', 14, 'tingi', '0', '8', 'update', 7, '2023-06-19 09:41:13+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (199, 'ZSZBX4W', 'tbl_physical_count_rcs', 14, 'total', '0', '398', 'update', 7, '2023-06-19 09:41:13+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (200, 'H412I18', 'tbl_physical_count_rcs', 13, 'qty_mother_box', '0', '0', 'update', 7, '2023-06-19 09:41:58+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (201, 'RQXJZC3', 'tbl_physical_count_rcs', 13, 'qty_per_mother_box', '0', '0', 'update', 7, '2023-06-19 09:41:58+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (202, '1WT7PUM', 'tbl_physical_count_rcs', 13, 'qty_small_box', '0', '7', 'update', 7, '2023-06-19 09:41:58+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (203, '82KCQR4', 'tbl_physical_count_rcs', 13, 'qty_per_small_box', '0', '100', 'update', 7, '2023-06-19 09:41:58+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (204, '89C3ERH', 'tbl_physical_count_rcs', 13, 'tingi', '0', '83', 'update', 7, '2023-06-19 09:41:58+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (205, 'JUF7FHA', 'tbl_physical_count_rcs', 13, 'total', '0', '783', 'update', 7, '2023-06-19 09:41:58+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (206, 'Z8V1F55', 'tbl_physical_count_rcs', 12, 'qty_small_box', '0', '7', 'update', 7, '2023-06-19 09:42:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (207, '50T8YQK', 'tbl_physical_count_rcs', 12, 'qty_per_small_box', '0', '150', 'update', 7, '2023-06-19 09:42:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (208, '9KD28E1', 'tbl_physical_count_rcs', 12, 'total', '0', '1173', 'update', 7, '2023-06-19 09:42:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (209, '5ACKSSU', 'tbl_physical_count_rcs', 12, 'tingi', '0', '123', 'update', 7, '2023-06-19 09:42:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (210, '1OAYR1V', 'tbl_physical_count_rcs', 11, 'qty_small_box', '0', '5', 'update', 7, '2023-06-19 09:42:56+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (211, '9NMK3FM', 'tbl_physical_count_rcs', 11, 'qty_per_small_box', '0', '120', 'update', 7, '2023-06-19 09:42:56+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (212, 'WQF23Q0', 'tbl_physical_count_rcs', 11, 'tingi', '0', '63', 'update', 7, '2023-06-19 09:42:56+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (213, '5BO8386', 'tbl_physical_count_rcs', 11, 'total', '0', '663', 'update', 7, '2023-06-19 09:42:56+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (214, '2GFKA90', 'tbl_physical_count_ras', 10, 'count_by', NULL, '3', 'update', 2, '2023-06-19 09:43:24+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (215, 'EUITO1G', 'tbl_physical_count_ras', 9, 'count_by', NULL, '3', 'update', 2, '2023-06-19 09:43:30+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (216, '2ZZB2P4', 'tbl_physical_count_ras', 8, 'count_by', NULL, '5', 'update', 2, '2023-06-19 09:43:34+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (217, 'AC9A0CE', 'tbl_physical_count_ras', 7, 'count_by', NULL, '5', 'update', 2, '2023-06-19 09:43:38+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (218, 'TI54EY9', 'tbl_physical_count_rcs', 3, 'qty_small_box', '0', '10', 'update', 4, '2023-06-19 09:47:56+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (219, 'ZWUQT0P', 'tbl_physical_count_rcs', 3, 'qty_per_small_box', '0', '120', 'update', 4, '2023-06-19 09:47:56+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (220, 'OUZK5MU', 'tbl_physical_count_rcs', 3, 'tingi', '0', '66', 'update', 4, '2023-06-19 09:47:56+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (221, 'K6HRXR0', 'tbl_physical_count_rcs', 3, 'total', '0', '1266', 'update', 4, '2023-06-19 09:47:56+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (222, 'GVEZOA6', 'tbl_physical_count_rcs', 2, 'qty_mother_box', '0', '8', 'update', 4, '2023-06-19 09:49:51+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (223, 'YMUUAK5', 'tbl_physical_count_rcs', 2, 'qty_per_mother_box', '0', '150', 'update', 4, '2023-06-19 09:49:51+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (224, 'A9PG3Z9', 'tbl_physical_count_rcs', 2, 'qty_small_box', '0', '0', 'update', 4, '2023-06-19 09:49:51+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (225, 'DHQRBLX', 'tbl_physical_count_rcs', 2, 'qty_per_small_box', '0', '0', 'update', 4, '2023-06-19 09:49:51+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (226, 'FFLW738', 'tbl_physical_count_rcs', 2, 'tingi', '0', '0', 'update', 4, '2023-06-19 09:49:51+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (227, '2KPFQF0', 'tbl_physical_count_rcs', 2, 'total', '0', '1200', 'update', 4, '2023-06-19 09:49:51+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (228, '4ZK57L8', 'tbl_physical_count_rcs', 1, 'qty_mother_box', '0', '10', 'update', 4, '2023-06-19 09:50:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (229, '8Z5GDU6', 'tbl_physical_count_rcs', 1, 'qty_per_mother_box', '0', '200', 'update', 4, '2023-06-19 09:50:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (230, 'D4R01BT', 'tbl_physical_count_rcs', 1, 'total', '0', '2000', 'update', 4, '2023-06-19 09:50:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (231, 'CZ10CYT', 'tbl_physical_count_rcs', 5, 'qty_mother_box', '0', '5', 'update', 4, '2023-06-19 09:50:55+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (232, 'BZRHUKZ', 'tbl_physical_count_rcs', 5, 'qty_per_mother_box', '0', '500', 'update', 4, '2023-06-19 09:50:55+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (233, '8CZ8TMC', 'tbl_physical_count_rcs', 5, 'total', '0', '2500', 'update', 4, '2023-06-19 09:50:55+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (234, 'FTBINRV', 'tbl_physical_count_rcs', 4, 'qty_small_box', '0', '50', 'update', 4, '2023-06-19 09:51:16+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (235, 'QZ28TEK', 'tbl_physical_count_rcs', 4, 'qty_per_small_box', '0', '50', 'update', 4, '2023-06-19 09:51:16+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (236, 'W7URZ38', 'tbl_physical_count_rcs', 4, 'tingi', '0', '45', 'update', 4, '2023-06-19 09:51:16+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (237, 'NPEV3IE', 'tbl_physical_count_rcs', 4, 'total', '0', '2545', 'update', 4, '2023-06-19 09:51:16+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (238, 'DKV71IX', 'tbl_physical_count_ras', 15, 'count_by', NULL, '3', 'update', 2, '2023-06-19 09:51:29+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (239, '6620KD1', 'tbl_physical_count_ras', 14, 'count_by', NULL, '3', 'update', 2, '2023-06-19 09:51:40+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (240, '7K99PZ2', 'tbl_physical_count_ras', 13, 'count_by', NULL, '5', 'update', 2, '2023-06-19 09:51:47+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (241, 'OT6BT98', 'tbl_physical_count_ras', 12, 'count_by', NULL, '5', 'update', 2, '2023-06-19 09:51:54+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (242, '0E3EXGQ', 'tbl_physical_count_ras', 11, 'count_by', NULL, '3', 'update', 2, '2023-06-19 09:52:03+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (243, '618ZUIT', 'tbl_physical_count_ras', 2, 'qty_mother_box', '0', '8', 'update', 5, '2023-06-19 10:14:05+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (244, 'CZG2E3G', 'tbl_physical_count_ras', 2, 'qty_per_mother_box', '0', '150', 'update', 5, '2023-06-19 10:14:05+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (245, '8DYHRN2', 'tbl_physical_count_ras', 2, 'total', '0', '1200', 'update', 5, '2023-06-19 10:14:05+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (246, 'K7GW6VQ', 'tbl_physical_count_ras', 1, 'qty_mother_box', '0', '10', 'update', 5, '2023-06-19 10:15:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (247, 'LXNZ1K6', 'tbl_physical_count_ras', 1, 'total', '0', '2000', 'update', 5, '2023-06-19 10:15:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (248, '4NBSXQD', 'tbl_physical_count_ras', 1, 'qty_per_mother_box', '0', '200', 'update', 5, '2023-06-19 10:15:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (249, '87JVDZR', 'tbl_physical_count_ras', 14, 'qty_mother_box', '0', '7', 'update', 5, '2023-06-19 10:16:39+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (250, '77CZH3A', 'tbl_physical_count_ras', 14, 'qty_per_mother_box', '0', '50', 'update', 5, '2023-06-19 10:16:39+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (251, '7L1MUI1', 'tbl_physical_count_ras', 14, 'qty_small_box', '0', '4', 'update', 5, '2023-06-19 10:16:39+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (252, '1HECP4Z', 'tbl_physical_count_ras', 14, 'qty_per_small_box', '0', '10', 'update', 5, '2023-06-19 10:16:39+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (253, 'GI6MJNB', 'tbl_physical_count_ras', 14, 'tingi', '0', '8', 'update', 5, '2023-06-19 10:16:39+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (254, 'NKEWJV5', 'tbl_physical_count_ras', 14, 'total', '0', '398', 'update', 5, '2023-06-19 10:16:39+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (255, '4MBLF4R', 'tbl_physical_count_ras', 13, 'qty_small_box', '0', '7', 'update', 5, '2023-06-19 10:20:30+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (256, 'EG25NVC', 'tbl_physical_count_ras', 13, 'qty_per_small_box', '0', '100', 'update', 5, '2023-06-19 10:20:30+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (257, 'HNNRNGE', 'tbl_physical_count_ras', 13, 'total', '0', '785', 'update', 5, '2023-06-19 10:20:30+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (258, 'ENR4LBT', 'tbl_physical_count_ras', 13, 'tingi', '0', '85', 'update', 5, '2023-06-19 10:20:30+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (259, 'RKZ2G6W', 'tbl_physical_count_ras', 3, 'qty_small_box', '0', '10', 'update', 3, '2023-06-19 10:23:26+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (260, 'Z28TJI8', 'tbl_physical_count_ras', 3, 'tingi', '0', '60', 'update', 3, '2023-06-19 10:23:26+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (261, 'KHU1NWM', 'tbl_physical_count_ras', 3, 'qty_per_small_box', '0', '120', 'update', 3, '2023-06-19 10:23:26+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (262, 'Q12LEVD', 'tbl_physical_count_ras', 3, 'total', '0', '1260', 'update', 3, '2023-06-19 10:23:26+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (263, 'OIRCX7V', 'tbl_physical_count_ras', 5, 'qty_mother_box', '0', '5', 'update', 3, '2023-06-19 10:24:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (264, 'FWSBGZ9', 'tbl_physical_count_ras', 5, 'qty_per_mother_box', '0', '500', 'update', 3, '2023-06-19 10:24:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (265, 'DGU5W3C', 'tbl_physical_count_ras', 5, 'tingi', '0', '250', 'update', 3, '2023-06-19 10:24:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (266, 'QYEB5R9', 'tbl_physical_count_ras', 5, 'total', '0', '2750', 'update', 3, '2023-06-19 10:24:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (267, 'XXAW3DP', 'tbl_physical_count_ras', 4, 'qty_small_box', '0', '50', 'update', 3, '2023-06-19 10:25:05+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (268, '9OOCPBN', 'tbl_physical_count_ras', 4, 'qty_per_small_box', '0', '50', 'update', 3, '2023-06-19 10:25:05+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (269, '7YZ2NR1', 'tbl_physical_count_ras', 4, 'tingi', '0', '44', 'update', 3, '2023-06-19 10:25:05+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (270, '7BYMVJX', 'tbl_physical_count_ras', 4, 'total', '0', '2544', 'update', 3, '2023-06-19 10:25:05+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (271, '9IGHHFY', 'tbl_physical_count_ras', 15, 'qty_per_mother_box', '0', '100', 'update', 3, '2023-06-19 10:25:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (272, 'NYUNMXQ', 'tbl_physical_count_ras', 15, 'qty_mother_box', '0', '3', 'update', 3, '2023-06-19 10:25:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (273, '7HPPMA8', 'tbl_physical_count_ras', 15, 'qty_small_box', '0', '0', 'update', 3, '2023-06-19 10:25:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (274, 'NSK7WMM', 'tbl_physical_count_ras', 15, 'qty_per_small_box', '0', '0', 'update', 3, '2023-06-19 10:25:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (275, 'DUM5SX4', 'tbl_physical_count_ras', 15, 'total', '0', '343', 'update', 3, '2023-06-19 10:25:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (276, '2HJD0DY', 'tbl_physical_count_ras', 15, 'tingi', '0', '43', 'update', 3, '2023-06-19 10:25:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (277, 'S0ABA3P', 'tbl_physical_count_ras', 12, 'qty_small_box', '0', '2', 'update', 3, '2023-06-19 10:26:55+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (278, '2OFLXT1', 'tbl_physical_count_ras', 12, 'qty_per_small_box', '0', '150', 'update', 3, '2023-06-19 10:26:55+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (279, 'SF2SJ8F', 'tbl_physical_count_ras', 12, 'tingi', '0', '123', 'update', 3, '2023-06-19 10:26:55+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (280, '0NEUOO9', 'tbl_physical_count_ras', 12, 'total', '0', '423', 'update', 3, '2023-06-19 10:26:55+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (281, 'EDJSRL0', 'tbl_physical_count_ras', 11, 'qty_mother_box', '0', '0', 'update', 3, '2023-06-19 10:27:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (282, 'PWX5YSU', 'tbl_physical_count_ras', 11, 'qty_per_mother_box', '0', '0', 'update', 3, '2023-06-19 10:27:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (283, '1LFRU1W', 'tbl_physical_count_ras', 11, 'qty_small_box', '0', '5', 'update', 3, '2023-06-19 10:27:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (284, 'EZVBKO6', 'tbl_physical_count_ras', 11, 'qty_per_small_box', '0', '120', 'update', 3, '2023-06-19 10:27:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (285, '1RY2OUZ', 'tbl_physical_count_ras', 11, 'total', '0', '663', 'update', 3, '2023-06-19 10:27:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (286, 'NCBRZJB', 'tbl_physical_count_ras', 11, 'tingi', '0', '63', 'update', 3, '2023-06-19 10:27:48+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (287, '718AHFQ', 'tbl_physical_count_des', 7, 'count_by', NULL, '5', 'update', 2, '2023-06-19 10:28:28+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (288, 'J542NMG', 'tbl_physical_count_des', 6, 'count_by', NULL, '5', 'update', 2, '2023-06-19 10:28:44+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (289, 'W8NOPED', 'tbl_physical_count_des', 5, 'count_by', NULL, '5', 'update', 2, '2023-06-19 10:28:50+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (290, 'XQ0DQ7V', 'tbl_physical_count_des', 4, 'count_by', NULL, '5', 'update', 2, '2023-06-19 10:28:58+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (291, '8S45SNV', 'tbl_physical_count_des', 3, 'count_by', NULL, '3', 'update', 2, '2023-06-19 10:29:08+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (292, '7UGW2LH', 'tbl_physical_count_ras', 3, 'qty_small_box', '10', '10', 'update', 5, '2023-06-19 10:33:23+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (293, '0BA8A34', 'tbl_physical_count_ras', 3, 'qty_per_small_box', '120', '120', 'update', 5, '2023-06-19 10:33:23+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (294, 'OFHI7CR', 'tbl_physical_count_ras', 3, 'tingi', '60', '60', 'update', 5, '2023-06-19 10:33:23+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (297, 'NS7YBIT', 'tbl_physical_count_des', 3, 'qty_per_small_box', '0', '120', 'update', 5, '2023-06-19 11:38:00+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (296, 'X3PXZQ5', 'tbl_physical_count_des', 3, 'qty_small_box', '0', '10', 'update', 5, '2023-06-19 11:38:00+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (298, 'HFB1R7N', 'tbl_physical_count_des', 3, 'tingi', '0', '60', 'update', 5, '2023-06-19 11:38:00+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (295, '4O2RYSK', 'tbl_physical_count_des', 3, 'qty_mother_box', '0', '0', 'update', 5, '2023-06-19 11:38:00+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (299, 'UOR8WU0', 'tbl_physical_count_des', 3, 'total', '0', '1260', 'update', 5, '2023-06-19 11:38:00+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (301, '8JS0V0K', 'tbl_physical_count_des', 5, 'qty_per_mother_box', '0', '500', 'update', 5, '2023-06-19 11:38:52+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (300, 'RQPYL6V', 'tbl_physical_count_des', 5, 'qty_mother_box', '0', '5', 'update', 5, '2023-06-19 11:38:52+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (302, 'BDWSO4L', 'tbl_physical_count_des', 5, 'qty_small_box', '0', '0', 'update', 5, '2023-06-19 11:38:52+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (303, '7TRV4PW', 'tbl_physical_count_des', 5, 'qty_per_small_box', '0', '0', 'update', 5, '2023-06-19 11:38:52+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (304, '4J4AHEE', 'tbl_physical_count_des', 5, 'tingi', '0', '250', 'update', 5, '2023-06-19 11:38:52+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (305, '3SRJMYP', 'tbl_physical_count_des', 5, 'total', '0', '2750', 'update', 5, '2023-06-19 11:38:52+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (306, 'J3Y9BJ3', 'tbl_physical_count_des', 4, 'qty_small_box', '0', '50', 'update', 5, '2023-06-19 11:39:21+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (307, 'UQELXU6', 'tbl_physical_count_des', 4, 'qty_per_small_box', '0', '50', 'update', 5, '2023-06-19 11:39:21+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (308, '5ARODYH', 'tbl_physical_count_des', 4, 'total', '0', '2544', 'update', 5, '2023-06-19 11:39:21+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (309, 'F6X0ZHQ', 'tbl_physical_count_des', 4, 'tingi', '0', '44', 'update', 5, '2023-06-19 11:39:21+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (310, '4TM78OL', 'tbl_physical_count_des', 13, 'qty_small_box', '0', '7', 'update', 5, '2023-06-19 11:40:32+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (311, '95EL21Q', 'tbl_physical_count_des', 13, 'qty_per_small_box', '0', '100', 'update', 5, '2023-06-19 11:40:32+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (312, 'HLP9ED3', 'tbl_physical_count_des', 13, 'tingi', '0', '85', 'update', 5, '2023-06-19 11:40:32+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (313, 'L66ELHE', 'tbl_physical_count_des', 13, 'total', '0', '785', 'update', 5, '2023-06-19 11:40:32+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (314, 'B3RMT1W', 'tbl_physical_count_des', 12, 'qty_small_box', '0', '7', 'update', 5, '2023-06-19 11:41:21+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (315, '11CSHT1', 'tbl_physical_count_des', 12, 'qty_per_small_box', '0', '150', 'update', 5, '2023-06-19 11:41:21+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (316, 'WG6XD0O', 'tbl_physical_count_des', 12, 'tingi', '0', '123', 'update', 5, '2023-06-19 11:41:21+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (317, 'BFJXS1K', 'tbl_physical_count_des', 12, 'total', '0', '1173', 'update', 5, '2023-06-19 11:41:21+08');
+INSERT INTO "public"."tbl_audit_trail" VALUES (318, 'IDM3F57', 'tbl_users_permissions', 6, 'permissions', NULL, '{"module_1":{"submodule_1":{"list":true,"create":true},"submodule_2":{"list":true,"create":true},"submodule_3":{"list":true,"create":true},"submodule_4":{"list":true},"submodule_5":{"list":true,"create":true,"update":true},"submodule_6":{"list":true,"create":true,"update":true},"status":true},"module_2":{"submodule_7":{"list":true},"submodule_8":{"list":true},"status":true}}', 'update', 1, '2023-06-19 16:25:49+08');
 
 -- ----------------------------
 -- Table structure for tbl_brand
@@ -749,6 +907,7 @@ INSERT INTO "public"."tbl_department" VALUES (5, 'DPT-0000004', 2, 1, 'ACCOUNTIN
 INSERT INTO "public"."tbl_department" VALUES (6, 'DPT-0000005', 2, 1, 'SALES - WHOLESALE', NULL, 1, 1, NULL, NULL, NULL, '2023-06-13 11:24:29+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (7, 'DPT-0000006', 2, 1, 'WAREHOUSE', NULL, 1, 1, NULL, NULL, NULL, '2023-06-13 11:32:28+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_department" VALUES (8, 'DPT-0000007', 6, 1, 'ACCOUNTING - AUDIT', NULL, 1, 1, NULL, NULL, NULL, '2023-06-16 10:03:31+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_department" VALUES (9, 'DPT-0000008', 4, 1, 'LOGISTICS', NULL, 1, 1, NULL, NULL, NULL, '2023-06-19 08:31:01+08', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tbl_employee
@@ -778,6 +937,8 @@ INSERT INTO "public"."tbl_employee" VALUES (2, 2, '90100009', NULL, 2, 6, 7, 'MA
 INSERT INTO "public"."tbl_employee" VALUES (3, 3, '15100066', NULL, 2, 6, 8, 'MARIA LOURICE', 'ESCOBIDO', 'SANCHEZ', 'quezon_ave', 'female');
 INSERT INTO "public"."tbl_employee" VALUES (4, 4, '6100025', NULL, 2, 7, 9, 'REXLY', 'CASAR', 'CATAGGATAN', 'quezon_ave', 'male');
 INSERT INTO "public"."tbl_employee" VALUES (5, 5, '11100040', NULL, 6, 8, 10, 'MILLICENT', 'ANG', 'LIU', 'quezon_ave', 'female');
+INSERT INTO "public"."tbl_employee" VALUES (6, 6, '16100083', NULL, 4, 9, 11, 'FRANCIS', 'LIM', 'CO', 'sto_domingo', 'male');
+INSERT INTO "public"."tbl_employee" VALUES (7, 7, '22100427', '0006318192', 3, 2, 3, 'PAUL JOHN', 'SOLANO', 'JUDAN', 'quezon_ave', 'male');
 
 -- ----------------------------
 -- Table structure for tbl_items
@@ -814,18 +975,11 @@ CREATE TABLE "public"."tbl_items" (
 -- ----------------------------
 -- Records of tbl_items
 -- ----------------------------
-INSERT INTO "public"."tbl_items" VALUES (4, 'ITM-0000004', 1, 1, 'ES6 10A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:06:32+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_items" VALUES (5, 'ITM-0000005', 1, 1, 'ES6 16A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:06:45+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (6, 'ITM-0000006', 4, 7, 'EA32B 5A 2P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:16:33+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (7, 'ITM-0000007', 4, 7, 'EA32B 10A 2P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:16:52+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (8, 'ITM-0000008', 4, 7, 'EA32B 15A 2P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:17:15+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (9, 'ITM-0000009', 4, 7, 'EA32B 20A 2P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:17:44+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (10, 'ITM-0000010', 4, 7, 'EA32B 30A 2P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:18:03+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_items" VALUES (11, 'ITM-0000011', 3, 13, 'DZ47 1A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:19:01+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_items" VALUES (12, 'ITM-0000012', 3, 13, 'DZ47 2A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:19:15+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_items" VALUES (13, 'ITM-0000013', 3, 13, 'DZ47 3A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:19:35+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_items" VALUES (14, 'ITM-0000014', 3, 13, 'DZ47 4A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:19:46+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_items" VALUES (15, 'ITM-0000015', 3, 13, 'DZ47 5A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:19:59+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (16, 'ITM-0000016', 5, 19, 'HBD51-HD 15A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:20:53+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (17, 'ITM-0000017', 5, 19, 'HBD51-HD 20A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:21:05+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (18, 'ITM-0000018', 5, 19, 'HBD51-HD 30A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:21:26+08', NULL, NULL, NULL);
@@ -834,10 +988,17 @@ INSERT INTO "public"."tbl_items" VALUES (22, 'ITM-0000022', 7, 2, 'DRSP12W W/ 63
 INSERT INTO "public"."tbl_items" VALUES (25, 'ITM-0000025', 2, 3, 'AB301-3-1.2', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:24:32+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (20, 'ITM-0000020', 5, 19, 'HBD51-HD 50A 1P', NULL, 'pc', 0, 0, 0, 0, 83, 83, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:21:46+08', '2023-06-16 11:20:47+08', NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (19, 'ITM-0000019', 5, 19, 'HBD51-HD 40A 1P', NULL, 'pc', 5, 50, 0, 0, 0, 250, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:21:36+08', '2023-06-16 11:21:47+08', NULL, NULL);
-INSERT INTO "public"."tbl_items" VALUES (1, 'ITM-0000001', 1, 1, 'ES6 2A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, '2023-05-24 11:05:23+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (2, 'ITM-0000002', 1, 1, 'ES6 4A 1P', NULL, 'pc', 8, 150, 0, 0, 0, 1200, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:05:35+08', '2023-06-19 10:14:05+08', NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (1, 'ITM-0000001', 1, 1, 'ES6 2A 1P', NULL, 'pc', 10, 200, 0, 0, 0, 2000, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:05:23+08', '2023-06-19 10:15:48+08', NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (14, 'ITM-0000014', 3, 13, 'DZ47 4A 1P', NULL, 'pc', 7, 50, 4, 10, 8, 398, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:19:46+08', '2023-06-19 10:16:39+08', NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (15, 'ITM-0000015', 3, 13, 'DZ47 5A 1P', NULL, 'pc', 3, 100, 0, 0, 43, 343, NULL, NULL, 1, 1, 3, NULL, NULL, '2023-05-24 11:19:59+08', '2023-06-19 10:25:48+08', NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (11, 'ITM-0000011', 3, 13, 'DZ47 1A 1P', NULL, 'pc', 0, 0, 5, 120, 63, 663, NULL, NULL, 1, 1, 3, NULL, NULL, '2023-05-24 11:19:01+08', '2023-06-19 10:27:48+08', NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (3, 'ITM-0000003', 1, 1, 'ES6 6A 1P', NULL, 'pc', 0, 0, 10, 120, 60, 1260, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:05:46+08', '2023-06-19 11:38:00+08', NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (5, 'ITM-0000005', 1, 1, 'ES6 16A 1P', NULL, 'pc', 5, 500, 0, 0, 250, 2750, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:06:45+08', '2023-06-19 11:38:52+08', NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (4, 'ITM-0000004', 1, 1, 'ES6 10A 1P', NULL, 'pc', 0, 0, 50, 50, 44, 2544, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:06:32+08', '2023-06-19 11:39:21+08', NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (13, 'ITM-0000013', 3, 13, 'DZ47 3A 1P', NULL, 'pc', 0, 0, 7, 100, 85, 785, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:19:35+08', '2023-06-19 11:40:32+08', NULL, NULL);
+INSERT INTO "public"."tbl_items" VALUES (12, 'ITM-0000012', 3, 13, 'DZ47 2A 1P', NULL, 'pc', 0, 0, 7, 150, 123, 1173, NULL, NULL, 1, 1, 5, NULL, NULL, '2023-05-24 11:19:15+08', '2023-06-19 11:41:21+08', NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (23, 'ITM-0000023', 2, 3, 'A19-1-1', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, 1, NULL, NULL, '2023-05-24 11:23:26+08', '2023-06-13 08:58:31+08', NULL, NULL);
-INSERT INTO "public"."tbl_items" VALUES (2, 'ITM-0000002', 1, 1, 'ES6 4A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, 1, NULL, NULL, '2023-05-24 11:05:35+08', '2023-06-09 13:29:28+08', NULL, NULL);
-INSERT INTO "public"."tbl_items" VALUES (3, 'ITM-0000003', 1, 1, 'ES6 6A 1P', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, 1, NULL, NULL, '2023-05-24 11:05:46+08', '2023-06-09 13:29:28+08', NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (24, 'ITM-0000024', 2, 3, 'AB301-2-1', NULL, 'pc', 0, 0, 0, 0, 0, 0, NULL, NULL, 1, 1, 1, NULL, NULL, '2023-05-24 11:23:43+08', '2023-06-13 08:59:39+08', NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (27, 'ITM-0000027', 5, 1, 'UANS FBWB1B', NULL, 'pc', 10, 100, 0, 0, 32, 1032, NULL, NULL, 1, 1, 3, NULL, NULL, '2023-05-30 10:20:49+08', '2023-06-15 13:29:28+08', NULL, NULL);
 INSERT INTO "public"."tbl_items" VALUES (26, 'ITM-0000026', 6, 1, 'NSX100H 63A 3P (LV429672)', NULL, 'pc', 7, 100, 0, 0, 23, 723, NULL, NULL, 1, 1, 3, NULL, NULL, '2023-05-26 14:48:15+08', '2023-06-15 15:06:17+08', NULL, NULL);
@@ -897,13 +1058,14 @@ CREATE TABLE "public"."tbl_physical_count" (
 -- ----------------------------
 -- Records of tbl_physical_count
 -- ----------------------------
+INSERT INTO "public"."tbl_physical_count" VALUES (2, 'PC-0000002', '[{"id":"quezon_ave","name":"QUEZON AVE"},{"id":"sto_domingo","name":"STO. DOMINGO"},{"id":"manila","name":"MANILA"},{"id":"cavite","name":"CAVITE"}]', '2023-6-19', '2023-6-19', 'random', '[{"items":5,"brand_id":1,"brand_name":"GE"},{"items":5,"brand_id":3,"brand_name":"CHINT"}]', 10, NULL, 1, 2, NULL, NULL, '2023-06-19 08:23:03+08', '2023-06-19 09:25:00+08', NULL, NULL, '[{"branch":"quezon_ave","type":"admin","employee":{"id":2,"name":"LASAM, MARLON UY"}},{"branch":"sto_domingo","employee":{"id":6,"name":"CO, FRANCIS LIM"},"type":"admin"},{"branch":"quezon_ave","type":"rcs","employee":{"id":4,"name":"CATAGGATAN, REXLY CASAR"}},{"branch":"quezon_ave","type":"ras","employee":{"id":3,"name":"SANCHEZ, MARIA LOURICE ESCOBIDO"}},{"branch":"quezon_ave","type":"ras","employee":{"id":5,"name":"LIU, MILLICENT ANG"}},{"branch":"quezon_ave","type":"ras","employee":{"id":3,"name":"SANCHEZ, MARIA LOURICE ESCOBIDO"}},{"branch":"sto_domingo","type":"ras","employee":{"id":3,"name":"SANCHEZ, MARIA LOURICE ESCOBIDO"}},{"branch":"quezon_ave","type":"rcs","employee":{"id":7,"name":"JUDAN, PAUL JOHN SOLANO"}}]');
 INSERT INTO "public"."tbl_physical_count" VALUES (1, 'PC-0000001', '[{"id":"quezon_ave","name":"QUEZON AVE"}]', '2023-6-15', '2023-6-16', 'annual', '[]', 27, NULL, 1, 2, NULL, NULL, '2023-06-15 09:20:18+08', '2023-06-16 10:05:01+08', NULL, NULL, '[{"branch":"quezon_ave","type":"admin","employee":{"id":2,"name":"LASAM, MARLON UY"}},{"branch":"quezon_ave","type":"ras","employee":{"id":3,"name":"SANCHEZ, MARIA LOURICE ESCOBIDO"}},{"branch":"quezon_ave","type":"rcs","employee":{"id":4,"name":"CATAGGATAN, REXLY CASAR"}},{"branch":"quezon_ave","type":"ras","employee":{"id":5,"name":"LIU, MILLICENT ANG"}}]');
 
 -- ----------------------------
--- Table structure for tbl_physical_count_des
+-- Table structure for tbl_physical_count_dis
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."tbl_physical_count_des";
-CREATE TABLE "public"."tbl_physical_count_des" (
+DROP TABLE IF EXISTS "public"."tbl_physical_count_dis";
+CREATE TABLE "public"."tbl_physical_count_dis" (
   "id" int4 NOT NULL DEFAULT nextval('tbl_physical_count_des_id_seq'::regclass),
   "physical_count_id" int4,
   "item_id" int4,
@@ -923,10 +1085,15 @@ CREATE TABLE "public"."tbl_physical_count_des" (
 ;
 
 -- ----------------------------
--- Records of tbl_physical_count_des
+-- Records of tbl_physical_count_dis
 -- ----------------------------
-INSERT INTO "public"."tbl_physical_count_des" VALUES (1, 1, 20, 0, 0, 0, 0, 83, 83, NULL, NULL, 5, '2023-06-16 11:20:47+08', 2, '2023-06-16 10:06:24+08');
-INSERT INTO "public"."tbl_physical_count_des" VALUES (2, 1, 19, 5, 50, 0, 0, 0, 250, NULL, NULL, 5, '2023-06-16 11:21:47+08', 2, '2023-06-16 10:06:18+08');
+INSERT INTO "public"."tbl_physical_count_dis" VALUES (1, 1, 20, 0, 0, 0, 0, 83, 83, NULL, NULL, 5, '2023-06-16 11:20:47+08', 2, '2023-06-16 10:06:24+08');
+INSERT INTO "public"."tbl_physical_count_dis" VALUES (2, 1, 19, 5, 50, 0, 0, 0, 250, NULL, NULL, 5, '2023-06-16 11:21:47+08', 2, '2023-06-16 10:06:18+08');
+INSERT INTO "public"."tbl_physical_count_dis" VALUES (4, 2, 3, 0, 0, 10, 120, 60, 1260, NULL, NULL, 5, '2023-06-19 11:38:00+08', 2, '2023-06-19 10:28:58+08');
+INSERT INTO "public"."tbl_physical_count_dis" VALUES (5, 2, 5, 5, 500, 0, 0, 250, 2750, NULL, NULL, 5, '2023-06-19 11:38:52+08', 2, '2023-06-19 10:28:50+08');
+INSERT INTO "public"."tbl_physical_count_dis" VALUES (6, 2, 4, 0, 0, 50, 50, 44, 2544, NULL, NULL, 5, '2023-06-19 11:39:21+08', 2, '2023-06-19 10:28:44+08');
+INSERT INTO "public"."tbl_physical_count_dis" VALUES (3, 2, 13, 0, 0, 7, 100, 85, 785, NULL, NULL, 3, '2023-06-19 11:40:32+08', 2, '2023-06-19 10:29:08+08');
+INSERT INTO "public"."tbl_physical_count_dis" VALUES (7, 2, 12, 0, 0, 7, 150, 123, 1173, NULL, NULL, 5, '2023-06-19 11:41:21+08', 2, '2023-06-19 10:28:28+08');
 
 -- ----------------------------
 -- Table structure for tbl_physical_count_personnels
@@ -948,10 +1115,12 @@ CREATE TABLE "public"."tbl_physical_count_personnels" (
 -- ----------------------------
 -- Records of tbl_physical_count_personnels
 -- ----------------------------
-INSERT INTO "public"."tbl_physical_count_personnels" VALUES (3, 1, 4, 'quezon_ave', 'rcs', 2, '2023-06-15 09:21:00', 0, 1);
-INSERT INTO "public"."tbl_physical_count_personnels" VALUES (2, 1, 3, 'quezon_ave', 'ras', 2, '2023-06-15 09:20:53', 0, 1);
-INSERT INTO "public"."tbl_physical_count_personnels" VALUES (4, 1, 5, 'quezon_ave', 'ras', 2, '2023-06-16 10:05:01', 1, 1);
-INSERT INTO "public"."tbl_physical_count_personnels" VALUES (1, 1, 2, 'quezon_ave', 'admin', 1, '2023-06-15 09:20:32', 1, 1);
+INSERT INTO "public"."tbl_physical_count_personnels" VALUES (3, 2, 4, 'quezon_ave', 'rcs', 2, '2023-06-19 09:05:54', 0, 1);
+INSERT INTO "public"."tbl_physical_count_personnels" VALUES (2, 2, 3, 'quezon_ave', 'ras', 6, '2023-06-19 09:24:47', 0, 1);
+INSERT INTO "public"."tbl_physical_count_personnels" VALUES (4, 2, 5, 'quezon_ave', 'ras', 2, '2023-06-19 09:06:07', 0, 1);
+INSERT INTO "public"."tbl_physical_count_personnels" VALUES (6, 2, 7, 'quezon_ave', 'rcs', 2, '2023-06-19 09:25:00', 0, 1);
+INSERT INTO "public"."tbl_physical_count_personnels" VALUES (1, 2, 2, 'quezon_ave', 'admin', 1, '2023-06-19 08:32:36', 0, 1);
+INSERT INTO "public"."tbl_physical_count_personnels" VALUES (5, 2, 6, 'sto_domingo', 'admin', 1, '2023-06-19 08:32:36', 1, 1);
 
 -- ----------------------------
 -- Table structure for tbl_physical_count_ras
@@ -984,6 +1153,16 @@ INSERT INTO "public"."tbl_physical_count_ras" VALUES (2, 1, 26, 7, 100, 0, 0, 23
 INSERT INTO "public"."tbl_physical_count_ras" VALUES (3, 1, 20, 0, 0, 0, 0, 80, 80, NULL, NULL, 3, '2023-06-15 15:21:54+08', 2, '2023-06-15 11:18:41+08');
 INSERT INTO "public"."tbl_physical_count_ras" VALUES (4, 1, 19, 0, 0, 5, 50, 43, 293, NULL, NULL, 3, '2023-06-15 15:22:55+08', 2, '2023-06-15 11:18:36+08');
 INSERT INTO "public"."tbl_physical_count_ras" VALUES (5, 1, 18, 0, 0, 0, 0, 0, 0, NULL, NULL, 3, NULL, 2, '2023-06-16 08:33:40+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (12, 2, 2, 8, 150, 0, 0, 0, 1200, NULL, NULL, 5, '2023-06-19 10:14:05+08', 2, '2023-06-19 09:51:54+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (13, 2, 1, 10, 200, 0, 0, 0, 2000, NULL, NULL, 5, '2023-06-19 10:15:48+08', 2, '2023-06-19 09:51:47+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (7, 2, 14, 7, 50, 4, 10, 8, 398, NULL, NULL, 5, '2023-06-19 10:16:39+08', 2, '2023-06-19 09:43:38+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (8, 2, 13, 0, 0, 7, 100, 85, 785, NULL, NULL, 5, '2023-06-19 10:20:30+08', 2, '2023-06-19 09:43:34+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (14, 2, 5, 5, 500, 0, 0, 250, 2750, NULL, NULL, 3, '2023-06-19 10:24:28+08', 2, '2023-06-19 09:51:40+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (15, 2, 4, 0, 0, 50, 50, 44, 2544, NULL, NULL, 3, '2023-06-19 10:25:05+08', 2, '2023-06-19 09:51:29+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (6, 2, 15, 3, 100, 0, 0, 43, 343, NULL, NULL, 3, '2023-06-19 10:25:48+08', 2, '2023-06-19 09:28:19+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (9, 2, 12, 0, 0, 2, 150, 123, 423, NULL, NULL, 3, '2023-06-19 10:26:55+08', 2, '2023-06-19 09:43:30+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (10, 2, 11, 0, 0, 5, 120, 63, 663, NULL, NULL, 3, '2023-06-19 10:27:48+08', 2, '2023-06-19 09:43:24+08');
+INSERT INTO "public"."tbl_physical_count_ras" VALUES (11, 2, 3, 0, 0, 10, 120, 60, 1260, NULL, NULL, 3, '2023-06-19 10:33:23+08', 2, '2023-06-19 09:52:03+08');
 
 -- ----------------------------
 -- Table structure for tbl_physical_count_rcs
@@ -1016,6 +1195,17 @@ INSERT INTO "public"."tbl_physical_count_rcs" VALUES (2, 1, 26, 7, 100, 0, 0, 23
 INSERT INTO "public"."tbl_physical_count_rcs" VALUES (4, 1, 19, 0, 0, 5, 50, 0, 250, NULL, NULL, 4, '2023-06-15 10:31:11+08', 2, '2023-06-15 09:55:59+08');
 INSERT INTO "public"."tbl_physical_count_rcs" VALUES (3, 1, 20, 0, 0, 0, 0, 83, 83, NULL, NULL, 4, '2023-06-15 10:30:46+08', 2, '2023-06-15 09:55:54+08');
 INSERT INTO "public"."tbl_physical_count_rcs" VALUES (8, 1, 18, 5, 70, 0, 0, 56, 406, NULL, NULL, 4, '2023-06-16 08:33:07+08', 2, '2023-06-16 08:32:09+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (9, 1, 17, 0, 0, 0, 0, 0, 0, NULL, NULL, 4, NULL, 2, '2023-06-16 14:49:48+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (15, 2, 15, 3, 100, 0, 0, 43, 343, NULL, NULL, 7, '2023-06-19 09:27:43+08', 2, '2023-06-19 09:25:25+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (16, 2, 14, 7, 50, 4, 10, 8, 398, NULL, NULL, 7, '2023-06-19 09:41:13+08', 2, '2023-06-19 09:25:29+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (17, 2, 13, 0, 0, 7, 100, 83, 783, NULL, NULL, 7, '2023-06-19 09:41:58+08', 2, '2023-06-19 09:25:33+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (18, 2, 12, 0, 0, 7, 150, 123, 1173, NULL, NULL, 7, '2023-06-19 09:42:28+08', 2, '2023-06-19 09:25:36+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (19, 2, 11, 0, 0, 5, 120, 63, 663, NULL, NULL, 7, '2023-06-19 09:42:56+08', 2, '2023-06-19 09:25:40+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (10, 2, 3, 0, 0, 10, 120, 66, 1266, NULL, NULL, 4, '2023-06-19 09:47:56+08', 2, '2023-06-19 09:25:06+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (11, 2, 2, 8, 150, 0, 0, 0, 1200, NULL, NULL, 4, '2023-06-19 09:49:51+08', 2, '2023-06-19 09:25:10+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (12, 2, 1, 10, 200, 0, 0, 0, 2000, NULL, NULL, 4, '2023-06-19 09:50:28+08', 2, '2023-06-19 09:25:12+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (13, 2, 5, 5, 500, 0, 0, 0, 2500, NULL, NULL, 4, '2023-06-19 09:50:55+08', 2, '2023-06-19 09:25:16+08');
+INSERT INTO "public"."tbl_physical_count_rcs" VALUES (14, 2, 4, 0, 0, 50, 50, 45, 2545, NULL, NULL, 4, '2023-06-19 09:51:16+08', 2, '2023-06-19 09:25:50+08');
 
 -- ----------------------------
 -- Table structure for tbl_position
@@ -1052,6 +1242,7 @@ INSERT INTO "public"."tbl_position" VALUES (7, 'PST-0000006', 2, 6, 'SALES MANAG
 INSERT INTO "public"."tbl_position" VALUES (8, 'PST-0000007', 2, 6, 'SALES COORDINATOR', NULL, 1, 1, NULL, NULL, NULL, '2023-06-13 11:29:37+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_position" VALUES (9, 'PST-0000008', 2, 7, 'CHECKER', NULL, 1, 1, NULL, NULL, NULL, '2023-06-13 11:32:56+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_position" VALUES (10, 'PST-0000009', 6, 8, 'ACCOUNTING ASSISTANT', NULL, 1, 1, NULL, NULL, NULL, '2023-06-16 10:04:06+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_position" VALUES (11, 'PST-0000010', 4, 9, 'LOGISTICS MANAGER', NULL, 1, 1, NULL, NULL, NULL, '2023-06-19 08:31:13+08', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tbl_racks
@@ -1399,8 +1590,10 @@ CREATE TABLE "public"."tbl_users" (
 INSERT INTO "public"."tbl_users" VALUES (2, 'USR-0000001', 'marlonuylasam@yahoo.com', 'QFNhbGVzMDAwMA==', '9175152668', 'admin', 0, 1, 1, NULL, NULL, NULL, '2023-06-13 11:25:41+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (3, 'USR-0000002', 'slourice@yahoo.com.ph', 'QFNhbGVzMDAwMA==', '9058703068', 'user', 0, 1, 1, NULL, NULL, NULL, '2023-06-13 11:30:25+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (5, 'USR-0000004', 'liumillie@yahoo.com.hk', 'QEFjY291bnRpbmcwMDAw', '9228027771', 'user', 0, 1, 1, NULL, NULL, NULL, '2023-06-16 10:04:49+08', NULL, NULL, NULL);
-INSERT INTO "public"."tbl_users" VALUES (1, 'USR-0000000', 'superadmin@kcic.com.ph', 'QFN1cGVyYWRtaW4wMDAw', '0000000000', 'superadmin', 0, 1, 1, NULL, NULL, NULL, '2022-12-21 11:13:47.452153+08', NULL, NULL, NULL);
 INSERT INTO "public"."tbl_users" VALUES (4, 'USR-0000003', 'cataggatanrexly@gmail.com', 'QFdhcmVob3VzZTAwMDA=', '9301056774', 'user', 0, 1, 1, NULL, NULL, NULL, '2023-06-13 11:33:41+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_users" VALUES (1, 'USR-0000000', 'superadmin@kcic.com.ph', 'QFN1cGVyYWRtaW4wMDAw', '0000000000', 'superadmin', 1, 1, 1, NULL, NULL, NULL, '2022-12-21 11:13:47.452153+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_users" VALUES (6, 'USR-0000005', NULL, '', '9175273646', 'user', 0, 1, 1, NULL, NULL, NULL, '2023-06-19 08:31:56+08', NULL, NULL, NULL);
+INSERT INTO "public"."tbl_users" VALUES (7, 'USR-0000006', 'judan.pauljohn@gmail.com', 'QElUMDAwMA==', '9502099508', 'user', 0, 1, 1, NULL, NULL, NULL, '2023-06-19 09:24:23+08', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tbl_users_permissions
@@ -1423,6 +1616,8 @@ INSERT INTO "public"."tbl_users_permissions" VALUES (1, '5JK9PEN', 2, '{"module_
 INSERT INTO "public"."tbl_users_permissions" VALUES (2, 'AQG8K68', 3, '{"module_1":{"submodule_1":{"list":null},"submodule_2":{},"submodule_3":{},"submodule_4":{},"submodule_5":{"list":true},"submodule_6":{"list":true},"status":true},"module_2":{"submodule_7":{"list":true},"submodule_8":{},"status":true}}', 1, '2023-06-16 11:42:53+08');
 INSERT INTO "public"."tbl_users_permissions" VALUES (4, 'MQGTT9V', 5, '{"module_1":{"submodule_1":{"list":null},"submodule_2":{},"submodule_3":{},"submodule_4":{},"submodule_5":{"list":true},"submodule_6":{"list":true},"status":true},"module_2":{"submodule_7":{"list":true},"submodule_8":{},"status":true}}', 1, '2023-06-16 11:43:02+08');
 INSERT INTO "public"."tbl_users_permissions" VALUES (3, '4VN2ZBL', 4, '{"module_1":{"submodule_1":{"list":null},"submodule_2":{},"submodule_3":{},"submodule_4":{},"submodule_5":{"list":true,"create":true,"update":false,"export":true},"submodule_6":{"list":true,"create":true,"update":true,"export":true},"status":true},"module_2":{"submodule_7":{"list":true,"create":true,"export":true},"submodule_8":{},"status":true}}', 1, '2023-06-16 11:43:34+08');
+INSERT INTO "public"."tbl_users_permissions" VALUES (5, '62BDGWS', 6, '{"module_1":{"submodule_1":{"list":null},"submodule_2":{},"submodule_3":{},"submodule_4":{},"submodule_5":{"list":true,"create":true,"update":true},"submodule_6":{"list":true,"create":true,"update":true},"status":true},"module_2":{"submodule_7":{"list":true,"create":true,"update":true,"export":true},"submodule_8":{"list":true,"create":true,"update":true,"export":true},"status":true}}', 1, '2023-06-19 09:38:43+08');
+INSERT INTO "public"."tbl_users_permissions" VALUES (6, 'I3X3T27', 7, '{"module_1":{"submodule_1":{"list":true,"create":true},"submodule_2":{"list":true,"create":true},"submodule_3":{"list":true,"create":true},"submodule_4":{"list":true},"submodule_5":{"list":true,"create":true,"update":true},"submodule_6":{"list":true,"create":true,"update":true},"status":true},"module_2":{"submodule_7":{"list":true},"submodule_8":{"list":true},"status":true}}', 1, '2023-06-19 16:25:49+08');
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1444,7 +1639,7 @@ SELECT setval('"public"."tbl_assign_asset_id_seq"', 2, false);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."tbl_audit_trail_id_seq"', 161, true);
+SELECT setval('"public"."tbl_audit_trail_id_seq"', 319, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1468,12 +1663,12 @@ SELECT setval('"public"."tbl_company_id_seq"', 7, true);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."tbl_depertment_id_seq"', 9, true);
+SELECT setval('"public"."tbl_depertment_id_seq"', 10, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."tbl_employee_id_seq"', 6, true);
+SELECT setval('"public"."tbl_employee_id_seq"', 8, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1493,41 +1688,41 @@ SELECT setval('"public"."tbl_module_id_seq"', 3, true);
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."tbl_physical_count_des_id_seq"
-OWNED BY "public"."tbl_physical_count_des"."id";
-SELECT setval('"public"."tbl_physical_count_des_id_seq"', 3, true);
+OWNED BY "public"."tbl_physical_count_dis"."id";
+SELECT setval('"public"."tbl_physical_count_des_id_seq"', 8, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."tbl_physical_count_id_seq"
 OWNED BY "public"."tbl_physical_count"."id";
-SELECT setval('"public"."tbl_physical_count_id_seq"', 2, true);
+SELECT setval('"public"."tbl_physical_count_id_seq"', 3, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."tbl_physical_count_personnels_id_seq"
 OWNED BY "public"."tbl_physical_count_personnels"."id";
-SELECT setval('"public"."tbl_physical_count_personnels_id_seq"', 5, true);
+SELECT setval('"public"."tbl_physical_count_personnels_id_seq"', 7, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."tbl_physical_count_ras_id_seq"
 OWNED BY "public"."tbl_physical_count_ras"."id";
-SELECT setval('"public"."tbl_physical_count_ras_id_seq"', 6, true);
+SELECT setval('"public"."tbl_physical_count_ras_id_seq"', 16, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."tbl_physical_count_rcs_id_seq"
 OWNED BY "public"."tbl_physical_count_rcs"."id";
-SELECT setval('"public"."tbl_physical_count_rcs_id_seq"', 9, true);
+SELECT setval('"public"."tbl_physical_count_rcs_id_seq"', 20, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."tbl_position_id_seq"', 11, true);
+SELECT setval('"public"."tbl_position_id_seq"', 12, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1602,14 +1797,14 @@ SELECT setval('"public"."tbl_tracker_id_seq"', 2, false);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."tbl_users_id_seq"', 6, true);
+SELECT setval('"public"."tbl_users_id_seq"', 8, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."tbl_users_permissions_id_seq"
 OWNED BY "public"."tbl_users_permissions"."id";
-SELECT setval('"public"."tbl_users_permissions_id_seq"', 5, true);
+SELECT setval('"public"."tbl_users_permissions_id_seq"', 7, true);
 
 -- ----------------------------
 -- Primary Key structure for table tbl_assets
@@ -1672,9 +1867,9 @@ ALTER TABLE "public"."tbl_module" ADD CONSTRAINT "tbl_module_pkey" PRIMARY KEY (
 ALTER TABLE "public"."tbl_physical_count" ADD CONSTRAINT "tbl_physical_count_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table tbl_physical_count_des
+-- Primary Key structure for table tbl_physical_count_dis
 -- ----------------------------
-ALTER TABLE "public"."tbl_physical_count_des" ADD CONSTRAINT "tbl_physical_count_des_pkey" PRIMARY KEY ("id");
+ALTER TABLE "public"."tbl_physical_count_dis" ADD CONSTRAINT "tbl_physical_count_des_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table tbl_physical_count_personnels
@@ -1844,12 +2039,12 @@ ALTER TABLE "public"."tbl_physical_count" ADD CONSTRAINT "tbl_physical_count_imp
 ALTER TABLE "public"."tbl_physical_count" ADD CONSTRAINT "tbl_physical_count_updated_by_fkey" FOREIGN KEY ("updated_by") REFERENCES "public"."tbl_users" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
--- Foreign Keys structure for table tbl_physical_count_des
+-- Foreign Keys structure for table tbl_physical_count_dis
 -- ----------------------------
-ALTER TABLE "public"."tbl_physical_count_des" ADD CONSTRAINT "tbl_physical_count_des_assigned_by_fkey" FOREIGN KEY ("assigned_by") REFERENCES "public"."tbl_users" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE "public"."tbl_physical_count_des" ADD CONSTRAINT "tbl_physical_count_des_count_by_fkey" FOREIGN KEY ("count_by") REFERENCES "public"."tbl_users" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE "public"."tbl_physical_count_des" ADD CONSTRAINT "tbl_physical_count_des_item_id_fkey" FOREIGN KEY ("item_id") REFERENCES "public"."tbl_items" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE "public"."tbl_physical_count_des" ADD CONSTRAINT "tbl_physical_count_des_physical_count_id_fkey" FOREIGN KEY ("physical_count_id") REFERENCES "public"."tbl_physical_count" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."tbl_physical_count_dis" ADD CONSTRAINT "tbl_physical_count_des_assigned_by_fkey" FOREIGN KEY ("assigned_by") REFERENCES "public"."tbl_users" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."tbl_physical_count_dis" ADD CONSTRAINT "tbl_physical_count_des_count_by_fkey" FOREIGN KEY ("count_by") REFERENCES "public"."tbl_users" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."tbl_physical_count_dis" ADD CONSTRAINT "tbl_physical_count_des_item_id_fkey" FOREIGN KEY ("item_id") REFERENCES "public"."tbl_items" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."tbl_physical_count_dis" ADD CONSTRAINT "tbl_physical_count_des_physical_count_id_fkey" FOREIGN KEY ("physical_count_id") REFERENCES "public"."tbl_physical_count" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table tbl_physical_count_personnels

@@ -24,7 +24,7 @@ const Index = () => {
     const [ interval, setInterval ] = useState(true);
     const { mutate: find, isLoading: finding } = usePost({ fetch: look, onSuccess: data => setList(data) });
     useGet({ key: ['des_list'], 
-                    fetch: records({ table: 'tbl_physical_count_des', data: data }), 
+                    fetch: records({ table: 'tbl_physical_count_dis', data: data }), 
                     options: { refetchOnWindowFocus: false, refetchInterval: interval ? 1000 : false }, 
                     onSuccess: data => setList(data) });
 
@@ -32,7 +32,7 @@ const Index = () => {
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 } sx= {{ padding: '0 5px' }}>
                 <Typography component= { Link } to= "/" sx= {{ cursor: 'pointer' }} color= "#444444"><FontAwesomeIcon icon= { faChevronLeft } size= "lg" /></Typography>
-                <Typography sx= {{ fontWeight: 'bold' }} variant= "h6">Descrepancies</Typography>
+                <Typography sx= {{ fontWeight: 'bold' }} variant= "h6">Discrepancies</Typography>
             </Stack>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <form autoComplete= "off">
