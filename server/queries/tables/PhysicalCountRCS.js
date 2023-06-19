@@ -148,12 +148,12 @@ class PhysicalCountRCS {
 
         if(Global.compare(rcs.remarks, data.remarks)) {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'remarks', previous: rcs.remarks,
-                                    current: data.remarks !== '' ? (data.remarks).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+                                    current: data.remarks !== '' ? (data.remarks).toUpperCase() : '', action: 'update', user_id: data.count_by, date: date });
         }
 
         if(Global.compare(rcs.comments, data.comments)) {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'comments', previous: rcs.comments,
-                                    current: data.comments !== '' ? (data.comments).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+                                    current: data.comments !== '' ? (data.comments).toUpperCase() : '', action: 'update', user_id: data.count_by, date: date });
         }
         
         await new Builder(`tbl_physical_count_rcs`)
@@ -176,8 +176,50 @@ class PhysicalCountRCS {
     }
 
     search = async data => {
-        console.log(data);
-        return [];
+        switch(data.type) {
+            case 'admin':
+                let pc = (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${data.physical_count_id}`).build()).rows[0];
+                let branch = { quezon_ave: 'qa', sto_domingo: 'sd', manila: 'ma' };
+                let items = [];
+                let brands = null;
+                let query = '';
+        
+                if((JSON.parse(pc.brands)).length > 0) { brands = JSON.parse(pc.brands); }
+                else { brands = (await new Builder(`tbl_brand`).select(`id AS brand_id, name AS brand_name`).condition(`WHERE status = 1`).build()).rows; }
+        
+                for(let count = 0; count < brands.length; count++) { query += `${count > 0 ? ' OR ' : ''}itm.brand_id= ${brands[count].brand_id}`; }
+        
+                let itm = (await new Builder(`tbl_items AS itm`)
+                                    .select(`itm.*`)
+                                    .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                                    .condition(`WHERE (${query}) AND rck.branch= '${branch[data.branch]}' ORDER BY itm.item_code DESC`)
+                                    .build()).rows;
+
+                for(let count = 0; count < itm.length; count++) {
+                    let item = (await new Builder(`tbl_items AS itm`)
+                                        .select(`itm.id, itm.item_code, rcs.count_by, rcs.date_counted, rcs.total, emp.fname, emp.lname`)
+                                        .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = rcs.count_by`, type: `LEFT` })
+                                        .condition(`WHERE itm.id= ${itm[count].id}
+                                                            ${data.searchtxt !== '' ? `AND (itm.item_code LIKE '%${(data.searchtxt).toUpperCase()}%' 
+                                                                    OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}`)
+                                        .build()).rows[0];
+
+                    if(item !== undefined) { items.push(item); }
+                }
+
+                return items;
+
+            default: 
+                return (await new Builder(`tbl_physical_count_rcs AS rcs`)
+                                .select(`itm.id, itm.item_code, rcs.count_by, rcs.date_counted, rcs.total, emp.fname, emp.lname`)
+                                .join({ table: `tbl_items AS itm`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS emp`, condition: `rcs.count_by = emp.user_id`, type: `LEFT` })
+                                .condition(`WHERE rcs.physical_count_id= ${data.physical_count_id} AND rcs.count_by= ${data.user_id}
+                                                    ${data.searchtxt !== '' ? `AND (itm.item_code LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                        OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}`)
+                                .build()).rows;
+        }
     }
 }
 

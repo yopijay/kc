@@ -8,16 +8,14 @@ class PhysicalCount {
     schedule = async date => { 
         let sched = [];
         let scheds = (await new Builder(`tbl_physical_count`).select().build()).rows;
-        
+
         scheds.forEach(schd => {
             if(!(((parseInt((new Date(schd.date_from)).getDate()) - parseInt((new Date(date)).getDate()))) < 0 &&
                 ((parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(date)).getDate()))) < 0)) {
                 let total = Math.abs(parseInt((new Date(schd.date_from)).getDate()) - parseInt((new Date(date)).getDate())) +
                                     (parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(date)).getDate()));
 
-                if(total <= (((parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(schd.date_from)).getDate()))) + 1) && total > 0) {
-                    sched.push(schd);
-                }
+                if(total <= (((parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(schd.date_from)).getDate()))) + 1) && total >= 0) { sched.push(schd); }
             }
         });
 
@@ -145,7 +143,39 @@ class PhysicalCount {
     }
 
     counts = async data => {
-        return [];
+        const pc = (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${JSON.parse(data).id}`).build()).rows[0]
+        let branch = { quezon_ave: 'qa', sto_domingo: 'sd', manila: 'ma' };
+        let items = [];
+        let brands = null;
+        let query = '';
+
+        if((JSON.parse(pc.brands)).length > 0) { brands = JSON.parse(pc.brands); }
+        else { brands = (await new Builder(`tbl_brand`).select(`id AS brand_id, name AS brand_name`).condition(`WHERE status = 1`).build()).rows; }
+
+        for(let count = 0; count < brands.length; count++) { query += `${count > 0 ? ' OR ' : ''}itm.brand_id= ${brands[count].brand_id}`; }
+
+        let itm = (await new Builder(`tbl_items AS itm`)
+                            .select(`itm.*`)
+                            .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                            .condition(`WHERE (${query}) AND rck.branch= '${branch[JSON.parse(data).branch]}' ORDER BY itm.item_code DESC`)
+                            .build()).rows;
+                            
+        for(let count = 0; count < itm.length; count++) {
+            let item = (await new Builder(`tbl_items AS itm`)
+                                .select(`itm.id, itm.item_code, rcs.count_by, rcs.date_counted, rcs.total, emp.fname, emp.lname`)
+                                .join({ table: `tbl_physical_count_rcs AS rcs`, condition: `rcs.item_id = itm.id`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = rcs.count_by`, type: `LEFT` })
+                                .condition(`WHERE itm.id= ${itm[count].id} AND rcs.date_counted IS NULL`)
+                                .build()).rows[0];
+            
+            if(item !== undefined) { items.push(item); }
+        }
+
+        return {
+            rcs: items.length,
+            ras: (await new Builder(`tbl_physical_count_ras`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).id} AND date_counted IS NULL`).build()).rowCount,
+            des: (await new Builder(`tbl_physical_count_des`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).id} AND date_counted IS NULL`).build()).rowCount,
+        }
     }
 }
 
