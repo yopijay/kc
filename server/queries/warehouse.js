@@ -83,6 +83,8 @@ const search = (table, data) => {
         switch(table) {
             case 'tbl_physical_count_personnels': resolve(await new PhysicalCountPersonnel().search(data)); break;
             case 'tbl_physical_count_rcs': resolve(await new PhysicalCountRCS().search(data)); break;
+            case 'tbl_physical_count_ras': resolve(await new PhysicalCountRAS().search(data)); break;
+            case 'tbl_physical_count_des': resolve(await new PhysicalCountDES().search(data)); break;
         }
     });
 }
