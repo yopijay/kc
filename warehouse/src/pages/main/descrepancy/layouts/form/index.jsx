@@ -37,7 +37,7 @@ const Index = () => {
     const { handleSubmit, setValue, setValidation, setError, getValues } = useContext(FormCntxt);
     const { refetch, isFetching } =
         useGet({ key: ['itm_specific'], 
-            fetch: specific({ table: 'tbl_physical_count_des', data: JSON.stringify({ id: id ?? null, physical_count_id: data.physical_count_id }) }), 
+            fetch: specific({ table: 'tbl_physical_count_dis', data: JSON.stringify({ id: id ?? null, physical_count_id: data.physical_count_id }) }), 
             options: { enabled: type !== 'new', refetchOnWindowFocus: false },
             onSuccess: data => {
                 if(Array.isArray(data))
@@ -76,7 +76,7 @@ const Index = () => {
                             
                             if(form.count_by === null) { errors.push({ name: 'count_by', message: 'This field is required!' }); }
 
-                            if(!(errors.length > 0)) { assign({ table: 'tbl_physical_count_des', data: form }); }
+                            if(!(errors.length > 0)) { assign({ table: 'tbl_physical_count_dis', data: form }); }
                             else { errors.forEach(err => setError(err.name, { message: err.message })); }
                         }) }>Assign</Box>
                     </Grid>
