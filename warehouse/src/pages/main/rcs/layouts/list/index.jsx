@@ -15,7 +15,7 @@ import { look, records } from "core/api"; // API
 // Constants
 import { btnexport, btnicon, search } from "./index.style"; // Styles
 import Items from "./Items"; // Layouts
-import Loader from "./Loader"; // Layouts
+import Loader from "./Loader"; // Loader
 
 const Index = () => {
     const { data } = useContext(ProfileCntx);
