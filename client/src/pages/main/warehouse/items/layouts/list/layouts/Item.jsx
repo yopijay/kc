@@ -48,8 +48,9 @@ const Item = ({ sub, fetching, profile }) => {
                                 <Avatar src= { data.photo !== null ? JSON.parse(data.photo) : '#' } />
                                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                                     <Typography variant= "body1" sx= {{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '90%' }}>{ data.item_code }</Typography>
-                                    <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>Location: { data.rack }</Typography>
-                                    <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>#{ data.series_no }</Typography>
+                                    <Typography variant= "body2" sx= { label }>Location: { data.rack }</Typography>
+                                    <Typography variant= "body2" sx= { label }>Brand: { data.brand }</Typography>
+                                    <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
                                 </Stack>
                             </Stack>
                         </Stack>
