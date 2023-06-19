@@ -47,14 +47,14 @@ const Index = () => {
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>Physical Count</Typography>
                 {/* <Dashboard /> */}
-                <Stack direction= "row" justifyContent= "space-between" alignItems= "flex-start" spacing= { 1 }>
-                    <form autoComplete= "off">
+                <Stack direction= "row" justifyContent= "flex-end" alignItems= "flex-start" spacing= { 1 }>
+                    {/* <form autoComplete= "off">
                         <Box sx= { search }>
                             <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
                             <TextField { ...register('searchtxt') } variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
                                 onChange= { e => { setValue('searchtxt', e.target.value); find({ table: 'tbl_physical_count', data: getValues() }); } } />
                         </Box>
-                    </form>
+                    </form> */}
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                         <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" sx= {{ flexGrow: 1 }} spacing= { 1 }>
                             { !isFetching && (JSON.parse(data.permissions)?.[`module_${sub?.module_id}`][`submodule_${sub?.id}`]?.export || data.user_level === 'superadmin') ? 
