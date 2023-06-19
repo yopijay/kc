@@ -174,7 +174,7 @@ class PhysicalCount {
         return {
             rcs: items.length,
             ras: (await new Builder(`tbl_physical_count_ras`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).id} AND date_counted IS NULL`).build()).rowCount,
-            des: (await new Builder(`tbl_physical_count_des`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).id} AND date_counted IS NULL`).build()).rowCount,
+            des: (await new Builder(`tbl_physical_count_dis`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).id} AND date_counted IS NULL`).build()).rowCount,
         }
     }
 }
