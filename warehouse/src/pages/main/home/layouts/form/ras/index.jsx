@@ -63,7 +63,8 @@ const Index = () => {
                             form['physical_count_id'] = data.physical_count_id;
                             form['count_by'] = data.user_id;
 
-                            updating({ table: 'tbl_physical_count_des', data: form });
+                            if(getValues().form === 'ras') { updating({ table: 'tbl_physical_count_ras', data: form }); }
+                            else { updating({ table: 'tbl_physical_count_des', data: form }); }
                         }) 
                     }>Save</Box>
                 </Grid>

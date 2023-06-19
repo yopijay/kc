@@ -38,3 +38,10 @@ export const btnexport = {
     transition: 'all 0.2s ease-in-out',
     '&:hover': { backgroundColor: '#00431a' }
 }
+
+export const loader = {
+    backgroundColor: '#FFFFFF', 
+    padding: '10px 20px', 
+    border: 'solid 1px #F3F3F3', 
+    borderRadius: '10px'
+}

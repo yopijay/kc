@@ -17,15 +17,15 @@ const Quantity = ({ fetching, setTotalqty }) => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">*Mother box { `(Qty.)` }</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
-                        <TextField { ...register('mother_box') } name= "mother_box" variant= "standard" InputProps= {{ disableUnderline: true }} 
+                        <TextField { ...register('qty_mother_box') } name= "qty_mother_box" variant= "standard" InputProps= {{ disableUnderline: true }} 
                             disabled= { type === 'update' } sx= { input } defaultValue= { 0 } type= "number"
                             onChange= { e => { 
                                 setTotalqty(((e.target.value !== '' ? parseInt(e.target.value) : 0) * 
                                                     (getValues().qty_per_mother_box !== '' ? parseInt(getValues().qty_per_mother_box) : 0))
-                                    + ((getValues().small_box !== '' ? parseInt(getValues().small_box) : 0) * 
+                                    + ((getValues().qty_small_box !== '' ? parseInt(getValues().qty_small_box) : 0) * 
                                             (getValues().qty_per_small_box !== '' ? parseInt(getValues().qty_per_small_box) : 0))
                                     + (getValues().tingi !== '' ? parseInt(getValues().tingi) : 0)); } } /> }
-                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.mother_box?.message }</Typography>
+                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.qty_mother_box?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 6 } md= { 4 }>
@@ -35,9 +35,9 @@ const Quantity = ({ fetching, setTotalqty }) => {
                         <TextField { ...register('qty_per_mother_box') } name= "qty_per_mother_box" variant= "standard" InputProps= {{ disableUnderline: true }} 
                             disabled= { type === 'update' } sx= { input } defaultValue= { 0 } type= "number"
                             onChange= { e => { 
-                                setTotalqty(((getValues().mother_box !== '' ? parseInt(getValues().mother_box) : 0) * 
+                                setTotalqty(((getValues().qty_mother_box !== '' ? parseInt(getValues().qty_mother_box) : 0) * 
                                                         (e.target.value !== '' ? parseInt(e.target.value) : 0))
-                                    + ((getValues().small_box !== '' ? parseInt(getValues().small_box) : 0) * 
+                                    + ((getValues().qty_small_box !== '' ? parseInt(getValues().qty_small_box) : 0) * 
                                             (getValues().qty_per_small_box !== '' ? parseInt(getValues().qty_per_small_box) : 0))
                                     + (getValues().tingi !== '' ? parseInt(getValues().tingi) : 0)); setError('total', { message: '' }); } } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.qty_per_mother_box?.message }</Typography>
@@ -47,15 +47,15 @@ const Quantity = ({ fetching, setTotalqty }) => {
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">*Small box { `(Qty.)` }</Typography>
                     { fetching ? <Skeleton variant= "rounded" height= "35px" /> : 
-                        <TextField { ...register('small_box') } name= "small_box" variant= "standard" InputProps= {{ disableUnderline: true }} 
+                        <TextField { ...register('qty_small_box') } name= "qty_small_box" variant= "standard" InputProps= {{ disableUnderline: true }} 
                             disabled= { type === 'update' } sx= { input } defaultValue= { 0 } type= "number"
                             onChange= { e => {
-                                setTotalqty(((getValues().mother_box !== '' ? parseInt(getValues().mother_box) : 0) * 
+                                setTotalqty(((getValues().qty_mother_box !== '' ? parseInt(getValues().qty_mother_box) : 0) * 
                                                         (getValues().qty_per_mother_box !== '' ? parseInt(getValues().qty_per_mother_box) : 0))
                                     + ((e.target.value !== '' ? parseInt(e.target.value) : 0) * 
                                             (getValues().qty_per_small_box !== '' ? parseInt(getValues().qty_per_small_box) : 0))
                                     + (getValues().tingi !== '' ? parseInt(getValues().tingi) : 0)); } } /> }
-                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.small_box?.message }</Typography>
+                    <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.qty_small_box?.message }</Typography>
                 </Stack>
             </Grid>
             <Grid item xs= { 6 } md= { 4 }>
@@ -65,9 +65,9 @@ const Quantity = ({ fetching, setTotalqty }) => {
                         <TextField { ...register('qty_per_small_box') } name= "qty_per_small_box" variant= "standard" InputProps= {{ disableUnderline: true }} 
                             disabled= { type === 'update' } sx= { input } defaultValue= { 0 } type= "number"
                             onChange= { e => {
-                                setTotalqty(((getValues().mother_box !== '' ? parseInt(getValues().mother_box) : 0) * 
+                                setTotalqty(((getValues().qty_mother_box !== '' ? parseInt(getValues().qty_mother_box) : 0) * 
                                                         (getValues().qty_per_mother_box !== '' ? parseInt(getValues().qty_per_mother_box) : 0))
-                                    + ((getValues().small_box !== '' ? parseInt(getValues().small_box) : 0) * 
+                                    + ((getValues().qty_small_box !== '' ? parseInt(getValues().qty_small_box) : 0) * 
                                             (e.target.value !== '' ? parseInt(e.target.value) : 0))
                                     + (getValues().tingi !== '' ? parseInt(getValues().tingi) : 0)); setError('total', { message: '' }); } } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.qty_per_small_box?.message }</Typography>
@@ -80,9 +80,9 @@ const Quantity = ({ fetching, setTotalqty }) => {
                         <TextField { ...register('tingi') } name= "tingi" variant= "standard" InputProps= {{ disableUnderline: true }} 
                             disabled= { type === 'update' } sx= { input } defaultValue= { 0 } type= "number"
                             onChange= { e => {
-                                setTotalqty(((getValues().mother_box !== '' ? parseInt(getValues().mother_box) : 0) * 
+                                setTotalqty(((getValues().qty_mother_box !== '' ? parseInt(getValues().qty_mother_box) : 0) * 
                                                         (getValues().qty_per_mother_box !== '' ? parseInt(getValues().qty_per_mother_box) : 0))
-                                    + ((getValues().small_box !== '' ? parseInt(getValues().small_box) : 0) * 
+                                    + ((getValues().qty_small_box !== '' ? parseInt(getValues().qty_small_box) : 0) * 
                                             (getValues().qty_per_small_box !== '' ? parseInt(getValues().qty_per_small_box) : 0))
                                     + (e.target.value !== '' ? parseInt(e.target.value) : 0)); setError('total', { message: '' }); } } /> }
                     <Typography variant= "body2" color= "error.dark" mt= "5px">{ errors.tingi?.message }</Typography>

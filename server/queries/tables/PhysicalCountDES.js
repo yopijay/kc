@@ -19,18 +19,20 @@ class PhysicalCountDES {
                             .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
                             .condition(`WHERE itm.id= ${JSON.parse(data).id}`)
                             .build()).rows;
+        let ras = await new Builder(`tbl_physical_count_ras`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).physical_count_id} AND item_id= ${JSON.parse(data).id}`).build();
         let des = await new Builder(`tbl_physical_count_des`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).physical_count_id} AND item_id= ${JSON.parse(data).id}`).build();
         
-        itm[0]['qty_mother_box'] = des.rowCount > 0 ? des.rows[0].qty_mother_box : 0;
-        itm[0]['qty_per_mother_box'] = des.rowCount > 0 ? des.rows[0].qty_per_mother_box : 0;
-        itm[0]['qty_small_box'] = des.rowCount > 0 ? des.rows[0].qty_small_box : 0;
-        itm[0]['qty_per_small_box'] = des.rowCount > 0 ? des.rows[0].qty_per_small_box : 0;
-        itm[0]['tingi'] = des.rowCount > 0 ? des.rows[0].tingi : 0;
-        itm[0]['total'] = des.rowCount > 0 ? des.rows[0].total : 0;
-        itm[0]['remarks'] = des.rowCount > 0 ? des.rows[0].remarks : null;
-        itm[0]['comments'] = des.rowCount > 0 ? des.rows[0].comments : 0;
-        itm[0]['count_by'] = des.rowCount > 0 ? des.rows[0].count_by : null;
-        itm[0]['date_counted'] = des.rowCount > 0 ? des.rows[0].date_counted : null;
+        itm[0]['qty_mother_box'] = des.rowCount > 0 ? des.rows[0].qty_mother_box : ras.rowCount > 0 ? ras.rows[0].qty_mother_box : 0;
+        itm[0]['qty_per_mother_box'] = des.rowCount > 0 ? des.rows[0].qty_per_mother_box : ras.rowCount > 0 ? ras.rows[0].qty_per_mother_box : 0;
+        itm[0]['qty_small_box'] = des.rowCount > 0 ? des.rows[0].qty_small_box : ras.rowCount > 0 ? ras.rows[0].qty_small_box : 0;
+        itm[0]['qty_per_small_box'] = des.rowCount > 0 ? des.rows[0].qty_per_small_box : ras.rowCount > 0 ? ras.rows[0].qty_per_small_box : 0;
+        itm[0]['tingi'] = des.rowCount > 0 ? des.rows[0].tingi : ras.rowCount > 0 ? ras.rows[0].tingi : 0;
+        itm[0]['total'] = des.rowCount > 0 ? des.rows[0].total : ras.rowCount > 0 ? ras.rows[0].total : 0;
+        itm[0]['remarks'] = des.rowCount > 0 ? des.rows[0].remarks : ras.rowCount > 0 ? ras.rows[0].remarks : null;
+        itm[0]['comments'] = des.rowCount > 0 ? des.rows[0].comments : ras.rowCount > 0 ? ras.rows[0].comments : null;
+        itm[0]['count_by'] = des.rowCount > 0 ? des.rows[0].count_by : ras.rowCount > 0 ? ras.rows[0].count_by : null;
+        itm[0]['date_counted'] = des.rowCount > 0 ? des.rows[0].date_counted : ras.rowCount > 0 ? ras.rows[0].date_counted : null;
+        itm[0]['form'] = des.rowCount > 0 ? 'des' : 'ras';
 
         return itm;
     }
@@ -99,12 +101,12 @@ class PhysicalCountDES {
 
         if(Global.compare(des.remarks, data.remarks)) {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_des', item_id: data.id, field: 'remarks', previous: des.remarks,
-                                    current: data.remarks !== '' ? (data.remarks).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+                                    current: data.remarks !== '' ? (data.remarks).toUpperCase() : '', action: 'update', user_id: data.count_by, date: date });
         }
 
         if(Global.compare(des.comments, data.comments)) {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_des', item_id: data.id, field: 'comments', previous: des.comments,
-                                    current: data.comments !== '' ? (data.comments).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+                                    current: data.comments !== '' ? (data.comments).toUpperCase() : '', action: 'update', user_id: data.count_by, date: date });
         }
         
         await new Builder(`tbl_physical_count_des`)
