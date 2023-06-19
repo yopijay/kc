@@ -148,12 +148,12 @@ class PhysicalCountRCS {
 
         if(Global.compare(rcs.remarks, data.remarks)) {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'remarks', previous: rcs.remarks,
-                                    current: data.remarks !== '' ? (data.remarks).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+                                    current: data.remarks !== '' ? (data.remarks).toUpperCase() : '', action: 'update', user_id: data.count_by, date: date });
         }
 
         if(Global.compare(rcs.comments, data.comments)) {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_rcs', item_id: data.id, field: 'comments', previous: rcs.comments,
-                                    current: data.comments !== '' ? (data.comments).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+                                    current: data.comments !== '' ? (data.comments).toUpperCase() : '', action: 'update', user_id: data.count_by, date: date });
         }
         
         await new Builder(`tbl_physical_count_rcs`)

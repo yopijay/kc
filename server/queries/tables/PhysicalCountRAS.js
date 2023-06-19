@@ -11,7 +11,7 @@ class PhysicalCountRAS {
                             .condition(`WHERE itm.id= ${JSON.parse(data).id}`)
                             .build()).rows;
         let ras = await new Builder(`tbl_physical_count_ras`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).physical_count_id} AND item_id= ${JSON.parse(data).id}`).build();
-        
+
         itm[0]['qty_mother_box'] = ras.rowCount > 0 ? ras.rows[0].qty_mother_box : 0;
         itm[0]['qty_per_mother_box'] = ras.rowCount > 0 ? ras.rows[0].qty_per_mother_box : 0;
         itm[0]['qty_small_box'] = ras.rowCount > 0 ? ras.rows[0].qty_small_box : 0;
@@ -131,12 +131,12 @@ class PhysicalCountRAS {
 
         if(Global.compare(ras.remarks, data.remarks)) {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_ras', item_id: data.id, field: 'remarks', previous: ras.remarks,
-                                    current: data.remarks !== '' ? (data.remarks).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+                                    current: data.remarks !== '' ? (data.remarks).toUpperCase() : '', action: 'update', user_id: data.count_by, date: date });
         }
 
         if(Global.compare(ras.comments, data.comments)) {
             audits.push({ series_no: Global.randomizer(7), table_name: 'tbl_physical_count_ras', item_id: data.id, field: 'comments', previous: ras.comments,
-                                    current: data.comments !== '' ? (data.comments).toUpperCase : '', action: 'update', user_id: data.count_by, date: date });
+                                    current: data.comments !== '' ? (data.comments).toUpperCase() : '', action: 'update', user_id: data.count_by, date: date });
         }
         
         await new Builder(`tbl_physical_count_ras`)

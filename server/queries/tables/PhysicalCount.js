@@ -8,16 +8,14 @@ class PhysicalCount {
     schedule = async date => { 
         let sched = [];
         let scheds = (await new Builder(`tbl_physical_count`).select().build()).rows;
-        
+
         scheds.forEach(schd => {
             if(!(((parseInt((new Date(schd.date_from)).getDate()) - parseInt((new Date(date)).getDate()))) < 0 &&
                 ((parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(date)).getDate()))) < 0)) {
                 let total = Math.abs(parseInt((new Date(schd.date_from)).getDate()) - parseInt((new Date(date)).getDate())) +
                                     (parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(date)).getDate()));
 
-                if(total <= (((parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(schd.date_from)).getDate()))) + 1) && total > 0) {
-                    sched.push(schd);
-                }
+                if(total <= (((parseInt((new Date(schd.date_to)).getDate()) - parseInt((new Date(schd.date_from)).getDate()))) + 1) && total >= 0) { sched.push(schd); }
             }
         });
 
