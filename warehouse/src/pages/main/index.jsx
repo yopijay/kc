@@ -33,8 +33,8 @@ const Index = () => {
                             <Route exact path= "/attendees/*" element= { <Suspense fallback= { <LoaderScreen /> }><Attendance /></Suspense> } />
                             <Route exact path= "/rcs/*" element= { <Suspense fallback= { <LoaderScreen /> }><RCS /></Suspense> } />
                             <Route exact path= "/ras/*" element= { <Suspense fallback= { <LoaderScreen /> }><RAS /></Suspense> } />
-                            <Route exact path= "/descrepancies/*" element= { <Suspense fallback= { <LoaderScreen /> }><Descrepancies /></Suspense> } />
-                            <Route exact path= "/reports/*" element= { <Suspense fallback= { <LoaderScreen /> }><Reports /></Suspense> } />
+                            <Route exact path= "/discrepancies/*" element= { <Suspense fallback= { <LoaderScreen /> }><Descrepancies /></Suspense> } />
+                            {/* <Route exact path= "/reports/*" element= { <Suspense fallback= { <LoaderScreen /> }><Reports /></Suspense> } /> */}
                         </Routes>
                     </Stack> : <LoaderScreen /> }
             </Container>

@@ -24,8 +24,8 @@ const Index = () => {
                 <form autoComplete= "off">
                     <Box sx= { search }>
                         <FontAwesomeIcon icon= { faMagnifyingGlass } size= "sm" style= {{ margin: '8px' }} />
-                        <TextField { ...register('searchtxt') } variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." sx= {{ padding: '5px 0 0 0' }}
-                            onChange= { e => { setValue('searchtxt', e.target.value); } } />
+                        <TextField { ...register('searchtxt') } variant= "standard" size= "small" fullWidth InputProps= {{ disableUnderline: true }} placeholder= "Search..." 
+                            sx= {{ padding: '5px 0 0 0' }} onChange= { e => { setValue('searchtxt', e.target.value); } } />
                     </Box>
                 </form>
                 <Stack direction= "row" justifyContent= "flex-end" alignItems= "center" spacing= { 1 }>
@@ -34,7 +34,7 @@ const Index = () => {
             </Stack>
             <Box sx= {{ overflowY: 'scroll', '&::-webkit-scrollbar': { display: 'none' } }}>
                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" sx= {{ margin: '10px 0', backgroundColor: '#ffffff', padding: '15px', borderRadius: '8px' }}>
-                    <Typography variant= "body2" sx= {{ textAlign: 'center', width: '100%' }}>No descrepancy found!</Typography>
+                    <Typography variant= "body2" sx= {{ textAlign: 'center', width: '100%' }}>No reports!</Typography>
                 </Stack>
             </Box>
         </Stack>
