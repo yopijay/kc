@@ -42,10 +42,6 @@ class PhysicalCount {
                         .build()).rows;
     }
 
-    search = async data => {
-        return [];
-    }
-
     save = async data => {
         let date = Global.date(new Date());
         let errors = [];
@@ -176,6 +172,15 @@ class PhysicalCount {
             ras: (await new Builder(`tbl_physical_count_ras`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).id} AND date_counted IS NULL`).build()).rowCount,
             des: (await new Builder(`tbl_physical_count_dis`).select().condition(`WHERE physical_count_id= ${JSON.parse(data).id} AND date_counted IS NULL`).build()).rowCount,
         }
+    }
+
+    dashboard = async data => {
+        return {
+            total: (await new Builder(`tbl_physical_count`).select().condition(`WHERE id= ${data.id}`).build()).rows[0].total_items,
+            rcs: (await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE physical_count_id= ${data.id}`).build()).rowCount,
+            ras: (await new Builder(`tbl_physical_count_ras`).select().condition(`WHERE physical_count_id= ${data.id}`).build()).rowCount,
+            dis: (await new Builder(`tbl_physical_count_dis`).select().condition(`WHERE physical_count_id= ${data.id}`).build()).rowCount,
+        };
     }
 }
 

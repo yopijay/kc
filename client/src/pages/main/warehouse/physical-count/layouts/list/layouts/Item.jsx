@@ -2,7 +2,7 @@
 import { Stack, Typography } from "@mui/material";
 import { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClipboardList, faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faChartPie, faClipboardList, faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 // Core
@@ -75,6 +75,9 @@ const Item = ({ sub, fetching, profile }) => {
                                         <Typography sx= { icons } component= { Link } to= { `/warehouse/physical-count/form/update/${data.id}` }>
                                             <FontAwesomeIcon icon= { faPencil } size= "lg" />
                                         </Typography> : '' : '' }
+                                <Typography sx= { icons } component= { Link } to= { `/warehouse/physical-count/report/${data.id}` }>
+                                    <FontAwesomeIcon icon= { faChartPie } size= "lg" />
+                                </Typography>
                                 <Typography sx= { icons } component= { Link } to= { `/warehouse/physical-count/form/view/${data.id}` }>
                                     <FontAwesomeIcon icon= { faEye } size= "lg" />
                                 </Typography>
