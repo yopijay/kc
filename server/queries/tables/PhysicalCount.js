@@ -182,6 +182,12 @@ class PhysicalCount {
             dis: (await new Builder(`tbl_physical_count_dis`).select().condition(`WHERE physical_count_id= ${data.id}`).build()).rowCount,
         };
     }
+
+    reports = async data => {
+        let brnch = [];
+        let brd = [];
+        return [];
+    }
 }
 
 module.exports = PhysicalCount;

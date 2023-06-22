@@ -16,7 +16,7 @@ import Attendance from "pages/main/attendance";
 import RCS from "pages/main/rcs";
 import RAS from "pages/main/ras";
 import Descrepancies from "pages/main/descrepancy";
-import Reports from "pages/main/reports";
+// import Reports from "pages/main/reports";
 
 const Index = () => {
     const { setData } = useContext(ProfileCntx);

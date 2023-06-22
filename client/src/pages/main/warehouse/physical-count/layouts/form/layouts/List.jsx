@@ -29,7 +29,7 @@ const List = ({ fetching, counts }) => {
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 3 }>
             <Stack direction= "row" justifyContent= "flex-end" alignItems= "center">
                 { type !== 'view' ?
-                    <Typography sx= { addrow }onClick= { () => { setType('create'); setOpen(true); setIndex(fields.length); } }>
+                    <Typography sx= { addrow } onClick= { () => { setType('create'); setOpen(true); setIndex(fields.length); } }>
                         <FontAwesomeIcon icon= { faPlus } style= {{ color: '#ffffff' }} size= "lg" />
                     </Typography> : '' }
             </Stack>

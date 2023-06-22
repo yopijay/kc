@@ -288,6 +288,14 @@ const upload = (table, data) => {
     });
 }
 
+const reports = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_physical_count': resolve(new PhysicalCount().reports(data)); break;
+        }
+    });
+}
+
 module.exports = {
     login,
     logout,
@@ -308,5 +316,6 @@ module.exports = {
     tracker,
     monitor,
     submodule,
-    count
+    count,
+    reports
 }
