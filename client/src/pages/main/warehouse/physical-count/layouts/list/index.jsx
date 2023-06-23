@@ -10,7 +10,7 @@ import { ListCntxt } from "core/context/List"; // Context
 import { ProfileCntx } from "core/context/Profile"; // Context
 import { FormCntxt } from "core/context/Form"; // Context
 import { exporttoexcel, useGet, usePost } from "core/function/global"; // Function
-import { excel, look, records, submodule } from "core/api"; // API
+import { excel, records, submodule } from "core/api"; // API
 
 // Layouts
 import Item from "./layouts/Item";

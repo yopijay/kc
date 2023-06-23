@@ -78,3 +78,10 @@ export const select = {
     marginBottom: '5px',
     borderRadius: '5px'
 }
+
+export const loader = {
+    backgroundColor: '#FFFFFF', 
+    padding: '10px 20px', 
+    border: 'solid 1px #F3F3F3', 
+    borderRadius: '10px'
+}

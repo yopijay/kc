@@ -184,9 +184,45 @@ class PhysicalCount {
     }
 
     reports = async data => {
-        let brnch = [];
-        let brd = [];
-        return [];
+        let items = [];
+
+        if(data.branch !== undefined && data.brands !== undefined) {
+            let branch = { quezon_ave: 'qa', sto_domingo: 'sd', manila: 'ma', cavite: 'ca' };
+            let brnch = '';
+            let brd = '';
+            
+            if(Array.isArray(data.branch)) { for(let count = 0; count < (data.branch).length; count++) { brnch += `${count > 0 ? ' OR ' : ''}rck.branch= '${branch[(data.branch)[count].id]}'`; } }
+            else { brnch= `rck.branch= '${data.branch}'`; }
+            
+            if(Array.isArray(data.brands)) {
+                let brands = null;
+    
+                if((data.brands).length > 0) { brands = data.brands; }
+                else { brands = (await new Builder(`tbl_brand`).select(`id AS brand_id, name AS brand_name`).condition(`WHERE status = 1`).build()).rows; }
+    
+                for(let count = 0; count < brands.length; count++) { brd += `${count > 0 ? ' OR ' : ''}itm.brand_id= ${brands[count].brand_id}`; }
+            }
+            else { brd= `itm.brand_id = ${data.brands}`; }
+                                
+            items = (await new Builder(`tbl_items AS itm`)
+                            .select(`itm.*, brd.name AS brand, rck.branch, rck.floor, rck.code`)
+                            .join({ table: `tbl_brand AS brd`, condition: `itm.brand_id = brd.id`, type: `LEFT` })
+                            .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                            .condition(`WHERE (${brnch}) AND (${brd}) ORDER BY itm.item_code DESC`)
+                            .build()).rows;
+                            
+            for(let count = 0; count < items.length; count++) {
+                let rcs = (await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE item_id= ${items[count].id} AND physical_count_id= ${data.id}`).build()).rows[0];
+                let ras = (await new Builder(`tbl_physical_count_ras`).select().condition(`WHERE item_id= ${items[count].id} AND physical_count_id= ${data.id}`).build()).rows[0];
+                let dis = (await new Builder(`tbl_physical_count_dis`).select().condition(`WHERE item_id= ${items[count].id} AND physical_count_id= ${data.id}`).build()).rows[0];
+
+                if(rcs !== undefined) { items['rcs'] = rcs.count_by; items['rcs_date'] = rcs.date_counted; }
+                if(ras !== undefined) { items['ras'] = ras.count_by; items['ras_date'] = ras.date_counted; }
+                if(dis !== undefined) { items['dis'] = dis.count_by; items['dis_date'] = dis.date_counted; }
+            }
+        }
+
+        return items;
     }
 }
 
