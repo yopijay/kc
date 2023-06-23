@@ -210,18 +210,36 @@ class PhysicalCount {
                             .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
                             .condition(`WHERE (${brnch}) AND (${brd}) ORDER BY itm.item_code DESC`)
                             .build()).rows;
+        }
                             
-            for(let count = 0; count < items.length; count++) {
-                let rcs = (await new Builder(`tbl_physical_count_rcs`).select().condition(`WHERE item_id= ${items[count].id} AND physical_count_id= ${data.id}`).build()).rows[0];
-                let ras = (await new Builder(`tbl_physical_count_ras`).select().condition(`WHERE item_id= ${items[count].id} AND physical_count_id= ${data.id}`).build()).rows[0];
-                let dis = (await new Builder(`tbl_physical_count_dis`).select().condition(`WHERE item_id= ${items[count].id} AND physical_count_id= ${data.id}`).build()).rows[0];
+        for(let count = 0; count < items.length; count++) {
+            let rcs = (await new Builder(`tbl_physical_count_rcs AS rcs`).select()
+                            .join({ table: `tbl_employee AS emp`, condition: `rcs.count_by = emp.user_id`, type: `LEFT` })
+                            .condition(`WHERE rcs.item_id= ${items[count].id} AND rcs.physical_count_id= ${data.id}`).build()).rows[0];
+            let ras = (await new Builder(`tbl_physical_count_ras AS ras`).select()
+                            .join({ table: `tbl_employee AS emp`, condition: `ras.count_by = emp.user_id`, type: `LEFT` })
+                            .condition(`WHERE ras.item_id= ${items[count].id} AND ras.physical_count_id= ${data.id}`).build()).rows[0];
+            let dis = (await new Builder(`tbl_physical_count_dis AS dis`).select()
+                            .join({ table: `tbl_employee AS emp`, condition: `dis.count_by = emp.user_id`, type: `LEFT` })
+                            .condition(`WHERE dis.item_id= ${items[count].id} AND dis.physical_count_id= ${data.id}`).build()).rows[0];
 
-                if(rcs !== undefined) { items['rcs'] = rcs.count_by; items['rcs_date'] = rcs.date_counted; }
-                if(ras !== undefined) { items['ras'] = ras.count_by; items['ras_date'] = ras.date_counted; }
-                if(dis !== undefined) { items['dis'] = dis.count_by; items['dis_date'] = dis.date_counted; }
+            if(rcs !== undefined) { 
+                items[count]['rcs'] = rcs.count_by; 
+                items[count]['rcs_date'] = rcs.date_counted; 
+                items[count]['rcs_name'] = `${(rcs.lname).toUpperCase()}, ${(rcs.fname).toUpperCase()}`; 
+            }
+            if(ras !== undefined) { 
+                items[count]['ras'] = ras.count_by; 
+                items[count]['ras_date'] = ras.date_counted; 
+                items[count]['ras_name'] = `${(ras.lname).toUpperCase()}, ${(ras.fname).toUpperCase()}`; 
+            }
+            if(dis !== undefined) { 
+                items[count]['dis'] = dis.count_by; 
+                items[count]['dis_date'] = dis.date_counted; 
+                items[count]['dis_name'] = `${(dis.lname).toUpperCase()}, ${(dis.fname).toUpperCase()}`; 
             }
         }
-
+ 
         return items;
     }
 }
