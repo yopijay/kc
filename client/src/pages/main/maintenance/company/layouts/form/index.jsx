@@ -69,7 +69,13 @@ const Index = () => {
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>{ type } Company</Typography>
                 <Typography sx= { btnicon } component= { Link } to= "/maintenance/company"><FontAwesomeIcon icon= { faChevronLeft }/></Typography>
             </Stack>
-            <Box sx= { card }><form autoComplete= "off"><ThemeProvider theme= { theme(input) }><Form fetching= { isFetching } /></ThemeProvider></form></Box>
+            <Box sx= { card }>
+                <form autoComplete= "off">
+                    <ThemeProvider theme= { theme(input) }>
+                        <Form fetching= { isFetching } />
+                    </ThemeProvider>
+                </form>
+            </Box>
             { type !== 'view' ?
                 <Grid container direction= "row" justifyContent= "flex-end" alignItems= "center">
                     <Grid item xs= { 12 } sm= { 3 } lg= { 2 }>

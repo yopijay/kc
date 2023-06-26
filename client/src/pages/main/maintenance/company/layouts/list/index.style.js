@@ -4,7 +4,7 @@ export const search = {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    border: 'solid 1px #F3F3F3',
+    border: 'solid 1px #F3F3F3A8',
     borderRadius: '50px',
     padding: '4px 10px',
     width: {
@@ -21,12 +21,12 @@ export const btntxt = {
     }, 
     textDecoration: 'none',
     cursor: 'pointer',
-    backgroundColor: '#204c6f',
-    color: '#ffffff',
+    backgroundColor: '#0097A7',
+    color: '#E0F2F1',
     borderRadius: '7px',
     padding: '7px 15px',
     transition: 'all 0.2s ease-in-out',
-    '&:hover': { backgroundColor: '#1b405d' }
+    '&:hover': { backgroundColor: '#006064' }
 }
 
 export const btnicon = {
@@ -37,11 +37,11 @@ export const btnicon = {
     flexDirection: 'row', 
     justifyContent: 'center', 
     alignItems: 'center',
-    backgroundColor: '#204c6f',
+    backgroundColor: '#0097A7',
     borderRadius: '7px',
     padding: '8px 10px',
     transition: 'all 0.2s ease-in-out',
-    '&:hover': { backgroundColor: '#1b405d' }
+    '&:hover': { backgroundColor: '#006064' }
 }
 
 export const btnimport = {

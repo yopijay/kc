@@ -23,9 +23,16 @@ const icons = {
 const item = {
     backgroundColor: '#FFFFFF', 
     padding: '10px 20px', 
-    border: 'solid 1px #F3F3F3', 
+    border: 'solid 1px #F3F3F3A8', 
     borderRadius: '10px',
     overflow: 'hidden'
+}
+
+const label = {
+    whiteSpace: 'nowrap', 
+    overflow: 'hidden', 
+    textOverflow: 'ellipsis', 
+    width: '100%'
 }
 
 const Item = ({ sub, fetching, profile }) => {
@@ -37,9 +44,9 @@ const Item = ({ sub, fetching, profile }) => {
                     list?.map((data, index) => (
                         <Stack direction= "row" justifyContent= "space-between" alignItems= "center" key= { index } sx= { item } spacing= { 2 }>
                             <Stack direction= "column" justifyContent= "flex-start" alignItems= "flex-start" sx= {{ flexGrow: 1, overflow: 'hidden' }}>
-                                <Typography variant= "body1" sx= {{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{ data.name }</Typography>
-                                <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>#{ data.series_no }</Typography>
-                                <Typography variant= "body2" sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{ data.date_created }</Typography>
+                                <Typography variant= "body1" style= {{ fontWeight: 'bold' }} sx= { label }>{ data.name }</Typography>
+                                <Typography variant= "body2" sx= { label }>#{ data.series_no }</Typography>
+                                <Typography variant= "body2" sx= { label }>{ data.date_created }</Typography>
                             </Stack>
                             <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 }>
                                 { data.status === 1 ? <Box sx= {{ width: '10px', height: '10px', backgroundColor: '#7D8F69', borderRadius: '20px' }} /> : 

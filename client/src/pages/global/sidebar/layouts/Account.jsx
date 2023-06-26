@@ -11,7 +11,7 @@ import { logout } from "core/api"; // API
 
 // Constants
 const link = {
-    color: '#636e72',
+    color: '#212121',
     backgroundColor: '#dfe6e9',
     padding: '10px',
     borderRadius: '7px',
@@ -19,15 +19,6 @@ const link = {
     transition: 'all 0.2s ease-in-out',
     '&:hover': { backgroundColor: '#c6cbcd' }
 }
-
-// const linkActive = {
-//     color: '#636e72',
-//     backgroundColor: '#c6cbcd',
-//     padding: '10px',
-//     textDecoration: 'none',
-//     borderRadius: '7px',
-//     transition: 'all 0.2s ease-in-out',
-// }
 
 const Account = () => {
     const { data } = useContext(ProfileCntx);
@@ -40,7 +31,7 @@ const Account = () => {
                     <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 } sx= {{ width: '60%', overflow: 'hidden' }}>
                         <Avatar />
                         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }}>
-                            <Typography sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{ data.lname }, { data.fname }</Typography>
+                            <Typography sx= {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }} color= "text.primary">{ data.lname }, { data.fname }</Typography>
                         </Stack>
                     </Stack>
                     <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 1 } sx= {{ width: '30%' }}>

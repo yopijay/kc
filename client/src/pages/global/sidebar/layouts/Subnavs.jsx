@@ -14,17 +14,17 @@ const linkNormal = {
     textDecoration: 'none', 
     padding: '11px 15px', 
     borderRadius: '7px', 
-    '&:hover': { backgroundColor: '#F47C7C2E' }, 
+    '&:hover': { backgroundColor: '#B71C1C2E' }, 
     transition: 'all 0.2s ease-in-out',
-    color: '#444444'
+    color: '#212121'
 }
 
 const linkActive = {
     textDecoration: 'none', 
     padding: '11px 15px', 
     borderRadius: '7px', 
-    backgroundColor: '#F47C7C61',
-    color: '#444444'
+    backgroundColor: '#F4433661',
+    color: '#FFEBEE'
 }
 
 const Subnavs = ({ module }) => {

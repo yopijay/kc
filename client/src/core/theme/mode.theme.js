@@ -4,47 +4,47 @@ import { createTheme } from "@mui/material";
 export const Light = createTheme({
     palette: {
         primary: {
-            main: '#81C6E8',
-            light: '#7DE5ED',
-            dark: '#5DA7DB',
-            contrastText: '#5837D0'
+            main: '#1976D2',
+            light: '#2196F3',
+            dark: '#0D47A1',
+            contrastText: '#E3F2FD'
         },
         secondary: {
-            main: '#8D72E1',
-            light: '#8D9EFF',
-            dark: '#6C4AB6',
-            contrastText: '#B9E0FF'
+            main: '#0288D1',
+            light: '#03A9F4',
+            dark: '#01579B',
+            contrastText: '#E1F5FE'
         },
         error: {
-            main: '#EF9F9F',
-            light: '#FAD4D4',
-            dark: '#F47C7C',
-            contrastText: '#FFF2F2'
+            main: '#D32F2F',
+            light: '#F44336',
+            dark: '#B71C1C',
+            contrastText: '#FFEBEE'
         },
         warning: {
-            main: '#F0E161',
-            light: '#FFF38C',
-            dark: '#D9CB50',
-            contrastText: '#C0B236'
+            main: '#F57C00',
+            light: '#FF9800',
+            dark: '#E65100',
+            contrastText: '#FFF3E0'
         },
         info: {
-            main: '#624F82',
-            light: '#9F73AB',
-            dark: '#3F3B6C',
-            contrastText: '#A3C7D6'
+            main: '#0097A7',
+            light: '#00BCD4',
+            dark: '#006064',
+            contrastText: '#E0F2F1'
         },
         success: {
-            main: '#7D8F69',
-            light: '#A9AF7E',
-            dark: '#557153',
-            contrastText: '#E6E5A3'
+            main: '#388E3C',
+            light: '#4CAF50',
+            dark: '#1B5E20',
+            contrastText: '#E8F5E9'
         },
         excel: { main: '#61764B' },
         pdf: { main: '#DD5353' },
         text: {
-            primary: '#434242',
-            secondary: '#222222',
-            disabled: '#bdc3c7'
+            primary: '#212121',
+            secondary: '#424242',
+            disabled: '#9E9E9E'
         }
     },
     typography: {
