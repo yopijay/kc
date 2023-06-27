@@ -28,7 +28,7 @@ const Index = () => {
                         <Typography color= "error.dark" variant= "h4" sx= {{ fontFamily: 'Generica Bold', textDecoration: 'none' }} component= { Link } to= "/" 
                             onClick= { () => { localStorage.setItem('nav', 'home'); setIsActive('home'); } }>KC</Typography>
                     </Stack>
-                    <Typography color= "text.secondary" sx= {{ transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' }, display: { xs: 'block', lg: 'none' } }} 
+                    <Typography color= "text.primary" sx= {{ transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' }, display: { xs: 'block', lg: 'none' } }} 
                         onClick= { drawerToggle(!open.left) }><FontAwesomeIcon icon={ faBarsStaggered } /></Typography>
                 </Stack>
             </Container>

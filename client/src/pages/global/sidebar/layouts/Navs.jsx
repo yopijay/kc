@@ -19,17 +19,17 @@ const linkNormal = {
     textDecoration: 'none', 
     padding: '11px 15px', 
     borderRadius: '7px', 
-    '&:hover': { backgroundColor: '#B71C1C2E' }, 
+    '&:hover': { backgroundColor: '#F47C7C2E' }, 
     transition: 'all 0.2s ease-in-out',
-    color: '#212121'
+    color: '#444444'
 }
 
 const linkActive = {
     textDecoration: 'none', 
     padding: '11px 15px', 
     borderRadius: '7px', 
-    backgroundColor: '#F4433661',
-    color: '#FFEBEE'
+    backgroundColor: '#F47C7C61',
+    color: '#444444'
 }
 
 const container = {
@@ -59,7 +59,7 @@ const Navs = () => {
     return (
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch"  sx= { container } spacing= { 2 }>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#424242' }}>Main</Typography>
+                <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Main</Typography>
                 <Stack direction= "row" justifyContent= "flex-start" alignItems= "center" spacing= { 2 } 
                     component= { Link } to= "/" sx= { isActive === 'dashboard' ? linkActive : linkNormal }
                     onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'dashboard'); setActive('dashboard'); } }>
@@ -71,13 +71,13 @@ const Navs = () => {
                 modules.map((mdl, index) => (
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 } key= { index }>
                         { JSON.parse(data.permissions)?.[`module_${mdl.id}`]?.status || data.user_level === 'superadmin' ?
-                            <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#424242' }}>{ (mdl.name).charAt(0).toUpperCase() + (mdl.name).slice(1).toLowerCase() }</Typography> : '' }
+                            <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>{ (mdl.name).charAt(0).toUpperCase() + (mdl.name).slice(1).toLowerCase() }</Typography> : '' }
                         { JSON.parse(data.permissions)?.[`module_${mdl.id}`]?.status || data.user_level === 'superadmin' ? <Subnavs module= { mdl.id } /> : '' }
                     </Stack>
                 )) : '' }
             { data.user_level === 'superadmin' ? 
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
-                    <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#424242' }}>Setup</Typography>
+                    <Typography variant= "body2" sx= {{ fontWeight: 'bold', color: '#444444' }}>Setup</Typography>
                     <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                         <Typography component= { Link } to= { `/setup/module` }
                             onClick= { () => { setOpen({ left: false}); localStorage.setItem('nav', 'module'); setActive('module'); } }
