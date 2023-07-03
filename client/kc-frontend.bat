@@ -1,6 +1,6 @@
 TIMEOUT 3
-C:
-cd C:\Users\PJ\OneDrive\Desktop\DEV\Projects\kcic-v2\client\src
+D:
+cd D:\Devs\Web App\kc\client
 npm start
 
 cmd /k
