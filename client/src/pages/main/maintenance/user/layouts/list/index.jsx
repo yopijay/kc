@@ -49,7 +49,7 @@ const Index = () => {
         <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" sx= {{ width: '100%', overflow: 'hidden' }} spacing= { 1 }>
             <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch" spacing= { 1 }>
                 <Typography variant= "h6" sx= {{ fontFamily: 'Boldstrom', color: '#535b64' }}>Users</Typography>
-                <Dashboard />
+                <Box><Dashboard /></Box>
             </Stack>
             <Stack direction= "row" justifyContent= "space-between" alignItems= "center">
                 <form autoComplete= "off">

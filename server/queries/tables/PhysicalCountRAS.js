@@ -36,7 +36,7 @@ class PhysicalCountRAS {
         else { brands = (await new Builder(`tbl_brand`).select(`id AS brand_id, name AS brand_name`).condition(`WHERE status = 1`).build()).rows; }
 
         for(let count = 0; count < brands.length; count++) { query += `${count > 0 ? ' OR ' : ''}itm.brand_id= ${brands[count].brand_id}`; }
-
+        
         let itm = (await new Builder(`tbl_items AS itm`)
                             .select(`itm.*`)
                             .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
@@ -45,12 +45,18 @@ class PhysicalCountRAS {
 
         switch(data.type) {
             case 'admin':
-                return (await new Builder(`tbl_physical_count_ras AS ras`)
-                                .select(`itm.id, itm.item_code, ras.date_counted, emp.fname, emp.lname, ras.count_by`)
-                                .join({ table: `tbl_items AS itm`, condition: `ras.item_id = itm.id`, type: `LEFT` })
-                                .join({ table: `tbl_employee AS emp`, condition: `ras.count_by = emp.user_id`, type: `LEFT` })
-                                .condition(`WHERE ras.physical_count_id= ${data.physical_count_id}`)
-                                .build()).rows;
+                for(let count = 0; count < itm.length; count++) {
+                    let item = (await new Builder(`tbl_physical_count_ras AS ras`)
+                                        .select(`itm.id, itm.item_code, ras.date_counted, emp.fname, emp.lname, ras.count_by`)
+                                        .join({ table: `tbl_items AS itm`, condition: `ras.item_id = itm.id`, type: `LEFT` })
+                                        .join({ table: `tbl_employee AS emp`, condition: `ras.count_by = emp.user_id`, type: `LEFT` })
+                                        .condition(`WHERE ras.physical_count_id= ${data.physical_count_id} AND ras.item_id= ${itm[count].id}`)
+                                        .build()).rows[0];
+
+                    if(item !== undefined) { items.push(item); }
+                }
+
+                return items;
             default:
                 for(let count = 0; count < itm.length; count++) {
                     let item1 = (await new Builder(`tbl_items AS itm`)
@@ -202,27 +208,16 @@ class PhysicalCountRAS {
 
                 return items;
             default:
-                for(let count = 0; count < itm.length; count++) {
-                    let item = (await new Builder(`tbl_items AS itm`)
-                                        .select(`itm.id, itm.item_code, ras.count_by, ras.date_counted, ras.total, emp.fname, emp.lname, rck.branch, rck.floor, rck.code`)
-                                        .join({ table: `tbl_physical_count_ras AS ras`, condition: `ras.item_id = itm.id`, type: `LEFT` })
-                                        .join({ table: `tbl_employee AS emp`, condition: `emp.user_id = ras.count_by`, type: `LEFT` })
-                                        .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
-                                        .condition(`WHERE itm.id= ${itm[count].id} AND ras.count_by= ${data.user_id}`)
-                                        .build()).rows[0];
-                    
-                    if(item !== undefined) { items.push(item); }
-                }
-
-                return items;
-                // return (await new Builder(`tbl_physical_count_ras AS ras`)
-                //                 .select(`itm.id, itm.item_code, ras.count_by, ras.date_counted, ras.total, emp.fname, emp.lname`)
-                //                 .join({ table: `tbl_items AS itm`, condition: `ras.item_id = itm.id`, type: `LEFT` })
-                //                 .join({ table: `tbl_employee AS emp`, condition: `ras.count_by = emp.user_id`, type: `LEFT` })
-                //                 .condition(`WHERE ras.physical_count_id= ${data.physical_count_id} AND ras.count_by= ${data.user_id}
-                //                                     ${data.searchtxt !== '' ? `AND (itm.item_code LIKE '%${(data.searchtxt).toUpperCase()}%'
-                //                                         OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%')` : ''}`)
-                //                 .build()).rows;
+                return (await new Builder(`tbl_physical_count_ras AS ras`)
+                                .select(`itm.id, itm.item_code, rck.branch, rck.floor, rck.code, ras.count_by, ras.date_counted, ras.total, emp.fname, emp.lname`)
+                                .join({ table: `tbl_items AS itm`, condition: `ras.item_id = itm.id`, type: `LEFT` })
+                                .join({ table: `tbl_racks AS rck`, condition: `itm.rack_id = rck.id`, type: `LEFT` })
+                                .join({ table: `tbl_employee AS emp`, condition: `ras.count_by = emp.user_id`, type: `LEFT` })
+                                .condition(`WHERE ras.physical_count_id= ${data.physical_count_id} AND ras.count_by= ${data.user_id}
+                                                    ${data.searchtxt !== '' ? `AND (itm.item_code LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                        OR emp.fname LIKE '%${(data.searchtxt).toUpperCase()}%' OR emp.lname LIKE '%${(data.searchtxt).toUpperCase()}%'
+                                                        OR CONCAT(UPPER(rck.branch), UPPER(rck.floor), '-', rck.code) LIKE '%${data.searchtxt}%')` : ''}`)
+                                .build()).rows;
         }
     }
 }

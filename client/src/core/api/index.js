@@ -24,3 +24,4 @@ export const tracker = async data => { return await api({ url: `${Env[env].url}/
 export const monitor = async data => { return await api({ url: `${Env[env].url}/monitor`, method: 'post', data: data }).then(res => res.data); }
 export const count = async data => { return await api({ url: `${Env[env].url}/count`, method: 'post', data: data }).then(res => res.data); }
 export const submodule = async name => { return await api({ url: `${Env[env].url}/submodule/${name}`, method: 'get'}).then(res => res.data); }
+export const reports = async ({ table, data }) => { return await api({ url: `${Env[env].url}/reports/${table}`, method: 'post', data: data }).then(res => res.data); }
