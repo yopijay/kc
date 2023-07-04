@@ -1,6 +1,6 @@
 TIMEOUT 3
-C:
-cd C:\Users\PJ\Desktop\DEV\Web App\kc\warehouse
+D:
+cd D:\Devs\Web App\kc\warehouse
 npm start
 
 cmd /k

@@ -10,6 +10,7 @@ import { FormPrvdr } from "core/context/Form"; // Provider
 import List from './layouts/list';
 import Form from './layouts/form';
 import Personnel from './layouts/personnel';
+import Reports from './layouts/reports';
 
 // Custom styles
 const container = {
@@ -27,6 +28,7 @@ const Index = () => {
                 <Route exact path= "/form/:type" element= { <FormPrvdr><Form /></FormPrvdr> } />
                 <Route exact path= "/form/:type/:id" element= { <FormPrvdr><Form /></FormPrvdr> } />
                 <Route exact path= "/personnel/:id" element= { <FormPrvdr><Personnel /></FormPrvdr> } />
+                <Route exact path= "/report/:id" element= { <ListPrvdr><FormPrvdr><Reports /></FormPrvdr></ListPrvdr> } />
             </Routes>
         </Stack>
     );
