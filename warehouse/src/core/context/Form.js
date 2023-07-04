@@ -15,7 +15,7 @@ export const FormPrvdr = (props) => {
         useForm({ resolver: Object.keys(validation).length === 0 ? '' : yupResolver(validation) });
 
     return (
-        <FormCntxt.Provider 
+        <FormCntxt.Provider
             value= {{ fields, setFields, disabled, setDisabled, setValidation, register, handleSubmit, errors, getValues, setValue, setError,
                                 control, clearErrors, series, setSeries }}>
             { children }
