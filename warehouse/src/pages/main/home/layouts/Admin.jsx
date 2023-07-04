@@ -35,18 +35,18 @@ const Admin = () => {
                     <Typography variant= "body2">Rack Audit Sheet</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 3 } component= { Link } to= "/descrepancies" sx= {{ textDecoration: 'none', color: '#444444' }}>
+            <Grid item xs= { 6 } sm= { 3 } component= { Link } to= "/discrepancies" sx= {{ textDecoration: 'none', color: '#444444' }}>
                 <Stack direction= "column" justifyContent= "center" alignItems= "center" spacing= { 2 } sx= {{ padding: '20px 0' }}>
                     <Badge badgeContent= { counter?.des } color= "error"><FontAwesomeIcon icon= { faTriangleExclamation } size= "xl" color= "#4b4b4b" /></Badge>
                     <Typography variant= "body2">Descrepancies</Typography>
                 </Stack>
             </Grid>
-            <Grid item xs= { 6 } sm= { 3 } component= { Link } to= "/reports" sx= {{ textDecoration: 'none', color: '#444444' }}>
+            {/* <Grid item xs= { 6 } sm= { 3 } component= { Link } to= "/reports" sx= {{ textDecoration: 'none', color: '#444444' }}>
                 <Stack direction= "column" justifyContent= "center" alignItems= "center" spacing= { 2 } sx= {{ padding: '20px 0' }}>
                     <FontAwesomeIcon icon= { faChartPie } size= "xl" color= "#4b4b4b" />
                     <Typography variant= "body2">Reports</Typography>
                 </Stack>
-            </Grid>
+            </Grid> */}
         </Grid>
     );
 }

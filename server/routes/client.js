@@ -25,5 +25,6 @@ router.post('/track', (req, res) => { query.tracker(req.body).then(response => r
 router.post('/monitor', (req, res) => { query.monitor(req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
 router.post('/count', (req, res) => { query.count(req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
 router.get('/submodule/:name', (req, res) => { query.submodule(req.params.name).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
+router.post('/reports/:table', (req, res) => { query.reports(req.params.table, req.body).then(response => res.status(200).send(response)).catch(error => res.status(200).send(error)); });
 
 module.exports = router;

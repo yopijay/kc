@@ -54,6 +54,7 @@ const dashboard = (table, data) => {
             case 'tbl_employee_tracker': resolve(await new Tracker().dashboard(data)); break;
             case 'tbl_brand': resolve(await new Brand().dashboard(data)); break;
             case 'tbl_racks': resolve(await new Racks().dashboard(data)); break;
+            case 'tbl_physical_count': resolve(await new PhysicalCount().dashboard(data)); break;
         }
     });
 }
@@ -122,7 +123,6 @@ const search = (table, data) => {
             case 'tbl_brand': resolve(await new Brand().search(data)); break;
             case 'tbl_racks': resolve(await new Racks().search(data)); break;
             case 'tbl_items': resolve(await new Items().search(data)); break;
-            case 'tbl_physical_count': resolve(await new PhysicalCount().search(data)); break;
         }
     });
 }
@@ -288,6 +288,14 @@ const upload = (table, data) => {
     });
 }
 
+const reports = (table, data) => {
+    return new Promise(async resolve => {
+        switch(table) {
+            case 'tbl_physical_count': resolve(new PhysicalCount().reports(data)); break;
+        }
+    });
+}
+
 module.exports = {
     login,
     logout,
@@ -308,5 +316,6 @@ module.exports = {
     tracker,
     monitor,
     submodule,
-    count
+    count,
+    reports
 }
