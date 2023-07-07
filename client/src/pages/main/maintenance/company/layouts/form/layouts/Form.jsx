@@ -19,7 +19,7 @@ const Form = ({ fetching }) => {
     useGet({ key: ['cmp_series'], fetch: series('tbl_company'), options: { }, onSuccess: (data) => { if(type === 'new') setValue('series_no', `CMP-${formatter(parseInt(data) + 1, 7)}`); } });
 
     return (
-        <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 2 }>
+        <Grid container direction= "row" justifyContent= "flex-start" alignItems= "flex-start" spacing= { 1 }>
             <Grid item xs= { 12 } sm= { 8 }>
                 <Stack direction= "column" justifyContent= "flex-start" alignItems= "stretch">
                     <Typography gutterBottom variant= "body2">*Series No.</Typography>

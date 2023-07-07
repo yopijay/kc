@@ -7,7 +7,7 @@ export const FormCntxt = createContext();
 
 export const FormPrvdr = (props) => {
     const { children } = props;
-    const [ fields, setFields ] = useState({});
+    const [ fields, setFields ] = useState([]);
     const [ disabled, setDisabled ] = useState(false);
     const [ validation, setValidation ] = useState({});
     const [ series, setSeries ] = useState();
