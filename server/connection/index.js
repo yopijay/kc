@@ -5,7 +5,7 @@ const config = process.env.DATABASE_URL ? {
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 } : {
-    user: 'postgres',
+    user: 'pijay',
     host: 'localhost',
     database: 'db_kc',
     password: 'root',

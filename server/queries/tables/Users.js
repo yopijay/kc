@@ -35,11 +35,8 @@ class Users {
 
         if(email.rowCount === 1) {
             if(creds.rowCount === 1) {
-                if(creds.rows[0].is_logged === 0) {
-                    let logged_in = await new Builder(`tbl_users`).update(`is_logged= 1`).condition(`WHERE id= ${creds.rows[0].id} RETURNING id`).build();
-                    return { result: 'success', id: logged_in.rows[0].id }
-                }
-                else { return { result: 'error', error: [{ name: 'email', message: 'Account already used in another device' }] }}
+                let logged_in = await new Builder(`tbl_users`).select().build();
+                return { result: 'success', id: logged_in.rows[0].id }
             }
             else { return { result: 'error', error: [{ name: 'password', message: 'Incorrect password' }] } }
         }
